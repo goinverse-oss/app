@@ -4,6 +4,11 @@
     "jest": true
   },
   "rules": {
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+    "quotes": [
+      "error",
+      "single",
+      // Required for exports in generated jest snapshots
+      { "allowTemplateLiterals": true }
+    ]
   }
 }
