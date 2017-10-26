@@ -1,3 +1,7 @@
 {
-  "extends": "airbnb"
+  "extends": "airbnb",
+  "rules": {
+    // Apprently react-native doesn't like .jsx files
+    "react/jsx-filename-extension": [2, { "extensions": [".js"] }]
+  }
 }
