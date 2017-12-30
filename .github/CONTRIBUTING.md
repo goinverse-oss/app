@@ -4,7 +4,7 @@ Thanks for being a part of this! Here are a few things you should know before ge
 
 ## Code of Conduct
 
-This project is guided by a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+This project is guided by a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md).
 By participating in the project, you agree to abide by its terms.
 
 ## Pull Requests
