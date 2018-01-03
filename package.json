@@ -9,8 +9,13 @@
 		"flow": "flow"
 	},
 	"dependencies": {
+		"prop-types": "^15.6.0",
 		"react": "16.0.0-beta.5",
-		"react-native": "0.49.3"
+		"react-native": "0.49.3",
+		"react-navigation": "^1.0.0-beta.22",
+		"react-redux": "^5.0.6",
+		"redux": "^3.7.2",
+		"redux-actions": "^2.2.1"
 	},
 	"devDependencies": {
 		"babel-jest": "21.2.0",
@@ -28,8 +33,8 @@
 	"jest": {
 		"preset": "react-native"
 	},
+	"comment": "flow is disabled in pre-commit because react-navigation breaks it",
 	"pre-commit": [
-		"flow",
 		"lint",
 		"test"
 	]
