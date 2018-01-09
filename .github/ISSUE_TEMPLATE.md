@@ -23,10 +23,12 @@ domain expertise, or familiarity with a particular part of the code.
 <!--- already know will be required, list them here to give whoever picks up -->
 <!--- the issue a head start. -->
 
-## Criteria to close
+## Scope
+<!--- Optional; only needed if it's not clear from the Plan of action above.-->
 <!--- How do you know when you're done? This should clearly define the conditions -->
 <!--- that *must* be true before this issue can be closed. Being explicit about this -->
 <!--- helps clearly define the scope of work and avoid scope creep. -->
+<!--- This is also a good place to list things that are expliltly NOT included. -->
 
 
 <!--- Found a bug? Please fill out this template: -->
