@@ -7,27 +7,34 @@ import * as navActions from '../state/ducks/navigation/actions';
 import * as authActions from '../state/ducks/auth/actions';
 import styles from '../styles';
 
-const LoginScreen = ({ navigation, login }) => (
+/**
+ * Main entry point to the app for new users.
+ * Prompts user to login or create an account.
+ */
+const LoginScreen = ({ login }) => (
   <View style={styles.container}>
     <Text>
       Placeholder login screen
     </Text>
     <Button
-      onPress={() => {
-        login();
-        navigation.dispatch(navActions.login());
-      }}
+      onPress={() => login()}
       title="Log in"
     />
   </View>
 );
 
 LoginScreen.propTypes = {
-  navigation: PropTypes.shape({
-    dispatch: PropTypes.func.isRequired,
-  }).isRequired,
-
+  // callback invoked when the user clicks "Log in"
   login: PropTypes.func.isRequired,
 };
 
-export default connect(null, authActions)(LoginScreen);
+function mapDispatchToProps(dispatch) {
+  return {
+    login: () => {
+      dispatch(authActions.login());
+      dispatch(navActions.login());
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);

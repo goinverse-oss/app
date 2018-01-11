@@ -6,6 +6,11 @@ import { connect } from 'react-redux';
 import * as navActions from '../state/ducks/navigation/actions';
 import * as authActions from '../state/ducks/auth/actions';
 
+/**
+ * A button that, when pressed:
+ * - clears the user's auth state
+ * - navigates to the login screen
+ */
 const LogoutButton = ({ logout }) => (
   <Button
     onPress={() => logout()}
@@ -14,6 +19,7 @@ const LogoutButton = ({ logout }) => (
 );
 
 LogoutButton.propTypes = {
+  // callback for when the button is pressed
   logout: PropTypes.func.isRequired,
 };
 

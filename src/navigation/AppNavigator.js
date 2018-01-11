@@ -19,6 +19,13 @@ export const RawNavigator = TabNavigator({
   },
 });
 
+/**
+ * Root navigator for the app.
+ *
+ * Per the documentation here: https://reactnavigation.org/docs/guides/redux
+ * - We hook up react-navigation to store its state in the redux store
+ * - We handle the Android back button explicitly
+ */
 class AppNavigator extends Component {
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
@@ -49,8 +56,10 @@ class AppNavigator extends Component {
 }
 
 AppNavigator.propTypes = {
+  // redux dispatch function
   dispatch: PropTypes.func.isRequired,
 
+  // react-navigation internal navigation state object
   nav: PropTypes.shape({}).isRequired,
 };
 

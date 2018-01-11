@@ -6,6 +6,9 @@ import { handleActions as origHandleActions } from 'redux-actions';
 
 export { createAction } from 'redux-actions';
 
+/**
+ * Wrapper for redux-actions handleActions that disallows undefined keys.
+ */
 export function handleActions(reducerMap, defaultState) {
   const keys = _.keys(reducerMap);
   if (_.some(keys, _.isUndefined) || _.some(keys, key => (key === 'undefined'))) {

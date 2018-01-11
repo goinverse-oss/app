@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
 
 import { getCommonNavigationOptions } from '../navigation/common';
+import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import styles from '../styles';
 
+/**
+ * List of available meditations, organized by category.
+ */
 const MeditationsScreen = ({ isPatron }) => (
   <View style={styles.container}>
     <Text>
@@ -22,12 +26,13 @@ const MeditationsScreen = ({ isPatron }) => (
 );
 
 MeditationsScreen.propTypes = {
+  // true iff the user has connected Patreon
   isPatron: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    isPatron: state.patreon.enabled,
+    isPatron: patreonSelectors.isPatron(state),
   };
 }
 
