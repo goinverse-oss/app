@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+echo "Validating CircleCI config..."
+./scripts/circleci config validate
