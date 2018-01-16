@@ -8,6 +8,19 @@ import {
   PATREON_ERROR,
 } from './types';
 
+/* patreon reducer state shape:
+{
+  // true iff the user has connected Patreon
+  enabled: boolean,
+
+  // true iff we are waiting for a response from the Patreon API
+  loading: boolean,
+
+  // if not null, the error from the last Patreon API call
+  error: ?Error,
+}
+*/
+
 const defaultState = {
   enabled: false,
   loading: false,

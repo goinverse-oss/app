@@ -4,8 +4,12 @@ import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { getCommonNavigationOptions } from '../navigation/common';
+import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import styles from '../styles';
 
+/**
+ * List of available podcasts.
+ */
 const PodcastsScreen = ({ isPatron }) => (
   <View style={styles.container}>
     <Text>
@@ -22,6 +26,7 @@ const PodcastsScreen = ({ isPatron }) => (
 );
 
 PodcastsScreen.propTypes = {
+  // true iff the user has connected Patreon
   isPatron: PropTypes.bool.isRequired,
 };
 
@@ -32,7 +37,7 @@ PodcastsScreen.navigationOptions = ({ navigation }) => ({
 
 function mapStateToProps(state) {
   return {
-    isPatron: state.patreon.enabled,
+    isPatron: patreonSelectors.isPatron(state),
   };
 }
 

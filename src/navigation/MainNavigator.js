@@ -7,6 +7,9 @@ import PatreonScreen from '../screens/PatreonScreen';
 import PodcastsScreen from '../screens/PodcastsScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
 
+/**
+ * Navigator for the main "logged-in" user flow.
+ */
 const Navigator = () => {
   const Tabs = TabNavigator({
     Home: { screen: HomeScreen },
