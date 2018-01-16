@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import AppNavigator from './navigators/AppNavigator';
+import AppNavigator from './navigation/AppNavigator';
 import configureStore from './state/store';
 
 const Root = () => (

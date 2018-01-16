@@ -1,25 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
 
-import * as navActions from '../state/ducks/navigation/actions';
+import { getCommonNavigationOptions } from '../navigation/common';
+import styles from '../styles';
 
-const HomeScreen = ({ navigation }) => (
-  <View>
+const HomeScreen = () => (
+  <View style={styles.container}>
     <Text>
       Placeholder home screen
     </Text>
-    <Button
-      onPress={() => navigation.dispatch(navActions.logout())}
-      title="Log out"
-    />
   </View>
 );
 
-HomeScreen.propTypes = {
-  navigation: PropTypes.shape({
-    dispatch: PropTypes.func.isRequired,
-  }).isRequired,
-};
+HomeScreen.navigationOptions = ({ navigation }) => ({
+  ...getCommonNavigationOptions(navigation),
+  title: 'Home',
+});
 
 export default HomeScreen;

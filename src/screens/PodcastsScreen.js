@@ -1,25 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import * as navActions from '../state/ducks/navigation/actions';
+import { getCommonNavigationOptions } from '../navigation/common';
+import styles from '../styles';
 
-const PodcastsScreen = ({ navigation }) => (
-  <View>
+const PodcastsScreen = ({ isPatron }) => (
+  <View style={styles.container}>
     <Text>
       Placeholder podcasts screen
     </Text>
-    <Button
-      onPress={() => navigation.dispatch(navActions.logout())}
-      title="Log out"
-    />
+    <Text>
+      {
+        isPatron
+          ? 'As a patron, you can access the Conversations podcast.'
+          : 'If you were a patron, you could access the Conversations podcast.'
+      }
+    </Text>
   </View>
 );
 
 PodcastsScreen.propTypes = {
-  navigation: PropTypes.shape({
-    dispatch: PropTypes.func.isRequired,
-  }).isRequired,
+  isPatron: PropTypes.bool.isRequired,
 };
 
-export default PodcastsScreen;
+PodcastsScreen.navigationOptions = ({ navigation }) => ({
+  ...getCommonNavigationOptions(navigation),
+  title: 'Podcasts',
+});
+
+function mapStateToProps(state) {
+  return {
+    isPatron: state.patreon.enabled,
+  };
+}
+
+export default connect(mapStateToProps)(PodcastsScreen);
