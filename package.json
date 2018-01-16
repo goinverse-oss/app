@@ -6,7 +6,8 @@
 		"start": "node node_modules/react-native/local-cli/cli.js start",
 		"test": "jest",
 		"lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
-		"flow": "flow"
+		"flow": "flow",
+		"validateci": "./scripts/validate-ci-config"
 	},
 	"dependencies": {
 		"axios": "^0.17.1",
@@ -33,6 +34,7 @@
 		"eslint-plugin-react": "^7.4.0",
 		"flow-bin": "0.53.0",
 		"jest": "21.2.1",
+		"jest-junit": "^3.4.1",
 		"pre-commit": "^1.2.2",
 		"react-test-renderer": "16.0.0-beta.5"
 	},
@@ -45,6 +47,7 @@
 	"comment": "flow is disabled in pre-commit because react-navigation breaks it",
 	"pre-commit": [
 		"lint",
-		"test"
+		"test",
+		"validateci"
 	]
 }
