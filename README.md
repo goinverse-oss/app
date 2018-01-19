@@ -57,3 +57,24 @@ Launch the **React Native Debugger** app (should now be in your `/Applications` 
 then start your simulator.
 
 Other platforms: see instructions at linked repo above.
+
+## Storybook
+
+Storybook allows us to create a showcase of the common compoments we create for this app.
+They describe these "stories" as "visual test cases". It's a quick way to see how a component
+looks and behaves, in its simplest form, detached from any other functionality in the app.
+It also lets us quickly iterate on styling and tweaks and see the results immediately.
+
+To start it up:
+```sh
+# in one terminal
+$ yarn storybook
+
+# in another terminal
+$ open http://localhost:7007  # opens Storybook web UI
+$ react-native run-ios  # opens Storybook in app
+```
+This runs both the Storybook server and the react-native packaging server, using
+an `index.js` that registers the Storybook UI instead of the app as the root.
+To switch back to running the app, Ctrl-C the `yarn storybook` command, run `yarn start`
+again, and 'Reload JS' in the simulator. (You may have to reload a few times.)
