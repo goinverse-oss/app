@@ -4909,7 +4909,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@4.17.4, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
+lodash@4.17.4, lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -6338,6 +6338,14 @@ react-native-tab-view@^0.0.70:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.70.tgz#1dd2ded32acd0cb6bfef38d26e53675db733b37b"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-vector-icons@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.5.0.tgz#6b95619e64f62f05f579f74a01fe5640df95158b"
+  dependencies:
+    lodash "^4.0.0"
+    prop-types "^15.5.10"
+    yargs "^8.0.2"
 
 react-native@0.49.3:
   version "0.49.3"
