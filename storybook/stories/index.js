@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
 import { storiesOf } from '@storybook/react-native';
 
@@ -30,11 +30,12 @@ class InteractiveCounter extends React.Component {
       <View>
         <InteractionsCounter
           liked={this.state.liked}
-          likes={this.state.likes}
+          likes={this.state.likes + (this.state.liked ? 1 : 0)}
           comments={this.state.comments}
           onPressLike={this.onLike}
           {...this.props}
         />
+        <Text>^ press heart</Text>
         <Button title="More likes" onPress={() => this.modify('likes', 1)} />
         <Button title="Fewer likes" onPress={() => this.modify('likes', -1)} />
         <Button title="More comments" onPress={() => this.modify('comments', 1)} />
@@ -49,10 +50,13 @@ storiesOf('Counters', module)
     <InteractionsCounter />
   ))
   .add('with counts', () => (
-    <InteractionsCounter likes={42} comments={1024} />
+    <InteractionsCounter likes={42} comments={10} />
+  ))
+  .add('with counts above 1000', () => (
+    <InteractionsCounter likes={42000} comments={1024} />
   ))
   .add('with user like', () => (
-    <InteractionsCounter liked likes={42} comments={1024} />
+    <InteractionsCounter liked likes={42} comments={10} />
   ))
   .add('with interaction', () => (
     <InteractiveCounter />

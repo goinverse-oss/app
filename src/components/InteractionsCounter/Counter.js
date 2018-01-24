@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View, Text, StyleSheet } from 'react-native';
 import _ from 'lodash';
+import numeral from 'numeral';
 
-import { View, Text } from 'react-native';
 
 function getLabelNode(label) {
   if (_.isString(label)) {
@@ -13,12 +14,21 @@ function getLabelNode(label) {
   return label;
 }
 
-const Counter = ({ label, count }) => {
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  text: {
+    paddingLeft: 4,
+  },
+});
+
+const Counter = ({ label, count, style }) => {
   const labelNode = getLabelNode(label);
   return (
-    <View>
+    <View style={[styles.container, style]}>
       {labelNode}
-      <Text>{count}</Text>
+      <Text style={{ paddingLeft: 4 }}>{numeral(count).format('0,0')}</Text>
     </View>
   );
 };
@@ -29,11 +39,13 @@ Counter.propTypes = {
     PropTypes.node,
   ]),
   count: PropTypes.number,
+  style: View.propTypes.style,
 };
 
 Counter.defaultProps = {
   label: 'Count',
   count: 0,
+  style: {},
 };
 
 export default Counter;

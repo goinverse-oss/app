@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Counter from './Counter';
 
-// const LIKED_COLOR = '#F95A57';
+const LIKED_COLOR = '#F95A57';
+const UNLIKED_COLOR = '#D2D2D2';
 
 const LikeIcon = ({ liked, onPressLike }) => (
   <TouchableWithoutFeedback onPress={onPressLike}>
     <View>
-      <Text>{liked ? 'Unlike' : 'Like'}</Text>
+      <Icon
+        name="heart"
+        size={16}
+        color={liked ? LIKED_COLOR : UNLIKED_COLOR}
+      />
     </View>
   </TouchableWithoutFeedback>
 );
@@ -20,10 +26,25 @@ LikeIcon.propTypes = {
   onPressLike: PropTypes.func.isRequired,
 };
 
+const COMMENT_COLOR = '#9B9B9B';
+
+const CommentIcon = () => (
+  <Icon name="comment" size={16} color={COMMENT_COLOR} />
+);
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  commentsCounter: {
+    paddingLeft: 4,
+  },
+});
+
 const InteractionsCounter = ({ likes, comments, ...props }) => (
-  <View>
+  <View style={styles.container}>
     <Counter label={<LikeIcon {...props} />} count={likes} />
-    <Counter label="Comments" count={comments} />
+    <Counter style={styles.commentsCounter} label={<CommentIcon />} count={comments} />
   </View>
 );
 
