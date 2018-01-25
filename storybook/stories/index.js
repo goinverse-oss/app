@@ -4,6 +4,7 @@ import { View, Text, Button } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import InteractionsCounter from '../../src/components/InteractionsCounter';
+import CircleImage from '../../src/components/CircleImage';
 
 class InteractiveCounter extends React.Component {
   constructor() {
@@ -60,4 +61,12 @@ storiesOf('Counters', module)
   ))
   .add('with interaction', () => (
     <InteractiveCounter />
+  ));
+
+storiesOf('Circle pics', module)
+  .add('with no shadow', () => (
+    <CircleImage source={{ uri: 'https://via.placeholder.com/100x100' }} diameter={100} />
+  ))
+  .add('with shadow', () => (
+    <CircleImage source={{ uri: 'https://via.placeholder.com/100x100' }} diameter={100} shadow />
   ));
