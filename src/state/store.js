@@ -19,9 +19,9 @@ const emptyEpic = () => Observable.never();
  * This allows testing the store with just synchronous actions,
  * not worrying about side effects.
  */
-export default function configureStore({ noEpic = false }) {
+export default function configureStore({ noEpic = false } = {}) {
   const reducer = combineReducers(reducers);
-  const epic = noEpic ? combineEpics(...epics) : emptyEpic;
+  const epic = noEpic ? emptyEpic : combineEpics(...epics);
   const epicMiddleware = createEpicMiddleware(epic);
   const enhancer = composeWithDevTools(applyMiddleware(epicMiddleware));
   return createStore(reducer, enhancer);
