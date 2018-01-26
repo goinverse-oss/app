@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image } from 'react-native';
+import { View, Image } from 'react-native';
 
 function getStyle({ diameter, shadow }) {
   const shadowStyle = shadow ? {
     shadowColor: '#000',
-    shadowOpacity: 0.91,
+    shadowOpacity: 0.11,
     shadowOffset: {
-      width: 10,
-      height: 10,
+      height: diameter * 0.05,
     },
-    shadowRadius: 10,
+    shadowRadius: diameter * 0.08,
   } : {};
 
   return {
@@ -23,7 +22,16 @@ function getStyle({ diameter, shadow }) {
 }
 
 const CircleImage = ({ source, ...props }) => (
-  <Image source={source} style={getStyle(props)} />
+  // Note: we set shadow props on a wrapper <View>
+  // rather than on the <Image> itself, because of this
+  // issue with Image automatically getting `overflow: 'hidden'`
+  // https://github.com/facebook/react-native/issues/449
+  <View style={[getStyle(props), props.style]} >
+    <Image
+      source={source}
+      style={getStyle(props)}
+    />
+  </View>
 );
 
 CircleImage.propTypes = {
@@ -32,10 +40,14 @@ CircleImage.propTypes = {
     uri: PropTypes.string.isRequired,
   }).isRequired,
   shadow: PropTypes.bool,
+
+  // eslint-disable-next-line react/no-typos
+  style: View.propTypes.style,
 };
 
 CircleImage.defaultProps = {
   shadow: false,
+  style: {},
 };
 
 export default CircleImage;
