@@ -7,6 +7,52 @@ Thanks for being a part of this! Here are a few things you should know before ge
 This project is guided by a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md).
 By participating in the project, you agree to abide by its terms.
 
+## Spec/Designs
+
+The full spec for the iteration of the app currently in development
+is available as a [Google doc].
+The visual designs for the app are available through [InVision] (you'll need
+to create an InVision account).
+
+[Google doc]: https://docs.google.com/document/d/19yWA-ZGdDPEbK9tJpZdazzoFRhkT7Ja2-zP1fBq5V2c/
+[InVision]: https://invis.io/EVE2P3L4R
+
+## What should I work on?
+
+It's up to you! Some ideas:
+
+### Pick up a quest
+Some tasks are already planned out and prioritized. They’ll appear in the
+**To Do** column on the [main project board]. You can also check the
+[active milestone] to see what things we're working on.
+
+If you find something in the [general backlog] (but not yet prioritized
+in the project board), that you'd really like to work on, that's great too!
+Whatever you pick up, just assign the issue to yourself and drop a note in
+`#react-native` on Slack.
+
+### Craft a quest
+Some items aren’t planned out in detail yet, but they have a starting point.
+They’ll appear as tasks on issues in the [epic board]. As you'll see when
+you create a [new issue], we generally follow a [Quests] model so that every
+piece of work contains enough motivation and context that anyone can pick it
+up and get going.
+
+[main project board]: https://github.com/theliturgists/app/projects/1
+[active milestone]: https://github.com/theliturgists/app/milestones
+[general backlog]: https://github.com/theliturgists/app/issues
+[new issue]: https://github.com/theliturgists/app/issues/new
+[epic board]: https://github.com/theliturgists/app/projects/2
+[Quests]: https://medium.com/@trek/source-quest-ff7d227d8fed
+
+### Review some code
+All pull requests require at least one approved review before they can be
+merged, so you can help a ton by reviewing your teammates' code. The [main
+project board] has a "Needs Review" column which lists PRs that are waiting
+for reviews. (Make sure you move your PR to this column when it's ready for
+review.)
+
+
 ## Pull Requests
 
 Every contribution should be done via pull request, so that your peers on the team have a chance
