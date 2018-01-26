@@ -5,17 +5,23 @@ import { View, Image } from 'react-native';
 
 function getStyle({ diameter, shadow }) {
   const shadowStyle = shadow ? {
+    // Note: these ratios have not been exhaustively tested.
+    // They matched the mockup approximately for one use case.
+
+    // These properties only apply on iOS
     shadowColor: '#000',
+    backgroundColor: '#000',
     shadowOpacity: 0.11,
     shadowOffset: {
       height: diameter * 0.05,
     },
     shadowRadius: diameter * 0.08,
+
+    // This property only applies on Android
+    elevation: diameter * 0.25,
   } : {};
 
   return {
-    width: diameter,
-    height: diameter,
     borderRadius: diameter / 2,
     ...shadowStyle,
   };
@@ -29,7 +35,11 @@ const CircleImage = ({ source, ...props }) => (
   <View style={[getStyle(props), props.style]} >
     <Image
       source={source}
-      style={getStyle(props)}
+      style={{
+        width: props.diameter,
+        height: props.diameter,
+        borderRadius: props.diameter / 2,
+      }}
     />
   </View>
 );
