@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D2D2D2',
     borderRadius: 8,
     paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingVertical: 3,
     alignSelf: 'flex-start',
   },
   text: {
