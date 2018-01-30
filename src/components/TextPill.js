@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,12 +21,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const TextPill = ({ style, children }) => (
-  <View style={[styles.container, style]}>
-    <Text style={styles.text}>
-      {children.toUpperCase()}
-    </Text>
-  </View>
+const TextPill = ({ style, children, onPress }) => (
+  <TouchableWithoutFeedback onPress={onPress}>
+    <View style={[styles.container, style]}>
+      <Text style={styles.text}>
+        {children.toUpperCase()}
+      </Text>
+    </View>
+  </TouchableWithoutFeedback>
 );
 
 TextPill.propTypes = {
@@ -29,10 +36,13 @@ TextPill.propTypes = {
 
   // eslint-disable-next-line react/no-typos
   style: View.propTypes.style,
+
+  onPress: PropTypes.func,
 };
 
 TextPill.defaultProps = {
   style: {},
+  onPress: () => {},
 };
 
 export default TextPill;
