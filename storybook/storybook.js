@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
+// import { AppRegistry } from 'react-native';
 import { getStorybookUI, configure } from '@storybook/react-native';
 
 import { loadStories } from './storyLoader';
@@ -21,5 +21,5 @@ class StorybookUIHMRRoot extends Component {
   }
 }
 
-AppRegistry.registerComponent('app', () => StorybookUIHMRRoot);
+// AppRegistry.registerComponent('app', () => StorybookUIHMRRoot);
 export default StorybookUIHMRRoot;
