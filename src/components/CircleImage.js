@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { View, Image } from 'react-native';
+
+import AppPropTypes from '../propTypes';
 
 function getStyle({ diameter, shadow }) {
   const shadowStyle = shadow ? {
@@ -46,9 +47,7 @@ const CircleImage = ({ source, ...props }) => (
 
 CircleImage.propTypes = {
   diameter: PropTypes.number.isRequired,
-  source: PropTypes.shape({
-    uri: PropTypes.string.isRequired,
-  }).isRequired,
+  source: AppPropTypes.imageSource.isRequired,
   shadow: PropTypes.bool,
 
   // eslint-disable-next-line react/no-typos
