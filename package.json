@@ -8,7 +8,8 @@
     "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
     "flow": "flow",
     "validateci": "./scripts/validate-ci-config",
-    "storybook": "storybook start -p 7007"
+    "storybook": "storybook start -p 7007",
+    "prestorybook": "rnstl"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -45,6 +46,7 @@
     "jest-junit": "^3.4.1",
     "pre-commit": "^1.2.2",
     "react-dom": "16.0.0-beta.5",
+    "react-native-storybook-loader": "^1.7.0",
     "react-test-renderer": "16.0.0-beta.5"
   },
   "jest": {
@@ -58,5 +60,12 @@
     "lint",
     "test",
     "validateci"
-  ]
+  ],
+  "config": {
+    "react-native-storybook-loader": {
+      "searchDir": ["./storybook/stories"],
+      "pattern": "**/*.stories.js",
+      "outputFile": "./storybook/storyLoader.js"
+    }
+  }
 }
