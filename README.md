@@ -83,4 +83,6 @@ $ open http://localhost:7007  # opens Storybook web UI
 This runs both the Storybook server and the Expo packaging server, using
 an `index.js` that registers the Storybook UI instead of the app as the root.
 To switch back to running the app, Ctrl-C the `yarn storybook` command, run `yarn start`
-again, and 'Reload JS' in the simulator. (You may have to reload a few times.)
+again, and 'Reload JS' in the simulator. You may have to reload a few times, or
+re-scan the QR code (on device), or re-initialize the simulator (using the Expo keyboard
+shortcut; e.g. `i` for iOS, `a` for Android).
