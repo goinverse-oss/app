@@ -54,3 +54,7 @@ buck-out/
 
 # Internal expo settings/state
 .expo
+
+
+# Visual Studio Code Files
+.vscode
