@@ -7,6 +7,7 @@
 function loadStories() {
   require('./stories/CircleImage.stories');
   require('./stories/InteractionsCounter.stories');
+  require('./stories/SeriesTile.stories');
   require('./stories/TagList.stories');
   require('./stories/TextPill.stories');
   
@@ -15,6 +16,7 @@ function loadStories() {
 const stories = [
   './stories/CircleImage.stories',
   './stories/InteractionsCounter.stories',
+  './stories/SeriesTile.stories',
   './stories/TagList.stories',
   './stories/TextPill.stories',
   
