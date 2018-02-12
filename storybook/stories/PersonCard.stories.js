@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { storiesOf } from '@storybook/react-native';
 
-import PersonCard from '../../src/components/PersonCard';
+import PersonList from '../../src/components/PersonList';
 
 const people = [
   {
@@ -25,6 +25,18 @@ const people = [
       uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6ba93ce4966b17e0a8f736/1517005123872/Friday_Web+%2818+of+140%29.jpg?format=750w',
     },
   },
+  {
+    name: 'Hillary McBride',
+    imageSource: {
+      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6badbac83025fc416fad0d/1517006272426/IMG_E9818.JPG?format=1000w',
+    },
+  },
+  {
+    name: 'William Matthews',
+    imageSource: {
+      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6bae760d9297f24bc5cdb7/1517006456578/IMG_5962.jpg?format=1000w',
+    },
+  },
 ];
 
 class PersonCards extends Component {
@@ -32,17 +44,6 @@ class PersonCards extends Component {
     this.setState({
       selectedPerson: person,
     });
-  }
-
-  getCardStyle(person) {
-    return {
-      marginHorizontal: 5,
-      backgroundColor: (
-        person.name === _.get(this.state, 'selectedPerson.name')
-          ? 'yellow'
-          : 'white'
-      ),
-    };
   }
 
   getSelectedPersonName() {
@@ -53,16 +54,10 @@ class PersonCards extends Component {
     return (
       <TouchableWithoutFeedback onPress={() => this.onPressPerson()}>
         <View style={{ paddingLeft: 10, height: '100%' }}>
-          <View style={{ flexDirection: 'row' }}>
-            {people.map(person => (
-              <PersonCard
-                key={person.name}
-                person={person}
-                onPress={() => this.onPressPerson(person)}
-                style={this.getCardStyle(person)}
-              />
-            ))}
-          </View>
+          <PersonList
+            people={people}
+            onPressPerson={person => this.onPressPerson(person)}
+          />
           <Text>{this.getSelectedPersonName()}</Text>
         </View>
       </TouchableWithoutFeedback>
@@ -70,5 +65,5 @@ class PersonCards extends Component {
   }
 }
 
-storiesOf('Person cards', module)
+storiesOf('Person list', module)
   .add('with people', () => <PersonCards />);

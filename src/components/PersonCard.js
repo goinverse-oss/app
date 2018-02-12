@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
+  ViewPropTypes,
   Text,
   StyleSheet,
   Platform,
@@ -11,12 +12,15 @@ import {
 import AppPropTypes from '../propTypes';
 import CircleImage from './CircleImage';
 
+const shadowRadius = 6;
+
 const styles = StyleSheet.create({
   // TODO: extract the common card styles somewhere shared.
   card: {
     width: 90,
     height: 134,
     borderRadius: 4,
+    marginBottom: shadowRadius,
     alignItems: 'center',
     ...Platform.select({
       ios: {
@@ -25,7 +29,7 @@ const styles = StyleSheet.create({
         shadowOffset: {
           height: 2,
         },
-        shadowRadius: 6,
+        shadowRadius,
       },
       android: {
         elevation: 3,
@@ -60,12 +64,12 @@ const PersonCard = ({ person, onPress, style }) => (
 PersonCard.propTypes = {
   person: AppPropTypes.person.isRequired,
   onPress: PropTypes.func,
-  style: PropTypes.shape({}),
+  style: ViewPropTypes.style,
 };
 
 PersonCard.defaultProps = {
   onPress: () => {},
-  style: {},
+  style: null,
 };
 
 export default PersonCard;
