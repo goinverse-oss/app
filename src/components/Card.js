@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Platform } from 'react-native';
+import {
+  View,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   // Tile wrapper base
@@ -21,20 +26,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const Card = ({ children, style }) => (
-  <View style={[styles.container, style]}>
-    {children}
-  </View>
+const Card = ({ children, style, onPress }) => (
+  <TouchableWithoutFeedback onPress={onPress}>
+    <View style={[styles.container, style]}>
+      {children}
+    </View>
+  </TouchableWithoutFeedback>
 );
 
 Card.propTypes = {
   children: PropTypes.node,
   style: View.propTypes.style,
+  onPress: PropTypes.func,
 };
 
 Card.defaultProps = {
   children: null,
   style: {},
+  onPress: () => {},
 };
 
 export default Card;

@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const ListCard = ({ children, style }) => (
-  <Card style={[styles.card, style]}>
+const ListCard = ({ children, style, ...props }) => (
+  <Card style={[styles.card, style]} {...props} >
     {children}
   </Card>
 );
