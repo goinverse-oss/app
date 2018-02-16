@@ -7,6 +7,7 @@
 function loadStories() {
   require('./stories/CircleImage.stories');
   require('./stories/InteractionsCounter.stories');
+  require('./stories/ListCard.stories');
   require('./stories/LiturgySeriesTile.stories');
   require('./stories/MeditationSeriesTile.stories');
   require('./stories/PersonCard.stories');
@@ -19,6 +20,7 @@ function loadStories() {
 const stories = [
   './stories/CircleImage.stories',
   './stories/InteractionsCounter.stories',
+  './stories/ListCard.stories',
   './stories/LiturgySeriesTile.stories',
   './stories/MeditationSeriesTile.stories',
   './stories/PersonCard.stories',
