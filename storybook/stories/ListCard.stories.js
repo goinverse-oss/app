@@ -7,6 +7,7 @@ import ListCard from '../../src/components/ListCard';
 import SquareImage from '../../src/components/SquareImage';
 import PlayableListCard from '../../src/components/PlayableListCard';
 import PodcastEpisodeListCard from '../../src/components/PodcastEpisodeListCard';
+import LiturgyItemListCard from '../../src/components/LiturgyItemListCard';
 
 const styles = StyleSheet.create({
   card: {
@@ -120,10 +121,39 @@ const podcasts = [
   },
 ];
 
+const gardenLiturgyImageUrl = 'https://f4.bcbits.com/img/a4076498522_16.jpg';
+
+const liturgies = [
+  {
+    imageUrl: gardenLiturgyImageUrl,
+    title: '1. Friday',
+    description: 'Amena Brown',
+    duration: moment.duration(1, 'minutes'),
+  },
+  {
+    imageUrl: gardenLiturgyImageUrl,
+    title: '2. Teresa',
+    description: 'Michael Gungor',
+    duration: moment.duration(4, 'minutes'),
+  },
+  {
+    imageUrl: gardenLiturgyImageUrl,
+    title: '3. Saturday',
+    description: 'Rachel Held Evans',
+    duration: moment.duration(4, 'minutes'),
+  },
+];
+
 storiesOf('List card', module)
   .add('Generic', () => <GenericListCards />)
   .add('Playable', () => <PlayableListCardStory />)
-  .add('Liturgies', () => {})
+  .add('Liturgies', () => (
+    <ScrollView>
+      {liturgies.map(liturgy => (
+        <LiturgyItemListCard key={liturgy.title} liturgyItem={liturgy} />
+      ))}
+    </ScrollView>
+  ))
   .add('Meditations', () => {})
   .add('Podcasts', () => (
     <ScrollView>
