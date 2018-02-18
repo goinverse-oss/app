@@ -12,19 +12,19 @@ const formatMeditationCount = (meditationCount) => {
   return `${meditationCount} ${meditationString}`;
 };
 
-const MeditationSeriesTile = ({ meditation, onPress }) => (
+const MeditationSeriesTile = ({ meditationCategory, onPress }) => (
   <SeriesTile
-    imageSource={meditation.imageSource}
-    title={meditation.title}
-    onPress={() => onPress(meditation)}
+    imageSource={meditationCategory.imageSource}
+    title={meditationCategory.title}
+    onPress={() => onPress(meditationCategory)}
     description={
-      formatMeditationCount(meditation.meditationCount)
+      formatMeditationCount(meditationCategory.meditationCount)
     }
   />
 );
 
 MeditationSeriesTile.propTypes = {
-  meditation: AppPropTypes.meditation.isRequired,
+  meditationCategory: AppPropTypes.meditationCategory.isRequired,
   onPress: PropTypes.func,
 };
 

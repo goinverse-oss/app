@@ -6,6 +6,7 @@ import moment from 'moment';
 import ListCard from '../../src/components/ListCard';
 import SquareImage from '../../src/components/SquareImage';
 import PlayableListCard from '../../src/components/PlayableListCard';
+import PodcastEpisodeListCard from '../../src/components/PodcastEpisodeListCard';
 
 const styles = StyleSheet.create({
   card: {
@@ -84,12 +85,53 @@ const PlayableListCardStory = props => (
   />
 );
 
+const liturgistsPodcastImageUrl = 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=750w';
+
+const podcasts = [
+  {
+    imageUrl: liturgistsPodcastImageUrl,
+    title: 'Enemies - Live from Los Angeles',
+    description: (
+      'This is a special live episode recorded at The Liturgists Gathering ' +
+      'in Los Angeles, CA on September 15, 2017.'
+    ),
+    duration: moment.duration(88, 'minutes'),
+    publishDate: moment('2017-09-15'),
+  },
+  {
+    imageUrl: liturgistsPodcastImageUrl,
+    title: 'Names',
+    description: (
+      'An exploration of what names are, how they shape us, and what happens ' +
+      'when we change more than our label can accommodate.'
+    ),
+    duration: moment.duration(70, 'minutes'),
+    publishDate: moment('2017-08-14'),
+  },
+  {
+    imageUrl: liturgistsPodcastImageUrl,
+    title: 'Rob Bell and the Bible',
+    description: (
+      'Science Mike and Michael Gungor talk to Rob Bell about his latest book, ' +
+      'What is the Bible.'
+    ),
+    duration: moment.duration(77, 'minutes'),
+    publishDate: moment('2017-07-10'),
+  },
+];
+
 storiesOf('List card', module)
   .add('Generic', () => <GenericListCards />)
   .add('Playable', () => <PlayableListCardStory />)
   .add('Liturgies', () => {})
   .add('Meditations', () => {})
-  .add('Podcasts', () => {})
+  .add('Podcasts', () => (
+    <ScrollView>
+      {podcasts.map(podcast => (
+        <PodcastEpisodeListCard key={podcast.title} podcastEpisode={podcast} />
+      ))}
+    </ScrollView>
+  ))
   .add('Search results', () => (
     <ScrollView>
       <PlayableListCardStory isSearchResult />

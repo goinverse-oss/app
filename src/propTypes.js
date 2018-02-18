@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import momentPropTypes from 'react-moment-proptypes';
 
 const imageSource = PropTypes.shape({
   uri: PropTypes.string.isRequired,
@@ -17,11 +17,11 @@ export default {
   podcast: PropTypes.shape({
     title: PropTypes.string.isRequired,
     episodeCount: PropTypes.number,
-    lastUpdated: PropTypes.instanceOf(moment).isRequired,
+    lastUpdated: momentPropTypes.momentObj.isRequired,
     imageSource: imageSource.isRequired,
   }),
 
-  meditation: PropTypes.shape({
+  meditationCategory: PropTypes.shape({
     title: PropTypes.string.isRequired,
     meditationCount: PropTypes.number,
     imageSource: imageSource.isRequired,
@@ -30,8 +30,32 @@ export default {
   liturgy: PropTypes.shape({
     title: PropTypes.string.isRequired,
     liturgyLength: PropTypes.number,
-    publishedDate: PropTypes.instanceOf(moment).isRequired,
+    publishedDate: momentPropTypes.momentObj.isRequired,
     imageSource: imageSource.isRequired,
   }),
 
+  podcastEpisode: PropTypes.shape({
+    // TODO: expand as we use more of it
+    imageUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    duration: momentPropTypes.momentDurationObj,
+    publishDate: momentPropTypes.momentObj,
+  }),
+  liturgyItem: PropTypes.shape({
+    // TODO: expand as we use more of it
+    imageUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    duration: momentPropTypes.momentDurationObj,
+    publishDate: momentPropTypes.momentObj,
+  }),
+  meditation: PropTypes.shape({
+    // TODO: expand as we use more of it
+    imageUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    duration: momentPropTypes.momentDurationObj,
+    publishDate: momentPropTypes.momentObj,
+  }),
 };

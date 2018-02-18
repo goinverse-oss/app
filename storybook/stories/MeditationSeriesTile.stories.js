@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import MeditationSeriesList from '../../src/components/MeditationSeriesList';
 
-const meditations = [
+const meditationCategories = [
   {
     title: 'All Meditations',
     meditationCount: 66,
@@ -51,30 +51,30 @@ const meditations = [
 ];
 
 class MeditationExampleSeriesList extends Component {
-  onPressMeditation(meditation) {
+  onPressMeditationCategory(meditationCategory) {
     this.setState({
-      selectedMeditation: meditation,
+      selectedMeditationCategory: meditationCategory,
     });
   }
 
-  getSelectedMeditation() {
-    return _.get(this.state, 'selectedMeditation.title', 'Select a tile');
+  getSelectedMeditationCategory() {
+    return _.get(this.state, 'selectedMeditationCategory.title', 'Select a tile');
   }
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => this.onPressMeditation()}>
+      <TouchableWithoutFeedback onPress={() => this.onPressMeditationCategory()}>
         <ScrollView>
           <MeditationSeriesList
-            meditations={meditations}
-            onPressMeditation={meditation => this.onPressMeditation(meditation)}
+            meditationCategories={meditationCategories}
+            onPressMeditationCategory={mc => this.onPressMeditationCategory(mc)}
           />
-          <Text>{this.getSelectedMeditation()}</Text>
+          <Text>{this.getSelectedMeditationCategory()}</Text>
         </ScrollView>
       </TouchableWithoutFeedback>
     );
   }
 }
 
-storiesOf('Series tiles', module).add('Meditations', () => <MeditationExampleSeriesList />);
+storiesOf('Series tiles', module).add('Meditation Categories', () => <MeditationExampleSeriesList />);
 

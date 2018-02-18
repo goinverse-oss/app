@@ -14,28 +14,28 @@ const styles = StyleSheet.create({
   },
 });
 
-const MeditationSeriesList = ({ meditations, onPressMeditation }) =>
+const MeditationSeriesList = ({ meditationCategories, onPressMeditationCategory }) =>
   (
     <ScrollView>
       <View style={styles.list}>
-        {meditations.map(meditation => (
+        {meditationCategories.map(meditationCategory => (
           <MeditationSeriesTile
-            key={meditation.title}
-            meditation={meditation}
-            onPress={() => onPressMeditation(meditation)}
+            key={meditationCategory.title}
+            meditationCategory={meditationCategory}
+            onPress={() => onPressMeditationCategory(meditationCategory)}
           />
         ))}
       </View>
     </ScrollView>
   );
 MeditationSeriesList.propTypes = {
-  meditations: PropTypes.arrayOf(AppPropTypes.meditation),
-  onPressMeditation: PropTypes.func,
+  meditationCategories: PropTypes.arrayOf(AppPropTypes.meditationCategory),
+  onPressMeditationCategory: PropTypes.func,
 };
 
 MeditationSeriesList.defaultProps = {
-  meditations: [],
-  onPressMeditation: () => {},
+  meditationCategories: [],
+  onPressMeditationCategory: () => {},
 };
 
 export default MeditationSeriesList;
