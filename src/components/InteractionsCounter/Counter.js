@@ -4,7 +4,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import _ from 'lodash';
 import numeral from 'numeral';
 
-
 function getLabelNode(label) {
   if (_.isString(label)) {
     return <Text>{label}</Text>;
@@ -34,11 +33,9 @@ const Counter = ({ label, count, style }) => {
 };
 
 Counter.propTypes = {
-  label: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.node,
-  ]),
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   count: PropTypes.number,
+  // eslint-disable-next-line react/no-typos
   style: View.propTypes.style,
 };
 
