@@ -8,6 +8,7 @@ import Icon from '@expo/vector-icons/Foundation';
 import ListCard from './ListCard';
 import SquareImage from './SquareImage';
 import InteractionsCounter from './InteractionsCounter';
+import TextPill from './TextPill';
 
 import AppPropTypes from '../propTypes';
 
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     color: '#797979',
-    height: '45%',
+    minHeight: '45%',
     marginVertical: '2%',
     flexWrap: 'wrap',
     flexDirection: 'column',
@@ -62,6 +63,13 @@ const styles = StyleSheet.create({
   times: {
     fontSize: 12,
     color: '#797979',
+  },
+  searchHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  mediaType: {
+    marginRight: '3%',
   },
 });
 
@@ -85,6 +93,8 @@ const PlayableListCard = ({
   duration,
   publishDate,
   formatDuration,
+  mediaType,
+  isSearchResult,
   ...props
 }) => (
   <ListCard style={[styles.card, style]} {...props}>
@@ -97,16 +107,34 @@ const PlayableListCard = ({
       <View style={styles.playCircle} />
     </View>
     <View style={styles.metadataContainer}>
+      {isSearchResult ? (
+        <View style={styles.searchHeader}>
+          <TextPill style={styles.mediaType}>{mediaType}</TextPill>
+          <Text style={styles.times}>
+            {formatFooter({ duration, publishDate, formatDuration })}
+          </Text>
+        </View>
+      ) : null}
       <View style={styles.textContainer}>
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
-        <Text style={styles.description} numberOfLines={2}>{description}</Text>
-      </View>
-      <View style={styles.footer}>
-        <Text style={styles.times}>
-          {formatFooter({ duration, publishDate, formatDuration })}
+        <Text
+          style={[
+            styles.description,
+            (isSearchResult ? { minHeight: 0 } : {}),
+          ]}
+          numberOfLines={2}
+        >
+          {description}
         </Text>
-        <InteractionsCounter />
       </View>
+      {isSearchResult ? null : (
+        <View style={styles.footer}>
+          <Text style={styles.times}>
+            {formatFooter({ duration, publishDate, formatDuration })}
+          </Text>
+          <InteractionsCounter />
+        </View>
+      )}
     </View>
   </ListCard>
 );
@@ -119,6 +147,8 @@ PlayableListCard.propTypes = {
   duration: momentPropTypes.momentDurationObj,
   publishDate: momentPropTypes.momentObj,
   formatDuration: PropTypes.func,
+  mediaType: PropTypes.string,
+  isSearchResult: PropTypes.bool,
 };
 
 PlayableListCard.defaultProps = {
@@ -126,6 +156,8 @@ PlayableListCard.defaultProps = {
   duration: null,
   publishDate: null,
   formatDuration: m => `${m.asMinutes()} minutes`,
+  mediaType: 'media',
+  isSearchResult: false,
 };
 
 export default PlayableListCard;
