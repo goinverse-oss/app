@@ -203,6 +203,8 @@ storiesOf('List card', module)
   ))
   .add('Search results', () => (
     <ScrollView>
-      <PlayableListCardStory isSearchResult />
+      <LiturgyItemListCard liturgyItem={liturgies[0]} isSearchResult />
+      <PodcastEpisodeListCard podcastEpisode={podcasts[0]} isSearchResult />
+      <MeditationListCard meditation={meditations[0]} isSearchResult />
     </ScrollView>
   ));
