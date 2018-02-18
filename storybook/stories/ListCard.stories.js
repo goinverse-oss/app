@@ -8,6 +8,7 @@ import SquareImage from '../../src/components/SquareImage';
 import PlayableListCard from '../../src/components/PlayableListCard';
 import PodcastEpisodeListCard from '../../src/components/PodcastEpisodeListCard';
 import LiturgyItemListCard from '../../src/components/LiturgyItemListCard';
+import MeditationListCard from '../../src/components/MeditationListCard';
 
 const styles = StyleSheet.create({
   card: {
@@ -144,6 +145,38 @@ const liturgies = [
   },
 ];
 
+const meditations = [
+  {
+    imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/WkED08RyoZXTLW3fAdor61q_g4p_3xkoKYHM2_FX4mG5VDmm9EHq3tMzZfXufJLE.jpg?token-time=1520121600&token-hash=5q0qh-mUJDWF7a9CaCq3V8PbPb-qRai-O0iUVYIBa7w%3D',
+    title: 'Letting Go',
+    description: 'A meditation by Hillary McBride.',
+    duration: moment.duration(12, 'minutes'),
+    publishDate: moment('2018-02-16T19:38:00-05:00'),
+  },
+  {
+    imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/6dxl-4tk3GKZ21CBz9pWlE0B81vVMFzRUZD1gLziorG8EpQhqfCbOdd-gp4FAxuu.jpeg?token-time=1520121600&token-hash=dDNuIFl4rHNvvT9T01ZExdteHSQhpCtnFo-nJt7S1zI%3D',
+    title: 'Who are you',
+    description: (
+      'A contemplative deconstruction of who you think you are. ' +
+      'Every musical sound you hear in this meditation is from a single cymbal, ' +
+      'representing the underlying unity of all.'
+    ),
+    duration: moment.duration(9, 'minutes'),
+    publishDate: moment('2018-02-01T19:37:00-05:00'),
+  },
+  {
+    imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/J_mDFznRg3WJmwlz-co6c6NqQW0EUuYQOXOgdDMn8dFos2bjJ9AVAW8l-9UxLEUD.png?token-time=1520121600&token-hash=GAwP4Q6h56q15DS12uy406y8V87izp5lzs0XMPlSEsI%3D',
+    title: 'Loving Kindness Meditation',
+    description: (
+      'An open heart is a healing heart. This is a meditation that will ' +
+      'become more powerful and helpful with repetition.'
+    ),
+    duration: moment.duration(22, 'minutes'),
+    publishDate: moment('2018-01-22T16:45:00-05:00'),
+  },
+];
+
+
 storiesOf('List card', module)
   .add('Generic', () => <GenericListCards />)
   .add('Playable', () => <PlayableListCardStory />)
@@ -154,7 +187,13 @@ storiesOf('List card', module)
       ))}
     </ScrollView>
   ))
-  .add('Meditations', () => {})
+  .add('Meditations', () => (
+    <ScrollView>
+      {meditations.map(meditation => (
+        <MeditationListCard key={meditation.title} meditation={meditation} />
+      ))}
+    </ScrollView>
+  ))
   .add('Podcasts', () => (
     <ScrollView>
       {podcasts.map(podcast => (
