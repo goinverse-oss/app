@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
-import { colors, normalize } from 'react-native-elements';
+import { normalize } from 'react-native-elements';
 import fonts from 'react-native-elements/src/config/fonts';
+import colors from '../styles/colors';
 
 
 const styles = StyleSheet.create({
@@ -58,16 +59,24 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  description: {
+    fontSize: normalize(10),
+    fontWeight: 'normal',
+    color: colors.secondaryText,
+    lineHeight: 16,
+  },
 });
 
-const SeriesTile = props => (
-  <TouchableWithoutFeedback onPress={props.onPress}>
+const SeriesTile = ({
+  onPress, imageSource, title, description,
+}) => (
+  <TouchableWithoutFeedback onPress={onPress}>
     <View style={styles.container}>
-      <Image source={props.imageSource} style={styles.cardImage} />
+      <Image source={imageSource} style={styles.cardImage} />
       <View>
-        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
       </View>
-      {props.description}
     </View>
   </TouchableWithoutFeedback>
 );
@@ -77,8 +86,7 @@ SeriesTile.propTypes = {
     uri: PropTypes.string.isRequired,
   }).isRequired,
   title: PropTypes.string.isRequired,
-  // triggerNavigation: PropTypes.func.isRequired,
-  description: PropTypes.element.isRequired,
+  description: PropTypes.string.isRequired,
   onPress: PropTypes.func,
 };
 

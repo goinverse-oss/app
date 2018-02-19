@@ -7,8 +7,10 @@
 function loadStories() {
   require('./stories/CircleImage.stories');
   require('./stories/InteractionsCounter.stories');
+  require('./stories/LiturgySeriesTile.stories');
+  require('./stories/MeditationSeriesTile.stories');
   require('./stories/PersonCard.stories');
-  require('./stories/SeriesTile.stories');
+  require('./stories/PodcastSeriesTile.stories');
   require('./stories/TagList.stories');
   require('./stories/TextPill.stories');
   
@@ -17,8 +19,10 @@ function loadStories() {
 const stories = [
   './stories/CircleImage.stories',
   './stories/InteractionsCounter.stories',
+  './stories/LiturgySeriesTile.stories',
+  './stories/MeditationSeriesTile.stories',
   './stories/PersonCard.stories',
-  './stories/SeriesTile.stories',
+  './stories/PodcastSeriesTile.stories',
   './stories/TagList.stories',
   './stories/TextPill.stories',
   
