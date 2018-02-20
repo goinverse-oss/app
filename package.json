@@ -9,7 +9,8 @@
     "flow": "flow",
     "validateci": "./scripts/validate-ci-config",
     "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 yarn start'",
-    "prestorybook": "rnstl"
+    "prestorybook": "rnstl",
+    "postinstall": "rndebugger-open"
   },
   "dependencies": {
     "@expo/vector-icons": "^6.2.2",
@@ -46,12 +47,13 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.6.1",
+    "eslint-plugin-react": "brettdh/eslint-plugin-react#no-typos-react-import",
     "flow-bin": "0.53.0",
     "jest": "21.2.1",
     "jest-junit": "^3.4.1",
     "pre-commit": "^1.2.2",
     "react-dom": "16.0.0-beta.5",
+    "react-native-debugger-open": "^0.3.15",
     "react-native-scripts": "^1.11.1",
     "react-native-storybook-loader": "^1.7.0",
     "react-test-renderer": "16.0.0-beta.5"
