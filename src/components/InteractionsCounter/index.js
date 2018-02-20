@@ -41,14 +41,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const InteractionsCounter = ({ likes, comments, ...props }) => (
-  <View style={styles.container}>
+const InteractionsCounter = ({
+  style, likes, comments, ...props
+}) => (
+  <View style={[styles.container, style]}>
     <Counter label={<LikeIcon {...props} />} count={likes} />
     <Counter style={styles.commentsCounter} label={<CommentIcon />} count={comments} />
   </View>
 );
 
 InteractionsCounter.propTypes = {
+  style: View.propTypes.style,
+
   // whether the active user has liked the thing
   liked: PropTypes.bool,
 
@@ -68,6 +72,7 @@ InteractionsCounter.propTypes = {
 };
 
 InteractionsCounter.defaultProps = {
+  style: {},
   liked: false,
   likes: 0,
   comments: 0,

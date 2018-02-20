@@ -6,7 +6,6 @@ import AppPropTypes from '../propTypes';
 
 const styles = {
   image: {
-    flex: 1,
     aspectRatio: 1,
     resizeMode: 'cover',
     borderRadius: 4,

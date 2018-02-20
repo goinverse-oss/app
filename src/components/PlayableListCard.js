@@ -9,6 +9,7 @@ import ListCard from './ListCard';
 import SquareImage from './SquareImage';
 import InteractionsCounter from './InteractionsCounter';
 import TextPill from './TextPill';
+import { formatMinutesString } from './utils';
 
 import AppPropTypes from '../propTypes';
 
@@ -155,7 +156,7 @@ PlayableListCard.defaultProps = {
   style: {},
   duration: null,
   publishDate: null,
-  formatDuration: m => `${m.asMinutes()} minutes`,
+  formatDuration: formatMinutesString,
   mediaType: 'media',
   isSearchResult: false,
 };
