@@ -11,6 +11,7 @@ function loadStories() {
   require('./stories/LiturgySeriesTile.stories');
   require('./stories/MeditationSeriesTile.stories');
   require('./stories/PersonCard.stories');
+  require('./stories/PlayableItemHeader.stories');
   require('./stories/PodcastSeriesTile.stories');
   require('./stories/TagList.stories');
   require('./stories/TextPill.stories');
@@ -24,6 +25,7 @@ const stories = [
   './stories/LiturgySeriesTile.stories',
   './stories/MeditationSeriesTile.stories',
   './stories/PersonCard.stories',
+  './stories/PlayableItemHeader.stories',
   './stories/PodcastSeriesTile.stories',
   './stories/TagList.stories',
   './stories/TextPill.stories',
