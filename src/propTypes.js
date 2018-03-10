@@ -70,4 +70,13 @@ export default {
     // e.g. 'America/Detroit', 'Europe/Paris'
     timezone: PropTypes.oneOf(moment.tz.names()).isRequired,
   }),
+  user: PropTypes.shape({
+    // TODO: expand as we use more of it
+    thumbUrl: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+  }),
+  comment: PropTypes.shape({
+    content: PropTypes.string.isRequired,
+    createdAt: momentPropTypes.momentObj.isRequired,
+  }),
 };
