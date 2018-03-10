@@ -9,6 +9,7 @@ import PlayableListCard from '../../src/components/PlayableListCard';
 import PodcastEpisodeListCard from '../../src/components/PodcastEpisodeListCard';
 import LiturgyItemListCard from '../../src/components/LiturgyItemListCard';
 import MeditationListCard from '../../src/components/MeditationListCard';
+import EventListCard from '../../src/components/EventListCard';
 
 const styles = StyleSheet.create({
   card: {
@@ -176,6 +177,43 @@ const meditations = [
   },
 ];
 
+const events = [
+  {
+    title: 'The Liturgists Gathering',
+    start: moment('2017-10-27'),
+    end: moment('2017-10-28'),
+    location: 'Seattle, WA',
+    timezone: 'America/Los_Angeles',
+    description: (
+      'A place where the unlikely gather around a table and find a place to belong. ' +
+      'A safe place to have honest discussions about doubts, hopes, fears... and faith.'
+    ),
+  },
+  {
+    title: 'Ripple Effect Conference',
+    start: moment('2017-11-25'),
+    location: 'Lawrence, MA',
+    timezone: 'America/New_York',
+    description: (
+      'Ripple Effect is designed to provide resources that will inspire and ' +
+      'equip you and your leaders to live more fully into the mission of the ' +
+      'church. The planning team is at work now to provide a high-quality event ' +
+      'that includes...'
+    ),
+  },
+  {
+    title: 'Ask Science Mike LIVE',
+    start: moment('2018-02-07T18:00:00-08:00'),
+    location: 'Orange, CA',
+    timezone: 'America/Los_Angeles',
+    description: (
+      'Live at Chapman University, Science Mike will be taking questions and ' +
+      'giving answers right then and there. Ask Science Mike LIVE events are ' +
+      'always a lot of fun and...'
+    ),
+  },
+];
+
 
 storiesOf('List card', module)
   .add('Generic', () => <GenericListCards />)
@@ -201,10 +239,18 @@ storiesOf('List card', module)
       ))}
     </ScrollView>
   ))
+  .add('Events', () => (
+    <ScrollView>
+      {events.map(event => (
+        <EventListCard key={`${event.title}-${event.start}`} event={event} />
+      ))}
+    </ScrollView>
+  ))
   .add('Search results', () => (
     <ScrollView>
       <LiturgyItemListCard liturgyItem={liturgies[0]} isSearchResult />
       <PodcastEpisodeListCard podcastEpisode={podcasts[0]} isSearchResult />
       <MeditationListCard meditation={meditations[0]} isSearchResult />
+      <EventListCard event={events[0]} isSearchResult />
     </ScrollView>
   ));

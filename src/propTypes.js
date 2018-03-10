@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
+import moment from 'moment-timezone';
 
 const imageSource = PropTypes.shape({
   uri: PropTypes.string.isRequired,
@@ -57,5 +58,16 @@ export default {
     description: PropTypes.string.isRequired,
     duration: momentPropTypes.momentDurationObj,
     publishDate: momentPropTypes.momentObj,
+  }),
+  event: PropTypes.shape({
+    // TODO: expand as we use more of it
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    start: momentPropTypes.momentObj.isRequired,
+    end: momentPropTypes.momentObj,
+
+    // e.g. 'America/Detroit', 'Europe/Paris'
+    timezone: PropTypes.oneOf(moment.tz.names()).isRequired,
   }),
 };
