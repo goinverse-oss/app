@@ -5,19 +5,29 @@ import PropTypes from 'prop-types';
 
 import { BackHandler } from 'react-native';
 import { connect } from 'react-redux';
-import { TabNavigator, addNavigationHelpers, NavigationActions } from 'react-navigation';
+import { SwitchNavigator, addNavigationHelpers, NavigationActions } from 'react-navigation';
+import {
+  createReactNavigationReduxMiddleware,
+  createReduxBoundAddListener,
+} from 'react-navigation-redux-helpers';
 
 import LoginScreen from '../screens/LoginScreen';
 import MainNavigator from './MainNavigator';
 
-export const RawNavigator = TabNavigator({
+export const RawNavigator = SwitchNavigator({
   Login: { screen: LoginScreen },
   Main: { screen: MainNavigator },
-}, {
-  navigationOptions: {
-    tabBarVisible: false,
-  },
 });
+
+// react-navigation stuff
+// Note: createReactNavigationReduxMiddleware must be run before
+// createReduxBoundAddListener, which is why we create the middleware
+// here instead of in store.js
+export const navMiddleware = createReactNavigationReduxMiddleware(
+  'root',
+  state => state.nav,
+);
+const addListener = createReduxBoundAddListener('root');
 
 /**
  * Root navigator for the app.
@@ -49,6 +59,7 @@ class AppNavigator extends Component {
     const navigation = addNavigationHelpers({
       dispatch,
       state: nav,
+      addListener,
     });
 
     return <RawNavigator navigation={navigation} />;
