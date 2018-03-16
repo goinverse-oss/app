@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { ViewPropTypes, Text, StyleSheet, Platform } from 'react-native';
 import Icon from '@expo/vector-icons/Foundation';
 import { normalize } from 'react-native-elements';
 import fonts from 'react-native-elements/src/config/fonts';
@@ -40,7 +40,7 @@ const PlayButton = ({ text, style, ...props }) => (
 
 PlayButton.propTypes = {
   text: PropTypes.string,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   // passthrough props:
   // - onPress
 };

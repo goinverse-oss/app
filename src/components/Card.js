@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
+  ViewPropTypes,
   TouchableWithoutFeedback,
   StyleSheet,
   Platform,
@@ -36,7 +37,7 @@ const Card = ({ children, style, onPress }) => (
 
 Card.propTypes = {
   children: PropTypes.node,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   onPress: PropTypes.func,
 };
 

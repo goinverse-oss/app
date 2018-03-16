@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  View,
+  ViewPropTypes,
   StyleSheet,
 } from 'react-native';
 
@@ -27,7 +27,7 @@ const Button = ({ children, style, onPress }) => (
 
 Button.propTypes = {
   children: PropTypes.node,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   onPress: PropTypes.func,
 };
 

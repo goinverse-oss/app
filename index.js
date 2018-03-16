@@ -1,4 +1,5 @@
-import { KeepAwake, registerRootComponent } from 'expo';
+import { Constants, KeepAwake, registerRootComponent } from 'expo';
+import _ from 'lodash';
 import Root from './src/Root';
 import storybook from './storybook';
 
@@ -7,7 +8,16 @@ if (__DEV__) {
   KeepAwake.activate();
 }
 
-if (process.env.REACT_NATIVE_USE_STORYBOOK) {
+function shouldUseStorybook() {
+  if (process.env.REACT_NATIVE_USE_STORYBOOK) {
+    return true;
+  }
+
+  const releaseChannel = _.get(Constants, 'manifest.releaseChannel', 'dev');
+  return releaseChannel.indexOf('storybook') !== -1;
+}
+
+if (shouldUseStorybook()) {
   registerRootComponent(storybook);
 } else {
   registerRootComponent(Root);

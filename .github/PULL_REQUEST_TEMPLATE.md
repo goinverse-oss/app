@@ -25,11 +25,16 @@
 <!--- Include details of your testing environment, tests ran to see how -->
 <!--- your change affects other areas of the code, etc. -->
 
+<!--
 ## Screenshots (if appropriate):
-<!--- Showing off your awesome work is encouraged! -->
-<!--- You could also consider a quick demo via animated GIF, -->
-<!--- e.g. using https://giphy.com/apps/giphycapture -->
-<!--- Alternatively, a picture of a cute animal is always nice. -->
+Showing off your awesome work is encouraged!
+You could also consider a quick demo via animated GIF,
+e.g. using https://giphy.com/apps/giphycapture
+Alternatively, a picture of a cute animal is always nice.
+
+Note: CI will automatically publish to Expo and post a comment
+with a QR code, so manual screenshots might not be necessary.
+ -->
 
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ViewPropTypes, Text, StyleSheet } from 'react-native';
 import momentPropTypes from 'react-moment-proptypes';
 import Icon from '@expo/vector-icons/Foundation';
 
@@ -142,7 +142,7 @@ const PlayableListCard = ({
 
 PlayableListCard.propTypes = {
   coverImageSource: AppPropTypes.imageSource.isRequired,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   duration: momentPropTypes.momentDurationObj,

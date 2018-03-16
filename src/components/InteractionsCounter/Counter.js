@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ViewPropTypes, Text, StyleSheet } from 'react-native';
 import _ from 'lodash';
 import numeral from 'numeral';
 
@@ -36,7 +36,7 @@ Counter.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   count: PropTypes.number,
   // eslint-disable-next-line react/no-typos
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
 };
 
 Counter.defaultProps = {

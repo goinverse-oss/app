@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ViewPropTypes, Text, StyleSheet } from 'react-native';
 
 import CircleImage from './CircleImage';
 import ListCard from './ListCard';
@@ -64,7 +64,7 @@ const CommentListCard = ({
 );
 
 CommentListCard.propTypes = {
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   comment: appPropTypes.comment.isRequired,
   isExpanded: PropTypes.bool,
 };

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   TouchableWithoutFeedback,
   View,
+  ViewPropTypes,
   Text,
   StyleSheet,
 } from 'react-native';
@@ -34,7 +35,7 @@ TextPill.propTypes = {
   children: PropTypes.string.isRequired,
 
   // eslint-disable-next-line react/no-typos
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
 
   onPress: PropTypes.func,
 };
