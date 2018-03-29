@@ -1,13 +1,20 @@
 import React from 'react';
 import PropType from 'prop-types';
 import _ from 'lodash';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
-import { getCommonNavigationOptions } from '../navigation/common';
 import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
-import styles from '../styles';
+import appStyles from '../styles';
+
+const styles = StyleSheet.create({
+  closeIcon: {
+    fontSize: 24,
+    paddingHorizontal: 10,
+  },
+});
 
 function getTitle(isPatron) {
   return `${isPatron ? 'Disable' : 'Enable'} Patreon`;
@@ -66,7 +73,7 @@ PatreonError.defaultProps = {
 };
 
 const PatreonScreen = props => (
-  <View style={styles.container}>
+  <View style={appStyles.container}>
     <Text>
       Placeholder Patreon screen
     </Text>
@@ -84,7 +91,13 @@ PatreonScreen.defaultProps = {
 };
 
 PatreonScreen.navigationOptions = ({ navigation }) => ({
-  ...getCommonNavigationOptions(navigation),
+  headerLeft: (
+    <Icon
+      name="close"
+      style={styles.closeIcon}
+      onPress={() => navigation.goBack(null)}
+    />
+  ),
   title: 'Manage Patreon',
 });
 

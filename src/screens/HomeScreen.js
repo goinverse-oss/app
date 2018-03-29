@@ -16,8 +16,8 @@ const HomeScreen = () => (
   </View>
 );
 
-HomeScreen.navigationOptions = ({ navigation }) => ({
-  ...getCommonNavigationOptions(navigation),
+HomeScreen.navigationOptions = ({ screenProps }) => ({
+  ...getCommonNavigationOptions(screenProps.drawer),
   title: 'Home',
 });
 

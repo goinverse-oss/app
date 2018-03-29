@@ -36,8 +36,8 @@ function mapStateToProps(state) {
   };
 }
 
-MeditationsScreen.navigationOptions = ({ navigation }) => ({
-  ...getCommonNavigationOptions(navigation),
+MeditationsScreen.navigationOptions = ({ screenProps }) => ({
+  ...getCommonNavigationOptions(screenProps.drawer),
   title: 'Meditations',
 });
 

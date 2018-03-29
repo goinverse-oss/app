@@ -9,6 +9,10 @@ const imageSource = PropTypes.shape({
 export default {
   imageSource,
 
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }),
+
   person: PropTypes.shape({
     // TODO: expand as we use more of it
     name: PropTypes.string.isRequired,
