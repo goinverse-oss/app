@@ -2,10 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from '@expo/vector-icons/Entypo';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import styles from '../styles';
+
+const PodcastsIcon = ({ tintColor }) => (
+  <Icon
+    name="rss"
+    style={{
+      color: tintColor,
+      fontSize: 32,
+    }}
+  />
+);
+
+PodcastsIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
 
 /**
  * List of available podcasts.
@@ -33,6 +48,7 @@ PodcastsScreen.propTypes = {
 PodcastsScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
   title: 'Podcasts',
+  tabBarIcon: PodcastsIcon,
 });
 
 function mapStateToProps(state) {

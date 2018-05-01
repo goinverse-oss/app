@@ -2,11 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
+import Icon from '@expo/vector-icons/Ionicons';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import styles from '../styles';
 
+const MeditationsIcon = ({ tintColor }) => (
+  <Icon
+    name="md-sunny"
+    style={{
+      color: tintColor,
+      fontSize: 24,
+    }}
+  />
+);
+
+MeditationsIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
 /**
  * List of available meditations, organized by category.
  */
@@ -39,6 +53,7 @@ function mapStateToProps(state) {
 MeditationsScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
   title: 'Meditations',
+  tabBarIcon: MeditationsIcon,
 });
 
 export default connect(mapStateToProps)(MeditationsScreen);
