@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image } from 'react-native';
+import { ViewPropTypes, Image } from 'react-native';
 
 import AppPropTypes from '../propTypes';
 
@@ -26,7 +26,7 @@ const SquareImage = ({ source, width, style }) => (
 SquareImage.propTypes = {
   width: PropTypes.number.isRequired,
   source: AppPropTypes.imageSource.isRequired,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
 };
 
 SquareImage.defaultProps = {

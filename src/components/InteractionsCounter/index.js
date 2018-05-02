@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, ViewPropTypes, TouchableWithoutFeedback } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome';
 
 import Counter from './Counter';
@@ -51,7 +51,7 @@ const InteractionsCounter = ({
 );
 
 InteractionsCounter.propTypes = {
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
 
   // whether the active user has liked the thing
   liked: PropTypes.bool,

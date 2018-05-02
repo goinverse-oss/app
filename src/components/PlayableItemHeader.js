@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Dimensions, View, Text, StyleSheet } from 'react-native';
+import { ViewPropTypes, Dimensions, View, Text, StyleSheet } from 'react-native';
 import { normalize } from 'react-native-elements';
 import momentPropTypes from 'react-moment-proptypes';
 
@@ -87,7 +87,7 @@ const PlayableItemHeader = ({
 
 PlayableItemHeader.propTypes = {
   coverImageSource: AppPropTypes.imageSource.isRequired,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   title: PropTypes.string.isRequired,
   duration: momentPropTypes.momentDurationObj,
   publishDate: momentPropTypes.momentObj,

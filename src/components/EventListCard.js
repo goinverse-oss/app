@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ViewPropTypes, Text, StyleSheet } from 'react-native';
 
 import ListCard from './ListCard';
 import InteractionsCounter from './InteractionsCounter';
@@ -101,7 +101,7 @@ const EventListCard = ({
 );
 
 EventListCard.propTypes = {
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   event: appPropTypes.event.isRequired,
   isSearchResult: PropTypes.bool,
 };

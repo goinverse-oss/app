@@ -48,6 +48,32 @@ jobs:
       - store_test_results:
           path: ~/reports
 
+  deploy-app:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: js-deps-{{ checksum "yarn.lock" }}
+      - run: yarn ci:deploy
+
+  deploy-storybook:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: js-deps-{{ checksum "yarn.lock" }}
+      - run: yarn ci:deploy storybook
+
+  report-deploy-to-pr:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: js-deps-{{ checksum "yarn.lock" }}
+      - run:
+          name: Comment on PR with Expo QR code
+          command: yarn ci:post-expo-comment
+
 workflows:
   version: 2
   main:
@@ -59,3 +85,27 @@ workflows:
       - unit_tests:
           requires:
             - install_dependencies
+      - deploy-app:
+          context: global
+          requires:
+            - install_dependencies
+            - unit_tests
+          filters:
+            branches:
+              ignore: master
+      - deploy-storybook:
+          context: global
+          requires:
+            - install_dependencies
+            - unit_tests
+          filters:
+            branches:
+              ignore: master
+      - report-deploy-to-pr:
+          context: global
+          requires:
+            - deploy-app
+            - deploy-storybook
+          filters:
+            branches:
+              ignore: master

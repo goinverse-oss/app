@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image } from 'react-native';
+import { View, ViewPropTypes, Image } from 'react-native';
 
 import AppPropTypes from '../propTypes';
 
@@ -51,7 +51,7 @@ CircleImage.propTypes = {
   shadow: PropTypes.bool,
 
   // eslint-disable-next-line react/no-typos
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
 };
 
 CircleImage.defaultProps = {

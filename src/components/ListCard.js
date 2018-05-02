@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { ViewPropTypes, StyleSheet } from 'react-native';
 
 import Card from './Card';
 
@@ -21,7 +21,7 @@ const ListCard = ({ children, style, ...props }) => (
 
 ListCard.propTypes = {
   children: PropTypes.node,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
 };
 
 ListCard.defaultProps = {
