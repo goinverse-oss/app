@@ -30,8 +30,8 @@ PodcastsScreen.propTypes = {
   isPatron: PropTypes.bool.isRequired,
 };
 
-PodcastsScreen.navigationOptions = ({ navigation }) => ({
-  ...getCommonNavigationOptions(navigation),
+PodcastsScreen.navigationOptions = ({ screenProps }) => ({
+  ...getCommonNavigationOptions(screenProps.drawer),
   title: 'Podcasts',
 });
 

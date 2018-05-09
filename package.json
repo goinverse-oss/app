@@ -12,7 +12,7 @@
     "ci:post-expo-comment": "./ci/post-expo-comment.js",
     "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 yarn start'",
     "prestorybook": "rnstl",
-    "postinstall": "rndebugger-open"
+    "postinstall": "rndebugger-open --expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^6.2.2",
@@ -55,6 +55,7 @@
     "eslint-plugin-react": "brettdh/eslint-plugin-react#no-typos-react-import",
     "flow-bin": "0.53.0",
     "jest": "21.2.1",
+    "jest-expo": "^26.0.0",
     "jest-junit": "^3.4.1",
     "pre-commit": "^1.2.2",
     "react-dom": "16.0.0-beta.5",
@@ -64,9 +65,9 @@
     "react-test-renderer": "16.0.0-beta.5"
   },
   "jest": {
-    "preset": "react-native",
+    "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-navigation)"
+      "node_modules/(?!(jest-)?react-native|react-navigation|@?expo)"
     ]
   },
   "comment": "flow is disabled in pre-commit because react-navigation breaks it",

@@ -1,24 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import Icon from '@expo/vector-icons/MaterialIcons';
+
+const styles = StyleSheet.create({
+  menuIcon: {
+    fontSize: 24,
+    paddingHorizontal: 10,
+  },
+});
 
 /**
  * Button that, when pressed, opens the navigation drawer.
  */
-const MenuButton = ({ navigation }) => (
-  <Text onPress={() => navigation.navigate('DrawerOpen')}>
-    Menu
-  </Text>
+const MenuButton = ({ drawer }) => (
+  <Icon
+    name="menu"
+    style={styles.menuIcon}
+    onPress={() => drawer && drawer.openDrawer()}
+  />
 );
 
 MenuButton.propTypes = {
-  // react-navigation nav object
-  // NOTE: I'm not sure why it doesn't work to just use
-  // redux `dispatch(NavigationActions('DrawerOpen'))`,
-  // but it didn't work when I tried it.
-  navigation: PropTypes.shape({
-    dispatch: PropTypes.func.isRequired,
-  }).isRequired,
+  drawer: PropTypes.shape({}),
+};
+
+MenuButton.defaultProps = {
+  drawer: null,
 };
 
 export default MenuButton;
