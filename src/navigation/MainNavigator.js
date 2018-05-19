@@ -20,6 +20,32 @@ const Tabs = TabNavigator({
   Home: { screen: HomeScreen },
   Podcasts: { screen: PodcastsScreen },
   Meditations: { screen: MeditationsScreen },
+}, {
+  ...TabNavigator.Presets.iOSBottomTabs,
+  tabBarOptions: {
+    activeTintColor: '#F95A57',
+    inactiveTintColor: '#D2D2D2',
+    style: {
+      borderTopWidth: 0,
+      padding: 5,
+
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOpacity: 0.11,
+          shadowOffset: { width: 0, height: -3 },
+          shadowRadius: 21,
+        },
+        android: {
+          elevation: 100,
+          zIndex: 100,
+        },
+      }),
+    },
+    labelStyle: {
+      fontWeight: '600',
+    },
+  },
 });
 
 // hack to get the header to appear (it doesn't with a TabNavigator)
