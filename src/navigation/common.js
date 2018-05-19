@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MenuButton from './MenuButton';
+import { defaultShadowStyle } from '../styles';
 
 /**
  * Return a common config object for navigationOptions.
@@ -15,5 +16,12 @@ import MenuButton from './MenuButton';
 export function getCommonNavigationOptions(drawer) {
   return {
     headerLeft: <MenuButton drawer={drawer} />,
+    headerStyle: {
+      ...defaultShadowStyle,
+      borderBottomWidth: 0,
+    },
+    headerTitleStyle: {
+      fontSize: 17,
+    },
   };
 }
