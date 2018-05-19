@@ -5,25 +5,15 @@ import {
   ViewPropTypes,
   TouchableWithoutFeedback,
   StyleSheet,
-  Platform,
 } from 'react-native';
+import { defaultShadowStyle } from '../styles';
 
 const styles = StyleSheet.create({
   // Tile wrapper base
   container: {
     borderRadius: 4,
     backgroundColor: '#fff',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 6,
-      },
-      android: {
-        elevation: 3,
-      },
-    }),
+    ...defaultShadowStyle,
   },
 });
 
