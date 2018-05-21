@@ -21,6 +21,7 @@ const MeditationsIcon = ({ tintColor }) => (
 MeditationsIcon.propTypes = {
   tintColor: PropTypes.string.isRequired,
 };
+
 /**
  * List of available meditations, organized by category.
  */
