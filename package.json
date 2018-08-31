@@ -13,13 +13,15 @@
     "ci:post-expo-comment": "./ci/post-expo-comment.js",
     "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 yarn start'",
     "prefakeapi": "babel fakeapi -d fakeapi/build --source-maps",
+    "prestart": "[[ -f config.json ]] || cp config.json.example config.json",
     "prestorybook": "rnstl",
-    "postinstall": "rndebugger-open --expo"
+    "postinstall": "rndebugger-open --expo; ( cd node_modules/redux-orm-proptypes; npm i; make build )"
   },
   "dependencies": {
     "@expo/vector-icons": "^6.2.2",
     "axios": "^0.18.0",
     "expo": "^25.0.0",
+    "kitsu": "^6.2.3",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
@@ -36,6 +38,8 @@
     "redux-actions": "^2.2.1",
     "redux-devtools-extension": "^2.13.2",
     "redux-observable": "^0.17.0",
+    "redux-orm": "^0.11.0",
+    "redux-orm-proptypes": "https://github.com/theliturgists/redux-orm-proptypes.git",
     "rxjs": "^5.5.6"
   },
   "devDependencies": {
@@ -48,7 +52,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
-    "babel-jest": "21.2.0",
+    "babel-jest": "23.2.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-react-native": "4.0.0",
     "concurrently": "^3.5.1",
@@ -59,7 +63,7 @@
     "eslint-plugin-react": "^7.10.0",
     "factory-girl": "^5.0.2",
     "flow-bin": "0.53.0",
-    "jest": "21.2.1",
+    "jest": "23.2.0",
     "jest-expo": "^26.0.0",
     "jest-junit": "^3.4.1",
     "jsonapi-server": "^4.2.0",

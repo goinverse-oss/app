@@ -1,11 +1,11 @@
-import contributor from './contributor';
-import meditation from './meditation';
-import meditationCategory from './meditationCategory';
-import tag from './tag';
+import contributors from './contributors';
+import meditations from './meditations';
+import meditationCategories from './meditationCategories';
+import tags from './tags';
 
 export default {
-  contributor,
-  meditation,
-  meditationCategory,
-  tag,
+  contributors,
+  meditations,
+  meditationCategories,
+  tags,
 };

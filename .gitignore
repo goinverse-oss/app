@@ -58,3 +58,6 @@ buck-out/
 
 # Visual Studio Code Files
 .vscode
+
+# Local configuration
+config.json

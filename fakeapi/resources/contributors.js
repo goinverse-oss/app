@@ -11,15 +11,15 @@ export default {
   updatedAt: jsonApi.Joi.date(),
 };
 
-factory.define('contributor', Object, {
-  id: factory.sequence('contributor.id', n => `${n}`),
-  type: 'contributor',
+factory.define('contributors', Object, {
+  id: factory.sequence('contributors.id', n => `${n}`),
+  type: 'contributors',
   name: factory.chance('name'),
   url: factory.chance('url', { domain: 'example.com' }),
   facebook: () => factory.chance('twitter')().replace('@', ''),
   twitter: factory.chance('twitter'),
   createdAt: factory.sequence(
-    'meditation.createdAt',
+    'contributors.createdAt',
     n => moment('2017-02-07').add(n, 'weeks'),
   ),
 });
