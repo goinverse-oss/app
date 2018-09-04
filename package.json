@@ -21,7 +21,6 @@
     "@expo/vector-icons": "^6.2.2",
     "axios": "^0.18.0",
     "expo": "^25.0.0",
-    "kitsu": "^6.2.3",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
