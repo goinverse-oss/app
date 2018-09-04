@@ -5,7 +5,7 @@ import { factory } from 'factory-girl';
 
 import * as placeholders from './placeholders';
 
-import { randomRelatedObjects } from './utils';
+import { randomRelatedObject, randomRelatedObjects } from './utils';
 
 export default {
   title: jsonApi.Joi.string().required(),
@@ -14,16 +14,16 @@ export default {
   mediaUrl: jsonApi.Joi.string().uri().required(),
   publishedAt: jsonApi.Joi.date(),
   status: jsonApi.Joi.string().valid('published', 'draft').required(),
-  category: jsonApi.Joi.one('meditationCategory'),
-  tags: jsonApi.Joi.many('tag'),
-  contributors: jsonApi.Joi.many('contributor'),
+  category: jsonApi.Joi.one('meditationCategories'),
+  tags: jsonApi.Joi.many('tags'),
+  contributors: jsonApi.Joi.many('contributors'),
   createdAt: jsonApi.Joi.date().required(),
   updatedAt: jsonApi.Joi.date(),
 };
 
-factory.define('meditation', Object, {
-  id: factory.sequence('meditation.id', n => `${n}`),
-  type: 'meditation',
+factory.define('meditations', Object, {
+  id: factory.sequence('meditations.id', n => `${n}`),
+  type: 'meditations',
   title: factory.chance('sentence', { words: 3 }),
   description: () => (
     _.times(3, () => (
@@ -33,14 +33,15 @@ factory.define('meditation', Object, {
   imageUrl: placeholders.imageUrl,
   mediaUrl: placeholders.mediaUrl,
   publishedAt: factory.sequence(
-    'meditation.publishedAt',
+    'meditations.publishedAt',
     n => moment('2017-02-07').add(n, 'weeks'),
   ),
   status: 'published',
-  tags: randomRelatedObjects('meditation', 'tag'),
-  contributors: randomRelatedObjects('meditation', 'contributor'),
+  category: randomRelatedObject('meditations', 'meditationCategories'),
+  tags: randomRelatedObjects('meditations', 'tags'),
+  contributors: randomRelatedObjects('meditations', 'contributors'),
   createdAt: factory.sequence(
-    'meditation.createdAt',
+    'meditations.createdAt',
     n => moment('2017-02-07').add(n, 'weeks'),
   ),
 });

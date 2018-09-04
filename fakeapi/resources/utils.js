@@ -14,3 +14,15 @@ export const randomRelatedObjects = (
     id: `${id}`,
   }))
 ));
+
+export const randomRelatedObject = (
+  parentType,
+  relatedType,
+  minId = 1,
+  maxId = 5,
+) => factory.sequence(`${parentType}.${relatedType}`, () => (
+  {
+    type: relatedType,
+    id: `${_.random(minId, maxId)}`,
+  }
+));

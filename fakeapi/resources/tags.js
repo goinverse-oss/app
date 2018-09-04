@@ -8,9 +8,9 @@ export default {
   updatedAt: jsonApi.Joi.date(),
 };
 
-factory.define('tag', Object, {
-  id: factory.sequence('tag.id', n => `${n}`),
-  type: 'tag',
+factory.define('tags', Object, {
+  id: factory.sequence('tags.id', n => `${n}`),
+  type: 'tags',
   name: factory.chance('word'),
   createdAt: factory.sequence(
     'meditation.createdAt',
