@@ -5,7 +5,7 @@ import { factory } from 'factory-girl';
 
 import * as placeholders from './placeholders';
 
-import { randomRelatedObjects } from './utils';
+import { randomRelatedObject, randomRelatedObjects } from './utils';
 
 export default {
   title: jsonApi.Joi.string().required(),
@@ -37,6 +37,7 @@ factory.define('meditations', Object, {
     n => moment('2017-02-07').add(n, 'weeks'),
   ),
   status: 'published',
+  category: randomRelatedObject('meditations', 'meditationCategories'),
   tags: randomRelatedObjects('meditations', 'tags'),
   contributors: randomRelatedObjects('meditations', 'contributors'),
   createdAt: factory.sequence(
