@@ -16,26 +16,22 @@ import 'rxjs/add/observable/fromPromise';
 
 import axios from 'axios';
 
-import { ENABLE_PATREON, DISABLE_PATREON } from './types';
-import {
-  patreonEnabled,
-  patreonDisabled,
-  patreonError,
-} from './actions';
+import { FETCH_DATA } from './types';
+import { receiveData, receiveApiError } from './actions';
 
 /**
- * Simulate a Patreon API success/failure (random).
+ * Simulate an API success/failure (random).
  *
  * With some probability, hits either `/post` (success)
  * or `/status/429` (failure; rate limit exceeded)
  * at https://httpbin.org. Used to demonstrate how
  * to use epics to handle asynchronous actions.
  *
- * TODO: replace with a function that uses the real Patreon API.
+ * TODO: replace with a function that uses the real API.
  *
  * @return {Observable} emitting an axios response object
  */
-function sendFakePatreonRequest() {
+function sendFakeAPIRequest() {
   const errorProbability = 0.4;
   const endpoint = (Math.random() < errorProbability) ? 'status/429' : 'post';
 
@@ -53,37 +49,20 @@ function sendFakePatreonRequest() {
  */
 
 /**
- * Handle requests to enable Patreon.
+ * Handle requests to fetch API data.
  *
  * Handles:
- *   ENABLE_PATREON: pretend to enable Patreon
+ *   FETCH_DATA: pretend to fetch API data
  * Emits:
- *   PATREON_ENABLED: on success
- *   PATREON_ERROR: on failure
+ *   RECEIVE_DATA: on success
+ *   RECEIVE_API_ERROR: on failure
  */
-const enablePatreonEpic = action$ =>
-  action$.ofType(ENABLE_PATREON)
+const fetchDataEpic = action$ =>
+  action$.ofType(FETCH_DATA)
     .switchMap(() => (
-      sendFakePatreonRequest()
-        .mapTo(patreonEnabled())
-        .catch(error => Observable.of(patreonError(error)))
+      sendFakeAPIRequest()
+        .mapTo(receiveData())
+        .catch(error => Observable.of(receiveApiError(error)))
     ));
 
-/**
- * Handle requests to disable Patreon.
- *
- * Handles:
- *   DISABLE: pretend to disable Patreon
- * Emits:
- *   PATREON_DISABLED: on success
- *   PATREON_ERROR: on failure
- */
-const disablePatreonEpic = action$ =>
-  action$.ofType(DISABLE_PATREON)
-    .switchMap(() => (
-      sendFakePatreonRequest()
-        .mapTo(patreonDisabled())
-        .catch(error => Observable.of(patreonError(error)))
-    ));
-
-export default combineEpics(enablePatreonEpic, disablePatreonEpic);
+export default combineEpics(fetchDataEpic);
