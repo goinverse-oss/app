@@ -7,6 +7,7 @@ import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
 import epic from './epic';
+import config from '../../../../config.json';
 
 let store;
 
@@ -62,7 +63,7 @@ describe('orm reducer', () => {
  */
 
 describe('api epic', () => {
-  const baseUrl = 'https://httpbin.org';
+  const baseUrl = config.apiBaseUrl;
   let mock;
 
   beforeEach(() => {
@@ -74,17 +75,30 @@ describe('api epic', () => {
   // will have to be a little more complicated.
 
   describe('when API call succeeds', () => {
+    let payload;
+
     beforeEach(() => {
-      mock.onPost(new RegExp(`${baseUrl}/.*`)).reply(200, {});
+      payload = {
+        data: {
+          attributes: {
+            foo: 'bar',
+          },
+        },
+      };
+      mock.onGet(new RegExp(`${baseUrl}/.*`)).reply(200, payload);
     });
 
-    test('fetchData() leads to receiveData()', () => {
-      const action$ = ActionsObservable.of(actions.fetchData());
-      return expect(
-        epic(action$).toPromise(),
-      ).resolves.toEqual(
-        actions.receiveData(),
-      );
+    test('fetchData() leads to receiveData()', async () => {
+      const args = { resource: 'foo' };
+      const url = `${baseUrl}/${args.resource}`;
+
+      const action$ = ActionsObservable.of(actions.fetchData(args));
+      const responseAction = await epic(action$).toPromise();
+
+      // assert that the request was made
+      expect(mock.history.get[0].url).toEqual(url);
+
+      expect(responseAction).toEqual(actions.receiveData(payload));
     });
   });
 
@@ -92,7 +106,7 @@ describe('api epic', () => {
     const status = 429;
 
     beforeEach(() => {
-      mock.onPost(new RegExp(`${baseUrl}/.*`)).reply(status, {});
+      mock.onGet(new RegExp(`${baseUrl}/.*`)).reply(status, {});
     });
 
     function expectErrorActionWithStatus(action, statusCode) {
@@ -103,8 +117,15 @@ describe('api epic', () => {
     }
 
     test('fetchData() leads to receiveApiError()', async () => {
-      const action$ = ActionsObservable.of(actions.fetchData());
+      const args = { resource: 'foo' };
+      const url = `${baseUrl}/${args.resource}`;
+
+      const action$ = ActionsObservable.of(actions.fetchData(args));
       const errorAction = await epic(action$).toPromise();
+
+      // assert that the request was made
+      expect(mock.history.get[0].url).toEqual(url);
+
       expectErrorActionWithStatus(errorAction, status);
     });
   });

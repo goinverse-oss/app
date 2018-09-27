@@ -9,44 +9,32 @@ import { combineEpics } from 'redux-observable';
 // https://redux-observable.js.org/docs/Troubleshooting.html
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mapTo';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/fromPromise';
 
 import axios from 'axios';
+import _ from 'lodash';
 
 import { FETCH_DATA } from './types';
 import { receiveData, receiveApiError } from './actions';
+import config from '../../../../config.json';
 
 /**
- * Simulate an API success/failure (random).
- *
- * With some probability, hits either `/post` (success)
- * or `/status/429` (failure; rate limit exceeded)
- * at https://httpbin.org. Used to demonstrate how
- * to use epics to handle asynchronous actions.
- *
- * TODO: replace with a function that uses the real API.
+ * Fetch API data.
  *
  * @return {Observable} emitting an axios response object
  */
-function sendFakeAPIRequest() {
-  const errorProbability = 0.4;
-  const endpoint = (Math.random() < errorProbability) ? 'status/429' : 'post';
+function sendAPIRequest({ resource, id }) {
+  const baseUrl = config.apiBaseUrl;
+  const endpoint = _.isUndefined(id) ? resource : `${resource}/${id}`;
 
-  const url = `https://httpbin.org/${endpoint}`;
-  const json = { foo: 'bar' };
-  return Observable.fromPromise(axios.post(url, json));
+  const url = `${baseUrl}/${endpoint}`;
+  return Observable.fromPromise(
+    axios.get(url).then(r => r.data),
+  );
 }
-
-/*
- * XXX
- * Below is a **proposed** initial format for epic docs;
- * I couldn't find any drop-in convention. Feedback welcome,
- * and we'll probably evolve it as we add more of them.
- * XXX
- */
 
 /**
  * Handle requests to fetch API data.
@@ -59,9 +47,9 @@ function sendFakeAPIRequest() {
  */
 const fetchDataEpic = action$ =>
   action$.ofType(FETCH_DATA)
-    .switchMap(() => (
-      sendFakeAPIRequest()
-        .mapTo(receiveData())
+    .switchMap(action => (
+      sendAPIRequest(action.payload)
+        .map(data => receiveData(data))
         .catch(error => Observable.of(receiveApiError(error)))
     ));
 
