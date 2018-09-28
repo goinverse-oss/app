@@ -6,18 +6,15 @@ import configureStore from '../../store';
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import { getModelName } from './utils';
 import epic from './epic';
 import config from '../../../../config.json';
 
-let store;
-
-beforeEach(() => {
-  store = configureStore({ noEpic: true });
-});
-
+// TODO: generate test data from fakeapi factories?
+// TODO: or maybe swagger?
 const cases = [
   {
-    description: 'stores a simple response',
+    description: 'stores a meditation',
     apiJson: {
       data: [
         {
@@ -30,25 +27,104 @@ const cases = [
         },
       ],
     },
-    meditation: {
+    relationships: {
       category: undefined,
       contributors: [],
       tags: [],
     },
   },
+
+  {
+    description: 'stores a meditation category',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'Category 123',
+            description: 'Mindfulness.',
+          },
+        },
+      ],
+    },
+    relationships: {
+      tags: [],
+    },
+  },
+
+  {
+    description: 'stores a contributor',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'contributors',
+          attributes: {
+            name: 'Mike McHargue',
+            url: 'http://mikemchargue.com',
+            twitter: '@mikemchargue',
+          },
+        },
+      ],
+    },
+    relationships: {},
+  },
+
+  {
+    description: 'stores a tag',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'tags',
+          attributes: {
+            name: 'Lent',
+          },
+        },
+      ],
+    },
+    relationships: {},
+  },
 ];
 
 describe('orm reducer', () => {
-  cases.forEach(({ description, apiJson, meditation }) => {
-    it(description, () => {
-      store.dispatch(actions.receiveData(apiJson));
+  let store;
 
-      const obj = selectors.meditationsSelector(store.getState());
-      const meditationData = apiJson.data[0];
-      expect(obj[0]).toEqual({
-        id: meditationData.id,
-        ...meditationData.attributes,
-        ...meditation,
+  beforeEach(() => {
+    store = configureStore({ noEpic: true });
+  });
+
+  cases.forEach(({ description, apiJson, relationships }) => {
+    describe(description, () => {
+      let type;
+      let apiData;
+      let expected;
+
+      beforeEach(() => {
+        store.dispatch(actions.receiveData(apiJson));
+
+        [apiData] = apiJson.data;
+        ({ type } = apiData);
+
+        expected = {
+          id: apiData.id,
+          ...apiData.attributes,
+          ...relationships,
+        };
+      });
+
+      it('collection', () => {
+        const collectionSelector = selectors[`${type}Selector`];
+        const collection = collectionSelector(store.getState());
+        expect(collection[0]).toEqual(expected);
+      });
+
+      it('instance', () => {
+        const instanceType = getModelName(type).replace(/^\w/, c => c.toLowerCase());
+        const instanceSelector = selectors[`${instanceType}Selector`];
+        const instance = instanceSelector(store.getState(), apiData.id);
+        expect(instance).toEqual(expected);
       });
     });
   });

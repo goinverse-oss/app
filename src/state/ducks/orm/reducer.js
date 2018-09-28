@@ -4,19 +4,10 @@ import { handleActions } from 'redux-actions';
 import orm from '../../orm';
 
 import { RECEIVE_DATA, RECEIVE_API_ERROR } from './types';
+import { getModelName } from './utils';
 
 const defaultORMState = orm.session().state;
 const defaultAPIState = {};
-
-function getModelName(type) {
-  // basic singularization
-  const singular = type
-    .replace(/ies$/, 'y')
-    .replace(/s$/, '');
-
-  // capitalize
-  return singular.charAt(0).toUpperCase() + singular.substr(1);
-}
 
 export default combineReducers({
   reduxOrm: handleActions({
