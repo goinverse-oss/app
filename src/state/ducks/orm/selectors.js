@@ -17,7 +17,7 @@ import orm from '../../orm';
 
 // TODO: figure out lazy loading?
 
-const dbStateSelector = state => state.orm;
+const dbStateSelector = state => state.orm.reduxOrm;
 
 export const meditationsSelector = createSelector(
   orm,
@@ -40,3 +40,5 @@ export const meditationsSelector = createSelector(
       },
     })),
 );
+
+export const apiErrorSelector = state => _.get(state, 'orm.api.error');

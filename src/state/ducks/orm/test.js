@@ -52,6 +52,14 @@ describe('orm reducer', () => {
       });
     });
   });
+
+  it('stores an API error', () => {
+    const expectedError = new Error('404 OOPS LOL');
+    store.dispatch(actions.receiveApiError(expectedError));
+
+    const error = selectors.apiErrorSelector(store.getState());
+    expect(error).toEqual(expectedError);
+  });
 });
 
 /*
