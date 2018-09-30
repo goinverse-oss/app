@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ActionsObservable } from 'redux-observable';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -86,6 +87,177 @@ const cases = [
     },
     relationships: {},
   },
+
+  {
+    description: 'stores instance api response',
+    apiJson: {
+      data: {
+        id: '123',
+        type: 'tags',
+        attributes: {
+          name: 'Lent',
+        },
+      },
+    },
+    relationships: {},
+  },
+
+  {
+    description: 'stores a meditation category with tags',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'Category 123',
+            description: 'Mindfulness.',
+          },
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: '123',
+                  type: 'tags',
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    relationships: {
+      tags: [{ id: '123' }],
+    },
+  },
+
+  {
+    description: 'stores a meditation category with included tags',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'Category 123',
+            description: 'Mindfulness.',
+          },
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: '123',
+                  type: 'tags',
+                },
+              ],
+            },
+          },
+        },
+      ],
+      included: [
+        {
+          id: '123',
+          type: 'tags',
+          attributes: {
+            name: 'mindfulness',
+          },
+        },
+      ],
+    },
+    relationships: {
+      tags: [{ id: '123', name: 'mindfulness' }],
+    },
+  },
+
+  {
+    description: 'stores a meditation with included relationships',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditations',
+          attributes: {
+            title: 'Names of God',
+            description: "A meditation on the names you use and the names you don't.",
+          },
+          relationships: {
+            category: {
+              data: {
+                id: '1',
+                type: 'meditationCategories',
+              },
+            },
+            contributors: {
+              data: [
+                {
+                  id: '1',
+                  type: 'contributors',
+                },
+              ],
+            },
+            tags: {
+              data: [
+                {
+                  id: '4',
+                  type: 'tags',
+                },
+                {
+                  id: '9',
+                  type: 'tags',
+                },
+              ],
+            },
+          },
+        },
+      ],
+      included: [
+        {
+          id: '1',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'All Meditations',
+            description: 'All the meditations.',
+          },
+        },
+        {
+          id: '1',
+          type: 'contributors',
+          attributes: {
+            name: 'Michael Gungor',
+            twitter: '@michaelgungor',
+          },
+        },
+        {
+          id: '4',
+          type: 'tags',
+          attributes: {
+            name: 'names',
+          },
+        },
+        {
+          id: '9',
+          type: 'tags',
+          attributes: {
+            name: 'god',
+          },
+        },
+      ],
+    },
+    relationships: {
+      category: {
+        id: '1',
+        title: 'All Meditations',
+        description: 'All the meditations.',
+      },
+      contributors: [
+        { id: '1', name: 'Michael Gungor', twitter: '@michaelgungor' },
+      ],
+      tags: [
+        { id: '4', name: 'names' },
+        { id: '9', name: 'god' },
+      ],
+    },
+  },
 ];
 
 describe('orm reducer', () => {
@@ -104,7 +276,7 @@ describe('orm reducer', () => {
       beforeEach(() => {
         store.dispatch(actions.receiveData(apiJson));
 
-        [apiData] = apiJson.data;
+        apiData = _.isArray(apiJson.data) ? apiJson.data[0] : apiJson.data;
         ({ type } = apiData);
 
         expected = {
