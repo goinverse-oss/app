@@ -9,9 +9,6 @@
       }
     ]
   ],
-  "ignore": [
-    "build/**/*.js"
-  ],
   "plugins": [
     "transform-object-rest-spread"
   ]
