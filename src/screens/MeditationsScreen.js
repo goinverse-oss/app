@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 
 import { getCommonNavigationOptions } from '../navigation/common';
+import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
-import styles from '../styles';
+import { fetchData } from '../state/ducks/orm';
+import { meditationsSelector } from '../state/ducks/orm/selectors';
 
 const MeditationsIcon = ({ tintColor }) => (
   <Icon
@@ -25,28 +27,49 @@ MeditationsIcon.propTypes = {
 /**
  * List of available meditations, organized by category.
  */
-const MeditationsScreen = ({ isPatron }) => (
-  <View style={styles.container}>
-    <Text>
-      Placeholder meditations screen
-    </Text>
-    <Text>
+class MeditationsScreen extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchData({ resource: 'meditations' }));
+  }
+
+  render() {
+    const { meditations } = this.props;
+    const meditationCategories = [
       {
-        isPatron
-          ? 'As a patron, you can access the meditations.'
-          : 'If you were a patron, you could access the meditations.'
-      }
-    </Text>
-  </View>
-);
+        title: 'All Meditations',
+        meditationCount: meditations.length,
+        imageSource: {
+          uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
+        },
+      },
+    ];
+
+    return (
+      <ScrollView>
+        <MeditationSeriesList
+          meditationCategories={meditationCategories}
+          onPressMeditationCategory={() => {}}
+        />
+      </ScrollView>
+    );
+  }
+}
 
 MeditationsScreen.propTypes = {
-  // true iff the user has connected Patreon
-  isPatron: PropTypes.bool.isRequired,
+  meditations: PropTypes.arrayOf(
+    PropTypes.shape({}),
+  ),
+  dispatch: PropTypes.func.isRequired,
+};
+
+MeditationsScreen.defaultProps = {
+  meditations: [],
 };
 
 function mapStateToProps(state) {
   return {
+    meditations: meditationsSelector(state),
     isPatron: patreonSelectors.isPatron(state),
   };
 }
