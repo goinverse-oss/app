@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ActionsObservable } from 'redux-observable';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -6,17 +7,15 @@ import configureStore from '../../store';
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import { getModelName } from './utils';
 import epic from './epic';
+import config from '../../../../config.json';
 
-let store;
-
-beforeEach(() => {
-  store = configureStore({ noEpic: true });
-});
-
+// TODO: generate test data from fakeapi factories?
+// TODO: or maybe swagger?
 const cases = [
   {
-    description: 'stores a simple response',
+    description: 'stores a meditation',
     apiJson: {
       data: [
         {
@@ -29,27 +28,285 @@ const cases = [
         },
       ],
     },
-    meditation: {
+    relationships: {
       category: undefined,
       contributors: [],
       tags: [],
     },
   },
+
+  {
+    description: 'stores a meditation category',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'Category 123',
+            description: 'Mindfulness.',
+          },
+        },
+      ],
+    },
+    relationships: {
+      tags: [],
+    },
+  },
+
+  {
+    description: 'stores a contributor',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'contributors',
+          attributes: {
+            name: 'Mike McHargue',
+            url: 'http://mikemchargue.com',
+            twitter: '@mikemchargue',
+          },
+        },
+      ],
+    },
+    relationships: {},
+  },
+
+  {
+    description: 'stores a tag',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'tags',
+          attributes: {
+            name: 'Lent',
+          },
+        },
+      ],
+    },
+    relationships: {},
+  },
+
+  {
+    description: 'stores instance api response',
+    apiJson: {
+      data: {
+        id: '123',
+        type: 'tags',
+        attributes: {
+          name: 'Lent',
+        },
+      },
+    },
+    relationships: {},
+  },
+
+  {
+    description: 'stores a meditation category with tags',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'Category 123',
+            description: 'Mindfulness.',
+          },
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: '123',
+                  type: 'tags',
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    relationships: {
+      tags: [{ id: '123' }],
+    },
+  },
+
+  {
+    description: 'stores a meditation category with included tags',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'Category 123',
+            description: 'Mindfulness.',
+          },
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: '123',
+                  type: 'tags',
+                },
+              ],
+            },
+          },
+        },
+      ],
+      included: [
+        {
+          id: '123',
+          type: 'tags',
+          attributes: {
+            name: 'mindfulness',
+          },
+        },
+      ],
+    },
+    relationships: {
+      tags: [{ id: '123', name: 'mindfulness' }],
+    },
+  },
+
+  {
+    description: 'stores a meditation with included relationships',
+    apiJson: {
+      data: [
+        {
+          id: '123',
+          type: 'meditations',
+          attributes: {
+            title: 'Names of God',
+            description: "A meditation on the names you use and the names you don't.",
+          },
+          relationships: {
+            category: {
+              data: {
+                id: '1',
+                type: 'meditationCategories',
+              },
+            },
+            contributors: {
+              data: [
+                {
+                  id: '1',
+                  type: 'contributors',
+                },
+              ],
+            },
+            tags: {
+              data: [
+                {
+                  id: '4',
+                  type: 'tags',
+                },
+                {
+                  id: '9',
+                  type: 'tags',
+                },
+              ],
+            },
+          },
+        },
+      ],
+      included: [
+        {
+          id: '1',
+          type: 'meditationCategories',
+          attributes: {
+            title: 'All Meditations',
+            description: 'All the meditations.',
+          },
+        },
+        {
+          id: '1',
+          type: 'contributors',
+          attributes: {
+            name: 'Michael Gungor',
+            twitter: '@michaelgungor',
+          },
+        },
+        {
+          id: '4',
+          type: 'tags',
+          attributes: {
+            name: 'names',
+          },
+        },
+        {
+          id: '9',
+          type: 'tags',
+          attributes: {
+            name: 'god',
+          },
+        },
+      ],
+    },
+    relationships: {
+      category: {
+        id: '1',
+        title: 'All Meditations',
+        description: 'All the meditations.',
+      },
+      contributors: [
+        { id: '1', name: 'Michael Gungor', twitter: '@michaelgungor' },
+      ],
+      tags: [
+        { id: '4', name: 'names' },
+        { id: '9', name: 'god' },
+      ],
+    },
+  },
 ];
 
 describe('orm reducer', () => {
-  cases.forEach(({ description, apiJson, meditation }) => {
-    it(description, () => {
-      store.dispatch(actions.receiveData(apiJson));
+  let store;
 
-      const obj = selectors.meditationsSelector(store.getState());
-      const meditationData = apiJson.data[0];
-      expect(obj[0]).toEqual({
-        id: meditationData.id,
-        ...meditationData.attributes,
-        ...meditation,
+  beforeEach(() => {
+    store = configureStore({ noEpic: true });
+  });
+
+  cases.forEach(({ description, apiJson, relationships }) => {
+    describe(description, () => {
+      let type;
+      let apiData;
+      let expected;
+
+      beforeEach(() => {
+        store.dispatch(actions.receiveData(apiJson));
+
+        apiData = _.isArray(apiJson.data) ? apiJson.data[0] : apiJson.data;
+        ({ type } = apiData);
+
+        expected = {
+          id: apiData.id,
+          ...apiData.attributes,
+          ...relationships,
+        };
+      });
+
+      it('collection', () => {
+        const collectionSelector = selectors[`${type}Selector`];
+        const collection = collectionSelector(store.getState());
+        expect(collection[0]).toEqual(expected);
+      });
+
+      it('instance', () => {
+        const instanceType = getModelName(type).replace(/^\w/, c => c.toLowerCase());
+        const instanceSelector = selectors[`${instanceType}Selector`];
+        const instance = instanceSelector(store.getState(), apiData.id);
+        expect(instance).toEqual(expected);
       });
     });
+  });
+
+  it('stores an API error', () => {
+    const expectedError = new Error('404 OOPS LOL');
+    store.dispatch(actions.receiveApiError(expectedError));
+
+    const error = selectors.apiErrorSelector(store.getState());
+    expect(error).toEqual(expectedError);
   });
 });
 
@@ -62,7 +319,7 @@ describe('orm reducer', () => {
  */
 
 describe('api epic', () => {
-  const baseUrl = 'https://httpbin.org';
+  const baseUrl = config.apiBaseUrl;
   let mock;
 
   beforeEach(() => {
@@ -74,17 +331,30 @@ describe('api epic', () => {
   // will have to be a little more complicated.
 
   describe('when API call succeeds', () => {
+    let payload;
+
     beforeEach(() => {
-      mock.onPost(new RegExp(`${baseUrl}/.*`)).reply(200, {});
+      payload = {
+        data: {
+          attributes: {
+            foo: 'bar',
+          },
+        },
+      };
+      mock.onGet(new RegExp(`${baseUrl}/.*`)).reply(200, payload);
     });
 
-    test('fetchData() leads to receiveData()', () => {
-      const action$ = ActionsObservable.of(actions.fetchData());
-      return expect(
-        epic(action$).toPromise(),
-      ).resolves.toEqual(
-        actions.receiveData(),
-      );
+    test('fetchData() leads to receiveData()', async () => {
+      const args = { resource: 'foo' };
+      const url = `${baseUrl}/${args.resource}`;
+
+      const action$ = ActionsObservable.of(actions.fetchData(args));
+      const responseAction = await epic(action$).toPromise();
+
+      // assert that the request was made
+      expect(mock.history.get[0].url).toEqual(url);
+
+      expect(responseAction).toEqual(actions.receiveData(payload));
     });
   });
 
@@ -92,7 +362,7 @@ describe('api epic', () => {
     const status = 429;
 
     beforeEach(() => {
-      mock.onPost(new RegExp(`${baseUrl}/.*`)).reply(status, {});
+      mock.onGet(new RegExp(`${baseUrl}/.*`)).reply(status, {});
     });
 
     function expectErrorActionWithStatus(action, statusCode) {
@@ -103,8 +373,15 @@ describe('api epic', () => {
     }
 
     test('fetchData() leads to receiveApiError()', async () => {
-      const action$ = ActionsObservable.of(actions.fetchData());
+      const args = { resource: 'foo' };
+      const url = `${baseUrl}/${args.resource}`;
+
+      const action$ = ActionsObservable.of(actions.fetchData(args));
       const errorAction = await epic(action$).toPromise();
+
+      // assert that the request was made
+      expect(mock.history.get[0].url).toEqual(url);
+
       expectErrorActionWithStatus(errorAction, status);
     });
   });
