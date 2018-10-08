@@ -11,7 +11,7 @@ const MeditationHeader = ({ meditation, ...props }) => (
     title={meditation.title}
     description={meditation.description}
     duration={meditation.duration}
-    publishDate={meditation.publishDate}
+    publishedAt={meditation.publishedAt}
     {...props}
   />
 );

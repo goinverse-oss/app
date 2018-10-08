@@ -74,14 +74,14 @@ const styles = StyleSheet.create({
   },
 });
 
-function formatFooter({ duration, publishDate, formatDuration }) {
+function formatFooter({ duration, publishedAt, formatDuration }) {
   const separator = ' • ';
   const strings = [];
   if (!_.isNull(duration)) {
     strings.push(formatDuration(duration));
   }
-  if (!_.isNull(publishDate)) {
-    strings.push(publishDate.fromNow());
+  if (!_.isNull(publishedAt)) {
+    strings.push(publishedAt.fromNow());
   }
   return strings.join(separator);
 }
@@ -92,7 +92,7 @@ const PlayableListCard = ({
   title,
   description,
   duration,
-  publishDate,
+  publishedAt,
   formatDuration,
   mediaType,
   isSearchResult,
@@ -112,7 +112,7 @@ const PlayableListCard = ({
         <View style={styles.searchHeader}>
           <TextPill style={styles.mediaType}>{mediaType}</TextPill>
           <Text style={styles.times}>
-            {formatFooter({ duration, publishDate, formatDuration })}
+            {formatFooter({ duration, publishedAt, formatDuration })}
           </Text>
         </View>
       ) : null}
@@ -131,7 +131,7 @@ const PlayableListCard = ({
       {isSearchResult ? null : (
         <View style={styles.footer}>
           <Text style={styles.times}>
-            {formatFooter({ duration, publishDate, formatDuration })}
+            {formatFooter({ duration, publishedAt, formatDuration })}
           </Text>
           <InteractionsCounter />
         </View>
@@ -146,7 +146,7 @@ PlayableListCard.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   duration: momentPropTypes.momentDurationObj,
-  publishDate: momentPropTypes.momentObj,
+  publishedAt: momentPropTypes.momentObj,
   formatDuration: PropTypes.func,
   mediaType: PropTypes.string,
   isSearchResult: PropTypes.bool,
@@ -155,7 +155,7 @@ PlayableListCard.propTypes = {
 PlayableListCard.defaultProps = {
   style: {},
   duration: null,
-  publishDate: null,
+  publishedAt: null,
   formatDuration: formatMinutesString,
   mediaType: 'media',
   isSearchResult: false,

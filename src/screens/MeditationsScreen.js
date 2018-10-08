@@ -9,6 +9,7 @@ import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import { fetchData } from '../state/ducks/orm';
 import { meditationsSelector } from '../state/ducks/orm/selectors';
+import * as navActions from '../state/ducks/navigation/actions';
 
 const MeditationsIcon = ({ tintColor }) => (
   <Icon
@@ -29,12 +30,12 @@ MeditationsIcon.propTypes = {
  */
 class MeditationsScreen extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchData({ resource: 'meditations' }));
+    const { fetchMeditations } = this.props;
+    fetchMeditations();
   }
 
   render() {
-    const { meditations } = this.props;
+    const { meditations, viewMeditation } = this.props;
     const meditationCategories = [
       {
         title: 'All Meditations',
@@ -49,7 +50,7 @@ class MeditationsScreen extends Component {
       <ScrollView>
         <MeditationSeriesList
           meditationCategories={meditationCategories}
-          onPressMeditationCategory={() => {}}
+          onPressMeditationCategory={category => viewMeditation(category)}
         />
       </ScrollView>
     );
@@ -60,7 +61,8 @@ MeditationsScreen.propTypes = {
   meditations: PropTypes.arrayOf(
     PropTypes.shape({}),
   ),
-  dispatch: PropTypes.func.isRequired,
+  fetchMeditations: PropTypes.func.isRequired,
+  viewMeditation: PropTypes.func.isRequired,
 };
 
 MeditationsScreen.defaultProps = {
@@ -74,10 +76,17 @@ function mapStateToProps(state) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchMeditations: () => dispatch(fetchData({ resource: 'meditations' })),
+    viewMeditation: category => dispatch(navActions.viewMeditation(category)),
+  };
+}
+
 MeditationsScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
   title: 'Meditations',
   tabBarIcon: MeditationsIcon,
 });
 
-export default connect(mapStateToProps)(MeditationsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MeditationsScreen);

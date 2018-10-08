@@ -14,7 +14,7 @@ factory.setAdapter(new ObjectAdapter());
 
 const promises = _.map(resources, (attributes, resource) => (
   new Promise((resolve, reject) => {
-    factory.buildMany(resource, 5).then((examples) => {
+    factory.buildMany(resource, 25).then((examples) => {
       jsonApi.define({
         handlers: new jsonApi.MemoryHandler(),
         resource,

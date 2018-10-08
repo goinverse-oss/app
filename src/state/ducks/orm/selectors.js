@@ -41,8 +41,12 @@ const modelToObject = {
       tags: meditationCategory.tags.toRefArray(),
     },
   }),
-  Contributor: contributor => contributor.ref,
-  Tag: tag => tag.ref,
+  Contributor: contributor => ({
+    ...contributor.ref,
+  }),
+  Tag: tag => ({
+    ...tag.ref,
+  }),
 };
 
 function collectionSelector(type) {

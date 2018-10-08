@@ -11,7 +11,7 @@ const MeditationListCard = ({ meditation, ...props }) => (
     title={meditation.title}
     description={meditation.description}
     duration={meditation.duration}
-    publishDate={meditation.publishDate}
+    publishedAt={meditation.publishedAt}
     mediaType="meditation"
     {...props}
   />

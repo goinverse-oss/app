@@ -11,7 +11,7 @@ const PodcastEpisodeListCard = ({ podcastEpisode, ...props }) => (
     title={podcastEpisode.title}
     description={podcastEpisode.description}
     duration={podcastEpisode.duration}
-    publishDate={podcastEpisode.publishDate}
+    publishedAt={podcastEpisode.publishedAt}
     mediaType="podcast"
     {...props}
   />

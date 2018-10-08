@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 
@@ -9,6 +10,17 @@ import { getModelName } from './utils';
 
 const defaultORMState = orm.session().state;
 const defaultAPIState = {};
+
+function momentize(modelName, obj) {
+  const extraKeys = _.get({
+    Meditation: ['publishedAt'],
+  }, modelName, []);
+  const momentKeys = ['createdAt', 'updatedAt', ...extraKeys];
+  return _(obj)
+    .pick(momentKeys)
+    .mapValues(timestamp => moment(timestamp))
+    .value();
+}
 
 export default combineReducers({
   reduxOrm: handleActions({
@@ -36,6 +48,7 @@ export default combineReducers({
         return RelModel.upsert({
           id,
           ...attributes,
+          ...momentize(relModelName, attributes),
         });
       }
 
@@ -46,6 +59,7 @@ export default combineReducers({
         const instance = Model.upsert({
           id: item.id,
           ...item.attributes,
+          ...momentize(modelName, item.attributes),
         });
         _.each(_.get(item, 'relationships', {}), (rel, relName) => {
           const { data: relData } = rel;

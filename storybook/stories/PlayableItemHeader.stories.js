@@ -17,7 +17,7 @@ const podcast = {
     'in Los Angeles, CA on September 15, 2017.'
   ),
   duration: moment.duration(88, 'minutes'),
-  publishDate: moment('2017-09-15'),
+  publishedAt: moment('2017-09-15'),
 };
 
 const gardenLiturgyImageUrl = 'https://f4.bcbits.com/img/a4076498522_16.jpg';
@@ -34,7 +34,7 @@ const meditation = {
   title: 'Letting Go',
   description: 'A meditation by Hillary McBride.',
   duration: moment.duration(12, 'minutes'),
-  publishDate: moment('2018-02-16T19:38:00-05:00'),
+  publishedAt: moment('2018-02-16T19:38:00-05:00'),
 };
 
 const styles = StyleSheet.create({

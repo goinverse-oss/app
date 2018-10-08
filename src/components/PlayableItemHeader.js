@@ -36,15 +36,15 @@ const styles = StyleSheet.create({
 });
 
 function formatFooter({
-  duration, publishDate, formatDuration, formatPublishDate,
+  duration, publishedAt, formatDuration, formatpublishedAt,
 }) {
   const separator = ' • ';
   const strings = [];
   if (!_.isNull(duration)) {
     strings.push(formatDuration(duration));
   }
-  if (!_.isNull(publishDate)) {
-    strings.push(formatPublishDate(publishDate));
+  if (!_.isNull(publishedAt)) {
+    strings.push(formatpublishedAt(publishedAt));
   }
   return strings.join(separator);
 }
@@ -59,10 +59,10 @@ const PlayableItemHeader = ({
   style,
   title,
   duration,
-  publishDate,
+  publishedAt,
   onPlay,
   formatDuration,
-  formatPublishDate,
+  formatpublishedAt,
   ...props
 }) => (
   <View style={[styles.container, style]} {...props}>
@@ -76,7 +76,7 @@ const PlayableItemHeader = ({
       <Text style={styles.title} numberOfLines={1}>{title}</Text>
       <Text style={styles.times}>
         {formatFooter({
-          duration, publishDate, formatDuration, formatPublishDate,
+          duration, publishedAt, formatDuration, formatpublishedAt,
         })}
       </Text>
       <InteractionsCounter />
@@ -90,19 +90,19 @@ PlayableItemHeader.propTypes = {
   style: ViewPropTypes.style,
   title: PropTypes.string.isRequired,
   duration: momentPropTypes.momentDurationObj,
-  publishDate: momentPropTypes.momentObj,
+  publishedAt: momentPropTypes.momentObj,
   onPlay: PropTypes.func,
   formatDuration: PropTypes.func,
-  formatPublishDate: PropTypes.func,
+  formatpublishedAt: PropTypes.func,
 };
 
 PlayableItemHeader.defaultProps = {
   style: {},
   duration: null,
-  publishDate: null,
+  publishedAt: null,
   onPlay: () => {},
   formatDuration: formatMinutesString,
-  formatPublishDate: m => `${m.fromNow()}`,
+  formatpublishedAt: m => `${m.fromNow()}`,
 };
 
 export default PlayableItemHeader;

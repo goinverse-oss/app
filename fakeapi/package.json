@@ -6,7 +6,10 @@
   "private": true,
   "scripts": {
     "build": "babel ./src -d ./build --source-maps",
+    "ci:deploy": "./ci/deploy.sh",
     "deploy": "yarn now --public",
+    "now-start": "./build/server.js",
+    "prestart": "yarn build",
     "start": "./build/server.js"
   },
   "dependencies": {

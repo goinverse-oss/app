@@ -45,7 +45,7 @@ export default {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     duration: momentPropTypes.momentDurationObj,
-    publishDate: momentPropTypes.momentObj,
+    publishedAt: momentPropTypes.momentObj,
   }),
   liturgyItem: PropTypes.shape({
     // TODO: expand as we use more of it
@@ -53,7 +53,7 @@ export default {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     duration: momentPropTypes.momentDurationObj,
-    publishDate: momentPropTypes.momentObj,
+    publishedAt: momentPropTypes.momentObj,
   }),
   meditation: PropTypes.shape({
     // TODO: expand as we use more of it
@@ -61,7 +61,7 @@ export default {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     duration: momentPropTypes.momentDurationObj,
-    publishDate: momentPropTypes.momentObj,
+    publishedAt: momentPropTypes.momentObj,
   }),
   event: PropTypes.shape({
     // TODO: expand as we use more of it

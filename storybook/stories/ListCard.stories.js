@@ -83,7 +83,7 @@ const PlayableListCardStory = props => (
     title="Enemies - Live from Los Angeles"
     description="This is a special live episode recorded at The Liturgists Gathering in Los Angeles, CA on September 15, 2017."
     duration={moment.duration(88, 'minutes')}
-    publishDate={moment('2017-09-15')}
+    publishedAt={moment('2017-09-15')}
     {...props}
   />
 );
@@ -99,7 +99,7 @@ const podcasts = [
       'in Los Angeles, CA on September 15, 2017.'
     ),
     duration: moment.duration(88, 'minutes'),
-    publishDate: moment('2017-09-15'),
+    publishedAt: moment('2017-09-15'),
   },
   {
     imageUrl: liturgistsPodcastImageUrl,
@@ -109,7 +109,7 @@ const podcasts = [
       'when we change more than our label can accommodate.'
     ),
     duration: moment.duration(70, 'minutes'),
-    publishDate: moment('2017-08-14'),
+    publishedAt: moment('2017-08-14'),
   },
   {
     imageUrl: liturgistsPodcastImageUrl,
@@ -119,7 +119,7 @@ const podcasts = [
       'What is the Bible.'
     ),
     duration: moment.duration(77, 'minutes'),
-    publishDate: moment('2017-07-10'),
+    publishedAt: moment('2017-07-10'),
   },
 ];
 
@@ -152,7 +152,7 @@ const meditations = [
     title: 'Letting Go',
     description: 'A meditation by Hillary McBride.',
     duration: moment.duration(12, 'minutes'),
-    publishDate: moment('2018-02-16T19:38:00-05:00'),
+    publishedAt: moment('2018-02-16T19:38:00-05:00'),
   },
   {
     imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/6dxl-4tk3GKZ21CBz9pWlE0B81vVMFzRUZD1gLziorG8EpQhqfCbOdd-gp4FAxuu.jpeg?token-time=1520121600&token-hash=dDNuIFl4rHNvvT9T01ZExdteHSQhpCtnFo-nJt7S1zI%3D',
@@ -163,7 +163,7 @@ const meditations = [
       'representing the underlying unity of all.'
     ),
     duration: moment.duration(9, 'minutes'),
-    publishDate: moment('2018-02-01T19:37:00-05:00'),
+    publishedAt: moment('2018-02-01T19:37:00-05:00'),
   },
   {
     imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/J_mDFznRg3WJmwlz-co6c6NqQW0EUuYQOXOgdDMn8dFos2bjJ9AVAW8l-9UxLEUD.png?token-time=1520121600&token-hash=GAwP4Q6h56q15DS12uy406y8V87izp5lzs0XMPlSEsI%3D',
@@ -173,7 +173,7 @@ const meditations = [
       'become more powerful and helpful with repetition.'
     ),
     duration: moment.duration(22, 'minutes'),
-    publishDate: moment('2018-01-22T16:45:00-05:00'),
+    publishedAt: moment('2018-01-22T16:45:00-05:00'),
   },
 ];
 
