@@ -7,7 +7,7 @@ get_now_alias() {
 
 run_now() {
   echo "Running: yarn now [auth] $@"
-  yarn --silent now --token ${NOW_TOKEN} $@
+  yarn --silent now --token ${NOW_TOKEN} --team theliturgists $@
 }
 
 run_now --public
