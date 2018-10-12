@@ -97,4 +97,5 @@ export const meditationCategorySelector = instanceSelector('meditationCategories
 export const contributorSelector = instanceSelector('contributors');
 export const tagSelector = instanceSelector('tags');
 
+export const apiLoadingSelector = (state, resource) => _.get(state, ['orm.api.loading', resource], false);
 export const apiErrorSelector = state => _.get(state, 'orm.api.error');

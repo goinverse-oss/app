@@ -49,8 +49,14 @@ const fetchDataEpic = action$ =>
   action$.ofType(FETCH_DATA)
     .switchMap(action => (
       sendAPIRequest(action.payload)
-        .map(data => receiveData(data))
-        .catch(error => Observable.of(receiveApiError(error)))
+        .map(json => receiveData({
+          ..._.pick(action.payload, ['resource', 'id']),
+          json,
+        }))
+        .catch(error => Observable.of(receiveApiError({
+          ..._.pick(action.payload, ['resource', 'id']),
+          error,
+        })))
     ));
 
 export default combineEpics(fetchDataEpic);

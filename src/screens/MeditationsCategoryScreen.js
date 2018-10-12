@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ScrollView } from 'react-native';
+import { ScrollView, RefreshControl } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 
 import { getCommonNavigationOptions } from '../navigation/common';
@@ -9,7 +9,8 @@ import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import Meditation from '../state/models/Meditation';
-import { meditationCategorySelector } from '../state/ducks/orm/selectors';
+import { meditationCategorySelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
+import { fetchData } from '../state/ducks/orm';
 
 const MeditationsIcon = ({ tintColor }) => (
   <Icon
@@ -28,8 +29,15 @@ MeditationsIcon.propTypes = {
 /**
  * List of meditations in category, sorted by publish date.
  */
-const MeditationsCategoryScreen = ({ meditations }) => (
-  <ScrollView>
+const MeditationsCategoryScreen = ({ meditations, refreshing, refreshCategory }) => (
+  <ScrollView
+    refreshControl={
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={() => refreshCategory()}
+      />
+    }
+  >
     {
       meditations.map(
         meditation => (
@@ -47,6 +55,8 @@ MeditationsCategoryScreen.propTypes = {
   meditations: PropTypes.arrayOf(
     PropTypes.shape(Meditation.propTypes).isRequired,
   ),
+  refreshing: PropTypes.bool.isRequired,
+  refreshCategory: PropTypes.func.isRequired,
 };
 
 MeditationsCategoryScreen.defaultProps = {
@@ -63,6 +73,37 @@ function mapStateToProps(state, { navigation }) {
   return {
     meditations,
     isPatron: patreonSelectors.isPatron(state),
+    refreshing: (
+      apiLoadingSelector(state, 'meditations') ||
+      apiLoadingSelector(state, 'meditationCategories')
+    ),
+  };
+}
+
+function mapDispatchToProps(dispatch, { navigation }) {
+  const { state: { params: { category } } } = navigation;
+
+  return {
+    refreshCategory: () => {
+      let action;
+      if (category.title === 'All Meditations') {
+        action = fetchData({
+          resource: 'meditations',
+          params: {
+            include: 'category',
+          },
+        });
+      } else {
+        action = fetchData({
+          resource: 'meditationCategories',
+          id: category.id,
+          params: {
+            include: 'meditations',
+          },
+        });
+      }
+      dispatch(action);
+    },
   };
 }
 
@@ -74,4 +115,4 @@ MeditationsCategoryScreen.navigationOptions = ({ screenProps, navigation }) => (
   tabBarLabel: 'Meditations',
 });
 
-export default connect(mapStateToProps)(MeditationsCategoryScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MeditationsCategoryScreen);

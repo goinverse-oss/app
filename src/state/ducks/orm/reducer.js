@@ -5,7 +5,7 @@ import { handleActions } from 'redux-actions';
 
 import orm from '../../orm';
 
-import { RECEIVE_DATA, RECEIVE_API_ERROR } from './types';
+import { FETCH_DATA, RECEIVE_DATA, RECEIVE_API_ERROR } from './types';
 import { getModelName } from './utils';
 
 const defaultORMState = orm.session().state;
@@ -29,7 +29,7 @@ export default combineReducers({
 
       // capture included resources as a {[type]: {[id]: obj}} mapping.
       const includedResources =
-        _.get(action.payload, 'included', []).reduce(
+        _.get(action.payload.json, 'included', []).reduce(
           (mapping, obj) => (
             _.setWith(mapping, [obj.type, obj.id], obj, Object)
           ),
@@ -52,7 +52,7 @@ export default combineReducers({
         });
       }
 
-      const { data } = action.payload;
+      const { data } = action.payload.json;
       (_.isArray(data) ? data : [data]).forEach((item) => {
         const modelName = getModelName(item.type);
         const Model = session[modelName];
@@ -63,22 +63,17 @@ export default combineReducers({
         });
         _.each(_.get(item, 'relationships', {}), (rel, relName) => {
           const { data: relData } = rel;
+          let newRel;
           if (_.isArray(relData)) {
-            // first, clear out old list of related objects
-            const oldIds = _.map(instance[relName].toRefArray(), 'id');
-            if (oldIds.length > 0) {
-              instance[relName].remove(...oldIds);
-            }
-
-            // then, add all the current related objects
-            if (relData.length > 0) {
-              const newRels = relData.map(saveRelationship);
-              instance[relName].add(...newRels);
-            }
+            // Redux-ORM handles the merge of new and old arrays
+            newRel = relData.map(saveRelationship);
           } else {
-            const relObj = saveRelationship(relData);
-            instance.set(relName, relObj);
+            newRel = saveRelationship(relData);
           }
+
+          instance.update({
+            [relName]: newRel,
+          });
         });
       });
       return session.state;
@@ -86,8 +81,20 @@ export default combineReducers({
   }, defaultORMState),
 
   api: handleActions({
+    [FETCH_DATA]: (state, action) => ({
+      loading: {
+        ...state.loading,
+        [action.payload.resource]: true,
+      },
+    }),
+    [RECEIVE_DATA]: (state, action) => ({
+      loading: {
+        ...state.loading,
+        [action.payload.resource]: false,
+      },
+    }),
     [RECEIVE_API_ERROR]: (state, action) => ({
-      error: action.payload,
+      error: action.payload.error,
     }),
   }, defaultAPIState),
 });

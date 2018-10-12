@@ -272,18 +272,23 @@ describe('orm reducer', () => {
 
   cases.forEach(({ description, apiJson, relationships }) => {
     describe(description, () => {
+      let id;
       let type;
       let apiData;
       let expected;
 
       beforeEach(() => {
-        store.dispatch(actions.receiveData(apiJson));
-
         apiData = _.isArray(apiJson.data) ? apiJson.data[0] : apiJson.data;
-        ({ type } = apiData);
+        ({ id, type } = apiData);
+
+        store.dispatch(actions.receiveData({
+          resource: type,
+          id,
+          json: apiJson,
+        }));
 
         expected = {
-          id: apiData.id,
+          id,
           ...apiData.attributes,
           ...relationships,
         };
@@ -340,7 +345,10 @@ describe('orm reducer', () => {
       included: [categoryJson],
     };
 
-    store.dispatch(actions.receiveData(apiJson));
+    store.dispatch(actions.receiveData({
+      resource: 'meditations',
+      json: apiJson,
+    }));
 
     const expectedMeditations = apiJson.data.map(datum => ({
       id: datum.id,
@@ -373,7 +381,10 @@ describe('orm reducer', () => {
 
   it('stores an API error', () => {
     const expectedError = new Error('404 OOPS LOL');
-    store.dispatch(actions.receiveApiError(expectedError));
+    store.dispatch(actions.receiveApiError({
+      resource: 'meditations',
+      error: expectedError,
+    }));
 
     const error = selectors.apiErrorSelector(store.getState());
     expect(error).toEqual(expectedError);
@@ -424,7 +435,11 @@ describe('api epic', () => {
       // assert that the request was made
       expect(mock.history.get[0].url).toEqual(url);
 
-      expect(responseAction).toEqual(actions.receiveData(payload));
+      const expectedAction = actions.receiveData({
+        ...args,
+        json: payload,
+      });
+      expect(responseAction).toEqual(expectedAction);
     });
   });
 
@@ -437,9 +452,8 @@ describe('api epic', () => {
 
     function expectErrorActionWithStatus(action, statusCode) {
       expect(action.type).toEqual(types.RECEIVE_API_ERROR);
-      expect(action.error).toBe(true);
-      expect(action.payload).toBeInstanceOf(Error);
-      expect(action.payload.response.status).toEqual(statusCode);
+      expect(action.payload.error).toBeInstanceOf(Error);
+      expect(action.payload.error.response.status).toEqual(statusCode);
     }
 
     test('fetchData() leads to receiveApiError()', async () => {

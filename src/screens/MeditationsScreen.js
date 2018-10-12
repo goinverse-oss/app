@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ScrollView } from 'react-native';
+import { ScrollView, RefreshControl } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 
 import { getCommonNavigationOptions } from '../navigation/common';
@@ -11,6 +11,7 @@ import { fetchData } from '../state/ducks/orm';
 import {
   meditationsSelector,
   meditationCategoriesSelector,
+  apiLoadingSelector,
 } from '../state/ducks/orm/selectors';
 import * as navActions from '../state/ducks/navigation/actions';
 
@@ -49,7 +50,14 @@ class MeditationsScreen extends Component {
     ];
 
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.refreshing}
+            onRefresh={() => this.props.fetchMeditations()}
+          />
+        }
+      >
         <MeditationSeriesList
           meditationCategories={meditationCategories}
           onPressMeditationCategory={category => viewMeditation(category)}
@@ -68,6 +76,7 @@ MeditationsScreen.propTypes = {
   ),
   fetchMeditations: PropTypes.func.isRequired,
   viewMeditation: PropTypes.func.isRequired,
+  refreshing: PropTypes.bool.isRequired,
 };
 
 MeditationsScreen.defaultProps = {
@@ -80,6 +89,7 @@ function mapStateToProps(state) {
     meditations: meditationsSelector(state),
     categories: meditationCategoriesSelector(state),
     isPatron: patreonSelectors.isPatron(state),
+    refreshing: apiLoadingSelector(state, 'meditations'),
   };
 }
 
