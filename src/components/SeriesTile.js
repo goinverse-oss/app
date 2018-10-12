@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
 });
 
 const SeriesTile = ({
-  onPress, imageSource, title, description,
+  onPress, imageUrl, title, description,
 }) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={styles.container}>
-      <Image source={imageSource} style={styles.cardImage} />
+      <Image source={{ uri: imageUrl }} style={styles.cardImage} />
       <View>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title} numberOfLines={1}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
     </View>
@@ -82,9 +82,7 @@ const SeriesTile = ({
 );
 
 SeriesTile.propTypes = {
-  imageSource: PropTypes.shape({
-    uri: PropTypes.string.isRequired,
-  }).isRequired,
+  imageUrl: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onPress: PropTypes.func,

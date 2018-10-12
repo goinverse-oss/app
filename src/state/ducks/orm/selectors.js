@@ -39,6 +39,11 @@ const modelToObject = {
     ...{
       // relationships
       tags: meditationCategory.tags.toRefArray(),
+      meditations: meditationCategory.meditations
+        .orderBy('publishedAt', 'desc')
+        .toRefArray().map(
+          m => _.omit(m, 'category'),
+        ),
     },
   }),
   Contributor: contributor => ({
@@ -49,12 +54,20 @@ const modelToObject = {
   }),
 };
 
+const modelOrderArgs = {
+  Meditation: ['publishedAt', 'desc'],
+  MeditationCategory: ['title'],
+  Contributor: ['name'],
+  Tag: ['name'],
+};
+
 function collectionSelector(type) {
   const modelName = getModelName(type);
   return createSelector(
     orm,
     dbStateSelector,
     session => session[modelName].all()
+      .orderBy(...modelOrderArgs[modelName])
       .toModelArray()
       .map(modelToObject[modelName]),
   );

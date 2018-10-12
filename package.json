@@ -70,6 +70,7 @@
     "jest-junit": "^3.4.1",
     "json": "^9.0.6",
     "jsonapi-server": "^4.2.0",
+    "pluralize": "^7.0.0",
     "pre-commit": "^1.2.2",
     "react-dom": "16.0.0-beta.5",
     "react-native-debugger-open": "^0.3.15",

@@ -8,7 +8,10 @@ import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import { fetchData } from '../state/ducks/orm';
-import { meditationsSelector } from '../state/ducks/orm/selectors';
+import {
+  meditationsSelector,
+  meditationCategoriesSelector,
+} from '../state/ducks/orm/selectors';
 import * as navActions from '../state/ducks/navigation/actions';
 
 const MeditationsIcon = ({ tintColor }) => (
@@ -35,15 +38,14 @@ class MeditationsScreen extends Component {
   }
 
   render() {
-    const { meditations, viewMeditation } = this.props;
+    const { meditations, categories, viewMeditation } = this.props;
     const meditationCategories = [
       {
         title: 'All Meditations',
-        meditationCount: meditations.length,
-        imageSource: {
-          uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
-        },
+        meditations,
+        imageUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
       },
+      ...categories,
     ];
 
     return (
@@ -61,24 +63,36 @@ MeditationsScreen.propTypes = {
   meditations: PropTypes.arrayOf(
     PropTypes.shape({}),
   ),
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({}),
+  ),
   fetchMeditations: PropTypes.func.isRequired,
   viewMeditation: PropTypes.func.isRequired,
 };
 
 MeditationsScreen.defaultProps = {
   meditations: [],
+  categories: [],
 };
 
 function mapStateToProps(state) {
   return {
     meditations: meditationsSelector(state),
+    categories: meditationCategoriesSelector(state),
     isPatron: patreonSelectors.isPatron(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchMeditations: () => dispatch(fetchData({ resource: 'meditations' })),
+    fetchMeditations: () => dispatch(
+      fetchData({
+        resource: 'meditations',
+        params: {
+          include: 'category',
+        },
+      }),
+    ),
     viewMeditation: category => dispatch(navActions.viewMeditation(category)),
   };
 }

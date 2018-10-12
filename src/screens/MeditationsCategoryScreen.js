@@ -8,7 +8,8 @@ import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
-import { meditationsSelector } from '../state/ducks/orm/selectors';
+import Meditation from '../state/models/Meditation';
+import { meditationCategorySelector } from '../state/ducks/orm/selectors';
 
 const MeditationsIcon = ({ tintColor }) => (
   <Icon
@@ -44,7 +45,7 @@ const MeditationsCategoryScreen = ({ meditations }) => (
 
 MeditationsCategoryScreen.propTypes = {
   meditations: PropTypes.arrayOf(
-    PropTypes.shape({}),
+    PropTypes.shape(Meditation.propTypes).isRequired,
   ),
 };
 
@@ -52,9 +53,15 @@ MeditationsCategoryScreen.defaultProps = {
   meditations: [],
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, { navigation }) {
+  const { state: { params: { category } } } = navigation;
+  const meditations = (
+    category.title === 'All Meditations'
+      ? category.meditations
+      : meditationCategorySelector(state, category.id).meditations
+  );
   return {
-    meditations: meditationsSelector(state),
+    meditations,
     isPatron: patreonSelectors.isPatron(state),
   };
 }
@@ -64,6 +71,7 @@ MeditationsCategoryScreen.navigationOptions = ({ screenProps, navigation }) => (
   headerLeft: <BackButton />,
   title: navigation.state.params.category.title,
   tabBarIcon: MeditationsIcon,
+  tabBarLabel: 'Meditations',
 });
 
 export default connect(mapStateToProps)(MeditationsCategoryScreen);

@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppPropTypes from '../propTypes';
+import _ from 'lodash';
 
 import SeriesTile from './SeriesTile';
+import MeditationCategory from '../state/models/MeditationCategory';
 
 const formatMeditationCount = (meditationCount) => {
   let meditationString = 'Meditations';
@@ -14,17 +15,19 @@ const formatMeditationCount = (meditationCount) => {
 
 const MeditationSeriesTile = ({ meditationCategory, onPress }) => (
   <SeriesTile
-    imageSource={meditationCategory.imageSource}
+    imageUrl={meditationCategory.imageUrl}
     title={meditationCategory.title}
     onPress={() => onPress(meditationCategory)}
     description={
-      formatMeditationCount(meditationCategory.meditationCount)
+      formatMeditationCount(_.get(meditationCategory, 'meditations.length', 0))
     }
   />
 );
 
 MeditationSeriesTile.propTypes = {
-  meditationCategory: AppPropTypes.meditationCategory.isRequired,
+  meditationCategory: PropTypes.shape(
+    MeditationCategory.propTypes,
+  ).isRequired,
   onPress: PropTypes.func,
 };
 

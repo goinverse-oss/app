@@ -16,27 +16,21 @@ export default {
   person: PropTypes.shape({
     // TODO: expand as we use more of it
     name: PropTypes.string.isRequired,
-    imageSource: imageSource.isRequired,
+    imageUrl: PropTypes.string.isRequired,
   }),
 
   podcast: PropTypes.shape({
     title: PropTypes.string.isRequired,
     episodeCount: PropTypes.number,
     lastUpdated: momentPropTypes.momentObj.isRequired,
-    imageSource: imageSource.isRequired,
-  }),
-
-  meditationCategory: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    meditationCount: PropTypes.number,
-    imageSource: imageSource.isRequired,
+    imageUrl: PropTypes.string.isRequired,
   }),
 
   liturgy: PropTypes.shape({
     title: PropTypes.string.isRequired,
     liturgyLength: PropTypes.number,
     publishedDate: momentPropTypes.momentObj.isRequired,
-    imageSource: imageSource.isRequired,
+    imageUrl: PropTypes.string.isRequired,
   }),
 
   podcastEpisode: PropTypes.shape({

@@ -65,14 +65,19 @@ export default combineReducers({
           const { data: relData } = rel;
           if (_.isArray(relData)) {
             // first, clear out old list of related objects
-            instance[relName].remove(
-              ..._.map(instance[relName].toRefArray(), 'id'),
-            );
+            const oldIds = _.map(instance[relName].toRefArray(), 'id');
+            if (oldIds.length > 0) {
+              instance[relName].remove(...oldIds);
+            }
 
             // then, add all the current related objects
-            instance[relName].add(...relData.map(saveRelationship));
+            if (relData.length > 0) {
+              const newRels = relData.map(saveRelationship);
+              instance[relName].add(...newRels);
+            }
           } else {
-            instance.set(relName, saveRelationship(relData));
+            const relObj = saveRelationship(relData);
+            instance.set(relName, relObj);
           }
         });
       });

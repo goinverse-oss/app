@@ -27,10 +27,10 @@ factory.define('meditationCategories', Object, {
     )).join('\n\n')
   ),
   imageUrl: placeholders.imageUrl,
-  tags: randomRelatedObjects('meditationCategories', 'tags'),
+  tags: randomRelatedObjects('meditationCategories', 'tags', 3),
   meditations: randomRelatedObjects('meditationCategories', 'meditations'),
   createdAt: factory.sequence(
     'meditationCategories.createdAt',
-    n => moment('2017-02-07').add(n, 'weeks'),
+    n => moment().subtract(n, 'weeks'),
   ),
 });

@@ -26,13 +26,13 @@ import config from '../../../../config.json';
  *
  * @return {Observable} emitting an axios response object
  */
-function sendAPIRequest({ resource, id }) {
+function sendAPIRequest({ resource, id, ...options }) {
   const baseUrl = config.apiBaseUrl;
   const endpoint = _.isUndefined(id) ? resource : `${resource}/${id}`;
 
   const url = `${baseUrl}/${endpoint}`;
   return Observable.fromPromise(
-    axios.get(url).then(r => r.data),
+    axios.get(url, options).then(r => r.data),
   );
 }
 

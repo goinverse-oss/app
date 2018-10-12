@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import AppPropTypes from '../propTypes';
 import MeditationSeriesTile from './MeditationSeriesTile';
+import MeditationCategory from '../state/models/MeditationCategory';
 
 const styles = StyleSheet.create({
   list: {
@@ -28,8 +28,11 @@ const MeditationSeriesList = ({ meditationCategories, onPressMeditationCategory 
       </View>
     </ScrollView>
   );
+
 MeditationSeriesList.propTypes = {
-  meditationCategories: PropTypes.arrayOf(AppPropTypes.meditationCategory),
+  meditationCategories: PropTypes.arrayOf(
+    PropTypes.shape(MeditationCategory.propTypes),
+  ),
   onPressMeditationCategory: PropTypes.func,
 };
 

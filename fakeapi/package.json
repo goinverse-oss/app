@@ -15,6 +15,7 @@
   "dependencies": {
     "factory-girl": "^5.0.2",
     "jsonapi-server": "^4.2.0",
+    "lodash": "^4.17.11",
     "moment": "^2.22.2"
   },
   "devDependencies": {
