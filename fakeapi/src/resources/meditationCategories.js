@@ -26,7 +26,10 @@ factory.define('meditationCategories', Object, {
       factory.chance('paragraph', { sentences: 3 })()
     )).join('\n\n')
   ),
-  imageUrl: placeholders.imageUrl,
+  imageUrl: factory.sequence(
+    'meditationCategories.imageUrl',
+    n => placeholders.imageUrl(n),
+  ),
   tags: randomRelatedObjects('meditationCategories', 'tags', 3),
   meditations: randomRelatedObjects('meditationCategories', 'meditations'),
   createdAt: factory.sequence(

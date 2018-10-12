@@ -30,7 +30,10 @@ factory.define('meditations', Object, {
       factory.chance('paragraph', { sentences: 3 })()
     )).join('\n\n')
   ),
-  imageUrl: placeholders.imageUrl,
+  imageUrl: factory.sequence(
+    'meditations.imageUrl',
+    n => placeholders.imageUrl(n),
+  ),
   mediaUrl: placeholders.mediaUrl,
   publishedAt: factory.sequence(
     'meditations.publishedAt',
