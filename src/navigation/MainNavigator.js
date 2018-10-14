@@ -16,6 +16,7 @@ import PatreonScreen from '../screens/PatreonScreen';
 import PodcastsScreen from '../screens/PodcastsScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
 import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
+import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
 
 const { DrawerLayout } = expo.DangerZone.GestureHandler;
@@ -23,6 +24,7 @@ const { DrawerLayout } = expo.DangerZone.GestureHandler;
 const MeditationsNavigator = StackNavigator({
   AllMeditationCategories: MeditationsScreen,
   MeditationsCategory: MeditationsCategoryScreen,
+  SingleMeditation: SingleMeditationScreen,
 });
 
 const Tabs = TabNavigator({

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import _ from 'lodash';
 
+import Tag from '../state/models/Tag';
 import SectionHeader from './SectionHeader';
 import TextPill from './TextPill';
 
@@ -18,14 +18,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function getTagText(tag) {
-  if (_.isString(tag)) {
-    return tag;
-  }
-
-  return tag.label || tag.value;
-}
-
 const TagList = ({ tags, onTagPress }) => (
   <View>
     <SectionHeader>Tags</SectionHeader>
@@ -33,11 +25,11 @@ const TagList = ({ tags, onTagPress }) => (
       {
         tags.map(tag => (
           <TextPill
-            key={getTagText(tag)}
+            key={tag.name}
             style={styles.tag}
             onPress={() => onTagPress(tag)}
           >
-            {getTagText(tag)}
+            {tag.name}
           </TextPill>
         ))
       }
@@ -45,24 +37,16 @@ const TagList = ({ tags, onTagPress }) => (
   </View>
 );
 
-const tagPropType = PropTypes.oneOfType([
-  PropTypes.string.isRequired,
-  PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string,
-  }),
-]);
-
 TagList.propTypes = {
-  tags: PropTypes.oneOfType([
-    tagPropType,
-    PropTypes.arrayOf(tagPropType),
-  ]).isRequired,
+  tags: PropTypes.arrayOf(
+    PropTypes.shape(Tag.propTypes),
+  ),
 
   onTagPress: PropTypes.func,
 };
 
 TagList.defaultProps = {
+  tags: [],
   onTagPress: () => {},
 };
 

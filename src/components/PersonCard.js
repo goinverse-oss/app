@@ -52,7 +52,7 @@ const PersonCard = ({ person, onPress, style }) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={[styles.card, style]}>
       <CircleImage
-        source={person.imageSource}
+        source={{ uri: person.imageUrl }}
         diameter={70}
         style={styles.picture}
       />

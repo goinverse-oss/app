@@ -33,6 +33,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
     "react-native-dropdownalert": "^3.7.0",
     "react-native-elements": "^0.19.0",
+    "react-native-markdown-renderer": "^3.2.8",
     "react-navigation": "^1.6.1",
     "react-navigation-redux-helpers": "^1.0.3",
     "react-redux": "^5.0.6",

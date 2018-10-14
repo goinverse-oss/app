@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginHorizontal: 15,
   },
   imageContainer: {
     marginRight: 20,
