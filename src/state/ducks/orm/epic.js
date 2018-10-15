@@ -26,13 +26,13 @@ import config from '../../../../config.json';
  *
  * @return {Observable} emitting an axios response object
  */
-function sendAPIRequest({ resource, id }) {
+function sendAPIRequest({ resource, id, ...options }) {
   const baseUrl = config.apiBaseUrl;
   const endpoint = _.isUndefined(id) ? resource : `${resource}/${id}`;
 
   const url = `${baseUrl}/${endpoint}`;
   return Observable.fromPromise(
-    axios.get(url).then(r => r.data),
+    axios.get(url, options).then(r => r.data),
   );
 }
 
@@ -49,8 +49,14 @@ const fetchDataEpic = action$ =>
   action$.ofType(FETCH_DATA)
     .switchMap(action => (
       sendAPIRequest(action.payload)
-        .map(data => receiveData(data))
-        .catch(error => Observable.of(receiveApiError(error)))
+        .map(json => receiveData({
+          ..._.pick(action.payload, ['resource', 'id']),
+          json,
+        }))
+        .catch(error => Observable.of(receiveApiError({
+          ..._.pick(action.payload, ['resource', 'id']),
+          error,
+        })))
     ));
 
 export default combineEpics(fetchDataEpic);

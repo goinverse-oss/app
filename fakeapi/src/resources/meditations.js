@@ -30,18 +30,21 @@ factory.define('meditations', Object, {
       factory.chance('paragraph', { sentences: 3 })()
     )).join('\n\n')
   ),
-  imageUrl: placeholders.imageUrl,
+  imageUrl: factory.sequence(
+    'meditations.imageUrl',
+    n => placeholders.imageUrl(n),
+  ),
   mediaUrl: placeholders.mediaUrl,
   publishedAt: factory.sequence(
     'meditations.publishedAt',
-    n => moment('2017-02-07').add(n, 'weeks'),
+    n => moment().subtract(n, 'weeks'),
   ),
   status: 'published',
-  category: randomRelatedObject('meditations', 'meditationCategories'),
-  tags: randomRelatedObjects('meditations', 'tags'),
+  category: randomRelatedObject('meditations', 'meditationCategories', 1, 5),
+  tags: randomRelatedObjects('meditations', 'tags', 3),
   contributors: randomRelatedObjects('meditations', 'contributors'),
   createdAt: factory.sequence(
     'meditations.createdAt',
-    n => moment('2017-02-07').add(n, 'weeks'),
+    n => moment().subtract(n, 'weeks'),
   ),
 });

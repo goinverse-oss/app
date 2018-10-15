@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { Animated, StyleSheet, Dimensions, Platform } from 'react-native';
 import {
   StackNavigator,
   TabNavigator,
 } from 'react-navigation';
+import { connect } from 'react-redux';
+import DropdownAlert from 'react-native-dropdownalert';
 import expo, { LinearGradient } from 'expo';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -12,14 +15,20 @@ import LoginScreen from '../screens/LoginScreen';
 import PatreonScreen from '../screens/PatreonScreen';
 import PodcastsScreen from '../screens/PodcastsScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
+import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
 import DrawerContent from '../navigation/DrawerContent';
 
 const { DrawerLayout } = expo.DangerZone.GestureHandler;
 
+const MeditationsNavigator = StackNavigator({
+  AllMeditationCategories: MeditationsScreen,
+  MeditationsCategory: MeditationsCategoryScreen,
+});
+
 const Tabs = TabNavigator({
   Home: { screen: HomeScreen },
   Podcasts: { screen: PodcastsScreen },
-  Meditations: { screen: MeditationsScreen },
+  Meditations: { screen: MeditationsNavigator },
 }, {
   ...TabNavigator.Presets.iOSBottomTabs,
   tabBarOptions: {
@@ -49,17 +58,13 @@ const Tabs = TabNavigator({
 });
 
 // hack to get the header to appear (it doesn't with a TabNavigator)
-const MainWithHeader = StackNavigator({
-  MainWithHeader: { screen: Tabs },
-});
-
 const PatreonWithHeader = StackNavigator({
   PatreonWithHeader: { screen: PatreonScreen },
 });
 
 const Modals = StackNavigator(
   {
-    Main: { screen: MainWithHeader },
+    Main: { screen: Tabs },
     Patreon: { screen: PatreonWithHeader },
     Logout: { screen: LoginScreen },
   },
@@ -92,6 +97,7 @@ class MainNavigator extends React.Component {
     this.state = {
       drawer: null,
     };
+    this.dropDown = null;
   }
 
   getAnimatedStyles() {
@@ -113,6 +119,18 @@ class MainNavigator extends React.Component {
   }
 
   render() {
+    const { apiError } = this.props;
+    if (apiError && this.dropDown) {
+      this.dropDown.alertWithType(
+        'error',
+        apiError.message,
+        [
+          `URL: ${apiError.config.url}`,
+          _.get(apiError, 'request._response', ''),
+        ].join('\n'),
+      );
+    }
+
     return (
       <LinearGradient style={styles.gradient} colors={['#FFFFFF00', '#F95A570C']}>
         <DrawerLayout
@@ -143,6 +161,10 @@ class MainNavigator extends React.Component {
               screenProps={{ drawer: this.state.drawer }}
               navigation={this.props.navigation}
             />
+            <DropdownAlert
+              ref={(ref) => { this.dropDown = ref; }}
+              messageNumOfLines={10}
+            />
           </Animated.View>
         </DrawerLayout>
       </LinearGradient>
@@ -153,6 +175,17 @@ class MainNavigator extends React.Component {
 MainNavigator.propTypes = {
   // react-navigation internal navigation state object
   navigation: PropTypes.shape({}).isRequired,
+  apiError: PropTypes.instanceOf(Error),
 };
 
-export default MainNavigator;
+MainNavigator.defaultProps = {
+  apiError: null,
+};
+
+function mapStateToProps(state) {
+  return {
+    apiError: _.get(state, 'orm.api.error'),
+  };
+}
+
+export default connect(mapStateToProps)(MainNavigator);

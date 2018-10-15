@@ -11,7 +11,7 @@ const LiturgyItemListCard = ({ liturgyItem, ...props }) => (
     title={liturgyItem.title}
     description={liturgyItem.description}
     duration={liturgyItem.duration}
-    publishDate={liturgyItem.publishDate}
+    publishedAt={liturgyItem.publishedAt}
     mediaType="liturgy"
     {...props}
   />

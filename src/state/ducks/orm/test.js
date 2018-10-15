@@ -51,6 +51,7 @@ const cases = [
     },
     relationships: {
       tags: [],
+      meditations: [],
     },
   },
 
@@ -128,6 +129,7 @@ const cases = [
     },
     relationships: {
       tags: [{ id: '123' }],
+      meditations: [],
     },
   },
 
@@ -166,6 +168,7 @@ const cases = [
     },
     relationships: {
       tags: [{ id: '123', name: 'mindfulness' }],
+      meditations: [],
     },
   },
 
@@ -269,18 +272,23 @@ describe('orm reducer', () => {
 
   cases.forEach(({ description, apiJson, relationships }) => {
     describe(description, () => {
+      let id;
       let type;
       let apiData;
       let expected;
 
       beforeEach(() => {
-        store.dispatch(actions.receiveData(apiJson));
-
         apiData = _.isArray(apiJson.data) ? apiJson.data[0] : apiJson.data;
-        ({ type } = apiData);
+        ({ id, type } = apiData);
+
+        store.dispatch(actions.receiveData({
+          resource: type,
+          id,
+          json: apiJson,
+        }));
 
         expected = {
-          id: apiData.id,
+          id,
           ...apiData.attributes,
           ...relationships,
         };
@@ -301,9 +309,82 @@ describe('orm reducer', () => {
     });
   });
 
+  it('stores reverse relationships', () => {
+    const categoryJson = {
+      id: '1',
+      type: 'meditationCategories',
+      attributes: {
+        title: 'All Meditations',
+        description: 'All the meditations.',
+      },
+    };
+    const categoryRel = {
+      data: _.pick(categoryJson, ['id', 'type']),
+    };
+    const apiJson = {
+      data: [
+        {
+          id: '123',
+          type: 'meditations',
+          attributes: {
+            title: 'Names of God',
+            description: "A meditation on the names you use and the names you don't.",
+          },
+          relationships: { category: categoryRel },
+        },
+        {
+          id: '456',
+          type: 'meditations',
+          attributes: {
+            title: 'Who are you',
+            description: 'A meditation on who you think you are',
+          },
+          relationships: { category: categoryRel },
+        },
+      ],
+      included: [categoryJson],
+    };
+
+    store.dispatch(actions.receiveData({
+      resource: 'meditations',
+      json: apiJson,
+    }));
+
+    const expectedMeditations = apiJson.data.map(datum => ({
+      id: datum.id,
+      ...datum.attributes,
+      category: {
+        id: categoryJson.id,
+        ...categoryJson.attributes,
+      },
+      tags: [],
+      contributors: [],
+    }));
+
+    const meditations = selectors.meditationsSelector(store.getState());
+    expect(meditations).toEqual(expectedMeditations);
+
+    const expectedCategory = {
+      id: categoryJson.id,
+      ...categoryJson.attributes,
+      meditations: expectedMeditations.map(
+        m => _.pick(m, ['id', 'title', 'description']),
+      ),
+      tags: [],
+    };
+    const category = selectors.meditationCategorySelector(
+      store.getState(),
+      categoryJson.id,
+    );
+    expect(category).toEqual(expectedCategory);
+  });
+
   it('stores an API error', () => {
     const expectedError = new Error('404 OOPS LOL');
-    store.dispatch(actions.receiveApiError(expectedError));
+    store.dispatch(actions.receiveApiError({
+      resource: 'meditations',
+      error: expectedError,
+    }));
 
     const error = selectors.apiErrorSelector(store.getState());
     expect(error).toEqual(expectedError);
@@ -354,7 +435,11 @@ describe('api epic', () => {
       // assert that the request was made
       expect(mock.history.get[0].url).toEqual(url);
 
-      expect(responseAction).toEqual(actions.receiveData(payload));
+      const expectedAction = actions.receiveData({
+        ...args,
+        json: payload,
+      });
+      expect(responseAction).toEqual(expectedAction);
     });
   });
 
@@ -367,9 +452,8 @@ describe('api epic', () => {
 
     function expectErrorActionWithStatus(action, statusCode) {
       expect(action.type).toEqual(types.RECEIVE_API_ERROR);
-      expect(action.error).toBe(true);
-      expect(action.payload).toBeInstanceOf(Error);
-      expect(action.payload.response.status).toEqual(statusCode);
+      expect(action.payload.error).toBeInstanceOf(Error);
+      expect(action.payload.error.response.status).toEqual(statusCode);
     }
 
     test('fetchData() leads to receiveApiError()', async () => {

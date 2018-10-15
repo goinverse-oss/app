@@ -39,10 +39,26 @@ const modelToObject = {
     ...{
       // relationships
       tags: meditationCategory.tags.toRefArray(),
+      meditations: meditationCategory.meditations
+        .orderBy('publishedAt', 'desc')
+        .toRefArray().map(
+          m => _.omit(m, 'category'),
+        ),
     },
   }),
-  Contributor: contributor => contributor.ref,
-  Tag: tag => tag.ref,
+  Contributor: contributor => ({
+    ...contributor.ref,
+  }),
+  Tag: tag => ({
+    ...tag.ref,
+  }),
+};
+
+const modelOrderArgs = {
+  Meditation: ['publishedAt', 'desc'],
+  MeditationCategory: ['title'],
+  Contributor: ['name'],
+  Tag: ['name'],
 };
 
 function collectionSelector(type) {
@@ -51,6 +67,7 @@ function collectionSelector(type) {
     orm,
     dbStateSelector,
     session => session[modelName].all()
+      .orderBy(...modelOrderArgs[modelName])
       .toModelArray()
       .map(modelToObject[modelName]),
   );
@@ -80,4 +97,5 @@ export const meditationCategorySelector = instanceSelector('meditationCategories
 export const contributorSelector = instanceSelector('contributors');
 export const tagSelector = instanceSelector('tags');
 
+export const apiLoadingSelector = (state, resource) => _.get(state, ['orm.api.loading', resource], false);
 export const apiErrorSelector = state => _.get(state, 'orm.api.error');
