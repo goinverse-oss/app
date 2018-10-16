@@ -16,10 +16,17 @@ function momentize(modelName, obj) {
     Meditation: ['publishedAt'],
   }, modelName, []);
   const momentKeys = ['createdAt', 'updatedAt', ...extraKeys];
-  return _(obj)
-    .pick(momentKeys)
-    .mapValues(timestamp => moment(timestamp))
-    .value();
+  const durationKeys = ['duration'];
+  return {
+    ..._(obj)
+      .pick(momentKeys)
+      .mapValues(timestamp => moment(timestamp))
+      .value(),
+    ..._(obj)
+      .pick(durationKeys)
+      .mapValues(duration => moment.duration(duration))
+      .value(),
+  };
 }
 
 export default combineReducers({

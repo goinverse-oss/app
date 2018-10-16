@@ -12,6 +12,7 @@ export default {
   description: jsonApi.Joi.string(),
   imageUrl: jsonApi.Joi.string().uri(),
   mediaUrl: jsonApi.Joi.string().uri().required(),
+  duration: jsonApi.Joi.string().required(),
   publishedAt: jsonApi.Joi.date(),
   status: jsonApi.Joi.string().valid('published', 'draft').required(),
   category: jsonApi.Joi.one('meditationCategories'),
@@ -35,6 +36,10 @@ factory.define('meditations', Object, {
     n => placeholders.imageUrl(n),
   ),
   mediaUrl: placeholders.mediaUrl,
+  duration: factory.sequence(
+    'meditations.duration',
+    () => moment.duration(_.random(60 * 7, 60 * 25), 'seconds').toISOString(),
+  ),
   publishedAt: factory.sequence(
     'meditations.publishedAt',
     n => moment().subtract(n, 'weeks'),
