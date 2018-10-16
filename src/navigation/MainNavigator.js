@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Animated, StyleSheet, Dimensions, Platform } from 'react-native';
 import {
-  StackNavigator,
-  TabNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
 } from 'react-navigation';
 import { connect } from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -18,21 +18,25 @@ import MeditationsScreen from '../screens/MeditationsScreen';
 import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
 import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
+import MeditationsIcon from '../screens/MeditationsIcon';
 
 const { DrawerLayout } = expo.DangerZone.GestureHandler;
 
-const MeditationsNavigator = StackNavigator({
+const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,
   MeditationsCategory: MeditationsCategoryScreen,
   SingleMeditation: SingleMeditationScreen,
 });
 
-const Tabs = TabNavigator({
+MeditationsNavigator.navigationOptions = {
+  tabBarIcon: MeditationsIcon,
+};
+
+const Tabs = createBottomTabNavigator({
   Home: { screen: HomeScreen },
   Podcasts: { screen: PodcastsScreen },
   Meditations: { screen: MeditationsNavigator },
 }, {
-  ...TabNavigator.Presets.iOSBottomTabs,
   tabBarOptions: {
     activeTintColor: '#F95A57',
     inactiveTintColor: '#D2D2D2',
@@ -60,11 +64,11 @@ const Tabs = TabNavigator({
 });
 
 // hack to get the header to appear (it doesn't with a TabNavigator)
-const PatreonWithHeader = StackNavigator({
+const PatreonWithHeader = createStackNavigator({
   PatreonWithHeader: { screen: PatreonScreen },
 });
 
-const Modals = StackNavigator(
+const Modals = createStackNavigator(
   {
     Main: { screen: Tabs },
     Patreon: { screen: PatreonWithHeader },

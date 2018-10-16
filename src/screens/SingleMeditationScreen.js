@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import MeditationsIcon from './MeditationsIcon';
 import SingleMediaItemScreen from './SingleMediaItemScreen';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
@@ -31,8 +30,6 @@ SingleMeditationScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
   headerLeft: <BackButton />,
   title: 'Meditations',
-  tabBarIcon: MeditationsIcon,
-  tabBarLabel: 'Meditations',
 });
 
 export default connect(mapStateToProps)(SingleMeditationScreen);

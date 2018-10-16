@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
-import * as navActions from '../state/ducks/navigation/actions';
 import * as authActions from '../state/ducks/auth/actions';
 
 /**
@@ -23,13 +23,15 @@ LogoutButton.propTypes = {
   logout: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, { navigation }) {
   return {
     logout: () => {
       dispatch(authActions.logout());
-      dispatch(navActions.logout());
+      navigation.navigate('Login');
     },
   };
 }
 
-export default connect(null, mapDispatchToProps)(LogoutButton);
+export default withNavigation(
+  connect(null, mapDispatchToProps)(LogoutButton),
+);

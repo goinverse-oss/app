@@ -4,16 +4,17 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import Icon from '@expo/vector-icons/Ionicons';
 
 import DrawerItem from './DrawerItem';
 
-import * as navActions from '../state/ducks/navigation/actions';
 import * as authActions from '../state/ducks/auth/actions';
 
 import patreonIcon from '../../assets/patreon_icon.png';
+import appPropTypes from '../propTypes';
 
 const styles = StyleSheet.create({
   drawer: {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 
 const DrawerContent = ({
   drawer,
-  managePatreon,
+  navigation,
   logout,
 }) => (
   <LinearGradient style={styles.drawer} colors={['#FFFFFF00', '#F95A570C']}>
@@ -43,7 +44,7 @@ const DrawerContent = ({
       drawer={drawer}
       image={<Image source={patreonIcon} style={styles.patreonImage} />}
       title="Manage Patreon"
-      onPress={() => managePatreon()}
+      onPress={() => navigation.navigate('Patreon')}
     />
     <DrawerItem
       image={<Icon name="md-log-out" style={styles.logoutIcon} />}
@@ -55,24 +56,23 @@ const DrawerContent = ({
 
 DrawerContent.propTypes = {
   drawer: PropTypes.shape({}),
-  managePatreon: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 DrawerContent.defaultProps = {
   drawer: {},
 };
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, { navigation }) {
   return {
-    managePatreon: () => {
-      dispatch(navActions.managePatreon());
-    },
     logout: () => {
       dispatch(authActions.logout());
-      dispatch(navActions.logout());
+      navigation.navigate('Login');
     },
   };
 }
 
-export default connect(null, mapDispatchToProps)(DrawerContent);
+export default withNavigation(
+  connect(null, mapDispatchToProps)(DrawerContent),
+);
