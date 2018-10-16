@@ -136,16 +136,47 @@ Scan with the [Expo app](https://expo.io/tools#client) ([Android only](${expoBlo
 | ![](${appQR}) | ![](${storybookQR}) | 
 `;
 
-console.log(`Posting comment to theliturgists/app#${vars.prnum}`);
+async function main() {
+  console.log(`Posting comment to theliturgists/app#${vars.prnum}`);
 
-// Per the docs, we use the issues API (not the pull requests API)
-// to add general, non-review, non-commit comments to a PR.
-octokit.issues.createComment({
-  owner: 'theliturgists',
-  repo: vars.repo,
-  number: vars.prnum,
-  body,
-})
+  // Per the docs, we use the issues API (not the pull requests API)
+  // to add general, non-review, non-commit comments to a PR.
+  const config = {
+    owner: 'theliturgists',
+    repo: vars.repo,
+    number: vars.prnum,
+  };
+
+  const { data: user } = await octokit.users.get();
+  const { data: comments } = await octokit.issues.getComments({
+    ...config,
+  });
+
+  const myComments = comments.filter(c => (user.id === c.user.id));
+  if (myComments.length === 0) {
+    return octokit.issues.createComment({
+      ...config,
+      body,
+    });
+  }
+
+  await octokit.issues.editComment({
+    ...config,
+    comment_id: myComments[0].id,
+    body,
+  });
+
+  myComments.slice(1).forEach(async comment => (
+    octokit.issues.deleteComment({
+      ...config,
+      comment_id: comment.id,
+    })
+  ));
+
+  return null;
+}
+
+main()
   .then(() => console.log('Done.'))
   .catch((err) => {
     console.error(err);
