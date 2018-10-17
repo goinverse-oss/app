@@ -4,8 +4,6 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/never';
 
-import { navMiddleware } from '../navigation/AppNavigator';
-
 import * as reducers from './ducks';
 import epics from './epics';
 
@@ -27,7 +25,6 @@ export default function configureStore({ noEpic = false } = {}) {
   const epicMiddleware = createEpicMiddleware(epic);
   const enhancer = composeWithDevTools(
     applyMiddleware(epicMiddleware),
-    applyMiddleware(navMiddleware),
   );
   return createStore(reducer, enhancer);
 }

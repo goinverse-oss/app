@@ -1,11 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import Icon from '@expo/vector-icons/Ionicons';
-
-import * as navActions from '../state/ducks/navigation/actions';
+import appPropTypes from '../propTypes';
 
 const styles = StyleSheet.create({
   backIcon: {
@@ -17,22 +15,16 @@ const styles = StyleSheet.create({
 /**
  * Button that, when pressed, opens the navigation drawer.
  */
-const BackButton = ({ goBack }) => (
+const BackButton = ({ navigation }) => (
   <Icon
     name="ios-arrow-round-back"
     style={styles.backIcon}
-    onPress={() => goBack()}
+    onPress={() => navigation.goBack()}
   />
 );
 
 BackButton.propTypes = {
-  goBack: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    goBack: () => dispatch(navActions.goBack()),
-  };
-}
-
-export default connect(null, mapDispatchToProps)(BackButton);
+export default withNavigation(BackButton);

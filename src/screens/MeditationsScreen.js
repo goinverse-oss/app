@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
-import MeditationsIcon from './MeditationsIcon';
+import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
@@ -13,7 +13,6 @@ import {
   meditationCategoriesSelector,
   apiLoadingSelector,
 } from '../state/ducks/orm/selectors';
-import * as navActions from '../state/ducks/navigation/actions';
 
 /**
  * List of available meditations, organized by category.
@@ -25,7 +24,7 @@ class MeditationsScreen extends Component {
   }
 
   render() {
-    const { meditations, categories, viewMeditationCategory } = this.props;
+    const { meditations, categories, navigation } = this.props;
     const meditationCategories = [
       {
         title: 'All Meditations',
@@ -46,7 +45,10 @@ class MeditationsScreen extends Component {
       >
         <MeditationSeriesList
           meditationCategories={meditationCategories}
-          onPressMeditationCategory={category => viewMeditationCategory(category)}
+          onPressMeditationCategory={category => navigation.navigate({
+            routeName: 'MeditationsCategory',
+            params: { category },
+          })}
         />
       </ScrollView>
     );
@@ -61,8 +63,8 @@ MeditationsScreen.propTypes = {
     PropTypes.shape({}),
   ),
   fetchMeditations: PropTypes.func.isRequired,
-  viewMeditationCategory: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 MeditationsScreen.defaultProps = {
@@ -89,14 +91,12 @@ function mapDispatchToProps(dispatch) {
         },
       }),
     ),
-    viewMeditationCategory: category => dispatch(navActions.viewMeditationCategory(category)),
   };
 }
 
 MeditationsScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
   title: 'Meditations',
-  tabBarIcon: MeditationsIcon,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeditationsScreen);

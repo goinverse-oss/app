@@ -2,7 +2,9 @@
 
 now_name="theliturgists-fakeapi"
 get_now_alias() {
-  echo "theliturgists-fakeapi-branch-${CIRCLE_BRANCH}" | cut -c'-63'
+  echo "theliturgists-fakeapi-branch-${CIRCLE_BRANCH}" \
+    | sed 's/[\/_.]/-/g' \
+    | cut -c'-63'
 }
 
 run_now() {

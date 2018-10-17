@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 
-import * as navActions from '../state/ducks/navigation/actions';
 import * as authActions from '../state/ducks/auth/actions';
 import styles from '../styles';
 
@@ -28,11 +27,11 @@ LoginScreen.propTypes = {
   login: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, { navigation }) {
   return {
     login: () => {
       dispatch(authActions.login());
-      dispatch(navActions.login());
+      navigation.navigate('Main');
     },
   };
 }
