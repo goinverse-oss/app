@@ -12,12 +12,23 @@ export const managePatreon = () =>
 /**
  * Navigate to a meditation category screen.
  *
- * @param {string} category - the id of the category, or undefined for 'all'
+ * @param {MeditationCategory} category - model instance, or undefined for 'all'
  */
-export const viewMeditation = category =>
+export const viewMeditationCategory = category =>
   NavigationActions.navigate({
     routeName: 'MeditationsCategory',
     params: { category },
+  });
+
+/**
+ * Navigate to a meditation screen.
+ *
+ * @param {Meditation} meditation - model instance
+ */
+export const viewMeditation = meditation =>
+  NavigationActions.navigate({
+    routeName: 'SingleMeditation',
+    params: { meditation },
   });
 
 export const goBack = () => NavigationActions.back();

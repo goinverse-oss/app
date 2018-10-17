@@ -12,7 +12,6 @@ const PodcastEpisodeHeader = ({ podcastEpisode, ...props }) => (
     description={podcastEpisode.description}
     duration={podcastEpisode.duration}
     publishedAt={podcastEpisode.publishedAt}
-    mediaType="podcast"
     {...props}
   />
 );

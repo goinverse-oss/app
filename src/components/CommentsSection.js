@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 15,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -35,10 +34,9 @@ const styles = StyleSheet.create({
   // TODO: extract a ListButton that uses a ListCard instead of a Card
   addButton: {
     justifyContent: 'center',
-    width: '94.7%',
+    width: '100%',
     padding: 10,
-    marginHorizontal: '2.7%',
-    marginVertical: '2%',
+    marginVertical: 8,
   },
 });
 

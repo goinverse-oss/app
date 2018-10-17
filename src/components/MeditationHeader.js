@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PlayableItemHeader from './PlayableItemHeader';
 
-import appPropTypes from '../propTypes';
+import Meditation from '../state/models/Meditation';
 
 const MeditationHeader = ({ meditation, ...props }) => (
   <PlayableItemHeader
@@ -17,7 +18,7 @@ const MeditationHeader = ({ meditation, ...props }) => (
 );
 
 MeditationHeader.propTypes = {
-  meditation: appPropTypes.meditation.isRequired,
+  meditation: PropTypes.shape(Meditation.propTypes).isRequired,
 };
 
 export default MeditationHeader;

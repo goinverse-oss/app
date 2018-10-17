@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
 
+import MeditationsIcon from './MeditationsIcon';
 import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
@@ -15,20 +15,6 @@ import {
 } from '../state/ducks/orm/selectors';
 import * as navActions from '../state/ducks/navigation/actions';
 
-const MeditationsIcon = ({ tintColor }) => (
-  <Icon
-    name="md-sunny"
-    style={{
-      color: tintColor,
-      fontSize: 24,
-    }}
-  />
-);
-
-MeditationsIcon.propTypes = {
-  tintColor: PropTypes.string.isRequired,
-};
-
 /**
  * List of available meditations, organized by category.
  */
@@ -39,7 +25,7 @@ class MeditationsScreen extends Component {
   }
 
   render() {
-    const { meditations, categories, viewMeditation } = this.props;
+    const { meditations, categories, viewMeditationCategory } = this.props;
     const meditationCategories = [
       {
         title: 'All Meditations',
@@ -60,7 +46,7 @@ class MeditationsScreen extends Component {
       >
         <MeditationSeriesList
           meditationCategories={meditationCategories}
-          onPressMeditationCategory={category => viewMeditation(category)}
+          onPressMeditationCategory={category => viewMeditationCategory(category)}
         />
       </ScrollView>
     );
@@ -75,7 +61,7 @@ MeditationsScreen.propTypes = {
     PropTypes.shape({}),
   ),
   fetchMeditations: PropTypes.func.isRequired,
-  viewMeditation: PropTypes.func.isRequired,
+  viewMeditationCategory: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
 };
 
@@ -99,11 +85,11 @@ function mapDispatchToProps(dispatch) {
       fetchData({
         resource: 'meditations',
         params: {
-          include: 'category',
+          include: ['category', 'tags', 'contributors'],
         },
       }),
     ),
-    viewMeditation: category => dispatch(navActions.viewMeditation(category)),
+    viewMeditationCategory: category => dispatch(navActions.viewMeditationCategory(category)),
   };
 }
 

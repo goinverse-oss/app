@@ -27,7 +27,7 @@ class InteractiveTagList extends Component {
   }
 
   render() {
-    const tags = ['one', 'two', 'three', 'four'];
+    const tags = ['one', 'two', 'three', 'four'].map(name => ({ name }));
     return (
       <View>
         <TagList tags={tags} onTagPress={this.onTagPress} />
@@ -39,7 +39,7 @@ class InteractiveTagList extends Component {
 
 storiesOf('Tag list', module)
   .add('without wrapping', () => (
-    <TagList tags={['one', 'two', 'three']} />
+    <TagList tags={['one', 'two', 'three'].map(name => ({ name }))} />
   ))
   .add('with wrapping', () => (
     <TagList tags={[
@@ -50,7 +50,7 @@ storiesOf('Tag list', module)
         'social',
         'psychology',
         'theology',
-      ]}
+      ].map(name => ({ name }))}
     />
   ))
   .add('interactive', () => (

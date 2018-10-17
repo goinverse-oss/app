@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
 
+import MeditationsIcon from './MeditationsIcon';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
@@ -11,25 +11,17 @@ import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import Meditation from '../state/models/Meditation';
 import { meditationCategorySelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
-
-const MeditationsIcon = ({ tintColor }) => (
-  <Icon
-    name="md-sunny"
-    style={{
-      color: tintColor,
-      fontSize: 24,
-    }}
-  />
-);
-
-MeditationsIcon.propTypes = {
-  tintColor: PropTypes.string.isRequired,
-};
+import * as navActions from '../state/ducks/navigation/actions';
 
 /**
  * List of meditations in category, sorted by publish date.
  */
-const MeditationsCategoryScreen = ({ meditations, refreshing, refreshCategory }) => (
+const MeditationsCategoryScreen = ({
+  meditations,
+  refreshing,
+  refreshCategory,
+  viewMeditation,
+}) => (
   <ScrollView
     refreshControl={
       <RefreshControl
@@ -44,6 +36,7 @@ const MeditationsCategoryScreen = ({ meditations, refreshing, refreshCategory })
           <MeditationListCard
             key={meditation.id}
             meditation={meditation}
+            onPress={() => viewMeditation(meditation)}
           />
         ),
       )
@@ -57,6 +50,7 @@ MeditationsCategoryScreen.propTypes = {
   ),
   refreshing: PropTypes.bool.isRequired,
   refreshCategory: PropTypes.func.isRequired,
+  viewMeditation: PropTypes.func.isRequired,
 };
 
 MeditationsCategoryScreen.defaultProps = {
@@ -104,6 +98,7 @@ function mapDispatchToProps(dispatch, { navigation }) {
       }
       dispatch(action);
     },
+    viewMeditation: meditation => dispatch(navActions.viewMeditation(meditation)),
   };
 }
 
