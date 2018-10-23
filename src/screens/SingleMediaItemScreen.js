@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { ScrollView, View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
+import appPropTypes from '../propTypes';
 import PlayableItemHeader from '../components/PlayableItemHeader';
 import ItemDescription from '../components/ItemDescription';
 import PersonList from '../components/PersonList';
 import CommentsSection from '../components/CommentsSection';
 import TagList from '../components/TagList';
 
-import Meditation from '../state/models/Meditation';
+import * as playbackActions from '../state/ducks/playback/actions';
 
 const padding = 15;
 
@@ -30,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SingleMediaItemScreen = ({ item }) => (
+const SingleMediaItemScreen = ({ item, play }) => (
   <ScrollView style={styles.container}>
     <View style={styles.subContainer}>
       <PlayableItemHeader
@@ -41,6 +45,7 @@ const SingleMediaItemScreen = ({ item }) => (
         description={item.description}
         duration={item.duration}
         publishedAt={item.publishedAt}
+        onPlay={() => play()}
       />
       <View style={styles.divider} />
       <ItemDescription description={item.description} />
@@ -56,12 +61,24 @@ const SingleMediaItemScreen = ({ item }) => (
 );
 
 SingleMediaItemScreen.propTypes = {
-  item: PropTypes.oneOfType(
-    // TODO: other models
-    [Meditation].map(
-      Model => PropTypes.shape(Model.propTypes).isRequired,
-    ),
-  ).isRequired,
+  item: appPropTypes.mediaItem.isRequired,
+  play: PropTypes.func.isRequired,
 };
 
-export default SingleMediaItemScreen;
+function mapDispatchToProps(dispatch, { navigation, item }) {
+  return {
+    play: () => {
+      dispatch(
+        playbackActions.setPlaying(
+          _.pick(item, ['type', 'id']),
+        ),
+      );
+      navigation.navigate('Player');
+    },
+  };
+}
+
+
+export default withNavigation(
+  connect(null, mapDispatchToProps)(SingleMediaItemScreen),
+);

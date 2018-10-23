@@ -77,13 +77,13 @@ class GenericListCards extends Component {
 
 const PlayableListCardStory = props => (
   <PlayableListCard
-    coverImageSource={{
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=750w',
+    item={{
+      mediaUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=750w',
+      title: 'Enemies - Live from Los Angeles',
+      description: 'This is a special live episode recorded at The Liturgists Gathering in Los Angeles, CA on September 15, 2017.',
+      duration: moment.duration(88, 'minutes'),
+      publishedAt: moment('2017-09-15'),
     }}
-    title="Enemies - Live from Los Angeles"
-    description="This is a special live episode recorded at The Liturgists Gathering in Los Angeles, CA on September 15, 2017."
-    duration={moment.duration(88, 'minutes')}
-    publishedAt={moment('2017-09-15')}
     {...props}
   />
 );

@@ -12,7 +12,7 @@ import { meditationSelector } from '../state/ducks/orm/selectors';
  * List of meditations in category, sorted by publish date.
  */
 const SingleMeditationScreen = ({ meditation }) => (
-  <SingleMediaItemScreen item={meditation} />
+  <SingleMediaItemScreen item={meditation} mediaType="meditations" />
 );
 
 SingleMeditationScreen.propTypes = {

@@ -42,7 +42,10 @@ const modelToObject = {
       meditations: meditationCategory.meditations
         .orderBy('publishedAt', 'desc')
         .toRefArray().map(
-          m => _.omit(m, 'category'),
+          m => ({
+            ..._.omit(m, 'category'),
+            type: 'meditations',
+          }),
         ),
     },
   }),
@@ -61,41 +64,60 @@ const modelOrderArgs = {
   Tag: ['name'],
 };
 
-function collectionSelector(type) {
+const collectionSelectors = {};
+const instanceSelectors = {};
+
+function createCollectionSelector(type) {
   const modelName = getModelName(type);
-  return createSelector(
+  const selector = createSelector(
     orm,
     dbStateSelector,
     session => session[modelName].all()
       .orderBy(...modelOrderArgs[modelName])
       .toModelArray()
-      .map(modelToObject[modelName]),
+      .map(modelToObject[modelName])
+      .map(obj => ({ ...obj, type })),
   );
+  collectionSelectors[type] = selector;
+  return selector;
 }
 
-function instanceSelector(type) {
-  return (state, id) => {
+function createInstanceSelector(type) {
+  const selector = (state, id) => {
     const modelName = getModelName(type);
     return createSelector(
       orm,
       dbStateSelector,
       (session) => {
         const instance = session[modelName].withId(id);
-        return modelToObject[modelName](instance);
+        return {
+          ...modelToObject[modelName](instance),
+          type,
+        };
       },
     )(state);
   };
+  instanceSelectors[type] = selector;
+  return selector;
 }
 
-export const meditationsSelector = collectionSelector('meditations');
-export const meditationCategoriesSelector = collectionSelector('meditationCategories');
-export const contributorsSelector = collectionSelector('contributors');
-export const tagsSelector = collectionSelector('tags');
+export const meditationsSelector = createCollectionSelector('meditations');
+export const meditationCategoriesSelector = createCollectionSelector('meditationCategories');
+export const contributorsSelector = createCollectionSelector('contributors');
+export const tagsSelector = createCollectionSelector('tags');
 
-export const meditationSelector = instanceSelector('meditations');
-export const meditationCategorySelector = instanceSelector('meditationCategories');
-export const contributorSelector = instanceSelector('contributors');
-export const tagSelector = instanceSelector('tags');
+export const meditationSelector = createInstanceSelector('meditations');
+export const meditationCategorySelector = createInstanceSelector('meditationCategories');
+export const contributorSelector = createInstanceSelector('contributors');
+export const tagSelector = createInstanceSelector('tags');
+
+export function collectionSelector(state, type) {
+  return collectionSelectors[type](state);
+}
+
+export function instanceSelector(state, type, id) {
+  return instanceSelectors[type](state, id);
+}
 
 export const apiLoadingSelector = (state, resource) => _.get(state, ['orm.api.loading', resource], false);
 export const apiErrorSelector = state => _.get(state, 'orm.api.error');

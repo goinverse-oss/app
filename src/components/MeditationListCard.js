@@ -5,14 +5,7 @@ import appPropTypes from '../propTypes';
 
 const MeditationListCard = ({ meditation, ...props }) => (
   <PlayableListCard
-    coverImageSource={{
-      uri: meditation.imageUrl,
-    }}
-    title={meditation.title}
-    description={meditation.description}
-    duration={meditation.duration}
-    publishedAt={meditation.publishedAt}
-    mediaType="meditation"
+    item={meditation}
     {...props}
   />
 );
