@@ -289,6 +289,7 @@ describe('orm reducer', () => {
 
         expected = {
           id,
+          type,
           ...apiData.attributes,
           ...relationships,
         };
@@ -352,6 +353,7 @@ describe('orm reducer', () => {
 
     const expectedMeditations = apiJson.data.map(datum => ({
       id: datum.id,
+      type: 'meditations',
       ...datum.attributes,
       category: {
         id: categoryJson.id,
@@ -366,9 +368,10 @@ describe('orm reducer', () => {
 
     const expectedCategory = {
       id: categoryJson.id,
+      type: 'meditationCategories',
       ...categoryJson.attributes,
       meditations: expectedMeditations.map(
-        m => _.pick(m, ['id', 'title', 'description']),
+        m => _.pick(m, ['id', 'type', 'title', 'description']),
       ),
       tags: [],
     };

@@ -10,3 +10,8 @@ export function screenRelativeWidth(fraction) {
   const { width } = Dimensions.get('window');
   return width * fraction;
 }
+
+export function screenRelativeHeight(fraction) {
+  const { height } = Dimensions.get('window');
+  return height * fraction;
+}

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { ViewPropTypes, StyleSheet } from 'react-native';
 
 import Card from './Card';
+import { screenRelativeHeight } from './utils';
 
 const styles = StyleSheet.create({
   card: {
     width: '94.7%',
     padding: 10,
     marginHorizontal: '2.7%',
-    marginVertical: '2%',
+    marginVertical: screenRelativeHeight(0.01),
   },
 });
 

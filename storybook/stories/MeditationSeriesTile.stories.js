@@ -5,50 +5,41 @@ import { storiesOf } from '@storybook/react-native';
 
 import MeditationSeriesList from '../../src/components/MeditationSeriesList';
 
+const imageUrl = 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w';
+const stubMeditations = count => _.times(count).map(() => ({}));
+
 const meditationCategories = [
   {
     title: 'All Meditations',
-    meditationCount: 66,
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
-    },
+    meditations: stubMeditations(66),
+    imageUrl,
   },
   {
     title: 'Oneness',
-    meditationCount: 34,
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
-    },
+    meditations: stubMeditations(34),
+    imageUrl,
   },
   {
     title: 'Centering Prayer',
-    meditationCount: 1,
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
-    },
+    meditations: stubMeditations(1),
+    imageUrl,
   },
   {
     title: 'Worship',
-    meditationCount: 10,
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
-    },
+    meditations: stubMeditations(10),
+    imageUrl,
   },
   {
     title: 'Group meditations',
-    meditationCount: 5,
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
-    },
+    meditations: stubMeditations(5),
+    imageUrl,
   },
   {
     title: 'The Littlegists',
-    meditationCount: 14,
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
-    },
+    meditations: stubMeditations(14),
+    imageUrl,
   },
-];
+].slice(1, 2);
 
 class MeditationExampleSeriesList extends Component {
   onPressMeditationCategory(meditationCategory) {

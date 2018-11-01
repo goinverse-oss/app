@@ -6,9 +6,9 @@ import AppPropTypes from '../propTypes';
 import SeriesTile from './SeriesTile';
 
 const formatEpisodeCount = (episodeCount) => {
-  let episodeString = 'Episodes';
+  let episodeString = 'episodes';
   if (episodeCount === 1) {
-    episodeString = 'Episode';
+    episodeString = 'episode';
   }
   return `${episodeCount} ${episodeString}`;
 };
@@ -27,7 +27,7 @@ const formatPodcastDescription = (episodeCount, lastUpdated) => {
 
 const PodcastSeriesTile = ({ podcast, onPress }) => (
   <SeriesTile
-    imageSource={podcast.imageSource}
+    imageUrl={podcast.imageUrl}
     title={podcast.title}
     onPress={() => onPress(podcast)}
     description={formatPodcastDescription(podcast.episodeCount, podcast.lastUpdated)}

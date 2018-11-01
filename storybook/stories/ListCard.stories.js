@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Text, StyleSheet } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import moment from 'moment';
+import _ from 'lodash';
 
 import ListCard from '../../src/components/ListCard';
 import SquareImage from '../../src/components/SquareImage';
@@ -75,16 +76,15 @@ class GenericListCards extends Component {
   }
 }
 
-const PlayableListCardStory = props => (
+const PlayableListCardStory = () => (
   <PlayableListCard
     item={{
-      mediaUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=750w',
+      imageUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=750w',
       title: 'Enemies - Live from Los Angeles',
       description: 'This is a special live episode recorded at The Liturgists Gathering in Los Angeles, CA on September 15, 2017.',
       duration: moment.duration(88, 'minutes'),
       publishedAt: moment('2017-09-15'),
     }}
-    {...props}
   />
 );
 
@@ -148,14 +148,14 @@ const liturgies = [
 
 const meditations = [
   {
-    imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/WkED08RyoZXTLW3fAdor61q_g4p_3xkoKYHM2_FX4mG5VDmm9EHq3tMzZfXufJLE.jpg?token-time=1520121600&token-hash=5q0qh-mUJDWF7a9CaCq3V8PbPb-qRai-O0iUVYIBa7w%3D',
+    imageUrl: 'https://loremflickr.com/300/300?random=0',
     title: 'Letting Go',
     description: 'A meditation by Hillary McBride.',
     duration: moment.duration(12, 'minutes'),
     publishedAt: moment('2018-02-16T19:38:00-05:00'),
   },
   {
-    imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/6dxl-4tk3GKZ21CBz9pWlE0B81vVMFzRUZD1gLziorG8EpQhqfCbOdd-gp4FAxuu.jpeg?token-time=1520121600&token-hash=dDNuIFl4rHNvvT9T01ZExdteHSQhpCtnFo-nJt7S1zI%3D',
+    imageUrl: 'https://loremflickr.com/300/300?random=1',
     title: 'Who are you',
     description: (
       'A contemplative deconstruction of who you think you are. ' +
@@ -166,7 +166,7 @@ const meditations = [
     publishedAt: moment('2018-02-01T19:37:00-05:00'),
   },
   {
-    imageUrl: 'https://c10.patreonusercontent.com/3/eyJ3Ijo2MjAsIngiOjI0OTM3OTh9/patreon-posts/J_mDFznRg3WJmwlz-co6c6NqQW0EUuYQOXOgdDMn8dFos2bjJ9AVAW8l-9UxLEUD.png?token-time=1520121600&token-hash=GAwP4Q6h56q15DS12uy406y8V87izp5lzs0XMPlSEsI%3D',
+    imageUrl: 'https://loremflickr.com/300/300?random=2',
     title: 'Loving Kindness Meditation',
     description: (
       'An open heart is a healing heart. This is a meditation that will ' +
@@ -217,7 +217,21 @@ const events = [
 
 storiesOf('List card', module)
   .add('Generic', () => <GenericListCards />)
-  .add('Playable', () => <PlayableListCardStory />)
+  .add('Playable 1', () => (
+    <ScrollView>
+      {_.times(1, index => <PlayableListCardStory key={index} />)}
+    </ScrollView>
+  ))
+  .add('Playable 3', () => (
+    <ScrollView>
+      {_.times(3, index => <PlayableListCardStory key={index} />)}
+    </ScrollView>
+  ))
+  .add('Playable 10', () => (
+    <ScrollView>
+      {_.times(10, index => <PlayableListCardStory key={index} />)}
+    </ScrollView>
+  ))
   .add('Liturgies', () => (
     <ScrollView>
       {liturgies.map(liturgy => (

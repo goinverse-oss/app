@@ -11,25 +11,19 @@ const podcasts = [
     title: 'The Liturgists Podcast',
     episodeCount: 66,
     lastUpdated: moment('2018-01-19T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=500w',
-    },
+    imageUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=500w',
   },
   {
     title: 'Conversations',
     episodeCount: 34,
     lastUpdated: moment('2017-01-03T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b9399e4966b484105da84/1516999584877/The+Liturgists+Conversations+Cover+Art.001.jpeg?format=500w',
-    },
+    imageUrl: 'https://loremflickr.com/300/300',
   },
   {
     title: 'The God Series',
     episodeCount: 1,
     lastUpdated: moment('2018-01-10T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b942e53450a6bb75b14b1/1516999732948/IMG_0532.jpg?format=500w',
-    },
+    imageUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b942e53450a6bb75b14b1/1516999732948/IMG_0532.jpg?format=500w',
   },
 ];
 

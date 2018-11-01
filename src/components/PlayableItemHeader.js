@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   imageContainer: {
+    width: '30%',
     marginRight: 20,
   },
   metadataContainer: {

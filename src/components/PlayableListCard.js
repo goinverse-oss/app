@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  image: {
+  },
   playIcon: {
     position: 'absolute',
     fontSize: 16,
@@ -89,7 +91,7 @@ function formatFooter({ duration, publishedAt, formatDuration }) {
   if (!_.isNull(duration)) {
     strings.push(formatDuration(duration));
   }
-  if (!_.isNull(publishedAt)) {
+  if (!_.isUndefined(publishedAt)) {
     strings.push(publishedAt.fromNow());
   }
   return strings.join(separator);
@@ -110,6 +112,7 @@ const PlayableListCard = ({
         <SquareImage
           source={{ uri: item.imageUrl }}
           width={86}
+          style={styles.image}
         />
         <Icon name="play" style={styles.playIcon} />
         <View style={styles.playCircle} />

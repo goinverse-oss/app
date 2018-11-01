@@ -21,7 +21,7 @@ import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 
-const { DrawerLayout } = expo.DangerZone.GestureHandler;
+const { DrawerLayout } = expo.GestureHandler;
 
 const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,

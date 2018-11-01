@@ -4,7 +4,7 @@
     "description": "The Liturgists App",
     "slug": "app",
     "privacy": "unlisted",
-    "sdkVersion": "25.0.0",
+    "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
     "version": "0.0.1",
     "orientation": "portrait",
