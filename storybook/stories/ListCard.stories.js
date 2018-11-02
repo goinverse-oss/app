@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { ScrollView, Text, StyleSheet } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import moment from 'moment';
@@ -76,10 +77,10 @@ class GenericListCards extends Component {
   }
 }
 
-const PlayableListCardStory = () => (
+const PlayableListCardStory = ({ index }) => (
   <PlayableListCard
     item={{
-      imageUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=750w',
+      imageUrl: `https://loremflickr.com/300/300?random=${index}`,
       title: 'Enemies - Live from Los Angeles',
       description: 'This is a special live episode recorded at The Liturgists Gathering in Los Angeles, CA on September 15, 2017.',
       duration: moment.duration(88, 'minutes'),
@@ -87,6 +88,10 @@ const PlayableListCardStory = () => (
     }}
   />
 );
+
+PlayableListCardStory.propTypes = {
+  index: PropTypes.number.isRequired,
+};
 
 const liturgistsPodcastImageUrl = 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6a579e8165f576bbd614c8/1516918687161/The+Liturgists+Podcast+Logo.jpg?format=750w';
 
@@ -214,22 +219,25 @@ const events = [
   },
 ];
 
+function playableListCards(num) {
+  return _.times(num, index => <PlayableListCardStory key={index} index={index} />);
+}
 
 storiesOf('List card', module)
   .add('Generic', () => <GenericListCards />)
   .add('Playable 1', () => (
     <ScrollView>
-      {_.times(1, index => <PlayableListCardStory key={index} />)}
+      {playableListCards(1)}
     </ScrollView>
   ))
   .add('Playable 3', () => (
     <ScrollView>
-      {_.times(3, index => <PlayableListCardStory key={index} />)}
+      {playableListCards(3)}
     </ScrollView>
   ))
   .add('Playable 10', () => (
     <ScrollView>
-      {_.times(10, index => <PlayableListCardStory key={index} />)}
+      {playableListCards(10)}
     </ScrollView>
   ))
   .add('Liturgies', () => (

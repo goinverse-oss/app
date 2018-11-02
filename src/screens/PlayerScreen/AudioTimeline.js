@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text, ViewPropTypes, StyleSheet } from 'react-native';
 
+import _ from 'lodash';
 import moment from 'moment';
+import 'moment-duration-format';
 import momentPropTypes from 'react-moment-proptypes';
 
 import appPropTypes from '../../propTypes';
@@ -45,6 +47,10 @@ function playedBarWidth(duration, elapsed) {
 }
 
 function formatDuration(duration) {
+  if (_.isUndefined(duration)) {
+    return '--:--';
+  }
+
   return duration.format('h:mm:ss', {
     stopTrim: 'm',
   });

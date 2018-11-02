@@ -5,7 +5,6 @@ import { normalize } from 'react-native-elements';
 import fonts from 'react-native-elements/src/config/fonts';
 import colors from '../styles/colors';
 import SquareImage from './SquareImage';
-import { screenRelativeHeight, screenRelativeWidth } from './utils';
 
 
 const styles = StyleSheet.create({
@@ -16,10 +15,9 @@ const styles = StyleSheet.create({
         of left justified columns. There might
         be a more efficient way of doing this
     */
-    marginHorizontal: screenRelativeWidth(0.015),
-    marginVertical: screenRelativeHeight(0.01),
-    paddingHorizontal: '2.5%',
-    paddingVertical: '2.5%',
+    marginHorizontal: 6,
+    marginVertical: 6,
+    padding: 9,
     width: '46%',
     borderRadius: 4,
     justifyContent: 'center',
@@ -39,6 +37,8 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
+    width: null,
+    height: 150,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -77,7 +77,7 @@ const SeriesTile = ({
       <View style={styles.imageContainer}>
         <SquareImage
           source={{ uri: imageUrl }}
-          width={screenRelativeWidth(0.4)}
+          width={150}
         />
       </View>
       <View style={styles.textContainer}>
