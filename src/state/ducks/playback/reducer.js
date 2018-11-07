@@ -3,8 +3,10 @@ import { handleActions } from '../../utils/reduxActions';
 
 import {
   SET_PLAYING,
+  SET_SOUND,
   PLAY,
   PAUSE,
+  SET_ELAPSED,
 } from './types';
 
 /* playback reducer state shape:
@@ -37,6 +39,10 @@ export default handleActions({
     playing: true,
     paused: false,
   }),
+  [SET_SOUND]: (state, action) => ({
+    ...state,
+    sound: action.payload,
+  }),
   [PLAY]: state => ({
     ...state,
     playing: true,
@@ -45,5 +51,9 @@ export default handleActions({
   [PAUSE]: state => ({
     ...state,
     paused: true,
+  }),
+  [SET_ELAPSED]: (state, action) => ({
+    ...state,
+    elapsed: action.payload,
   }),
 }, defaultState);

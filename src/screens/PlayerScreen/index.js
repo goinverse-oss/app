@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Platform, Text, View, StyleSheet } from 'react-native';
+import { Platform, Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 
 import { FontAwesome, Foundation, AntDesign } from '@expo/vector-icons';
@@ -86,21 +86,30 @@ function getSeriesTitle(item) {
   return _.isUndefined(group) ? null : item[group].title;
 }
 
-const PlaybackButton = ({ isPaused }) => (
-  <View style={styles.playbackButton}>
-    {
-      isPaused
-        ? <Foundation name="play" style={styles.playIcon} />
-        : <AntDesign name="pause" style={styles.pauseIcon} />
-    }
-  </View>
+const PlaybackButton = ({ isPaused, onPress }) => (
+  <TouchableWithoutFeedback onPress={onPress}>
+    <View style={styles.playbackButton}>
+      {
+        isPaused
+          ? <Foundation name="play" style={styles.playIcon} />
+          : <AntDesign name="pause" style={styles.pauseIcon} />
+      }
+    </View>
+  </TouchableWithoutFeedback>
 );
 
 PlaybackButton.propTypes = {
   isPaused: PropTypes.bool.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
-const PlayerScreen = ({ item, isPaused, elapsed }) => (
+const PlayerScreen = ({
+  item,
+  isPaused,
+  elapsed,
+  play,
+  pause,
+}) => (
   <View style={appStyles.container}>
     <View style={styles.imageContainer}>
       <SquareImage
@@ -113,7 +122,10 @@ const PlayerScreen = ({ item, isPaused, elapsed }) => (
       <Text style={styles.seriesTitle}>{getSeriesTitle(item)}</Text>
       <AudioTimeline style={styles.timeline} item={item} elapsed={elapsed} />
       <View style={styles.controls}>
-        <PlaybackButton isPaused={isPaused} />
+        <PlaybackButton
+          isPaused={isPaused}
+          onPress={() => (isPaused ? play(item) : pause(item))}
+        />
       </View>
     </View>
   </View>
@@ -123,6 +135,8 @@ PlayerScreen.propTypes = {
   item: appPropTypes.mediaItem.isRequired,
   isPaused: PropTypes.bool.isRequired,
   elapsed: momentPropTypes.momentDurationObj.isRequired,
+  play: PropTypes.func.isRequired,
+  pause: PropTypes.func.isRequired,
 };
 
 PlayerScreen.navigationOptions = ({ navigation }) => ({

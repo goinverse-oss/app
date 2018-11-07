@@ -1,4 +1,4 @@
-import { combineEpics } from 'redux-observable';
+import { ofType, combineEpics } from 'redux-observable';
 
 // redux-observable pulls in a minimal subset of RxJS
 // to keep the bundle size small, so here we explicitly
@@ -8,82 +8,74 @@ import { combineEpics } from 'redux-observable';
 // another operator.
 // https://redux-observable.js.org/docs/Troubleshooting.html
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/fromPromise';
+import { mergeMap } from 'rxjs/operators';
+import { Audio } from 'expo';
+import moment from 'moment';
 
-import axios from 'axios';
+import { SET_PLAYING, PLAY, PAUSE } from './types';
+import { setElapsed, setSound } from './actions';
+import * as selectors from './selectors';
+import { instanceSelector } from '../orm/selectors';
 
-import { ENABLE_PATREON, DISABLE_PATREON } from './types';
-import {
-  patreonEnabled,
-  patreonDisabled,
-  patreonError,
-} from './actions';
-
-/**
- * Simulate a Patreon API success/failure (random).
- *
- * With some probability, hits either `/post` (success)
- * or `/status/429` (failure; rate limit exceeded)
- * at https://httpbin.org. Used to demonstrate how
- * to use epics to handle asynchronous actions.
- *
- * TODO: replace with a function that uses the real Patreon API.
- *
- * @return {Observable} emitting an axios response object
- */
-function sendFakePatreonRequest() {
-  const errorProbability = 0.4;
-  const endpoint = (Math.random() < errorProbability) ? 'status/429' : 'post';
-
-  const url = `https://httpbin.org/${endpoint}`;
-  const json = { foo: 'bar' };
-  return Observable.fromPromise(axios.post(url, json));
+function startPlayback(mediaUrl) {
+  return Observable.create((subscriber) => {
+    Audio.Sound.createAsync(
+      { uri: mediaUrl },
+      { shouldPlay: true },
+      status => subscriber.next(
+        setElapsed(moment.duration(status.positionMillis)),
+      ),
+    )
+      .then(({ sound }) => subscriber.next(setSound(sound)));
+  });
 }
 
-/*
- * XXX
- * Below is a **proposed** initial format for epic docs;
- * I couldn't find any drop-in convention. Feedback welcome,
- * and we'll probably evolve it as we add more of them.
- * XXX
- */
-
 /**
- * Handle requests to enable Patreon.
+ * Update playback state while playing.
  *
  * Handles:
- *   ENABLE_PATREON: pretend to enable Patreon
+ *   SET_PLAYING, PLAY: start/resume playback timer
+ *   PAUSE: pause playback
  * Emits:
- *   PATREON_ENABLED: on success
- *   PATREON_ERROR: on failure
+ *   SET_ELAPSED: update the elapsed time each second
+ *     while playback is in progress
  */
-const enablePatreonEpic = action$ =>
-  action$.ofType(ENABLE_PATREON)
-    .switchMap(() => (
-      sendFakePatreonRequest()
-        .mapTo(patreonEnabled())
-        .catch(error => Observable.of(patreonError(error)))
-    ));
+const startPlayingEpic = (action$, store) =>
+  action$.pipe(
+    ofType(SET_PLAYING),
+    mergeMap((action) => {
+      const state = store.getState();
+      const { type, id } = action.payload;
+      const { mediaUrl } = instanceSelector(state, type, id);
+      const prevSound = selectors.getSound(state);
+      if (prevSound) {
+        prevSound.stopAsync();
+      }
 
-/**
- * Handle requests to disable Patreon.
- *
- * Handles:
- *   DISABLE: pretend to disable Patreon
- * Emits:
- *   PATREON_DISABLED: on success
- *   PATREON_ERROR: on failure
- */
-const disablePatreonEpic = action$ =>
-  action$.ofType(DISABLE_PATREON)
-    .switchMap(() => (
-      sendFakePatreonRequest()
-        .mapTo(patreonDisabled())
-        .catch(error => Observable.of(patreonError(error)))
-    ));
+      // XXX: returning this here results in the Observable getting
+      // dispatch()ed by redux-observable.
+      // TODO: figure out why, and properly return the actions that
+      // this observable emits instead.
+      return startPlayback(mediaUrl);
+    }),
+  );
 
-export default combineEpics(enablePatreonEpic, disablePatreonEpic);
+const playEpic = (action$, store) =>
+  action$.pipe(
+    ofType(PLAY),
+    mergeMap(() => {
+      selectors.getSound(store.getState()).playAsync();
+      return Observable.never();
+    }),
+  );
+
+const pauseEpic = (action$, store) =>
+  action$.pipe(
+    ofType(PAUSE),
+    mergeMap(() => {
+      selectors.getSound(store.getState()).pauseAsync();
+      return Observable.never();
+    }),
+  );
+
+export default combineEpics(startPlayingEpic, playEpic, pauseEpic);

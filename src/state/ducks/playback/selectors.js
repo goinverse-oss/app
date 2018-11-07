@@ -16,3 +16,7 @@ export function isPaused(state) {
 export function elapsed(state) {
   return state.playback.elapsed;
 }
+
+export function getSound(state) {
+  return state.playback.sound;
+}

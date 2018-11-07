@@ -8,7 +8,7 @@ import {
 } from 'react-navigation';
 import { connect } from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
-import expo, { LinearGradient } from 'expo';
+import { GestureHandler, LinearGradient } from 'expo';
 
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -21,7 +21,7 @@ import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 
-const { DrawerLayout } = expo.GestureHandler;
+const { DrawerLayout } = GestureHandler;
 
 const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,
