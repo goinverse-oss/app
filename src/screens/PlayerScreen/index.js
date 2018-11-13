@@ -5,7 +5,6 @@ import { Platform, Text, View, StyleSheet, TouchableWithoutFeedback } from 'reac
 import { connect } from 'react-redux';
 
 import { FontAwesome, Foundation, AntDesign } from '@expo/vector-icons';
-import momentPropTypes from 'react-moment-proptypes';
 
 import SquareImage from '../../components/SquareImage';
 import { screenRelativeWidth } from '../../components/utils';
@@ -106,7 +105,6 @@ PlaybackButton.propTypes = {
 const PlayerScreen = ({
   item,
   isPaused,
-  elapsed,
   play,
   pause,
 }) => (
@@ -120,7 +118,7 @@ const PlayerScreen = ({
     <View style={styles.mediaContainer}>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.seriesTitle}>{getSeriesTitle(item)}</Text>
-      <AudioTimeline style={styles.timeline} item={item} elapsed={elapsed} />
+      <AudioTimeline style={styles.timeline} />
       <View style={styles.controls}>
         <PlaybackButton
           isPaused={isPaused}
@@ -134,7 +132,6 @@ const PlayerScreen = ({
 PlayerScreen.propTypes = {
   item: appPropTypes.mediaItem.isRequired,
   isPaused: PropTypes.bool.isRequired,
-  elapsed: momentPropTypes.momentDurationObj.isRequired,
   play: PropTypes.func.isRequired,
   pause: PropTypes.func.isRequired,
 };

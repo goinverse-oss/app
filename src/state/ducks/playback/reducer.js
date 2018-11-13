@@ -6,7 +6,7 @@ import {
   SET_SOUND,
   PLAY,
   PAUSE,
-  SET_ELAPSED,
+  SET_STATUS,
 } from './types';
 
 /* playback reducer state shape:
@@ -20,8 +20,8 @@ import {
   // true iff playback is paused
   paused: boolean,
 
-  // elapsed duration of playing item
-  elapsed: moment.duration,
+  // status of playing item
+  status: Expo.Audio.Sound.status,
 }
 */
 
@@ -52,8 +52,8 @@ export default handleActions({
     ...state,
     paused: true,
   }),
-  [SET_ELAPSED]: (state, action) => ({
+  [SET_STATUS]: (state, action) => ({
     ...state,
-    elapsed: action.payload,
+    status: action.payload,
   }),
 }, defaultState);

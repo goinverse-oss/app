@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import moment from 'moment';
+
 import { instanceSelector } from '../orm/selectors';
 
 export function item(state) {
@@ -13,8 +16,18 @@ export function isPaused(state) {
   return state.playback.paused;
 }
 
+export function isLoading(state) {
+  return !_.get(state.playback, 'status.isLoaded', false);
+}
+
+export function isBuffering(state) {
+  return _.get(state.playback, 'status.isBuffering', false);
+}
+
 export function elapsed(state) {
-  return state.playback.elapsed;
+  const millis = state.playback.status.positionMillis;
+  const seconds = Math.floor(millis / 1000);
+  return moment.duration(seconds, 'seconds');
 }
 
 export function getSound(state) {

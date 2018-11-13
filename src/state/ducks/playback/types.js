@@ -5,4 +5,4 @@ export const SET_SOUND = scopedType('playback/SET_SOUND');
 export const PLAY = scopedType('playback/PLAY');
 export const PAUSE = scopedType('playback/PAUSE');
 
-export const SET_ELAPSED = scopedType('playback/SET_ELAPSED');
+export const SET_STATUS = scopedType('playback/SET_STATUS');
