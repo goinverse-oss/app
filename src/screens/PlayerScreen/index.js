@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Platform, Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 
-import { FontAwesome, Foundation, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome, Foundation, AntDesign } from '@expo/vector-icons';
 
 import SquareImage from '../../components/SquareImage';
 import { screenRelativeWidth } from '../../components/utils';
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
   },
   controls: {
     marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   playbackButton: {
     justifyContent: 'center',
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderColor: '#000',
     borderWidth: 2,
-    marginTop: 10,
+    margin: 10,
   },
   playIcon: {
     paddingTop: 4,
@@ -77,6 +80,18 @@ const styles = StyleSheet.create({
   },
   pauseIcon: {
     fontSize: 48,
+  },
+  jumpIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  jumpIcon: {
+    fontSize: 56,
+  },
+  jumpIconText: {
+    position: 'absolute',
+    fontSize: 10,
+    bottom: 10,
   },
 });
 
@@ -102,6 +117,45 @@ PlaybackButton.propTypes = {
   onPress: PropTypes.func.isRequired,
 };
 
+const JumpIcon = ({
+  jumpSeconds,
+}) => (
+  <View style={styles.jumpIconContainer}>
+    <MaterialIcons
+      style={styles.jumpIcon}
+      name={`fast-${jumpSeconds > 0 ? 'forward' : 'rewind'}`}
+    />
+    <Text
+      style={[
+        styles.jumpIconText,
+        {
+          [jumpSeconds > 0 ? 'right' : 'left']: 4,
+        },
+      ]}
+    >
+      {Math.abs(jumpSeconds)}
+    </Text>
+  </View>
+);
+
+JumpIcon.propTypes = {
+  jumpSeconds: PropTypes.number.isRequired,
+};
+
+const JumpButton = ({
+  jumpSeconds,
+}) => (
+  <TouchableWithoutFeedback>
+    <JumpIcon jumpSeconds={jumpSeconds} />
+  </TouchableWithoutFeedback>
+);
+
+JumpButton.propTypes = {
+  jumpSeconds: PropTypes.number.isRequired,
+};
+
+const jumpSeconds = 30;
+
 const PlayerScreen = ({
   item,
   isPaused,
@@ -120,10 +174,12 @@ const PlayerScreen = ({
       <Text style={styles.seriesTitle}>{getSeriesTitle(item)}</Text>
       <AudioTimeline style={styles.timeline} />
       <View style={styles.controls}>
+        <JumpButton jumpSeconds={-jumpSeconds} />
         <PlaybackButton
           isPaused={isPaused}
           onPress={() => (isPaused ? play(item) : pause(item))}
         />
+        <JumpButton jumpSeconds={jumpSeconds} />
       </View>
     </View>
   </View>
