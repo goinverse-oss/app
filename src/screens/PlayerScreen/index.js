@@ -90,8 +90,9 @@ const styles = StyleSheet.create({
   },
   jumpIconText: {
     position: 'absolute',
-    fontSize: 10,
-    bottom: 10,
+    fontSize: 12,
+    bottom: 17,
+    backgroundColor: '#fff',
   },
 });
 
@@ -123,14 +124,11 @@ const JumpIcon = ({
   <View style={styles.jumpIconContainer}>
     <MaterialIcons
       style={styles.jumpIcon}
-      name={`fast-${jumpSeconds > 0 ? 'forward' : 'rewind'}`}
+      name={`${jumpSeconds > 0 ? 'forward-5' : 'replay'}`}
     />
     <Text
       style={[
         styles.jumpIconText,
-        {
-          [jumpSeconds > 0 ? 'right' : 'left']: 4,
-        },
       ]}
     >
       {Math.abs(jumpSeconds)}
