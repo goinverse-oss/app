@@ -140,17 +140,25 @@ JumpIcon.propTypes = {
   jumpSeconds: PropTypes.number.isRequired,
 };
 
-const JumpButton = ({
+let JumpButton = ({
   jumpSeconds,
+  jump,
 }) => (
-  <TouchableWithoutFeedback>
-    <JumpIcon jumpSeconds={jumpSeconds} />
+  <TouchableWithoutFeedback
+    onPress={() => { jump(jumpSeconds); }}
+  >
+    <View>
+      <JumpIcon jumpSeconds={jumpSeconds} />
+    </View>
   </TouchableWithoutFeedback>
 );
 
 JumpButton.propTypes = {
   jumpSeconds: PropTypes.number.isRequired,
+  jump: PropTypes.func.isRequired,
 };
+
+JumpButton = connect(null, actions)(JumpButton);
 
 const jumpSeconds = 30;
 

@@ -8,7 +8,6 @@ import moment from 'moment';
 import 'moment-duration-format';
 import momentPropTypes from 'react-moment-proptypes';
 
-import appPropTypes from '../../propTypes';
 import * as selectors from '../../state/ducks/playback/selectors';
 
 const styles = StyleSheet.create({
@@ -79,8 +78,8 @@ function renderStatus({ isLoading, isBuffering }) {
 
 const AudioTimeline = ({
   style,
-  item,
   elapsed,
+  duration,
   isLoading,
   isBuffering,
 }) => (
@@ -88,14 +87,14 @@ const AudioTimeline = ({
     <View style={styles.timesContainer}>
       <Text style={[styles.time, styles.elapsedTime]}>{formatDuration(elapsed)}</Text>
       <Text style={styles.status}>{renderStatus({ isLoading, isBuffering })}</Text>
-      <Text style={styles.time}>{formatRemainingTime(item.duration, elapsed)}</Text>
+      <Text style={styles.time}>{formatRemainingTime(duration, elapsed)}</Text>
     </View>
     <View style={styles.progressBar} />
     <View
       style={[
         styles.progressBar,
         styles.playedBar,
-        playedBarWidth(item.duration, elapsed),
+        playedBarWidth(duration, elapsed),
       ]}
     />
   </View>
@@ -103,8 +102,8 @@ const AudioTimeline = ({
 
 AudioTimeline.propTypes = {
   style: ViewPropTypes.style,
-  item: appPropTypes.mediaItem.isRequired,
   elapsed: momentPropTypes.momentDurationObj.isRequired,
+  duration: momentPropTypes.momentDurationObj.isRequired,
   isLoading: PropTypes.bool.isRequired,
   isBuffering: PropTypes.bool.isRequired,
 };
@@ -115,10 +114,10 @@ AudioTimeline.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    item: selectors.item(state),
     isLoading: selectors.isLoading(state),
     isBuffering: selectors.isBuffering(state),
     elapsed: selectors.elapsed(state),
+    duration: selectors.duration(state),
   };
 }
 

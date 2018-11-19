@@ -24,8 +24,18 @@ export function isBuffering(state) {
   return _.get(state.playback, 'status.isBuffering', false);
 }
 
+export function getStatus(state) {
+  return state.playback.status;
+}
+
 export function elapsed(state) {
-  const millis = state.playback.status.positionMillis;
+  const millis = getStatus(state).positionMillis;
+  const seconds = Math.floor(millis / 1000);
+  return moment.duration(seconds, 'seconds');
+}
+
+export function duration(state) {
+  const millis = getStatus(state).durationMillis;
   const seconds = Math.floor(millis / 1000);
   return moment.duration(seconds, 'seconds');
 }

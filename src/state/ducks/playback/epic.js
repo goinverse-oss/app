@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { Audio } from 'expo';
 
-import { SET_PLAYING, PLAY, PAUSE } from './types';
+import { SET_PLAYING, PLAY, PAUSE, JUMP } from './types';
 import { setStatus, setSound } from './actions';
 import * as selectors from './selectors';
 import { instanceSelector } from '../orm/selectors';
@@ -66,4 +66,21 @@ const pauseEpic = (action$, store) =>
     }),
   );
 
-export default combineEpics(startPlayingEpic, playEpic, pauseEpic);
+const jumpEpic = (action$, store) =>
+  action$.pipe(
+    ofType(JUMP),
+    mergeMap((action) => {
+      const jumpMillis = action.payload * 1000;
+      const state = store.getState();
+      const status = selectors.getStatus(state);
+      const positionMillis = status.positionMillis + jumpMillis;
+
+      const sound = selectors.getSound(state);
+      sound.setStatusAsync({
+        positionMillis,
+      });
+      return Observable.never();
+    }),
+  );
+
+export default combineEpics(startPlayingEpic, playEpic, pauseEpic, jumpEpic);
