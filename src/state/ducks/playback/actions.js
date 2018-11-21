@@ -15,4 +15,7 @@ export const pause = createAction(types.PAUSE);
  */
 export const jump = createAction(types.JUMP);
 
+export const seek = createAction(types.SEEK);
+export const setPendingSeek = createAction(types.SET_PENDING_SEEK);
+
 export const setStatus = createAction(types.SET_STATUS);

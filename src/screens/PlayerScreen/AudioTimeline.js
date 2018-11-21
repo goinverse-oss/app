@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ViewPropTypes, StyleSheet } from 'react-native';
+import Slider from 'react-native-slider';
 import { connect } from 'react-redux';
 
 import _ from 'lodash';
@@ -8,6 +9,7 @@ import moment from 'moment';
 import 'moment-duration-format';
 import momentPropTypes from 'react-moment-proptypes';
 
+import * as actions from '../../state/ducks/playback/actions';
 import * as selectors from '../../state/ducks/playback/selectors';
 
 const styles = StyleSheet.create({
@@ -31,26 +33,14 @@ const styles = StyleSheet.create({
   elapsedTime: {
     color: '#F95A57',
   },
-  progressBar: {
-    width: '100%',
-    height: 2,
-    backgroundColor: '#ccc',
+  slider: {
+    height: 10,
   },
-  playedBar: {
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: '#F95A57',
+  sliderThumb: {
+    height: 10,
+    width: 10,
   },
 });
-
-function playedBarWidth(duration, elapsed) {
-  const percent = 100 * (
-    elapsed.asSeconds() / duration.asSeconds()
-  );
-  return {
-    width: `${percent}%`,
-  };
-}
 
 function formatDuration(duration) {
   if (_.isUndefined(duration)) {
@@ -78,24 +68,33 @@ function renderStatus({ isLoading, isBuffering }) {
 
 const AudioTimeline = ({
   style,
-  elapsed,
   duration,
+  elapsed,
   isLoading,
   isBuffering,
+  seek,
+  setPendingSeek,
 }) => (
   <View style={[styles.container, style]}>
     <View style={styles.timesContainer}>
-      <Text style={[styles.time, styles.elapsedTime]}>{formatDuration(elapsed)}</Text>
+      <Text style={[styles.time, styles.elapsedTime]}>
+        {formatDuration(elapsed)}
+      </Text>
       <Text style={styles.status}>{renderStatus({ isLoading, isBuffering })}</Text>
-      <Text style={styles.time}>{formatRemainingTime(duration, elapsed)}</Text>
+      <Text style={styles.time}>
+        {formatRemainingTime(duration, elapsed)}
+      </Text>
     </View>
-    <View style={styles.progressBar} />
-    <View
-      style={[
-        styles.progressBar,
-        styles.playedBar,
-        playedBarWidth(duration, elapsed),
-      ]}
+    <Slider
+      style={styles.slider}
+      thumbStyle={styles.sliderThumb}
+      minimumValue={0}
+      maximumValue={duration.asMilliseconds()}
+      value={elapsed.asMilliseconds()}
+      minimumTrackTintColor="#F95A57"
+      onSlidingStart={value => setPendingSeek(moment.duration(value))}
+      onValueChange={value => setPendingSeek(moment.duration(value))}
+      onSlidingComplete={value => seek(moment.duration(value))}
     />
   </View>
 );
@@ -106,6 +105,8 @@ AudioTimeline.propTypes = {
   duration: momentPropTypes.momentDurationObj.isRequired,
   isLoading: PropTypes.bool.isRequired,
   isBuffering: PropTypes.bool.isRequired,
+  seek: PropTypes.func.isRequired,
+  setPendingSeek: PropTypes.func.isRequired,
 };
 
 AudioTimeline.defaultProps = {
@@ -121,4 +122,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AudioTimeline);
+export default connect(mapStateToProps, actions)(AudioTimeline);

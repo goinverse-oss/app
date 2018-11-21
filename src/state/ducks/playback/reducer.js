@@ -7,6 +7,7 @@ import {
   PLAY,
   PAUSE,
   SET_STATUS,
+  SET_PENDING_SEEK,
 } from './types';
 
 /* playback reducer state shape:
@@ -55,5 +56,9 @@ export default handleActions({
   [SET_STATUS]: (state, action) => ({
     ...state,
     status: action.payload,
+  }),
+  [SET_PENDING_SEEK]: (state, action) => ({
+    ...state,
+    pendingSeekDestination: action.payload,
   }),
 }, defaultState);
