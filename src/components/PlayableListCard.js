@@ -1,9 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { View, ViewPropTypes, Text, StyleSheet } from 'react-native';
-import momentPropTypes from 'react-moment-proptypes';
+import {
+  View,
+  ViewPropTypes,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 import Icon from '@expo/vector-icons/Foundation';
+import pluralize from 'pluralize';
 
 import ListCard from './ListCard';
 import SquareImage from './SquareImage';
@@ -11,7 +19,8 @@ import InteractionsCounter from './InteractionsCounter';
 import TextPill from './TextPill';
 import { formatMinutesString } from './utils';
 
-import AppPropTypes from '../propTypes';
+import appPropTypes from '../propTypes';
+import * as actions from '../state/ducks/playback/actions';
 
 const styles = StyleSheet.create({
   card: {
@@ -21,8 +30,12 @@ const styles = StyleSheet.create({
     height: 106,
   },
   imageContainer: {
+    width: 86,
+    height: 86,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  image: {
   },
   playIcon: {
     position: 'absolute',
@@ -80,44 +93,44 @@ function formatFooter({ duration, publishedAt, formatDuration }) {
   if (!_.isNull(duration)) {
     strings.push(formatDuration(duration));
   }
-  if (!_.isNull(publishedAt)) {
+  if (!_.isUndefined(publishedAt)) {
     strings.push(publishedAt.fromNow());
   }
   return strings.join(separator);
 }
 
 const PlayableListCard = ({
-  coverImageSource,
   style,
-  title,
-  description,
-  duration,
-  publishedAt,
   formatDuration,
-  mediaType,
   isSearchResult,
+  navigation,
+  item,
+  play,
   ...props
 }) => (
   <ListCard style={[styles.card, style]} {...props}>
-    <View style={styles.imageContainer}>
-      <SquareImage
-        source={coverImageSource}
-        width={86}
-      />
-      <Icon name="play" style={styles.playIcon} />
-      <View style={styles.playCircle} />
-    </View>
+    <TouchableWithoutFeedback onPress={() => play()}>
+      <View style={styles.imageContainer} >
+        <SquareImage
+          source={{ uri: item.imageUrl }}
+          width={86}
+          style={styles.image}
+        />
+        <Icon name="play" style={styles.playIcon} />
+        <View style={styles.playCircle} />
+      </View>
+    </TouchableWithoutFeedback>
     <View style={styles.metadataContainer}>
       {isSearchResult ? (
         <View style={styles.searchHeader}>
-          <TextPill style={styles.mediaType}>{mediaType}</TextPill>
+          <TextPill style={styles.mediaType}>{pluralize.singular(item.type)}</TextPill>
           <Text style={styles.times}>
-            {formatFooter({ duration, publishedAt, formatDuration })}
+            {formatFooter({ ...item, formatDuration })}
           </Text>
         </View>
       ) : null}
       <View style={styles.textContainer}>
-        <Text style={styles.title} numberOfLines={1}>{title}</Text>
+        <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
         <Text
           style={[
             styles.description,
@@ -125,13 +138,13 @@ const PlayableListCard = ({
           ]}
           numberOfLines={2}
         >
-          {description}
+          {item.description}
         </Text>
       </View>
       {isSearchResult ? null : (
         <View style={styles.footer}>
           <Text style={styles.times}>
-            {formatFooter({ duration, publishedAt, formatDuration })}
+            {formatFooter({ ...item, formatDuration })}
           </Text>
           <InteractionsCounter />
         </View>
@@ -141,24 +154,33 @@ const PlayableListCard = ({
 );
 
 PlayableListCard.propTypes = {
-  coverImageSource: AppPropTypes.imageSource.isRequired,
   style: ViewPropTypes.style,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  duration: momentPropTypes.momentDurationObj,
-  publishedAt: momentPropTypes.momentObj,
+  navigation: appPropTypes.navigation.isRequired,
+  item: appPropTypes.mediaItem.isRequired,
   formatDuration: PropTypes.func,
-  mediaType: PropTypes.string,
   isSearchResult: PropTypes.bool,
+  play: PropTypes.func.isRequired,
 };
 
 PlayableListCard.defaultProps = {
   style: {},
-  duration: null,
-  publishedAt: null,
   formatDuration: formatMinutesString,
-  mediaType: 'media',
   isSearchResult: false,
 };
 
-export default PlayableListCard;
+function mapDispatchToProps(dispatch, { navigation, item }) {
+  return {
+    play: () => {
+      dispatch(
+        actions.setPlaying(
+          _.pick(item, ['type', 'id']),
+        ),
+      );
+      navigation.navigate('Player');
+    },
+  };
+}
+
+export default withNavigation(
+  connect(null, mapDispatchToProps)(PlayableListCard),
+);

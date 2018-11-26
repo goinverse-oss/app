@@ -5,14 +5,7 @@ import appPropTypes from '../propTypes';
 
 const PodcastEpisodeListCard = ({ podcastEpisode, ...props }) => (
   <PlayableListCard
-    coverImageSource={{
-      uri: podcastEpisode.imageUrl,
-    }}
-    title={podcastEpisode.title}
-    description={podcastEpisode.description}
-    duration={podcastEpisode.duration}
-    publishedAt={podcastEpisode.publishedAt}
-    mediaType="podcast"
+    item={podcastEpisode}
     {...props}
   />
 );

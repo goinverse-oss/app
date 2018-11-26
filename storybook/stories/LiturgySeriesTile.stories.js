@@ -11,43 +11,31 @@ const liturgies = [
     title: 'Oh Light',
     liturgyLength: 50,
     publishedDate: moment('2015-01-19T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/58b6cdeacd0f6894d86259c3/1488375317419/?format=500w',
-    },
   },
   {
     title: 'Garden',
     liturgyLength: 34,
     publishedDate: moment('2017-01-03T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/58b6cdeacd0f6894d86259c3/1488375317419/?format=500w',
-    },
   },
   {
     title: 'Pentecost',
     liturgyLength: 50,
     publishedDate: moment('2015-01-10T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/58b6cdeacd0f6894d86259c3/1488375317419/?format=500w',
-    },
   },
   {
     title: 'God Our Mother',
     liturgyLength: 25,
     publishedDate: moment('2015-01-10T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/58b6cdeacd0f6894d86259c3/1488375317419/?format=500w',
-    },
   },
   {
     title: 'Vapor',
     liturgyLength: 25,
     publishedDate: moment('2015-01-10T12:30:18-08:00'),
-    imageSource: {
-      uri: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/58b6cdeacd0f6894d86259c3/1488375317419/?format=500w',
-    },
   },
-];
+].map((liturgy, i) => ({
+  ...liturgy,
+  imageUrl: `https://loremflickr.com/300/300?random=${i}`,
+}));
 
 class LiturgyExampleSeriesList extends Component {
   onPressLiturgy(liturgy) {

@@ -20,7 +20,9 @@ export default {
 factory.define('meditationCategories', Object, {
   id: factory.sequence('meditationCategories.id', n => `${n}`),
   type: 'meditationCategories',
-  title: factory.chance('sentence', { words: 3 }),
+  title: () => (
+    factory.chance('sentence', { words: 3 })().slice(0, -1)
+  ),
   description: () => (
     _.times(3, () => (
       factory.chance('paragraph', { sentences: 3 })()

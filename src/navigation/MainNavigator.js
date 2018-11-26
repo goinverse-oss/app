@@ -8,11 +8,12 @@ import {
 } from 'react-navigation';
 import { connect } from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
-import expo, { LinearGradient } from 'expo';
+import { GestureHandler, LinearGradient } from 'expo';
 
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import PatreonScreen from '../screens/PatreonScreen';
+import PlayerScreen from '../screens/PlayerScreen';
 import PodcastsScreen from '../screens/PodcastsScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
 import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
@@ -20,7 +21,7 @@ import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 
-const { DrawerLayout } = expo.DangerZone.GestureHandler;
+const { DrawerLayout } = GestureHandler;
 
 const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,
@@ -68,10 +69,15 @@ const PatreonWithHeader = createStackNavigator({
   PatreonWithHeader: { screen: PatreonScreen },
 });
 
+const PlayerWithHeader = createStackNavigator({
+  PlayerWithHeader: { screen: PlayerScreen },
+});
+
 const Modals = createStackNavigator(
   {
     Main: { screen: Tabs },
     Patreon: { screen: PatreonWithHeader },
+    Player: { screen: PlayerWithHeader },
     Logout: { screen: LoginScreen },
   },
   {

@@ -1,10 +1,10 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/never';
 
-import * as reducers from './ducks';
+import reducer from './reducer';
 import epics from './epics';
 
 /**
@@ -20,11 +20,21 @@ const emptyEpic = () => Observable.never();
  * not worrying about side effects.
  */
 export default function configureStore({ noEpic = false } = {}) {
-  const reducer = combineReducers(reducers);
   const epic = noEpic ? emptyEpic : combineEpics(...epics);
   const epicMiddleware = createEpicMiddleware(epic);
   const enhancer = composeWithDevTools(
     applyMiddleware(epicMiddleware),
   );
-  return createStore(reducer, enhancer);
+
+  // https://facebook.github.io/react-native/blog/2016/03/24/introducing-hot-reloading.html
+  const store = createStore(reducer, enhancer);
+  if (module.hot) {
+    module.hot.accept(() => {
+      // eslint-disable-next-line global-require
+      const nextRootReducer = require('./reducer').default;
+      store.replaceReducer(nextRootReducer);
+    });
+  }
+
+  return store;
 }

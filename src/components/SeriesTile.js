@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
 import { normalize } from 'react-native-elements';
 import fonts from 'react-native-elements/src/config/fonts';
 import colors from '../styles/colors';
+import SquareImage from './SquareImage';
 
 
 const styles = StyleSheet.create({
@@ -14,12 +15,13 @@ const styles = StyleSheet.create({
         of left justified columns. There might
         be a more efficient way of doing this
     */
-    marginLeft: '2.7%',
-    marginVertical: '2%',
-    paddingHorizontal: '2.5%',
-    paddingVertical: '2.5%',
+    marginHorizontal: 6,
+    marginVertical: 6,
+    padding: 9,
     width: '46%',
     borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#fff',
     ...Platform.select({
       ios: {
@@ -33,16 +35,16 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  viewWrapper: {
-    paddingHorizontal: 0,
-    marginHorizontal: 0,
+  imageContainer: {
     flex: 1,
+    width: null,
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  cardImage: {
+  textContainer: {
     flex: 1,
-    aspectRatio: 1,
-    resizeMode: 'cover',
-    borderRadius: 4,
+    width: '95%',
   },
   title: {
     fontSize: normalize(12),
@@ -72,10 +74,15 @@ const SeriesTile = ({
 }) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={styles.container}>
-      <Image source={{ uri: imageUrl }} style={styles.cardImage} />
-      <View>
+      <View style={styles.imageContainer}>
+        <SquareImage
+          source={{ uri: imageUrl }}
+          width={150}
+        />
+      </View>
+      <View style={styles.textContainer}>
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.description} numberOfLines={1}>{description}</Text>
       </View>
     </View>
   </TouchableWithoutFeedback>

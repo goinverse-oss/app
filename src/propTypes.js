@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment-timezone';
 
+import Meditation from './state/models/Meditation';
+
 const imageSource = PropTypes.shape({
   uri: PropTypes.string.isRequired,
 });
@@ -12,6 +14,13 @@ export default {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }),
+
+  mediaItem: PropTypes.oneOfType(
+    // TODO: other models
+    [Meditation].map(
+      Model => PropTypes.shape(Model.propTypes).isRequired,
+    ),
+  ),
 
   person: PropTypes.shape({
     // TODO: expand as we use more of it

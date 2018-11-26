@@ -6,10 +6,9 @@ import Card from './Card';
 
 const styles = StyleSheet.create({
   card: {
-    width: '94.7%',
     padding: 10,
-    marginHorizontal: '2.7%',
-    marginVertical: '2%',
+    marginHorizontal: 7,
+    marginVertical: 7,
   },
 });
 

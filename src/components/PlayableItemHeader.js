@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { ViewPropTypes, Dimensions, View, Text, StyleSheet } from 'react-native';
+import { ViewPropTypes, View, Text, StyleSheet } from 'react-native';
 import { normalize } from 'react-native-elements';
 import momentPropTypes from 'react-moment-proptypes';
 
 import PlayButton from './PlayButton';
 import InteractionsCounter from './InteractionsCounter';
 import SquareImage from './SquareImage';
-import { formatMinutesString } from './utils';
+import { formatMinutesString, screenRelativeWidth } from './utils';
 
 import AppPropTypes from '../propTypes';
 
@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   imageContainer: {
+    width: '30%',
     marginRight: 20,
   },
   metadataContainer: {
@@ -46,11 +47,6 @@ function formatFooter({
     strings.push(formatpublishedAt(publishedAt));
   }
   return strings.join(separator);
-}
-
-function screenRelativeWidth(fraction) {
-  const { width } = Dimensions.get('window');
-  return width * fraction;
 }
 
 const PlayableItemHeader = ({

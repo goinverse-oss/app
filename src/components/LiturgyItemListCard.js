@@ -5,14 +5,7 @@ import appPropTypes from '../propTypes';
 
 const LiturgyItemListCard = ({ liturgyItem, ...props }) => (
   <PlayableListCard
-    coverImageSource={{
-      uri: liturgyItem.imageUrl,
-    }}
-    title={liturgyItem.title}
-    description={liturgyItem.description}
-    duration={liturgyItem.duration}
-    publishedAt={liturgyItem.publishedAt}
-    mediaType="liturgy"
+    item={liturgyItem}
     {...props}
   />
 );

@@ -18,7 +18,7 @@ const formatLiturgyDescription = (liturgyLength, publishedDate) => {
 };
 const LiturgySeriesTile = ({ liturgy, onPress }) => (
   <SeriesTile
-    imageSource={liturgy.imageSource}
+    imageUrl={liturgy.imageUrl}
     title={liturgy.title}
     onPress={() => onPress(liturgy)}
     description={formatLiturgyDescription(liturgy.liturgyLength, liturgy.publishedDate)}

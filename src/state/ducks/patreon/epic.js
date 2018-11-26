@@ -1,4 +1,4 @@
-import { combineEpics } from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
 
 // redux-observable pulls in a minimal subset of RxJS
 // to keep the bundle size small, so here we explicitly
@@ -8,11 +8,7 @@ import { combineEpics } from 'redux-observable';
 // another operator.
 // https://redux-observable.js.org/docs/Troubleshooting.html
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/fromPromise';
+import { switchMap, mapTo, catchError } from 'rxjs/operators';
 
 import axios from 'axios';
 
@@ -62,12 +58,15 @@ function sendFakePatreonRequest() {
  *   PATREON_ERROR: on failure
  */
 const enablePatreonEpic = action$ =>
-  action$.ofType(ENABLE_PATREON)
-    .switchMap(() => (
-      sendFakePatreonRequest()
-        .mapTo(patreonEnabled())
-        .catch(error => Observable.of(patreonError(error)))
-    ));
+  action$.pipe(
+    ofType(ENABLE_PATREON),
+    switchMap(() => (
+      sendFakePatreonRequest().pipe(
+        mapTo(patreonEnabled()),
+        catchError(error => Observable.of(patreonError(error))),
+      )
+    )),
+  );
 
 /**
  * Handle requests to disable Patreon.
@@ -79,11 +78,14 @@ const enablePatreonEpic = action$ =>
  *   PATREON_ERROR: on failure
  */
 const disablePatreonEpic = action$ =>
-  action$.ofType(DISABLE_PATREON)
-    .switchMap(() => (
-      sendFakePatreonRequest()
-        .mapTo(patreonDisabled())
-        .catch(error => Observable.of(patreonError(error)))
-    ));
+  action$.pipe(
+    ofType(DISABLE_PATREON),
+    switchMap(() => (
+      sendFakePatreonRequest().pipe(
+        mapTo(patreonDisabled()),
+        catchError(error => Observable.of(patreonError(error))),
+      )
+    )),
+  );
 
 export default combineEpics(enablePatreonEpic, disablePatreonEpic);
