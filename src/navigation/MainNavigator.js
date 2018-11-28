@@ -26,6 +26,10 @@ const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,
   MeditationsCategory: MeditationsCategoryScreen,
   SingleMeditation: SingleMeditationScreen,
+}, {
+  navigationOptions: {
+    tabBarIcon: MeditationsIcon,
+  },
 });
 
 MeditationsNavigator.navigationOptions = {
