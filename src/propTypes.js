@@ -15,6 +15,10 @@ export default {
     navigate: PropTypes.func.isRequired,
   }),
 
+  iconStyle: PropTypes.shape({
+    fontSize: PropTypes.number,
+  }),
+
   mediaItem: PropTypes.oneOfType(
     // TODO: other models
     [Meditation].map(

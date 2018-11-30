@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Platform, Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Platform, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { MaterialIcons, FontAwesome, Foundation, AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import SquareImage from '../../components/SquareImage';
 import { screenRelativeWidth } from '../../components/utils';
@@ -14,6 +13,7 @@ import * as selectors from '../../state/ducks/playback/selectors';
 import appStyles from '../../styles';
 
 import AudioTimeline from './AudioTimeline';
+import Controls from './Controls';
 
 const shadowRadius = 6;
 
@@ -59,40 +59,6 @@ const styles = StyleSheet.create({
   },
   controls: {
     marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  playbackButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderColor: '#000',
-    borderWidth: 2,
-    margin: 10,
-  },
-  playIcon: {
-    paddingTop: 4,
-    paddingLeft: 2,
-    fontSize: 48,
-  },
-  pauseIcon: {
-    fontSize: 48,
-  },
-  jumpIconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  jumpIcon: {
-    fontSize: 56,
-  },
-  jumpIconText: {
-    position: 'absolute',
-    fontSize: 12,
-    bottom: 17,
-    backgroundColor: '#fff',
   },
 });
 
@@ -101,101 +67,43 @@ function getSeriesTitle(item) {
   return _.isUndefined(group) ? null : item[group].title;
 }
 
-const PlaybackButton = ({ isPaused, onPress }) => (
-  <TouchableWithoutFeedback onPress={onPress}>
-    <View style={styles.playbackButton}>
-      {
-        isPaused
-          ? <Foundation name="play" style={styles.playIcon} />
-          : <AntDesign name="pause" style={styles.pauseIcon} />
-      }
-    </View>
-  </TouchableWithoutFeedback>
-);
+class PlayerScreen extends React.Component {
+  componentDidUpdate() {
+    const { navigation, item } = this.props;
+    if (!item) {
+      navigation.goBack(null);
+    }
+  }
 
-PlaybackButton.propTypes = {
-  isPaused: PropTypes.bool.isRequired,
-  onPress: PropTypes.func.isRequired,
-};
+  render() {
+    const { item } = this.props;
 
-const JumpIcon = ({
-  jumpSeconds,
-}) => (
-  <View style={styles.jumpIconContainer}>
-    <MaterialIcons
-      style={styles.jumpIcon}
-      name={`${jumpSeconds > 0 ? 'forward-5' : 'replay'}`}
-    />
-    <Text
-      style={[
-        styles.jumpIconText,
-      ]}
-    >
-      {Math.abs(jumpSeconds)}
-    </Text>
-  </View>
-);
+    if (!item) {
+      return null;
+    }
 
-JumpIcon.propTypes = {
-  jumpSeconds: PropTypes.number.isRequired,
-};
-
-let JumpButton = ({
-  jumpSeconds,
-  jump,
-}) => (
-  <TouchableWithoutFeedback
-    onPress={() => { jump(jumpSeconds); }}
-  >
-    <View>
-      <JumpIcon jumpSeconds={jumpSeconds} />
-    </View>
-  </TouchableWithoutFeedback>
-);
-
-JumpButton.propTypes = {
-  jumpSeconds: PropTypes.number.isRequired,
-  jump: PropTypes.func.isRequired,
-};
-
-JumpButton = connect(null, actions)(JumpButton);
-
-const jumpSeconds = 30;
-
-const PlayerScreen = ({
-  item,
-  isPaused,
-  play,
-  pause,
-}) => (
-  <View style={appStyles.container}>
-    <View style={styles.imageContainer}>
-      <SquareImage
-        source={{ uri: item.imageUrl }}
-        width={screenRelativeWidth(1)}
-      />
-    </View>
-    <View style={styles.mediaContainer}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.seriesTitle}>{getSeriesTitle(item)}</Text>
-      <AudioTimeline style={styles.timeline} />
-      <View style={styles.controls}>
-        <JumpButton jumpSeconds={-jumpSeconds} />
-        <PlaybackButton
-          isPaused={isPaused}
-          onPress={() => (isPaused ? play(item) : pause(item))}
-        />
-        <JumpButton jumpSeconds={jumpSeconds} />
+    return (
+      <View style={appStyles.container}>
+        <View style={styles.imageContainer}>
+          <SquareImage
+            source={{ uri: item.imageUrl }}
+            width={screenRelativeWidth(1)}
+          />
+        </View>
+        <View style={styles.mediaContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.seriesTitle}>{getSeriesTitle(item)}</Text>
+          <AudioTimeline style={styles.timeline} />
+          <Controls style={styles.controls} />
+        </View>
       </View>
-    </View>
-  </View>
-);
+    );
+  }
+}
 
 PlayerScreen.propTypes = {
+  navigation: appPropTypes.navigation.isRequired,
   item: appPropTypes.mediaItem.isRequired,
-  isPaused: PropTypes.bool.isRequired,
-  play: PropTypes.func.isRequired,
-  pause: PropTypes.func.isRequired,
 };
 
 PlayerScreen.navigationOptions = ({ navigation }) => ({
@@ -212,9 +120,7 @@ PlayerScreen.navigationOptions = ({ navigation }) => ({
 function mapStateToProps(state) {
   return {
     item: selectors.item(state),
-    isPlaying: selectors.isPlaying(state),
     isPaused: selectors.isPaused(state),
-    elapsed: selectors.elapsed(state),
   };
 }
 
