@@ -68,9 +68,10 @@ function getSeriesTitle(item) {
 }
 
 class PlayerScreen extends React.Component {
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const { item: prevItem } = prevProps;
     const { navigation, item } = this.props;
-    if (!item) {
+    if (prevItem && !item) {
       navigation.goBack(null);
     }
   }
