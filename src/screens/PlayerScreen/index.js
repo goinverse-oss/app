@@ -78,20 +78,20 @@ class PlayerScreen extends React.Component {
   render() {
     const { item } = this.props;
 
-    if (!item) {
-      return null;
-    }
-
     return (
       <View style={appStyles.container}>
         <View style={styles.imageContainer}>
-          <SquareImage
-            source={{ uri: item.imageUrl }}
-            width={screenRelativeWidth(1)}
-          />
+          {
+            item ? (
+              <SquareImage
+                source={{ uri: item.imageUrl }}
+                width={screenRelativeWidth(1)}
+              />
+            ) : null
+          }
         </View>
         <View style={styles.mediaContainer}>
-          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.title}>{item ? item.title : ''}</Text>
           <Text style={styles.seriesTitle}>{getSeriesTitle(item)}</Text>
           <AudioTimeline style={styles.timeline} />
           <Controls style={styles.controls} />
@@ -103,7 +103,11 @@ class PlayerScreen extends React.Component {
 
 PlayerScreen.propTypes = {
   navigation: appPropTypes.navigation.isRequired,
-  item: appPropTypes.mediaItem.isRequired,
+  item: appPropTypes.mediaItem,
+};
+
+PlayerScreen.defaultProps = {
+  item: null,
 };
 
 PlayerScreen.navigationOptions = ({ navigation }) => ({

@@ -160,6 +160,7 @@ const Controls = ({
       style={jumpButtonStyle}
       iconStyle={jumpButtonIconStyle}
       jumpSeconds={-jumpSeconds}
+      disabled={!item}
     />
     <PlaybackButton
       style={playbackButtonStyle}
@@ -167,17 +168,19 @@ const Controls = ({
       pauseButtonIconStyle={pauseButtonIconStyle}
       isPaused={isPaused}
       onPress={() => (isPaused ? play(item) : pause(item))}
+      disabled={!item}
     />
     <JumpButton
       style={jumpButtonStyle}
       iconStyle={jumpButtonIconStyle}
       jumpSeconds={jumpSeconds}
+      disabled={!item}
     />
   </View>
 );
 
 Controls.propTypes = {
-  item: appPropTypes.mediaItem.isRequired,
+  item: appPropTypes.mediaItem,
   isPaused: PropTypes.bool.isRequired,
   play: PropTypes.func.isRequired,
   pause: PropTypes.func.isRequired,
@@ -190,6 +193,7 @@ Controls.propTypes = {
 };
 
 Controls.defaultProps = {
+  item: null,
   style: {},
   jumpButtonStyle: {},
   jumpButtonIconStyle: {},
