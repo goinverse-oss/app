@@ -26,7 +26,7 @@ factory.define('meditations', Object, {
   id: factory.sequence('meditations.id', n => `${n}`),
   type: 'meditations',
   title: () => (
-    factory.chance('sentence', { words: 3 })().slice(0, -1)
+    factory.chance('sentence', { words: _.random(3, 8) })().slice(0, -1)
   ),
   description: () => (
     _.times(3, () => (

@@ -17,10 +17,11 @@
     "pretest": "yarn generate-default-config",
     "preci:deploy": "yarn generate-default-config",
     "prestorybook": "rnstl",
-    "postinstall": "rndebugger-open --expo; ( cd node_modules/redux-orm-proptypes; npm i; make build )"
+    "postinstall": "rndebugger-open --expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^8.0.0",
+    "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "axios": "^0.18.0",
     "expo": "^31.0.4",
     "lodash": "^4.17.4",
@@ -38,13 +39,13 @@
     "react-native-slider": "^0.11.0",
     "react-navigation": "^2.18.2",
     "react-navigation-redux-helpers": "^1.0.3",
+    "react-navigation-tabs": "^0.8.4",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-devtools-extension": "^2.13.2",
     "redux-observable": "^0.17.0",
     "redux-orm": "^0.11.0",
-    "redux-orm-proptypes": "https://github.com/theliturgists/redux-orm-proptypes.git",
     "rxjs": "^5.5.6"
   },
   "devDependencies": {

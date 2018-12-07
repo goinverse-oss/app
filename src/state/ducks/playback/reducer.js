@@ -56,6 +56,7 @@ export default handleActions({
   [SET_STATUS]: (state, action) => ({
     ...state,
     status: action.payload,
+    item: action.payload.didJustFinish ? null : state.item,
   }),
   [SET_PENDING_SEEK]: (state, action) => ({
     ...state,

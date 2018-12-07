@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import AppNavigator from './navigation/AppNavigator';
+import { setTopLevelNavigator } from './navigation/NavigationService';
 import configureStore from './state/store';
 
 /**
@@ -11,7 +12,9 @@ import configureStore from './state/store';
  */
 const Root = () => (
   <Provider store={configureStore()}>
-    <AppNavigator />
+    <AppNavigator
+      ref={navigator => setTopLevelNavigator(navigator)}
+    />
   </Provider>
 );
 

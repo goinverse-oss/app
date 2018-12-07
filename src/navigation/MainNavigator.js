@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Animated, StyleSheet, Dimensions, Platform } from 'react-native';
-import {
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import { Animated, StyleSheet, Dimensions, Platform, View } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import { connect } from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
 import { GestureHandler, LinearGradient } from 'expo';
@@ -14,6 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import PatreonScreen from '../screens/PatreonScreen';
 import PlayerScreen from '../screens/PlayerScreen';
+import PlayerStrip from '../components/PlayerStrip';
 import PodcastsScreen from '../screens/PodcastsScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
 import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
@@ -33,11 +32,19 @@ MeditationsNavigator.navigationOptions = {
   tabBarIcon: MeditationsIcon,
 };
 
+const TabBar = props => (
+  <View>
+    <PlayerStrip navigation={props.navigation} />
+    <BottomTabBar {...props} />
+  </View>
+);
+
 const Tabs = createBottomTabNavigator({
   Home: { screen: HomeScreen },
   Podcasts: { screen: PodcastsScreen },
   Meditations: { screen: MeditationsNavigator },
 }, {
+  tabBarComponent: TabBar,
   tabBarOptions: {
     activeTintColor: '#F95A57',
     inactiveTintColor: '#D2D2D2',

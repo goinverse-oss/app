@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import { many, attr, Model } from 'redux-orm';
-import propTypesMixin from 'redux-orm-proptypes';
+import propTypesMixin from '@theliturgists/redux-orm-proptypes';
 
 const ValidatingModel = propTypesMixin(Model);
 

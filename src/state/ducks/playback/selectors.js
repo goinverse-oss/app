@@ -4,6 +4,9 @@ import moment from 'moment';
 import { instanceSelector } from '../orm/selectors';
 
 export function item(state) {
+  if (!state.playback.item) {
+    return null;
+  }
   const { type, id } = state.playback.item;
   return instanceSelector(state, type, id);
 }
