@@ -8,8 +8,8 @@ const querystring = require('querystring');
 const octokit = require('@octokit/rest')();
 const _ = require('lodash');
 
-function getExpoUrl(commit) {
-  return `https://expo.io/@theliturgists/app?release-channel=${commit}`;
+function getExpoUrl(channel) {
+  return `https://expo.io/@theliturgists/app?release-channel=${channel}`;
 }
 
 function getQrCodeUrl(content) {
@@ -72,6 +72,7 @@ const requiredEnvVars = {
   token: 'GH_WRITE_COMMENTS_AUTH_TOKEN',
   repo: 'CIRCLE_PROJECT_REPONAME',
   commit: 'CIRCLE_SHA1',
+  branch: 'CIRCLE_BRANCH',
 };
 
 const vars = _.mapValues(requiredEnvVars, (name) => {
@@ -81,6 +82,8 @@ const vars = _.mapValues(requiredEnvVars, (name) => {
   }
   return process.env[name];
 });
+
+vars.channel = vars.branch === 'master' ? 'default' : vars.branch;
 
 // CircleCI docs say that CIRCLE_PR_NUMBER should be defined,
 // but it's not. Work around it by pulling the number
@@ -96,9 +99,9 @@ octokit.authenticate({
   token: vars.token,
 });
 
-const appUrlWeb = getExpoUrl(vars.commit);
+const appUrlWeb = getExpoUrl(vars.channel);
 const appUrl = appUrlWeb.replace('https', 'exp');
-const storybookUrlWeb = getExpoUrl(`storybook-${vars.commit}`);
+const storybookUrlWeb = getExpoUrl(`storybook-${vars.channel}`);
 const storybookUrl = storybookUrlWeb.replace('https', 'exp');
 const appQR = getQrCodeUrl(appUrl);
 const storybookQR = getQrCodeUrl(storybookUrl);
@@ -133,7 +136,7 @@ Scan with the [Expo app](https://expo.io/tools#client) ([Android only](${expoBlo
 
 | <h3>app</h3>  | <h3>storybook</h3>  |
 | ------------- | ------------------- |
-| ![](${appQR}) | ![](${storybookQR}) | 
+| ![](${appQR}) | ![](${storybookQR}) |
 `;
 
 async function main() {
