@@ -1,9 +1,25 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { createAppContainer } from 'react-navigation';
+import { useScreens } from 'react-native-screens';
 
 import AppNavigator from './navigation/AppNavigator';
 import { setTopLevelNavigator } from './navigation/NavigationService';
 import configureStore from './state/store';
+
+useScreens();
+
+const AppContainer = createAppContainer(AppNavigator);
+
+class App extends React.Component {
+  render() {
+    return (
+      <AppContainer
+        ref={navigator => setTopLevelNavigator(navigator)}
+      />
+    );
+  }
+}
 
 /**
  * App entry point. Wraps everything else so that
@@ -12,9 +28,7 @@ import configureStore from './state/store';
  */
 const Root = () => (
   <Provider store={configureStore()}>
-    <AppNavigator
-      ref={navigator => setTopLevelNavigator(navigator)}
-    />
+    <App />
   </Provider>
 );
 

@@ -15,11 +15,29 @@ module.exports = {
   },
   extends: ['airbnb'],
   rules: {
-    // Apprently react-native doesn't like .jsx files
+    // Apparently react-native doesn't like .jsx files
     'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'no-underscore-dangle': 'off',
     'function-paren-newline': ['error', 'consistent'],
+  },
+  // https://github.com/benmosher/eslint-plugin-import/issues/279#issuecomment-215052176
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: [
+          '.js',
+
+          // react-native in general
+          '.android.js',
+          '.ios.js',
+
+          // react-native-screens
+          '.native.js',
+          '.web.js',
+        ],
+      },
+    },
   },
 };

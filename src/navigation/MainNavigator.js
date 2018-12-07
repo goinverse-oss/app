@@ -26,6 +26,10 @@ const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,
   MeditationsCategory: MeditationsCategoryScreen,
   SingleMeditation: SingleMeditationScreen,
+}, {
+  navigationOptions: {
+    tabBarIcon: MeditationsIcon,
+  },
 });
 
 MeditationsNavigator.navigationOptions = {
@@ -119,15 +123,15 @@ class MainNavigator extends React.Component {
     this.dropDown = null;
   }
 
-  getAnimatedStyles() {
+  getAnimatedStyles(progressValue) {
     if (Platform.OS === 'android') {
       // don't animate on Android, because we're doing the
       // default drawer-in-front styling... for now.
       return {};
     }
 
-    const margin = this.state.progressValue
-      ? this.state.progressValue.interpolate({
+    const margin = progressValue
+      ? progressValue.interpolate({
         inputRange: [0, 1],
         outputRange: [0, this.windowDimensions.height * 0.05],
       })
@@ -154,15 +158,7 @@ class MainNavigator extends React.Component {
       <LinearGradient style={styles.gradient} colors={['#FFFFFF00', '#F95A570C']}>
         <DrawerLayout
           ref={drawer => (!this.state.drawer && this.setState({ drawer }))}
-          renderNavigationView={(progressValue) => {
-            if (!this.state.progressValue) {
-              // XXX: gross hack, I know, but I don't see another way
-              // to get the progressValue to the render() method.
-              // https://github.com/kmagiera/react-native-gesture-handler/issues/155
-              setTimeout(() => this.setState({ progressValue }), 100);
-            }
-            return <DrawerContent drawer={this.state.drawer} />;
-          }}
+          renderNavigationView={() => <DrawerContent drawer={this.state.drawer} />}
           drawerWidth={this.windowDimensions.width * 0.75}
           {
             ...Platform.select({
@@ -175,16 +171,22 @@ class MainNavigator extends React.Component {
           }
           useNativeAnimations={false}
         >
-          <Animated.View style={[styles.container, this.getAnimatedStyles()]}>
-            <Modals
-              screenProps={{ drawer: this.state.drawer }}
-              navigation={this.props.navigation}
-            />
-            <DropdownAlert
-              ref={(ref) => { this.dropDown = ref; }}
-              messageNumOfLines={10}
-            />
-          </Animated.View>
+          {
+            progressValue => (
+              <Animated.View
+                style={[styles.container, this.getAnimatedStyles(progressValue)]}
+              >
+                <Modals
+                  screenProps={{ drawer: this.state.drawer }}
+                  navigation={this.props.navigation}
+                />
+                <DropdownAlert
+                  ref={(ref) => { this.dropDown = ref; }}
+                  messageNumOfLines={10}
+                />
+              </Animated.View>
+            )
+          }
         </DrawerLayout>
       </LinearGradient>
     );
