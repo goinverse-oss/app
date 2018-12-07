@@ -9,7 +9,7 @@ get_now_alias() {
 yarn global add exp
 
 fail=
-for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_SHA1 ; do
+for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH ; do
   eval value=\$$name
   if [[ -z ${value} ]]; then
     echo >&2 "Missing required env variable: ${name}"
@@ -30,4 +30,8 @@ prefix=
 if [[ "$1" == "storybook" ]]; then
   prefix="storybook-"
 fi
-exp publish --release-channel "${prefix}${CIRCLE_SHA1}"
+channel=${CIRCLE_BRANCH}
+if [[ "${channel}" == "master" ]]; then
+  channel="default"
+fi
+exp publish --release-channel "${prefix}${channel}"

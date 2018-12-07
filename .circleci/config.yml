@@ -114,25 +114,16 @@ workflows:
           context: global
           requires:
             - install_fakeapi_dependencies
-          filters:
-            branches:
-              ignore: master
       - deploy-app:
           context: global
           requires:
             - install_dependencies
             - unit_tests
-          filters:
-            branches:
-              ignore: master
       - deploy-storybook:
           context: global
           requires:
             - install_dependencies
             - unit_tests
-          filters:
-            branches:
-              ignore: master
       - report-deploy-to-pr:
           context: global
           requires:
