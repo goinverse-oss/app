@@ -22,20 +22,6 @@ jobs:
           paths:
             - node_modules
 
-  install_fakeapi_dependencies:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          key: fakeapi-js-deps-{{ checksum "yarn.lock" }}
-      - run:
-          command: yarn
-          working_directory: ~/project/fakeapi
-      - save_cache:
-          key: fakeapi-js-deps-{{ checksum "yarn.lock" }}
-          paths:
-            - fakeapi/node_modules
-
   eslint:
     <<: *defaults
     steps:
@@ -61,16 +47,6 @@ jobs:
             JEST_JUNIT_OUTPUT: "../reports/jest/js-test-results.xml"
       - store_test_results:
           path: ~/reports
-
-  deploy-fakeapi:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          key: fakeapi-js-deps-{{ checksum "yarn.lock" }}
-      - run:
-          command: yarn ci:deploy
-          working_directory: ~/project/fakeapi
 
   deploy-app:
     <<: *defaults
@@ -103,17 +79,12 @@ workflows:
   main:
     jobs:
       - install_dependencies
-      - install_fakeapi_dependencies
       - eslint:
           requires:
             - install_dependencies
       - unit_tests:
           requires:
             - install_dependencies
-      - deploy-fakeapi:
-          context: global
-          requires:
-            - install_fakeapi_dependencies
       - deploy-app:
           context: global
           requires:
@@ -127,7 +98,6 @@ workflows:
       - report-deploy-to-pr:
           context: global
           requires:
-            - deploy-fakeapi
             - deploy-app
             - deploy-storybook
           filters:
