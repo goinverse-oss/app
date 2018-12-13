@@ -1,9 +1,13 @@
 #!/bin/bash
 
-get_now_alias() {
-  echo "theliturgists-fakeapi-branch-${CIRCLE_BRANCH}" \
-    | sed 's/[\/_.]/-/g' \
-    | cut -c'-63'
+get_fakeapi_name() {
+  # Set this temporarily to use a review app of theliturgists/fakeapi
+  local suffix=""
+  echo "theliturgists-fakeapi${suffix}"
+}
+
+get_fakeapi_url() {
+  echo "https://$(get_fakeapi_name).herokuapp.com"
 }
 
 yarn global add exp
@@ -21,7 +25,7 @@ if [[ -n $fail ]]; then
   exit 1
 fi
 
-api_url="https://$(get_now_alias).now.sh"
+api_url="$(get_fakeapi_url)"
 json -I -f config.json -e "this.apiBaseUrl='${api_url}'"
 
 exp login -u "${EXPO_USERNAME}" -p "${EXPO_PASSWORD}"
