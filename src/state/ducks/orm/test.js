@@ -1,15 +1,58 @@
 import _ from 'lodash';
 import { ActionsObservable } from 'redux-observable';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import contentful from 'contentful/dist/contentful.browser';
+import moment from 'moment';
+import pluralize from 'pluralize';
 
 import configureStore from '../../store';
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
-import { getModelName } from './utils';
+import { getModelName, getRelationships } from './utils';
 import epic from './epic';
-import config from '../../../../config.json';
+
+jest.mock('contentful/dist/contentful.browser');
+
+function contentType(type) {
+  return {
+    contentType: {
+      sys: {
+        id: type,
+      },
+    },
+  };
+}
+
+function timestamps() {
+  return {
+    createdAt: moment(),
+    updatedAt: moment(),
+  };
+}
+
+function getExpectedTimestamps(item) {
+  return _.pick(item.sys, ['createdAt', 'updatedAt']);
+}
+
+function getExpectedRelationships(item) {
+  const relationships = getRelationships(item);
+
+  function convertOne(value) {
+    return {
+      id: value.sys.id,
+      ...value.fields,
+      ...getExpectedTimestamps(value),
+    };
+  }
+
+  const expected = _.mapValues(relationships, (value) => {
+    if (_.isArray(value)) {
+      return value.map(convertOne);
+    }
+    return convertOne(value);
+  });
+  return expected;
+}
 
 // TODO: generate test data from fakeapi factories?
 // TODO: or maybe swagger?
@@ -17,11 +60,14 @@ const cases = [
   {
     description: 'stores a meditation',
     apiJson: {
-      data: [
+      items: [
         {
-          id: '123',
-          type: 'meditations',
-          attributes: {
+          sys: {
+            id: '123',
+            ...contentType('meditation'),
+            ...timestamps(),
+          },
+          fields: {
             title: 'Meditation 123',
             description: 'Good vibes.',
           },
@@ -38,11 +84,14 @@ const cases = [
   {
     description: 'stores a meditation category',
     apiJson: {
-      data: [
+      items: [
         {
-          id: '123',
-          type: 'meditationCategories',
-          attributes: {
+          sys: {
+            id: '123',
+            ...contentType('meditationCategory'),
+            ...timestamps(),
+          },
+          fields: {
             title: 'Category 123',
             description: 'Mindfulness.',
           },
@@ -58,11 +107,14 @@ const cases = [
   {
     description: 'stores a contributor',
     apiJson: {
-      data: [
+      items: [
         {
-          id: '123',
-          type: 'contributors',
-          attributes: {
+          sys: {
+            id: '123',
+            ...contentType('contributor'),
+            ...timestamps(),
+          },
+          fields: {
             name: 'Mike McHargue',
             url: 'http://mikemchargue.com',
             twitter: '@mikemchargue',
@@ -70,194 +122,101 @@ const cases = [
         },
       ],
     },
-    relationships: {},
   },
 
   {
     description: 'stores a tag',
     apiJson: {
-      data: [
+      items: [
         {
-          id: '123',
-          type: 'tags',
-          attributes: {
+          sys: {
+            id: '123',
+            ...contentType('tag'),
+            ...timestamps(),
+          },
+          fields: {
             name: 'Lent',
           },
         },
       ],
     },
-    relationships: {},
   },
 
   {
     description: 'stores instance api response',
     apiJson: {
-      data: {
+      sys: {
         id: '123',
-        type: 'tags',
-        attributes: {
-          name: 'Lent',
-        },
+        ...contentType('tag'),
+        ...timestamps(),
       },
-    },
-    relationships: {},
-  },
-
-  {
-    description: 'stores a meditation category with tags',
-    apiJson: {
-      data: [
-        {
-          id: '123',
-          type: 'meditationCategories',
-          attributes: {
-            title: 'Category 123',
-            description: 'Mindfulness.',
-          },
-          relationships: {
-            tags: {
-              data: [
-                {
-                  id: '123',
-                  type: 'tags',
-                },
-              ],
-            },
-          },
-        },
-      ],
-    },
-    relationships: {
-      tags: [{ id: '123' }],
-      meditations: [],
-    },
-  },
-
-  {
-    description: 'stores a meditation category with included tags',
-    apiJson: {
-      data: [
-        {
-          id: '123',
-          type: 'meditationCategories',
-          attributes: {
-            title: 'Category 123',
-            description: 'Mindfulness.',
-          },
-          relationships: {
-            tags: {
-              data: [
-                {
-                  id: '123',
-                  type: 'tags',
-                },
-              ],
-            },
-          },
-        },
-      ],
-      included: [
-        {
-          id: '123',
-          type: 'tags',
-          attributes: {
-            name: 'mindfulness',
-          },
-        },
-      ],
-    },
-    relationships: {
-      tags: [{ id: '123', name: 'mindfulness' }],
-      meditations: [],
+      fields: {
+        name: 'Lent',
+      },
     },
   },
 
   {
     description: 'stores a meditation with included relationships',
     apiJson: {
-      data: [
+      items: [
         {
-          id: '123',
-          type: 'meditations',
-          attributes: {
+          sys: {
+            id: '123',
+            ...contentType('meditation'),
+            ...timestamps(),
+          },
+          fields: {
             title: 'Names of God',
             description: "A meditation on the names you use and the names you don't.",
-          },
-          relationships: {
             category: {
-              data: {
+              sys: {
                 id: '1',
-                type: 'meditationCategories',
+                ...contentType('meditationCategory'),
+                ...timestamps(),
+              },
+              fields: {
+                title: 'All Meditations',
+                description: 'All the meditations.',
               },
             },
-            contributors: {
-              data: [
-                {
+            contributors: [
+              {
+                sys: {
                   id: '1',
-                  type: 'contributors',
+                  ...contentType('contributor'),
+                  ...timestamps(),
                 },
-              ],
-            },
-            tags: {
-              data: [
-                {
+                fields: {
+                  name: 'Michael Gungor',
+                  twitter: '@michaelgungor',
+                },
+              },
+            ],
+            tags: [
+              {
+                sys: {
                   id: '4',
-                  type: 'tags',
+                  ...contentType('tag'),
+                  ...timestamps(),
                 },
-                {
+                fields: {
+                  name: 'names',
+                },
+              },
+              {
+                sys: {
                   id: '9',
-                  type: 'tags',
+                  ...contentType('tag'),
+                  ...timestamps(),
                 },
-              ],
-            },
+                fields: {
+                  name: 'god',
+                },
+              },
+            ],
           },
         },
-      ],
-      included: [
-        {
-          id: '1',
-          type: 'meditationCategories',
-          attributes: {
-            title: 'All Meditations',
-            description: 'All the meditations.',
-          },
-        },
-        {
-          id: '1',
-          type: 'contributors',
-          attributes: {
-            name: 'Michael Gungor',
-            twitter: '@michaelgungor',
-          },
-        },
-        {
-          id: '4',
-          type: 'tags',
-          attributes: {
-            name: 'names',
-          },
-        },
-        {
-          id: '9',
-          type: 'tags',
-          attributes: {
-            name: 'god',
-          },
-        },
-      ],
-    },
-    relationships: {
-      category: {
-        id: '1',
-        title: 'All Meditations',
-        description: 'All the meditations.',
-      },
-      contributors: [
-        { id: '1', name: 'Michael Gungor', twitter: '@michaelgungor' },
-      ],
-      tags: [
-        { id: '4', name: 'names' },
-        { id: '9', name: 'god' },
       ],
     },
   },
@@ -278,8 +237,17 @@ describe('orm reducer', () => {
       let expected;
 
       beforeEach(() => {
-        apiData = _.isArray(apiJson.data) ? apiJson.data[0] : apiJson.data;
-        ({ id, type } = apiData);
+        apiData = _.isArray(apiJson.items) ? apiJson.items[0] : apiJson;
+        ({
+          sys: {
+            id,
+            contentType: {
+              sys: {
+                id: type,
+              },
+            },
+          },
+        } = apiData);
 
         store.dispatch(actions.receiveData({
           resource: type,
@@ -290,13 +258,15 @@ describe('orm reducer', () => {
         expected = {
           id,
           type,
-          ...apiData.attributes,
+          ...apiData.fields,
+          ...getExpectedTimestamps(apiData),
+          ...getExpectedRelationships(apiData),
           ...relationships,
         };
       });
 
       it('collection', () => {
-        const collectionSelector = selectors[`${type}Selector`];
+        const collectionSelector = selectors[`${pluralize(type)}Selector`];
         const collection = collectionSelector(store.getState());
         expect(collection[0]).toEqual(expected);
       });
@@ -304,46 +274,51 @@ describe('orm reducer', () => {
       it('instance', () => {
         const instanceType = getModelName(type).replace(/^\w/, c => c.toLowerCase());
         const instanceSelector = selectors[`${instanceType}Selector`];
-        const instance = instanceSelector(store.getState(), apiData.id);
+        const instance = instanceSelector(store.getState(), apiData.sys.id);
         expect(instance).toEqual(expected);
       });
     });
   });
 
   it('stores reverse relationships', () => {
-    const categoryJson = {
-      id: '1',
-      type: 'meditationCategories',
-      attributes: {
+    const category = {
+      sys: {
+        id: '1',
+        ...contentType('meditationCategory'),
+        ...timestamps(),
+      },
+      fields: {
         title: 'All Meditations',
         description: 'All the meditations.',
       },
     };
-    const categoryRel = {
-      data: _.pick(categoryJson, ['id', 'type']),
-    };
     const apiJson = {
-      data: [
+      items: [
         {
-          id: '123',
-          type: 'meditations',
-          attributes: {
+          sys: {
+            id: '123',
+            ...contentType('meditation'),
+            ...timestamps(),
+          },
+          fields: {
             title: 'Names of God',
             description: "A meditation on the names you use and the names you don't.",
+            category,
           },
-          relationships: { category: categoryRel },
         },
         {
-          id: '456',
-          type: 'meditations',
-          attributes: {
+          sys: {
+            id: '456',
+            ...contentType('meditation'),
+            ...timestamps(),
+          },
+          fields: {
             title: 'Who are you',
             description: 'A meditation on who you think you are',
+            category,
           },
-          relationships: { category: categoryRel },
         },
       ],
-      included: [categoryJson],
     };
 
     store.dispatch(actions.receiveData({
@@ -351,13 +326,15 @@ describe('orm reducer', () => {
       json: apiJson,
     }));
 
-    const expectedMeditations = apiJson.data.map(datum => ({
-      id: datum.id,
-      type: 'meditations',
-      ...datum.attributes,
+    const expectedMeditations = apiJson.items.map(datum => ({
+      id: datum.sys.id,
+      type: 'meditation',
+      ...datum.fields,
+      ...getExpectedTimestamps(datum),
       category: {
-        id: categoryJson.id,
-        ...categoryJson.attributes,
+        id: category.sys.id,
+        ...getExpectedTimestamps(category),
+        ...category.fields,
       },
       tags: [],
       contributors: [],
@@ -366,20 +343,30 @@ describe('orm reducer', () => {
     const meditations = selectors.meditationsSelector(store.getState());
     expect(meditations).toEqual(expectedMeditations);
 
-    const expectedCategory = {
-      id: categoryJson.id,
-      type: 'meditationCategories',
-      ...categoryJson.attributes,
+    const expectedCategoryState = {
+      id: category.sys.id,
+      type: 'meditationCategory',
+      ...category.fields,
+      ...getExpectedTimestamps(category),
       meditations: expectedMeditations.map(
-        m => _.pick(m, ['id', 'type', 'title', 'description']),
+        m => ({
+          ..._.pick(m, [
+            'id',
+            'type',
+            'title',
+            'description',
+            'createdAt',
+            'updatedAt',
+          ]),
+        }),
       ),
       tags: [],
     };
-    const category = selectors.meditationCategorySelector(
+    const categoryState = selectors.meditationCategorySelector(
       store.getState(),
-      categoryJson.id,
+      category.sys.id,
     );
-    expect(category).toEqual(expectedCategory);
+    expect(categoryState).toEqual(expectedCategoryState);
   });
 
   it('stores an API error', () => {
@@ -403,40 +390,32 @@ describe('orm reducer', () => {
  */
 
 describe('api epic', () => {
-  const baseUrl = config.apiBaseUrl;
-  let mock;
-
-  beforeEach(() => {
-    mock = new MockAdapter(axios);
-  });
-
   // These tests are very simple; one action leads to a single other.
   // Other tests that result in multiple actions from the epic
   // will have to be a little more complicated.
 
   describe('when API call succeeds', () => {
-    let payload;
+    const payload = {
+      items: {
+        fields: {
+          foo: 'bar',
+        },
+      },
+    };
 
     beforeEach(() => {
-      payload = {
-        data: {
-          attributes: {
-            foo: 'bar',
-          },
-        },
-      };
-      mock.onGet(new RegExp(`${baseUrl}/.*`)).reply(200, payload);
+      // XXX: this is a gross hack and I can't believe
+      // it's what the official Jest documentation recommends.
+      // TODO: figure out how to do the mocking just from here,
+      // on a per-test basis, without side effects.
+      contentful.__setPayload(payload);
     });
 
     test('fetchData() leads to receiveData()', async () => {
       const args = { resource: 'foo' };
-      const url = `${baseUrl}/${args.resource}`;
 
       const action$ = ActionsObservable.of(actions.fetchData(args));
       const responseAction = await epic(action$).toPromise();
-
-      // assert that the request was made
-      expect(mock.history.get[0].url).toEqual(url);
 
       const expectedAction = actions.receiveData({
         ...args,
@@ -447,29 +426,21 @@ describe('api epic', () => {
   });
 
   describe('when API call fails', () => {
-    const status = 429;
+    const error = new Error('whoops');
 
     beforeEach(() => {
-      mock.onGet(new RegExp(`${baseUrl}/.*`)).reply(status, {});
+      // TODO: get rid of this hack as well.
+      contentful.__setError(error);
     });
-
-    function expectErrorActionWithStatus(action, statusCode) {
-      expect(action.type).toEqual(types.RECEIVE_API_ERROR);
-      expect(action.payload.error).toBeInstanceOf(Error);
-      expect(action.payload.error.response.status).toEqual(statusCode);
-    }
 
     test('fetchData() leads to receiveApiError()', async () => {
       const args = { resource: 'foo' };
-      const url = `${baseUrl}/${args.resource}`;
 
       const action$ = ActionsObservable.of(actions.fetchData(args));
       const errorAction = await epic(action$).toPromise();
 
-      // assert that the request was made
-      expect(mock.history.get[0].url).toEqual(url);
-
-      expectErrorActionWithStatus(errorAction, status);
+      expect(errorAction.type).toEqual(types.RECEIVE_API_ERROR);
+      expect(errorAction.payload.error).toBeInstanceOf(Error);
     });
   });
 });

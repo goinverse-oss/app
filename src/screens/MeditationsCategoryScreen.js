@@ -85,17 +85,11 @@ function mapDispatchToProps(dispatch, { navigation }) {
       if (category.title === 'All Meditations') {
         action = fetchData({
           resource: 'meditations',
-          params: {
-            include: 'category',
-          },
         });
       } else {
         action = fetchData({
-          resource: 'meditationCategories',
           id: category.id,
-          params: {
-            include: 'meditations',
-          },
+          // TODO: ensure related meditations are also fetched/updated?
         });
       }
       dispatch(action);

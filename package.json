@@ -23,6 +23,7 @@
     "@expo/vector-icons": "^8.0.0",
     "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "axios": "^0.18.0",
+    "contentful": "^7.1.0",
     "expo": "^31.0.4",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",

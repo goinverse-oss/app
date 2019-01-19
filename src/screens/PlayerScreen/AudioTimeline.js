@@ -4,7 +4,6 @@ import { View, Text, ViewPropTypes, StyleSheet } from 'react-native';
 import Slider from 'react-native-slider';
 import { connect } from 'react-redux';
 
-import _ from 'lodash';
 import moment from 'moment';
 import 'moment-duration-format';
 import momentPropTypes from 'react-moment-proptypes';
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 function formatDuration(duration) {
-  if (_.isUndefined(duration)) {
+  if (!duration) {
     return '--:--';
   }
 
@@ -102,7 +101,7 @@ const AudioTimeline = ({
 AudioTimeline.propTypes = {
   style: ViewPropTypes.style,
   elapsed: momentPropTypes.momentDurationObj.isRequired,
-  duration: momentPropTypes.momentDurationObj.isRequired,
+  duration: momentPropTypes.momentDurationObj,
   isLoading: PropTypes.bool.isRequired,
   isBuffering: PropTypes.bool.isRequired,
   seek: PropTypes.func.isRequired,
@@ -111,6 +110,7 @@ AudioTimeline.propTypes = {
 
 AudioTimeline.defaultProps = {
   style: {},
+  duration: moment.duration(0),
 };
 
 function mapStateToProps(state) {

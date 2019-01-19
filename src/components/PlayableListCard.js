@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 function formatFooter({ duration, publishedAt, formatDuration }) {
   const separator = ' • ';
   const strings = [];
-  if (!_.isNull(duration)) {
+  if (duration) {
     strings.push(formatDuration(duration));
   }
   if (!_.isUndefined(publishedAt)) {

@@ -6,27 +6,23 @@ import { handleActions } from 'redux-actions';
 import orm from '../../orm';
 
 import { FETCH_DATA, RECEIVE_DATA, RECEIVE_API_ERROR } from './types';
-import { getModelName } from './utils';
+import { getModelName, getContentType, getFields, getRelationships } from './utils';
 
 const defaultORMState = orm.session().state;
 const defaultAPIState = {};
 
-function momentize(modelName, obj) {
-  const extraKeys = _.get({
-    Meditation: ['publishedAt'],
-  }, modelName, []);
-  const momentKeys = ['createdAt', 'updatedAt', ...extraKeys];
-  const durationKeys = ['duration'];
-  return {
-    ..._(obj)
-      .pick(momentKeys)
-      .mapValues(timestamp => moment(timestamp))
-      .value(),
-    ..._(obj)
-      .pick(durationKeys)
-      .mapValues(duration => moment.duration(duration))
-      .value(),
+function momentize(modelName, entry) {
+  const momentized = {
+    createdAt: moment(entry.sys.createdAt),
+    updatedAt: moment(entry.sys.updatedAt),
   };
+  if (_.has(entry, 'fields.publishedAt')) {
+    momentized.publishedAt = moment(entry.fields.publishedAt);
+  }
+  if (_.has(entry, 'fields.duration')) {
+    momentized.duration = moment.duration(entry.fields.duration);
+  }
+  return momentized;
 }
 
 export default combineReducers({
@@ -34,48 +30,34 @@ export default combineReducers({
     [RECEIVE_DATA]: (state, action) => {
       const session = orm.session(state);
 
-      // capture included resources as a {[type]: {[id]: obj}} mapping.
-      const includedResources =
-        _.get(action.payload.json, 'included', []).reduce(
-          (mapping, obj) => (
-            _.setWith(mapping, [obj.type, obj.id], obj, Object)
-          ),
-          {},
-        );
-
-      function saveRelationship(relData) {
-        const { type, id } = relData;
-        const attributes = _.get(
-          includedResources,
-          [type, id, 'attributes'],
-          {},
-        );
-        const relModelName = getModelName(type);
+      function saveRelationship(relatedEntry) {
+        const relModelName = getModelName(getContentType(relatedEntry));
         const RelModel = session[relModelName];
-        return RelModel.upsert({
-          id,
-          ...attributes,
-          ...momentize(relModelName, attributes),
-        });
+        const relJson = {
+          id: relatedEntry.sys.id,
+          ...getFields(relatedEntry),
+          ...momentize(relModelName, relatedEntry),
+        };
+        return RelModel.upsert(relJson);
       }
 
-      const { data } = action.payload.json;
-      (_.isArray(data) ? data : [data]).forEach((item) => {
-        const modelName = getModelName(item.type);
+      const data = action.payload.json;
+      (_.isArray(data.items) ? data.items : [data]).forEach((item) => {
+        const modelName = getModelName(getContentType(item));
         const Model = session[modelName];
-        const instance = Model.upsert({
-          id: item.id,
-          ...item.attributes,
-          ...momentize(modelName, item.attributes),
-        });
-        _.each(_.get(item, 'relationships', {}), (rel, relName) => {
-          const { data: relData } = rel;
+        const instanceJson = {
+          id: item.sys.id,
+          ...getFields(item),
+          ...momentize(modelName, item),
+        };
+        const instance = Model.upsert(instanceJson);
+        _.each(getRelationships(item), (relatedEntry, relName) => {
           let newRel;
-          if (_.isArray(relData)) {
+          if (_.isArray(relatedEntry)) {
             // Redux-ORM handles the merge of new and old arrays
-            newRel = relData.map(saveRelationship);
+            newRel = relatedEntry.map(saveRelationship);
           } else {
-            newRel = saveRelationship(relData);
+            newRel = saveRelationship(relatedEntry);
           }
 
           instance.update({

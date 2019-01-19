@@ -86,9 +86,6 @@ function mapDispatchToProps(dispatch) {
     fetchMeditations: () => dispatch(
       fetchData({
         resource: 'meditations',
-        params: {
-          include: ['category', 'tags', 'contributors'],
-        },
       }),
     ),
   };
