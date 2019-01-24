@@ -44,7 +44,7 @@ const modelToObject = {
         .toRefArray().map(
           m => ({
             ..._.omit(m, 'category'),
-            type: 'meditations',
+            type: 'meditation',
           }),
         ),
     },
@@ -90,6 +90,9 @@ function createInstanceSelector(type) {
       dbStateSelector,
       (session) => {
         const instance = session[modelName].withId(id);
+        if (!instance) {
+          return null;
+        }
         return {
           ...modelToObject[modelName](instance),
           type,
@@ -101,15 +104,15 @@ function createInstanceSelector(type) {
   return selector;
 }
 
-export const meditationsSelector = createCollectionSelector('meditations');
-export const meditationCategoriesSelector = createCollectionSelector('meditationCategories');
-export const contributorsSelector = createCollectionSelector('contributors');
-export const tagsSelector = createCollectionSelector('tags');
+export const meditationsSelector = createCollectionSelector('meditation');
+export const meditationCategoriesSelector = createCollectionSelector('meditationCategory');
+export const contributorsSelector = createCollectionSelector('contributor');
+export const tagsSelector = createCollectionSelector('tag');
 
-export const meditationSelector = createInstanceSelector('meditations');
-export const meditationCategorySelector = createInstanceSelector('meditationCategories');
-export const contributorSelector = createInstanceSelector('contributors');
-export const tagSelector = createInstanceSelector('tags');
+export const meditationSelector = createInstanceSelector('meditation');
+export const meditationCategorySelector = createInstanceSelector('meditationCategory');
+export const contributorSelector = createInstanceSelector('contributor');
+export const tagSelector = createInstanceSelector('tag');
 
 export function collectionSelector(state, type) {
   return collectionSelectors[type](state);

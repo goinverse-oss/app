@@ -14,8 +14,9 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/fromPromise';
 
-import axios from 'axios';
 import _ from 'lodash';
+import { createClient } from 'contentful/dist/contentful.browser';
+import { singular } from 'pluralize';
 
 import { FETCH_DATA } from './types';
 import { receiveData, receiveApiError } from './actions';
@@ -26,14 +27,15 @@ import config from '../../../../config.json';
  *
  * @return {Observable} emitting an axios response object
  */
-function sendAPIRequest({ resource, id, ...options }) {
-  const baseUrl = config.apiBaseUrl;
-  const endpoint = _.isUndefined(id) ? resource : `${resource}/${id}`;
-
-  const url = `${baseUrl}/${endpoint}`;
-  return Observable.fromPromise(
-    axios.get(url, options).then(r => r.data),
-  );
+function sendAPIRequest(client, { resource, id, ...query }) {
+  let promise;
+  if (id) {
+    promise = client.getEntry(id, query);
+  } else {
+    const contentType = singular(resource);
+    promise = client.getEntries({ content_type: contentType, ...query });
+  }
+  return Observable.fromPromise(promise);
 }
 
 /**
@@ -45,10 +47,14 @@ function sendAPIRequest({ resource, id, ...options }) {
  *   RECEIVE_DATA: on success
  *   RECEIVE_API_ERROR: on failure
  */
-const fetchDataEpic = action$ =>
-  action$.ofType(FETCH_DATA)
+const fetchDataEpic = (action$) => {
+  const client = createClient({
+    ...config.contentful,
+  });
+
+  return action$.ofType(FETCH_DATA)
     .switchMap(action => (
-      sendAPIRequest(action.payload)
+      sendAPIRequest(client, action.payload)
         .map(json => receiveData({
           ..._.pick(action.payload, ['resource', 'id']),
           json,
@@ -58,5 +64,6 @@ const fetchDataEpic = action$ =>
           error,
         })))
     ));
+};
 
 export default combineEpics(fetchDataEpic);
