@@ -49,6 +49,56 @@ const modelToObject = {
         ),
     },
   }),
+  Podcast: podcast => ({
+    ...podcast.ref,
+    ...{
+      tags: podcast.tags.toRefArray(),
+      contributors: podcast.contributors.toRefArray(),
+      episodes: podcast.episodes
+        .orderBy('publishedAt', 'desc')
+        .toRefArray().map(
+          e => ({
+            ..._.omit(e, 'podcast'),
+            type: 'podcastEpisode',
+          }),
+        ),
+      seasons: podcast.seasons
+        .orderBy('number', 'asc')
+        .toRefArray().map(
+          s => ({
+            ..._.omit(s, 'podcast'),
+            type: 'podcastSeason',
+          }),
+        ),
+    },
+  }),
+  PodcastEpisode: episode => ({
+    ...episode.ref, // attributes
+    ...{
+      // relationships
+      podcast: _.get(episode, 'podcast.ref'),
+      season: _.get(episode, 'season.ref'),
+      contributors: episode.contributors.toRefArray(),
+      tags: episode.tags.toRefArray(),
+    },
+  }),
+  PodcastSeason: season => ({
+    ...season.ref, // attributes
+    ...{
+      // relationships
+      podcast: _.get(season, 'podcast.ref'),
+      contributors: season.contributors.toRefArray(),
+      tags: season.tags.toRefArray(),
+      episodes: season.episodes
+        .orderBy('publishedAt', 'desc')
+        .toRefArray().map(
+          e => ({
+            ..._.omit(e, 'season'),
+            type: 'podcastEpisode',
+          }),
+        ),
+    },
+  }),
   Contributor: contributor => ({
     ...contributor.ref,
   }),
@@ -60,6 +110,9 @@ const modelToObject = {
 const modelOrderArgs = {
   Meditation: ['publishedAt', 'desc'],
   MeditationCategory: ['title'],
+  Podcast: ['title'],
+  PodcastEpisode: ['title'],
+  PodcastSeason: ['title'],
   Contributor: ['name'],
   Tag: ['name'],
 };
@@ -106,11 +159,17 @@ function createInstanceSelector(type) {
 
 export const meditationsSelector = createCollectionSelector('meditation');
 export const meditationCategoriesSelector = createCollectionSelector('meditationCategory');
+export const podcastsSelector = createCollectionSelector('podcast');
+export const podcastEpisodesSelector = createCollectionSelector('podcastEpisode');
+export const podcastSeasonsSelector = createCollectionSelector('podcastSeason');
 export const contributorsSelector = createCollectionSelector('contributor');
 export const tagsSelector = createCollectionSelector('tag');
 
 export const meditationSelector = createInstanceSelector('meditation');
 export const meditationCategorySelector = createInstanceSelector('meditationCategory');
+export const podcastSelector = createInstanceSelector('podcast');
+export const podcastEpisodeSelector = createInstanceSelector('podcastEpisode');
+export const podcastSeasonSelector = createInstanceSelector('podcastSeason');
 export const contributorSelector = createInstanceSelector('contributor');
 export const tagSelector = createInstanceSelector('tag');
 
