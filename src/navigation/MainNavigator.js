@@ -9,18 +9,34 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { GestureHandler, LinearGradient } from 'expo';
 
 import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
 import PatreonScreen from '../screens/PatreonScreen';
 import PlayerScreen from '../screens/PlayerScreen';
 import PlayerStrip from '../components/PlayerStrip';
 import PodcastsScreen from '../screens/PodcastsScreen';
+import PodcastScreen from '../screens/PodcastScreen';
+import SinglePodcastEpisodeScreen from '../screens/SinglePodcastEpisodeScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
 import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
 import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
+import PodcastsIcon from '../screens/PodcastsIcon';
 
 const { DrawerLayout } = GestureHandler;
+
+const PodcastsNavigator = createStackNavigator({
+  Podcasts: PodcastsScreen,
+  Podcast: PodcastScreen,
+  SinglePodcastEpisode: SinglePodcastEpisodeScreen,
+}, {
+  navigationOptions: {
+    tabBarIcon: MeditationsIcon,
+  },
+});
+
+PodcastsNavigator.navigationOptions = {
+  tabBarIcon: PodcastsIcon,
+};
 
 const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,
@@ -45,7 +61,7 @@ const TabBar = props => (
 
 const Tabs = createBottomTabNavigator({
   Home: { screen: HomeScreen },
-  Podcasts: { screen: PodcastsScreen },
+  Podcasts: { screen: PodcastsNavigator },
   Meditations: { screen: MeditationsNavigator },
 }, {
   tabBarComponent: TabBar,
@@ -89,7 +105,6 @@ const Modals = createStackNavigator(
     Main: { screen: Tabs },
     Patreon: { screen: PatreonWithHeader },
     Player: { screen: PlayerWithHeader },
-    Logout: { screen: LoginScreen },
   },
   {
     mode: 'modal',

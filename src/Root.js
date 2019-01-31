@@ -3,13 +3,13 @@ import { Provider } from 'react-redux';
 import { createAppContainer } from 'react-navigation';
 import { useScreens } from 'react-native-screens';
 
-import AppNavigator from './navigation/AppNavigator';
+import MainNavigator from './navigation/MainNavigator';
 import { setTopLevelNavigator } from './navigation/NavigationService';
 import configureStore from './state/store';
 
 useScreens();
 
-const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(MainNavigator);
 
 class App extends React.Component {
   render() {

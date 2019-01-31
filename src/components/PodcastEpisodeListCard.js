@@ -1,17 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PlayableListCard from './PlayableListCard';
 
-import appPropTypes from '../propTypes';
+import PodcastEpisode from '../state/models/PodcastEpisode';
 
-const PodcastEpisodeListCard = ({ podcastEpisode, ...props }) => (
+const PodcastEpisodeListCard = ({ episode, ...props }) => (
   <PlayableListCard
-    item={podcastEpisode}
+    item={episode}
     {...props}
   />
 );
 
 PodcastEpisodeListCard.propTypes = {
-  podcastEpisode: appPropTypes.podcastEpisode.isRequired,
+  episode: PropTypes.shape(
+    PodcastEpisode.propTypes,
+  ).isRequired,
 };
 
 export default PodcastEpisodeListCard;
