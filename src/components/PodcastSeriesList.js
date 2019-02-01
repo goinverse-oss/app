@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import AppPropTypes from '../propTypes';
 import PodcastSeriesTile from './PodcastSeriesTile';
+import Podcast from '../state/models/Podcast';
 
 const styles = StyleSheet.create({
   list: {
@@ -29,7 +29,11 @@ const PodcastSeriesList = ({ podcasts, onPressPodcast }) =>
     </ScrollView>
   );
 PodcastSeriesList.propTypes = {
-  podcasts: PropTypes.arrayOf(AppPropTypes.podcast),
+  podcasts: PropTypes.arrayOf(
+    PropTypes.shape(
+      Podcast.propTypes,
+    ),
+  ),
   onPressPodcast: PropTypes.func,
 };
 

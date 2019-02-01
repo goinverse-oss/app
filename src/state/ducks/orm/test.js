@@ -105,6 +105,81 @@ const cases = [
   },
 
   {
+    description: 'stores a podcast episode',
+    apiJson: {
+      items: [
+        {
+          sys: {
+            id: '123',
+            ...contentType('podcastEpisode'),
+            ...timestamps(),
+          },
+          fields: {
+            title: 'Episode 123',
+            description: 'Words and stuff.',
+          },
+        },
+      ],
+    },
+    relationships: {
+      podcast: undefined,
+      season: undefined,
+      contributors: [],
+      tags: [],
+    },
+  },
+
+  {
+    description: 'stores a podcast',
+    apiJson: {
+      items: [
+        {
+          sys: {
+            id: '123',
+            ...contentType('podcast'),
+            ...timestamps(),
+          },
+          fields: {
+            title: 'The Liturgists Podcast',
+            description: 'There is room at the table for all who are hungry.',
+          },
+        },
+      ],
+    },
+    relationships: {
+      seasons: [],
+      episodes: [],
+      contributors: [],
+      tags: [],
+    },
+  },
+
+  {
+    description: 'stores a podcast season',
+    apiJson: {
+      items: [
+        {
+          sys: {
+            id: '123',
+            ...contentType('podcastSeason'),
+            ...timestamps(),
+          },
+          fields: {
+            title: 'Season 4',
+            description: 'New hosts!',
+          },
+        },
+      ],
+    },
+    relationships: {
+      podcast: undefined,
+      episodes: [],
+      contributors: [],
+      tags: [],
+    },
+  },
+
+  {
     description: 'stores a contributor',
     apiJson: {
       items: [

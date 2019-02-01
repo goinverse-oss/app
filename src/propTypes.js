@@ -32,13 +32,6 @@ export default {
     imageUrl: PropTypes.string.isRequired,
   }),
 
-  podcast: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    episodeCount: PropTypes.number,
-    lastUpdated: momentPropTypes.momentObj.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-  }),
-
   liturgy: PropTypes.shape({
     title: PropTypes.string.isRequired,
     liturgyLength: PropTypes.number,

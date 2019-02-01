@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import AppPropTypes from '../propTypes';
 
 import SeriesTile from './SeriesTile';
+import Podcast from '../state/models/Podcast';
 
 const formatEpisodeCount = (episodeCount) => {
   let episodeString = 'episodes';
@@ -30,12 +30,14 @@ const PodcastSeriesTile = ({ podcast, onPress }) => (
     imageUrl={podcast.imageUrl}
     title={podcast.title}
     onPress={() => onPress(podcast)}
-    description={formatPodcastDescription(podcast.episodeCount, podcast.lastUpdated)}
+    description={formatPodcastDescription(podcast.episodes.length, podcast.updatedAt)}
   />
 );
 
 PodcastSeriesTile.propTypes = {
-  podcast: AppPropTypes.podcast.isRequired,
+  podcast: PropTypes.shape(
+    Podcast.propTypes,
+  ).isRequired,
   onPress: PropTypes.func,
 };
 
