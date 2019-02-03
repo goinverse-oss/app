@@ -15,7 +15,6 @@ import pluralize from 'pluralize';
 
 import ListCard from './ListCard';
 import SquareImage from './SquareImage';
-import InteractionsCounter from './InteractionsCounter';
 import TextPill from './TextPill';
 import { formatMinutesString } from './utils';
 
@@ -146,7 +145,6 @@ const PlayableListCard = ({
           <Text style={styles.times}>
             {formatFooter({ ...item, formatDuration })}
           </Text>
-          <InteractionsCounter />
         </View>
       )}
     </View>

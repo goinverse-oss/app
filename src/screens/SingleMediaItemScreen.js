@@ -9,7 +9,7 @@ import appPropTypes from '../propTypes';
 import PlayableItemHeader from '../components/PlayableItemHeader';
 import ItemDescription from '../components/ItemDescription';
 import PersonList from '../components/PersonList';
-import CommentsSection from '../components/CommentsSection';
+import SocialLinksSection from '../components/SocialLinksSection';
 import TagList from '../components/TagList';
 
 import * as playbackActions from '../state/ducks/playback/actions';
@@ -55,7 +55,7 @@ const SingleMediaItemScreen = ({ item, play }) => (
     </View>
     <View style={styles.subContainer}>
       <TagList tags={item.tags} />
-      <CommentsSection />
+      <SocialLinksSection />
     </View>
   </ScrollView>
 );
