@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 
 
-import mastodonIcon from '../../assets/mastodon.png';
-import slackIcon from '../../assets/slack.png';
+import mastodonIcon from '../../assets/discussion-buttons/mastodon.png';
+import slackIcon from '../../assets/discussion-buttons/slack.png';
 
 const styles = StyleSheet.create({
   header: {
@@ -37,20 +37,16 @@ const styles = StyleSheet.create({
   linkImageContainer: {
     width: 150,
     height: 50,
-    borderRadius: 15,
   },
   linkImageStyle: {
     flex: 1,
     width: undefined,
     height: undefined,
     resizeMode: 'contain',
-    marginVertical: 10,
   },
   mastodonIconContainer: {
-    backgroundColor: '#282c37',
   },
   slackIconContainer: {
-    backgroundColor: '#4a154b',
   },
 });
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="161px" height="41px" viewBox="0 0 161 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Slack Button</title>
+    <desc>Created with Sketch.</desc>
+    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Full-Player---Post-Episode" transform="translate(-243.000000, -390.000000)">
+            <g id="Slack-Button" transform="translate(243.000000, 390.000000)">
+                <path d="M7.40647482,0.5 L153.593525,0.5 C157.392086,0.5 160.5,3.2 160.5,6.5 L160.5,34.5 C160.5,37.8 157.392086,40.5 153.593525,40.5 L7.40647482,40.5 C3.60791367,40.5 0.5,37.8 0.5,34.5 L0.5,6.5 C0.5,3.2 3.60791367,0.5 7.40647482,0.5 Z" id="Mask-Copy-10" stroke="#C7CACD" fill="#FFFFFF"></path>
+                <g id="Group" transform="translate(10.000000, 9.000000)">
+                    <g transform="translate(0.000000, 12.000000)" fill="#E01E5A" id="Path">
+                        <path d="M5.1,2.4 C5.1,3.7 4.1,4.7 2.8,4.7 C1.5,4.7 0.5,3.7 0.5,2.4 C0.5,1.1 1.5,0.1 2.8,0.1 L5.1,0.1 L5.1,2.4 Z"></path>
+                        <path d="M6.3,2.4 C6.3,1.1 7.3,0.1 8.6,0.1 C9.9,0.1 10.9,1.1 10.9,2.4 L10.9,8.2 C10.9,9.5 9.9,10.5 8.6,10.5 C7.3,10.5 6.3,9.5 6.3,8.2 L6.3,2.4 Z"></path>
+                    </g>
+                    <g fill="#36C5F0" id="Path">
+                        <path d="M8.6,5.2 C7.3,5.2 6.3,4.2 6.3,2.9 C6.3,1.6 7.3,0.6 8.6,0.6 C9.9,0.6 10.9,1.6 10.9,2.9 L10.9,5.2 L8.6,5.2 Z"></path>
+                        <path d="M8.6,6.3 C9.9,6.3 10.9,7.3 10.9,8.6 C10.9,9.9 9.9,10.9 8.6,10.9 L2.8,10.9 C1.5,10.9 0.5,9.9 0.5,8.6 C0.5,7.3 1.5,6.3 2.8,6.3 L8.6,6.3 Z"></path>
+                    </g>
+                    <g transform="translate(12.000000, 0.000000)" fill="#2EB67D" id="Path">
+                        <path d="M5.9,8.7 C5.9,7.4 6.9,6.4 8.2,6.4 C9.5,6.4 10.5,7.4 10.5,8.7 C10.5,10 9.5,11 8.2,11 L5.9,11 L5.9,8.7 Z"></path>
+                        <path d="M4.7,8.7 C4.7,10 3.7,11 2.4,11 C1.1,11 0.1,10 0.1,8.7 L0.1,2.9 C0.1,1.6 1.1,0.6 2.4,0.6 C3.7,0.6 4.7,1.6 4.7,2.9 L4.7,8.7 Z"></path>
+                    </g>
+                    <g transform="translate(12.000000, 12.000000)" fill="#ECB22E" id="Path">
+                        <path d="M2.4,5.9 C3.7,5.9 4.7,6.9 4.7,8.2 C4.7,9.5 3.7,10.5 2.4,10.5 C1.1,10.5 0.1,9.5 0.1,8.2 L0.1,5.9 L2.4,5.9 Z"></path>
+                        <path d="M2.4,4.8 C1.1,4.8 0.1,3.8 0.1,2.5 C0.1,1.2 1.1,0.2 2.4,0.2 L8.2,0.2 C9.5,0.2 10.5,1.2 10.5,2.5 C10.5,3.8 9.5,4.8 8.2,4.8 L2.4,4.8 Z"></path>
+                    </g>
+                </g>
+                <text id="Discuss-in-Slack" font-family="NotoSans, Noto Sans" font-size="15" font-weight="normal" fill="#000000">
+                    <tspan x="38" y="26">Discuss in </tspan>
+                    <tspan x="111.776855" y="26" font-family="NotoSans-Bold, Noto Sans" font-weight="bold">Slack</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
