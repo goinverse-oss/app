@@ -3,6 +3,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment-timezone';
 
 import Meditation from './state/models/Meditation';
+import PodcastEpisode from './state/models/PodcastEpisode';
 
 const imageSource = PropTypes.shape({
   uri: PropTypes.string.isRequired,
@@ -21,7 +22,7 @@ export default {
 
   mediaItem: PropTypes.oneOfType(
     // TODO: other models
-    [Meditation].map(
+    [Meditation, PodcastEpisode].map(
       Model => PropTypes.shape(Model.propTypes).isRequired,
     ),
   ),
