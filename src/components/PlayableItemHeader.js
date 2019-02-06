@@ -6,7 +6,6 @@ import { normalize } from 'react-native-elements';
 import momentPropTypes from 'react-moment-proptypes';
 
 import PlayButton from './PlayButton';
-import InteractionsCounter from './InteractionsCounter';
 import SquareImage from './SquareImage';
 import { formatMinutesString, screenRelativeWidth } from './utils';
 
@@ -74,7 +73,6 @@ const PlayableItemHeader = ({
           duration, publishedAt, formatDuration, formatpublishedAt,
         })}
       </Text>
-      <InteractionsCounter />
       <PlayButton onPress={onPlay} text="Listen" />
     </View>
   </View>
