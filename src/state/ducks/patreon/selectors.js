@@ -1,5 +1,5 @@
 export function isPatron(state) {
-  return state.patreon.enabled;
+  return state.patreon.token !== null;
 }
 
 export function loading(state) {

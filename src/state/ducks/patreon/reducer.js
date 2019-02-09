@@ -1,17 +1,16 @@
 import { handleActions } from '../../utils/reduxActions';
 
 import {
-  ENABLE_PATREON,
-  DISABLE_PATREON,
-  PATREON_ENABLED,
-  PATREON_DISABLED,
-  PATREON_ERROR,
+  CONNECT,
+  DISCONNECT,
+  STORE_TOKEN,
+  ERROR,
 } from './types';
 
 /* patreon reducer state shape:
 {
-  // true iff the user has connected Patreon
-  enabled: boolean,
+  // non-null iff the user has connected Patreon
+  token: ?string,
 
   // true iff we are waiting for a response from the Patreon API
   loading: boolean,
@@ -22,30 +21,26 @@ import {
 */
 
 const defaultState = {
-  enabled: false,
+  token: null,
   loading: false,
 };
 
 export default handleActions({
-  [ENABLE_PATREON]: state => ({
+  [CONNECT]: state => ({
     ...state,
     error: null,
     loading: true,
   }),
-  [DISABLE_PATREON]: state => ({
+  [DISCONNECT]: state => ({
     ...state,
+    token: null,
     error: null,
-    loading: true,
   }),
-  [PATREON_ENABLED]: () => ({
-    enabled: true,
+  [STORE_TOKEN]: (state, action) => ({
+    token: action.payload,
     loading: false,
   }),
-  [PATREON_DISABLED]: () => ({
-    enabled: false,
-    loading: false,
-  }),
-  [PATREON_ERROR]: (state, action) => ({
+  [ERROR]: (state, action) => ({
     ...state,
     error: action.payload,
     loading: false,

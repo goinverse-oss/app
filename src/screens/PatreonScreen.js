@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
 });
 
 function getTitle(isPatron) {
-  return `${isPatron ? 'Disable' : 'Enable'} Patreon`;
+  return `${isPatron ? 'Disconnect' : 'Connect'} Patreon`;
 }
 
 function PatreonControl({
   isPatron,
   loading,
-  enable,
-  disable,
+  connect: connectPatreon,
+  disconnect,
 }) {
   if (loading) {
     return <Text>Loading...</Text>;
@@ -34,9 +34,9 @@ function PatreonControl({
     <Button
       onPress={() => {
         if (isPatron) {
-          disable();
+          disconnect();
         } else {
-          enable();
+          connectPatreon();
         }
       }}
       title={getTitle(isPatron)}
@@ -47,8 +47,8 @@ function PatreonControl({
 PatreonControl.propTypes = {
   isPatron: PropType.bool.isRequired,
   loading: PropType.bool.isRequired,
-  enable: PropType.func.isRequired,
-  disable: PropType.func.isRequired,
+  connect: PropType.func.isRequired,
+  disconnect: PropType.func.isRequired,
 };
 
 const patreonStyles = {
