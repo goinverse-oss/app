@@ -301,7 +301,7 @@ describe('orm reducer', () => {
   let store;
 
   beforeEach(() => {
-    store = configureStore({ noEpic: true });
+    ({ store } = configureStore({ noEpic: true }));
   });
 
   cases.forEach(({ description, apiJson, relationships }) => {

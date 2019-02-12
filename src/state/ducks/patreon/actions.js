@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions';
 import * as types from './types';
 
 /**
- *  Make an API request to enable Patreon. (fake for now)
+ *  Make an API request to enable Patreon.
  */
 export const connect = createAction(types.CONNECT);
 
@@ -16,11 +16,19 @@ export const connect = createAction(types.CONNECT);
 export const disconnect = createAction(types.DISCONNECT);
 
 /**
+ * Fetch Patreon user details from Patreon API.
+ */
+export const getDetails = createAction(types.GET_DETAILS);
+
+/**
  * Save the Patreon auth state retrieved.
- *
- * Currently fake; just updates a boolean.
  */
 export const storeToken = createAction(types.STORE_TOKEN);
+
+/**
+ * Save the Patreon pledge details.
+ */
+export const storeDetails = createAction(types.STORE_DETAILS);
 
 /**
  * Store the error returned from the Patreon API.

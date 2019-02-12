@@ -1,4 +1,4 @@
-import { ofType } from 'redux-observable';
+import { ofType, combineEpics } from 'redux-observable';
 
 // redux-observable pulls in a minimal subset of RxJS
 // to keep the bundle size small, so here we explicitly
@@ -8,7 +8,12 @@ import { ofType } from 'redux-observable';
 // another operator.
 // https://redux-observable.js.org/docs/Troubleshooting.html
 import { Observable } from 'rxjs/Observable';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import {
+  switchMap,
+  map,
+  flatMap,
+  catchError,
+} from 'rxjs/operators';
 
 import _ from 'lodash';
 import axios from 'axios';
@@ -17,11 +22,9 @@ import qs from 'qs';
 
 import config from '../../../../config.json';
 
-import { CONNECT } from './types';
-import {
-  storeToken,
-  storeError,
-} from './actions';
+import { CONNECT, GET_DETAILS } from './types';
+import * as actions from './actions';
+import * as selectors from './selectors';
 
 function generateCsrfToken() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -79,6 +82,29 @@ function getPatreonToken() {
   );
 }
 
+function getPatreonDetails(token) {
+  return Observable.fromPromise(
+    axios.get(
+      'https://www.patreon.com/api/oauth2/api/current_user',
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+        params: {
+          includes: 'pledges',
+        },
+      },
+    )
+      .then(response => response.data),
+  );
+}
+
+function catchApiError() {
+  return catchError(e => (
+    Observable.of(actions.storeError(e))
+  ));
+}
+
 /**
  * Handle requests to connect Patreon.
  *
@@ -93,10 +119,24 @@ const connectPatreonEpic = action$ =>
     ofType(CONNECT),
     switchMap(() => (
       getPatreonToken().pipe(
-        map(token => storeToken(token)),
-        catchError(e => Observable.of(storeError(e))),
+        flatMap(token => ([
+          actions.storeToken(token),
+          actions.getDetails(),
+        ])),
+        catchApiError(),
       )
     )),
   );
 
-export default connectPatreonEpic;
+const getPatreonDetailsEpic = (action$, store) =>
+  action$.pipe(
+    ofType(GET_DETAILS),
+    switchMap(() => (
+      getPatreonDetails(selectors.token(store.getState())).pipe(
+        map(details => actions.storeDetails(details)),
+        catchApiError(),
+      )
+    )),
+  );
+
+export default combineEpics(connectPatreonEpic, getPatreonDetailsEpic);

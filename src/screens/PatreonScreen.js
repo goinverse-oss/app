@@ -1,5 +1,5 @@
 import React from 'react';
-import PropType from 'prop-types';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Text, View, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
@@ -15,6 +15,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
+
+const PatreonStatus = ({
+  isPatron,
+  getDetails,
+  canAccessPatronPodcasts,
+  canAccessMeditations,
+}) => (
+  <View>
+    <Text>Patreon status</Text>
+    <Text>{`Patron: ${isPatron ? 'yes' : 'no'}`}</Text>
+    { isPatron && (
+      <React.Fragment>
+        <Text>{`Patron-only podcast: ${canAccessPatronPodcasts}`}</Text>
+        <Text>{`Meditations: ${canAccessMeditations}`}</Text>
+      </React.Fragment>
+    )}
+    <Button onPress={() => getDetails()} title="Refresh" />
+  </View>
+);
+
+PatreonStatus.propTypes = {
+  isPatron: PropTypes.bool.isRequired,
+  getDetails: PropTypes.func.isRequired,
+  canAccessPatronPodcasts: PropTypes.bool.isRequired,
+  canAccessMeditations: PropTypes.bool.isRequired,
+};
 
 function getTitle(isPatron) {
   return `${isPatron ? 'Disconnect' : 'Connect'} Patreon`;
@@ -45,10 +71,10 @@ function PatreonControl({
 }
 
 PatreonControl.propTypes = {
-  isPatron: PropType.bool.isRequired,
-  loading: PropType.bool.isRequired,
-  connect: PropType.func.isRequired,
-  disconnect: PropType.func.isRequired,
+  isPatron: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  connect: PropTypes.func.isRequired,
+  disconnect: PropTypes.func.isRequired,
 };
 
 const patreonStyles = {
@@ -66,7 +92,7 @@ function PatreonError({ error }) {
 }
 
 PatreonError.propTypes = {
-  error: PropType.instanceOf(Error),
+  error: PropTypes.instanceOf(Error),
 };
 PatreonError.defaultProps = {
   error: null,
@@ -74,16 +100,14 @@ PatreonError.defaultProps = {
 
 const PatreonScreen = props => (
   <View style={appStyles.container}>
-    <Text>
-      Placeholder Patreon screen
-    </Text>
+    <PatreonStatus {...props} />
     <PatreonControl {...props} />
     <PatreonError error={props.error} />
   </View>
 );
 
 PatreonScreen.propTypes = {
-  error: PropType.instanceOf(Error),
+  error: PropTypes.instanceOf(Error),
 };
 
 PatreonScreen.defaultProps = {
@@ -104,6 +128,8 @@ PatreonScreen.navigationOptions = ({ navigation }) => ({
 function mapStateToProps(state) {
   return {
     isPatron: selectors.isPatron(state),
+    canAccessPatronPodcasts: selectors.canAccessPatronPodcasts(state),
+    canAccessMeditations: selectors.canAccessMeditations(state),
     loading: selectors.loading(state),
     error: selectors.error(state),
   };

@@ -5,7 +5,7 @@ import * as selectors from './selectors';
 let store;
 
 beforeEach(() => {
-  store = configureStore({ noEpic: true });
+  ({ store } = configureStore({ noEpic: true }));
 });
 
 test('user is initially not logged in', () => {

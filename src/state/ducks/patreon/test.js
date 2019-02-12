@@ -25,7 +25,7 @@ describe('patreon reducer', () => {
   let store;
 
   beforeEach(() => {
-    store = configureStore({ noEpic: true });
+    ({ store } = configureStore({ noEpic: true }));
   });
 
   test('patreon is initially not enabled', () => {

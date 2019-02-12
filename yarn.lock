@@ -7084,6 +7084,11 @@ json@^9.0.6:
   resolved "https://registry.yarnpkg.com/json/-/json-9.0.6.tgz#7972c2a5a48a42678db2730c7c2c4ee6e4e24585"
   integrity sha1-eXLCpaSKQmeNsnMMfCxO5uTiRYU=
 
+jsonapi-datastore@^0.4.0-beta:
+  version "0.4.0-beta"
+  resolved "https://registry.yarnpkg.com/jsonapi-datastore/-/jsonapi-datastore-0.4.0-beta.tgz#b499fce924d45e2bc3c6178681520063e2361f10"
+  integrity sha1-tJn86STUXivDxheGgVIAY+I2HxA=
+
 jsonapi-server@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/jsonapi-server/-/jsonapi-server-4.2.0.tgz#795c3ecb69b7ccd11defbfb8d230a9b659da3f0a"

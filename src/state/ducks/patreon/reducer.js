@@ -4,6 +4,8 @@ import {
   CONNECT,
   DISCONNECT,
   STORE_TOKEN,
+  GET_DETAILS,
+  STORE_DETAILS,
   ERROR,
 } from './types';
 
@@ -31,13 +33,22 @@ export default handleActions({
     error: null,
     loading: true,
   }),
-  [DISCONNECT]: state => ({
-    ...state,
+  [DISCONNECT]: () => ({
     token: null,
     error: null,
+    loading: false,
   }),
   [STORE_TOKEN]: (state, action) => ({
     token: action.payload,
+    loading: false,
+  }),
+  [GET_DETAILS]: state => ({
+    ...state,
+    loading: true,
+  }),
+  [STORE_DETAILS]: (state, action) => ({
+    ...state,
+    details: action.payload,
     loading: false,
   }),
   [ERROR]: (state, action) => ({
