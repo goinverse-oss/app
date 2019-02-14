@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import { fk, many, attr, Model } from 'redux-orm';
 import propTypesMixin from '@theliturgists/redux-orm-proptypes';
 
@@ -29,11 +28,11 @@ Meditation.propTypes = {
   description: PropTypes.string,
   imageUrl: PropTypes.string,
   mediaUrl: PropTypes.string,
-  duration: momentPropTypes.momentDurationObj,
-  publishedAt: momentPropTypes.momentObj,
+  duration: PropTypes.string,
+  publishedAt: PropTypes.string,
   status: PropTypes.oneOf(['published', 'draft']),
-  createdAt: momentPropTypes.momentObj,
-  updatedAt: momentPropTypes.momentObj,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
 };
 
 export default Meditation;

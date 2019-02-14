@@ -7,6 +7,7 @@ import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import PodcastSeriesList from '../components/PodcastSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
+import Podcast from '../state/models/Podcast';
 import { fetchData } from '../state/ducks/orm';
 import {
   podcastsSelector,
@@ -47,7 +48,7 @@ class PodcastsScreen extends Component {
 
 PodcastsScreen.propTypes = {
   podcasts: PropTypes.arrayOf(
-    PropTypes.shape({}),
+    PropTypes.shape(Podcast.propTypes),
   ),
   fetchPodcastEpisodes: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,

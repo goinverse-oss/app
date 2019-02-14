@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 
 import SeriesTile from './SeriesTile';
 import Podcast from '../state/models/Podcast';
@@ -20,7 +21,7 @@ const formatPodcastDescription = (episodeCount, lastUpdated) => {
     strings.push(formatEpisodeCount(episodeCount));
   }
   if (!_.isNull(lastUpdated)) {
-    strings.push(lastUpdated.fromNow());
+    strings.push(moment(lastUpdated).fromNow());
   }
   return strings.join(separator);
 };

@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PlayableListCard from './PlayableListCard';
 
-import appPropTypes from '../propTypes';
+import Meditation from '../state/models/Meditation';
 
 const MeditationListCard = ({ meditation, ...props }) => (
   <PlayableListCard
@@ -11,7 +12,7 @@ const MeditationListCard = ({ meditation, ...props }) => (
 );
 
 MeditationListCard.propTypes = {
-  meditation: appPropTypes.meditation.isRequired,
+  meditation: PropTypes.shape(Meditation.propTypes).isRequired,
 };
 
 export default MeditationListCard;

@@ -8,6 +8,8 @@ import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import { fetchData } from '../state/ducks/orm';
+import Meditation from '../state/models/Meditation';
+import MeditationCategory from '../state/models/MeditationCategory';
 import {
   meditationsSelector,
   meditationCategoriesSelector,
@@ -57,10 +59,10 @@ class MeditationsScreen extends Component {
 
 MeditationsScreen.propTypes = {
   meditations: PropTypes.arrayOf(
-    PropTypes.shape({}),
+    PropTypes.shape(Meditation.propTypes),
   ),
   categories: PropTypes.arrayOf(
-    PropTypes.shape({}),
+    PropTypes.shape(MeditationCategory.propTypes),
   ),
   fetchMeditations: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,

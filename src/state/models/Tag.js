@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import { attr, Model } from 'redux-orm';
 import propTypesMixin from '@theliturgists/redux-orm-proptypes';
 
@@ -17,8 +16,8 @@ Tag.fields = {
 
 Tag.propTypes = {
   name: PropTypes.string,
-  createdAt: momentPropTypes.momentObj,
-  updatedAt: momentPropTypes.momentObj,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
 };
 
 export default Tag;

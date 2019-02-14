@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 
@@ -11,18 +10,18 @@ import { getModelName, getContentType, getFields, getRelationships } from './uti
 const defaultORMState = orm.session().state;
 const defaultAPIState = {};
 
-function momentize(modelName, entry) {
-  const momentized = {
-    createdAt: moment(entry.sys.createdAt),
-    updatedAt: moment(entry.sys.updatedAt),
+function getTimestamps(modelName, entry) {
+  const timestamps = {
+    createdAt: entry.sys.createdAt,
+    updatedAt: entry.sys.updatedAt,
   };
   if (_.has(entry, 'fields.publishedAt')) {
-    momentized.publishedAt = moment(entry.fields.publishedAt);
+    timestamps.publishedAt = entry.fields.publishedAt;
   }
   if (_.has(entry, 'fields.duration')) {
-    momentized.duration = moment.duration(entry.fields.duration);
+    timestamps.duration = entry.fields.duration;
   }
-  return momentized;
+  return timestamps;
 }
 
 export default combineReducers({
@@ -36,7 +35,7 @@ export default combineReducers({
         const relJson = {
           id: relatedEntry.sys.id,
           ...getFields(relatedEntry),
-          ...momentize(relModelName, relatedEntry),
+          ...getTimestamps(relModelName, relatedEntry),
         };
         return RelModel.upsert(relJson);
       }
@@ -48,7 +47,7 @@ export default combineReducers({
         const instanceJson = {
           id: item.sys.id,
           ...getFields(item),
-          ...momentize(modelName, item),
+          ...getTimestamps(modelName, item),
         };
         const instance = Model.upsert(instanceJson);
         _.each(getRelationships(item), (relatedEntry, relName) => {

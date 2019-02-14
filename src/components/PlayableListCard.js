@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import {
   View,
   ViewPropTypes,
@@ -93,7 +94,7 @@ function formatFooter({ duration, publishedAt, formatDuration }) {
     strings.push(formatDuration(duration));
   }
   if (!_.isUndefined(publishedAt)) {
-    strings.push(publishedAt.fromNow());
+    strings.push(moment(publishedAt).fromNow());
   }
   return strings.join(separator);
 }

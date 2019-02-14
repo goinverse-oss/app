@@ -25,8 +25,8 @@ function contentType(type) {
 
 function timestamps() {
   return {
-    createdAt: moment(),
-    updatedAt: moment(),
+    createdAt: `${moment()}`,
+    updatedAt: `${moment()}`,
   };
 }
 
