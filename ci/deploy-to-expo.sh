@@ -22,7 +22,7 @@ fi
 api_url="https://staging.api.theliturgists.com"
 json -I -f config.json \
   -e "this.apiBaseUrl='${api_url}'" \
-  -e "this.patreonClientId=${PATREON_CLIENT_ID}" \
+  -e "this.patreonClientId='${PATREON_CLIENT_ID}'" \
   -e "this.contentful={
     space: '${CONTENTFUL_SANDBOX_SPACE}',
     environment: '${CONTENTFUL_SANDBOX_ENVIRONMENT}',
