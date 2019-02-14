@@ -1,15 +1,5 @@
 #!/bin/bash -e
 
-get_fakeapi_name() {
-  # Set this temporarily to use a review app of theliturgists/fakeapi
-  local suffix=""
-  echo "theliturgists-fakeapi${suffix}"
-}
-
-get_fakeapi_url() {
-  echo "https://$(get_fakeapi_name).herokuapp.com"
-}
-
 yarn global add exp
 
 fail=
@@ -29,7 +19,7 @@ fi
 # read-only access to anything in the space. That's fine; we won't put anything
 # sensitive there. Once we go live with our real API, we will revoke this token
 # and use a different one that only the API backend knows about.
-api_url="$(get_fakeapi_url)"
+api_url="https://staging.api.theliturgists.com"
 json -I -f config.json \
   -e "this.apiBaseUrl='${api_url}'" \
   -e "this.contentful={
