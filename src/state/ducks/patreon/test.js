@@ -29,20 +29,20 @@ describe('patreon reducer', () => {
   });
 
   test('patreon is initially not enabled', () => {
-    expect(selectors.isPatron(store.getState())).toBe(false);
+    expect(selectors.isConnected(store.getState())).toBe(false);
   });
 
   test('storeToken() enables patreon', () => {
     store.dispatch(actions.storeToken());
-    expect(selectors.isPatron(store.getState())).toBe(true);
+    expect(selectors.isConnected(store.getState())).toBe(true);
   });
 
   test('disconnect() disables patreon', () => {
     store.dispatch(actions.storeToken());
-    expect(selectors.isPatron(store.getState())).toBe(true);
+    expect(selectors.isConnected(store.getState())).toBe(true);
 
     store.dispatch(actions.disconnect());
-    expect(selectors.isPatron(store.getState())).toBe(false);
+    expect(selectors.isConnected(store.getState())).toBe(false);
   });
 });
 

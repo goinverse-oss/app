@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { Text, View, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from '@expo/vector-icons/MaterialIcons';
+import HTML from 'react-native-render-html';
 
 import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
@@ -22,6 +23,7 @@ function formatPledge(pledge) {
 }
 
 const PatreonStatus = ({
+  isConnected,
   isPatron,
   pledge,
   getDetails,
@@ -30,11 +32,14 @@ const PatreonStatus = ({
 }) => (
   <View>
     <Text>Patreon status</Text>
-    <Text>{`Patron: ${isPatron ? 'yes' : 'no'}`}</Text>
+    <Text>{`Connected: ${isConnected ? 'yes' : 'no'}`}</Text>
     { isPatron && (
       <React.Fragment>
+        <Text>{`Patron: ${isPatron ? 'yes' : 'no'}`}</Text>
         <Text>{`Pledge: ${formatPledge(pledge)}`}</Text>
-        <Text>{`Patron-only podcast: ${canAccessPatronPodcasts}`}</Text>
+        <Text>{`Reward: ${pledge.reward.title}`}</Text>
+        <HTML html={`Description: ${pledge.reward.description}`} />
+        <Text>{`Bonus podcast: ${canAccessPatronPodcasts}`}</Text>
         <Text>{`Meditations: ${canAccessMeditations}`}</Text>
       </React.Fragment>
     )}
@@ -45,13 +50,18 @@ const PatreonStatus = ({
 );
 
 PatreonStatus.propTypes = {
+  isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
   pledge: PropTypes.shape({
     amount_cents: PropTypes.number.isRequired,
-  }).isRequired,
+  }),
   getDetails: PropTypes.func.isRequired,
   canAccessPatronPodcasts: PropTypes.bool.isRequired,
   canAccessMeditations: PropTypes.bool.isRequired,
+};
+
+PatreonStatus.defaultProps = {
+  pledge: null,
 };
 
 function getTitle(isPatron) {
@@ -139,6 +149,7 @@ PatreonScreen.navigationOptions = ({ navigation }) => ({
 
 function mapStateToProps(state) {
   return {
+    isConnected: selectors.isConnected(state),
     isPatron: selectors.isPatron(state),
     pledge: selectors.getPledge(state),
     canAccessPatronPodcasts: selectors.canAccessPatronPodcasts(state),

@@ -21,8 +21,17 @@ import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 import PodcastsIcon from '../screens/PodcastsIcon';
+import HomeIcon from '../screens/HomeIcon';
 
 const { DrawerLayout } = GestureHandler;
+
+const HomeNavigator = createStackNavigator({
+  Home: HomeScreen,
+}, {
+  navigationOptions: {
+    tabBarIcon: HomeIcon,
+  },
+});
 
 const PodcastsNavigator = createStackNavigator({
   Podcasts: PodcastsScreen,
@@ -60,7 +69,7 @@ const TabBar = props => (
 );
 
 const Tabs = createBottomTabNavigator({
-  Home: { screen: HomeScreen },
+  Home: { screen: HomeNavigator },
   Podcasts: { screen: PodcastsNavigator },
   Meditations: { screen: MeditationsNavigator },
 }, {

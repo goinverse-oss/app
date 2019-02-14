@@ -1,10 +1,11 @@
+import _ from 'lodash';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 
 export function token(state) {
   return state.auth.patreonToken;
 }
 
-export function isPatron(state) {
+export function isConnected(state) {
   return token(state) !== null;
 }
 
@@ -24,21 +25,32 @@ export function getPledge(state) {
   return pledges.length > 0 ? pledges[0] : null;
 }
 
-function pledgedEnough(pledge, minAmount) {
-  return pledge !== null && pledge.amount_cents >= minAmount;
+export function isPatron(state) {
+  return getPledge(state) !== null;
 }
 
-const PATRON_PODCASTS_MIN_PLEDGE = 100;
-const MEDITATIONS_MIN_PLEDGE = 500;
-
 export function canAccessPatronPodcasts(state) {
-  const pledge = getPledge(state);
-  return pledgedEnough(pledge, PATRON_PODCASTS_MIN_PLEDGE);
+  return isPatron(state);
 }
 
 export function canAccessMeditations(state) {
   const pledge = getPledge(state);
-  return pledgedEnough(pledge, MEDITATIONS_MIN_PLEDGE);
+  if (!pledge) {
+    return false;
+  }
+  return /Meditations/i.test(pledge.reward.title);
+}
+
+export function imageUrl(state) {
+  return _.get(
+    state.patreon,
+    'details.data.attributes.image_url',
+    'https://loremflickr.com/81/81?random',
+  );
+}
+
+export function fullName(state) {
+  return _.get(state.patreon, 'details.data.attributes.full_name', 'Patreon');
 }
 
 export function loading(state) {
