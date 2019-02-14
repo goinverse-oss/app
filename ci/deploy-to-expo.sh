@@ -3,7 +3,7 @@
 yarn global add exp
 
 fail=
-for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH CONTENTFUL_SANDBOX_SPACE CONTENTFUL_SANDBOX_ENVIRONMENT CONTENTFUL_SANDBOX_ACCESS_TOKEN ; do
+for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH PATREON_CLIENT_ID CONTENTFUL_SANDBOX_SPACE CONTENTFUL_SANDBOX_ENVIRONMENT CONTENTFUL_SANDBOX_ACCESS_TOKEN ; do
   eval value=\$$name
   if [[ -z ${value} ]]; then
     echo >&2 "Missing required env variable: ${name}"
@@ -22,6 +22,7 @@ fi
 api_url="https://staging.api.theliturgists.com"
 json -I -f config.json \
   -e "this.apiBaseUrl='${api_url}'" \
+  -e "this.patreonClientId=${PATREON_CLIENT_ID}" \
   -e "this.contentful={
     space: '${CONTENTFUL_SANDBOX_SPACE}',
     environment: '${CONTENTFUL_SANDBOX_ENVIRONMENT}',

@@ -114,7 +114,7 @@ function PatreonError({ error }) {
 }
 
 PatreonError.propTypes = {
-  error: PropTypes.instanceOf(Error),
+  error: PropTypes.shape({}),
 };
 PatreonError.defaultProps = {
   error: null,
@@ -129,7 +129,7 @@ const PatreonScreen = props => (
 );
 
 PatreonScreen.propTypes = {
-  error: PropTypes.instanceOf(Error),
+  error: PropTypes.shape({}),
 };
 
 PatreonScreen.defaultProps = {
