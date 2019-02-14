@@ -16,8 +16,14 @@ const styles = StyleSheet.create({
   },
 });
 
+function formatPledge(pledge) {
+  const pledgeAmount = Math.floor(pledge.amount_cents / 100);
+  return `$${pledgeAmount}`;
+}
+
 const PatreonStatus = ({
   isPatron,
+  pledge,
   getDetails,
   canAccessPatronPodcasts,
   canAccessMeditations,
@@ -27,16 +33,22 @@ const PatreonStatus = ({
     <Text>{`Patron: ${isPatron ? 'yes' : 'no'}`}</Text>
     { isPatron && (
       <React.Fragment>
+        <Text>{`Pledge: ${formatPledge(pledge)}`}</Text>
         <Text>{`Patron-only podcast: ${canAccessPatronPodcasts}`}</Text>
         <Text>{`Meditations: ${canAccessMeditations}`}</Text>
       </React.Fragment>
     )}
-    <Button onPress={() => getDetails()} title="Refresh" />
+    {isPatron &&
+      <Button onPress={() => getDetails()} title="Refresh" />
+    }
   </View>
 );
 
 PatreonStatus.propTypes = {
   isPatron: PropTypes.bool.isRequired,
+  pledge: PropTypes.shape({
+    amount_cents: PropTypes.number.isRequired,
+  }).isRequired,
   getDetails: PropTypes.func.isRequired,
   canAccessPatronPodcasts: PropTypes.bool.isRequired,
   canAccessMeditations: PropTypes.bool.isRequired,
@@ -128,6 +140,7 @@ PatreonScreen.navigationOptions = ({ navigation }) => ({
 function mapStateToProps(state) {
   return {
     isPatron: selectors.isPatron(state),
+    pledge: selectors.getPledge(state),
     canAccessPatronPodcasts: selectors.canAccessPatronPodcasts(state),
     canAccessMeditations: selectors.canAccessMeditations(state),
     loading: selectors.loading(state),

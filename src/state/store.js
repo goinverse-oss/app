@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
-import { persistReducer, persistStore } from 'redux-persist';
+import { persistReducer, persistStore, createMigrate } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
 
 import { Observable } from 'rxjs';
@@ -10,9 +11,22 @@ import 'rxjs/add/observable/never';
 import reducer from './reducer';
 import epics from './epics';
 
+const migrations = {
+  0: state => ({
+    ...state,
+    auth: {
+      patreonToken: null,
+    },
+    patreon: _.omit(state.patreon, 'token'),
+  }),
+};
+
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['auth'],
+  version: 0,
+  migrate: createMigrate(migrations),
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
 

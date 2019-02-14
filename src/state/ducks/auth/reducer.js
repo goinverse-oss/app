@@ -1,23 +1,34 @@
+import { persistReducer } from 'redux-persist';
+import createSecureStore from 'redux-persist-expo-securestore';
+
 import { handleActions } from 'redux-actions';
 
-import * as types from './types';
+import * as patreonTypes from '../patreon/types';
 
 /* auth reducer state shape:
 {
-  // true iff the user is authenticated
-  authenticated: boolean,
+  // true iff the user has connected Patreon
+  patreonToken: ?str,
 }
 */
 
 const defaultState = {
-  authenticated: false,
+  patreonToken: null,
 };
 
-export default handleActions({
-  [types.LOGIN]: () => ({
-    authenticated: true,
-  }),
-  [types.LOGOUT]: () => ({
-    authenticated: false,
-  }),
-}, defaultState);
+const persistConfig = {
+  key: 'auth',
+  storage: createSecureStore(),
+};
+
+export default persistReducer(
+  persistConfig,
+  handleActions({
+    [patreonTypes.STORE_TOKEN]: (state, action) => ({
+      patreonToken: action.payload,
+    }),
+    [patreonTypes.DISCONNECT]: () => ({
+      patreonToken: null,
+    }),
+  }, defaultState),
+);

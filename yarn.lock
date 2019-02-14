@@ -10068,6 +10068,11 @@ redux-orm@^0.11.0:
     lodash "^4.17.10"
     reselect "^3.0.1"
 
+redux-persist-expo-securestore@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/redux-persist-expo-securestore/-/redux-persist-expo-securestore-0.1.1.tgz#49fe6aed4aa3d688969efd162f92c190307054cb"
+  integrity sha1-Sf5q7Uqj1oiWnv0WL5LBkDBwVMs=
+
 redux-persist@^5.10.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.10.0.tgz#5d8d802c5571e55924efc1c3a9b23575283be62b"

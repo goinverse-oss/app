@@ -1,11 +1,11 @@
 import { JsonApiDataStore } from 'jsonapi-datastore';
 
 export function token(state) {
-  return state.patreon.token;
+  return state.auth.patreonToken;
 }
 
 export function isPatron(state) {
-  return state.patreon.token !== null;
+  return token(state) !== null;
 }
 
 export function getPledge(state) {

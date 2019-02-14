@@ -38,8 +38,8 @@ export default handleActions({
     error: null,
     loading: false,
   }),
-  [STORE_TOKEN]: (state, action) => ({
-    token: action.payload,
+  [STORE_TOKEN]: state => ({
+    ...state,
     loading: false,
   }),
   [GET_DETAILS]: state => ({
