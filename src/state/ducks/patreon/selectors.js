@@ -49,6 +49,10 @@ export function imageUrl(state) {
   );
 }
 
+export function firstName(state) {
+  return _.get(state.patreon, 'details.data.attributes.first_name', '');
+}
+
 export function fullName(state) {
   return _.get(state.patreon, 'details.data.attributes.full_name', 'Patreon');
 }
