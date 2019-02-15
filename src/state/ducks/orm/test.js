@@ -25,8 +25,8 @@ function contentType(type) {
 
 function timestamps() {
   return {
-    createdAt: moment(),
-    updatedAt: moment(),
+    createdAt: `${moment()}`,
+    updatedAt: `${moment()}`,
   };
 }
 
@@ -301,7 +301,7 @@ describe('orm reducer', () => {
   let store;
 
   beforeEach(() => {
-    store = configureStore({ noEpic: true });
+    ({ store } = configureStore({ noEpic: true }));
   });
 
   cases.forEach(({ description, apiJson, relationships }) => {

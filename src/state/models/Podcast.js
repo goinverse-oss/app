@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import { many, attr, Model } from 'redux-orm';
 import propTypesMixin from '@theliturgists/redux-orm-proptypes';
 
@@ -24,8 +23,8 @@ Podcast.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   imageUrl: PropTypes.string,
-  createdAt: momentPropTypes.momentObj,
-  updatedAt: momentPropTypes.momentObj,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
 };
 
 export default Podcast;
