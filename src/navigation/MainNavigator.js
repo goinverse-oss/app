@@ -170,7 +170,7 @@ class MainNavigator extends React.Component {
     if (apiError && this.dropDown) {
       this.dropDown.alertWithType(
         'error',
-        apiError.message,
+        apiError.message || 'Error',
         [
           `URL: ${apiError.config.url}`,
           _.get(apiError, 'request._response', ''),
@@ -220,7 +220,7 @@ class MainNavigator extends React.Component {
 MainNavigator.propTypes = {
   // react-navigation internal navigation state object
   navigation: PropTypes.shape({}).isRequired,
-  apiError: PropTypes.instanceOf(Error),
+  apiError: PropTypes.shape({}),
 };
 
 MainNavigator.defaultProps = {
