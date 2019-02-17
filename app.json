@@ -15,7 +15,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "scheme": "theliturgists",
+    "scheme": "theliturgists.app",
     "ios": {
       "supportsTablet": true
     }

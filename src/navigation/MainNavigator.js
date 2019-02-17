@@ -229,7 +229,11 @@ MainNavigator.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    apiError: _.get(state, 'orm.api.error'),
+    apiError: _.get(
+      state,
+      'orm.api.error',
+      _.get(state, 'patreon.error'),
+    ),
   };
 }
 
