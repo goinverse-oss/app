@@ -25,6 +25,7 @@ import config from '../../../../config.json';
 import { CONNECT, GET_DETAILS } from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import showError from '../../../showError';
 
 function generateCsrfToken() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -100,9 +101,10 @@ function getPatreonDetails(token) {
 }
 
 function catchApiError() {
-  return catchError(e => (
-    Observable.of(actions.storeError(e))
-  ));
+  return catchError((e) => {
+    showError(e);
+    return Observable.of(actions.storeError(e));
+  });
 }
 
 /**

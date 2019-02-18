@@ -19,6 +19,7 @@ import patreonBackground from '../../assets/patreon_bg.png';
 
 import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
+import * as constants from '../state/ducks/patreon/constants';
 import appStyles from '../styles';
 
 const styles = StyleSheet.create({
@@ -256,8 +257,13 @@ const PatreonManageButton = ({ isConnected, pledge, getDetails }) => (
     <PatreonButton
       title="Manage Your Pledge"
       onPress={() => {
+        const pledgeSlug = _.get(
+          pledge,
+          'reward.campaign.pledge_url',
+          constants.PLEDGE_SLUG,
+        );
         const pledgeUrl =
-          `https://www.patreon.com/${pledge.reward.campaign.pledge_url}`;
+          `${constants.BASE_URL}/${pledgeSlug}`;
         WebBrowser.openAuthSessionAsync(pledgeUrl)
           .then(() => getDetails());
       }}
