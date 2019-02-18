@@ -21,6 +21,7 @@ import { singular } from 'pluralize';
 import { FETCH_DATA } from './types';
 import { receiveData, receiveApiError } from './actions';
 import config from '../../../../config.json';
+import showError from '../../../showError';
 
 /**
  * Fetch API data.
@@ -59,10 +60,15 @@ const fetchDataEpic = (action$) => {
           ..._.pick(action.payload, ['resource', 'id']),
           json,
         }))
-        .catch(error => Observable.of(receiveApiError({
-          ..._.pick(action.payload, ['resource', 'id']),
-          error,
-        })))
+        .catch((error) => {
+          showError(error);
+          return Observable.of(
+            receiveApiError({
+              ..._.pick(action.payload, ['resource', 'id']),
+              error,
+            }),
+          );
+        })
     ));
 };
 

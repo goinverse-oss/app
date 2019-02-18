@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Animated, StyleSheet, Dimensions, Platform, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
-import { connect } from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
 import { GestureHandler, LinearGradient } from 'expo';
 
@@ -22,6 +20,8 @@ import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 import PodcastsIcon from '../screens/PodcastsIcon';
 import HomeIcon from '../screens/HomeIcon';
+
+import { setDropdown } from '../showError';
 
 const { DrawerLayout } = GestureHandler;
 
@@ -144,7 +144,6 @@ class MainNavigator extends React.Component {
     this.state = {
       drawer: null,
     };
-    this.dropDown = null;
   }
 
   getAnimatedStyles(progressValue) {
@@ -166,18 +165,6 @@ class MainNavigator extends React.Component {
   }
 
   render() {
-    const { apiError } = this.props;
-    if (apiError && this.dropDown) {
-      this.dropDown.alertWithType(
-        'error',
-        apiError.message || 'Error',
-        [
-          `URL: ${apiError.config.url}`,
-          _.get(apiError, 'request._response', ''),
-        ].join('\n'),
-      );
-    }
-
     return (
       <LinearGradient style={styles.gradient} colors={['#FFFFFF00', '#F95A570C']}>
         <DrawerLayout
@@ -205,8 +192,10 @@ class MainNavigator extends React.Component {
                   navigation={this.props.navigation}
                 />
                 <DropdownAlert
-                  ref={(ref) => { this.dropDown = ref; }}
+                  ref={(ref) => { setDropdown(ref); }}
                   messageNumOfLines={10}
+                  closeInterval={null}
+                  showCancel
                 />
               </Animated.View>
             )
@@ -227,14 +216,4 @@ MainNavigator.defaultProps = {
   apiError: null,
 };
 
-function mapStateToProps(state) {
-  return {
-    apiError: _.get(
-      state,
-      'orm.api.error',
-      _.get(state, 'patreon.error'),
-    ),
-  };
-}
-
-export default connect(mapStateToProps)(MainNavigator);
+export default MainNavigator;
