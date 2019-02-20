@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import Icon from '@expo/vector-icons/Foundation';
+import { Foundation, FontAwesome } from '@expo/vector-icons';
 import pluralize from 'pluralize';
 
 import ListCard from './ListCard';
@@ -59,8 +59,21 @@ const styles = StyleSheet.create({
   textContainer: {
   },
   title: {
+    flex: 1,
     fontSize: 15,
     fontWeight: '600',
+    flexWrap: 'wrap',
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  previewLabel: {
+    marginLeft: 7,
+  },
+  patronsOnlyIcon: {
+    fontSize: 12,
+    marginLeft: 7,
   },
   description: {
     fontSize: 12,
@@ -99,24 +112,50 @@ function formatFooter({ duration, publishedAt, formatDuration }) {
   return strings.join(separator);
 }
 
+function accessStyle({ patronsOnly, isFreePreview }) {
+  return (!patronsOnly || isFreePreview) ? {} : {
+    opacity: 0.5,
+  };
+}
+
+const PlayIcon = () => (
+  <Foundation name="play" style={styles.playIcon} />
+);
+
+const PreviewLabel = () => (
+  <TextPill style={styles.previewLabel}>Free Preview</TextPill>
+);
+
+const PatronsOnlyIcon = () => (
+  <FontAwesome name="lock" style={styles.patronsOnlyIcon} />
+);
+
 const PlayableListCard = ({
   style,
   formatDuration,
   isSearchResult,
   navigation,
   item,
-  play,
+  canAccess,
+  onPlay,
   ...props
 }) => (
-  <ListCard style={[styles.card, style]} {...props}>
-    <TouchableWithoutFeedback onPress={() => play()}>
+  <ListCard
+    style={[
+      styles.card,
+      style,
+      accessStyle(item),
+    ]}
+    {...props}
+  >
+    <TouchableWithoutFeedback onPress={() => onPlay()}>
       <View style={styles.imageContainer} >
         <SquareImage
           source={{ uri: item.imageUrl }}
           width={86}
           style={styles.image}
         />
-        <Icon name="play" style={styles.playIcon} />
+        <PlayIcon />
         <View style={styles.playCircle} />
       </View>
     </TouchableWithoutFeedback>
@@ -130,7 +169,17 @@ const PlayableListCard = ({
         </View>
       ) : null}
       <View style={styles.textContainer}>
-        <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
+          {
+            item.patronsOnly
+              && (
+                item.isFreePreview
+                  ? <PreviewLabel />
+                  : <PatronsOnlyIcon />
+              )
+          }
+        </View>
         <Text
           style={[
             styles.description,
@@ -158,7 +207,9 @@ PlayableListCard.propTypes = {
   item: appPropTypes.mediaItem.isRequired,
   formatDuration: PropTypes.func,
   isSearchResult: PropTypes.bool,
-  play: PropTypes.func.isRequired,
+  canAccess: PropTypes.bool.isRequired,
+  onPlay: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 PlayableListCard.defaultProps = {
@@ -167,9 +218,18 @@ PlayableListCard.defaultProps = {
   isSearchResult: false,
 };
 
+function mapStateToProps(state, { item }) {
+  return {
+    canAccess: (
+      !_.get(item, 'patronsOnly', false)
+        || _.get(item, 'isFreePreview', false)
+    ),
+  };
+}
+
 function mapDispatchToProps(dispatch, { navigation, item }) {
   return {
-    play: () => {
+    openPlayer: () => {
       dispatch(
         actions.setPlaying(
           _.pick(item, ['type', 'id']),
@@ -177,9 +237,39 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
       );
       navigation.navigate('Player');
     },
+    openItem: () => {
+      const routes = {
+        podcastEpisode: 'SinglePodcastEpisode',
+        meditation: 'SingleMeditation',
+      };
+      const routeParamNames = {
+        podcastEpisode: 'episode',
+        meditation: 'meditation',
+      };
+      navigation.navigate({
+        routeName: routes[item.type],
+        params: {
+          [routeParamNames[item.type]]: item,
+        },
+      });
+    },
+    openPatreon: () => {
+      navigation.navigate('Patreon');
+    },
+  };
+}
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  const { canAccess } = stateProps;
+  const { openPlayer, openItem, openPatreon } = dispatchProps;
+  return {
+    ...ownProps,
+    ...stateProps,
+    onPlay: canAccess ? openPlayer : openPatreon,
+    onPress: canAccess ? openItem : openPatreon,
   };
 }
 
 export default withNavigation(
-  connect(null, mapDispatchToProps)(PlayableListCard),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps)(PlayableListCard),
 );

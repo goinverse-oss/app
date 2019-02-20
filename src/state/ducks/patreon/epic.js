@@ -17,6 +17,7 @@ import {
 
 import _ from 'lodash';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { AuthSession } from 'expo';
 import qs from 'qs';
 
@@ -26,6 +27,11 @@ import { CONNECT, GET_DETAILS } from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
 import showError from '../../../showError';
+
+axiosRetry(axios, {
+  retries: 5,
+  retryDelay: axiosRetry.exponentialDelay,
+});
 
 function generateCsrfToken() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

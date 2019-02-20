@@ -14,14 +14,14 @@ const formatEpisodeCount = (episodeCount) => {
   return `${episodeCount} ${episodeString}`;
 };
 
-const formatPodcastDescription = (episodeCount, lastUpdated) => {
+const formatPodcastDescription = (episodeCount, latestEpisode) => {
   const separator = ' • ';
   const strings = [];
   if (!_.isNull(episodeCount)) {
     strings.push(formatEpisodeCount(episodeCount));
   }
-  if (!_.isNull(lastUpdated)) {
-    strings.push(moment(lastUpdated).fromNow());
+  if (!_.isNull(latestEpisode)) {
+    strings.push(moment(latestEpisode.publishedAt).fromNow());
   }
   return strings.join(separator);
 };
@@ -31,7 +31,10 @@ const PodcastSeriesTile = ({ podcast, onPress }) => (
     imageUrl={podcast.imageUrl}
     title={podcast.title}
     onPress={() => onPress(podcast)}
-    description={formatPodcastDescription(podcast.episodes.length, podcast.updatedAt)}
+    description={formatPodcastDescription(
+      podcast.episodes.length,
+      _.get(podcast.episodes, 0, null),
+    )}
   />
 );
 

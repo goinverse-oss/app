@@ -41,6 +41,16 @@ export default combineReducers({
       }
 
       const data = action.payload.json;
+      if (_.isArray(data.items)) {
+        // Replace any existing instances of this model
+        // with what we're receiving from the server
+        // TODO: filter this by (podcast, meditationCategory)
+        // to enable finer-grain pull-to-refresh
+        const modelName = getModelName(action.payload.resource);
+        const Model = session[modelName];
+        Model.all().delete();
+      }
+
       (_.isArray(data.items) ? data.items : [data]).forEach((item) => {
         const modelName = getModelName(getContentType(item));
         const Model = session[modelName];

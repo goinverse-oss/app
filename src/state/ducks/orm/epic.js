@@ -17,9 +17,11 @@ import 'rxjs/add/observable/fromPromise';
 import _ from 'lodash';
 import { createClient } from 'contentful/dist/contentful.browser';
 import { singular } from 'pluralize';
+import parse from 'url-parse';
 
 import { FETCH_DATA } from './types';
 import { receiveData, receiveApiError } from './actions';
+import * as patreonSelectors from '../patreon/selectors';
 import config from '../../../../config.json';
 import showError from '../../../showError';
 
@@ -39,6 +41,13 @@ function sendAPIRequest(client, { resource, id, ...query }) {
   return Observable.fromPromise(promise);
 }
 
+function patreonAuthHeader(state) {
+  const token = patreonSelectors.token(state);
+  return token ? {
+    'x-theliturgists-patreon-token': token,
+  } : {};
+}
+
 /**
  * Handle requests to fetch API data.
  *
@@ -48,14 +57,24 @@ function sendAPIRequest(client, { resource, id, ...query }) {
  *   RECEIVE_DATA: on success
  *   RECEIVE_API_ERROR: on failure
  */
-const fetchDataEpic = (action$) => {
-  const client = createClient({
-    ...config.contentful,
-  });
+const fetchDataEpic = (action$, store) => {
+  const url = parse(config.apiBaseUrl);
+  const client = state => (
+    createClient({
+      host: url.host,
+      basePath: `${url.pathname}/contentful`,
+      headers: patreonAuthHeader(state),
+
+      // these are filled in by our backend proxy
+      space: 'dummy',
+      environment: 'dummy',
+      accessToken: 'dummy',
+    })
+  );
 
   return action$.ofType(FETCH_DATA)
     .switchMap(action => (
-      sendAPIRequest(client, action.payload)
+      sendAPIRequest(client(store.getState()), action.payload)
         .map(json => receiveData({
           ..._.pick(action.payload, ['resource', 'id']),
           json,

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
-import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
@@ -19,7 +18,6 @@ const MeditationsCategoryScreen = ({
   meditations,
   refreshing,
   refreshCategory,
-  navigation,
 }) => (
   <ScrollView
     refreshControl={
@@ -35,10 +33,6 @@ const MeditationsCategoryScreen = ({
           <MeditationListCard
             key={meditation.id}
             meditation={meditation}
-            onPress={() => navigation.navigate({
-              routeName: 'SingleMeditation',
-              params: { meditation },
-            })}
           />
         ),
       )
@@ -52,7 +46,6 @@ MeditationsCategoryScreen.propTypes = {
   ),
   refreshing: PropTypes.bool.isRequired,
   refreshCategory: PropTypes.func.isRequired,
-  navigation: appPropTypes.navigation.isRequired,
 };
 
 MeditationsCategoryScreen.defaultProps = {
