@@ -71,7 +71,11 @@ function mapDispatchToProps(dispatch, { navigation }) {
     refreshCategory: () => {
       dispatch(
         fetchData({
-          id: podcast.id,
+          resource: 'podcastEpisodes',
+          collection: {
+            field: 'podcast',
+            id: podcast.id,
+          },
         }),
       );
     },

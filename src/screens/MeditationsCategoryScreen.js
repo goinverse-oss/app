@@ -74,18 +74,19 @@ function mapDispatchToProps(dispatch, { navigation }) {
 
   return {
     refreshCategory: () => {
-      let action;
-      if (category.title === 'All Meditations') {
-        action = fetchData({
-          resource: 'meditations',
-        });
-      } else {
-        action = fetchData({
+      let collection;
+      if (category.title !== 'All Meditations') {
+        collection = {
+          field: 'category',
           id: category.id,
-          // TODO: ensure related meditations are also fetched/updated?
-        });
+        };
       }
-      dispatch(action);
+      dispatch(
+        fetchData({
+          resource: 'meditations',
+          collection,
+        }),
+      );
     },
   };
 }

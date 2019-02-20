@@ -44,11 +44,17 @@ export default combineReducers({
       if (_.isArray(data.items)) {
         // Replace any existing instances of this model
         // with what we're receiving from the server
-        // TODO: filter this by (podcast, meditationCategory)
-        // to enable finer-grain pull-to-refresh
         const modelName = getModelName(action.payload.resource);
         const Model = session[modelName];
-        Model.all().delete();
+        let querySet = Model.all();
+        const { collection } = action.payload;
+        if (collection) {
+          // Filtered refresh fron a podcast/category screen
+          querySet = querySet.filter(
+            obj => obj[collection.field].id === collection.id,
+          );
+        }
+        querySet.delete();
       }
 
       (_.isArray(data.items) ? data.items : [data]).forEach((item) => {

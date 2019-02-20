@@ -28,15 +28,29 @@ import showError from '../../../showError';
 /**
  * Fetch API data.
  *
+ * If 'id' is provided, fetch one entry. If not,
+ * fetch all entries of the specified resource type,
+ * subject to the optional collection filter.
+ *
+ * @param {object} client contentful client object
+ * @param {string} resource what to fetch; e.g. 'podcastEpisodes', 'meditations'
+ * @param {string} id resource ID
+ * @param {object} collection optional collection filter with keys:
+ *   field: name of related resource field; e.g. 'podcast', 'category'
+ *   id: ID of collection resource
  * @return {Observable} emitting an axios response object
  */
-function sendAPIRequest(client, { resource, id, ...query }) {
+function sendAPIRequest(client, { resource, id, collection }) {
   let promise;
   if (id) {
-    promise = client.getEntry(id, query);
+    promise = client.getEntry(id);
   } else {
     const contentType = singular(resource);
-    promise = client.getEntries({ content_type: contentType, ...query });
+    const filter = {};
+    if (collection) {
+      filter[`fields.${collection.field}.sys.id`] = collection.id;
+    }
+    promise = client.getEntries({ content_type: contentType, ...filter });
   }
   return Observable.fromPromise(promise);
 }
@@ -76,14 +90,14 @@ const fetchDataEpic = (action$, store) => {
     .mergeMap(action => (
       sendAPIRequest(client(store.getState()), action.payload)
         .map(json => receiveData({
-          ..._.pick(action.payload, ['resource', 'id']),
+          ..._.pick(action.payload, ['resource', 'id', 'collection']),
           json,
         }))
         .catch((error) => {
           showError(error);
           return Observable.of(
             receiveApiError({
-              ..._.pick(action.payload, ['resource', 'id']),
+              ..._.pick(action.payload, ['resource', 'id', 'collection']),
               error,
             }),
           );
