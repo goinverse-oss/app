@@ -26,6 +26,7 @@ import config from '../../../../config.json';
 import { CONNECT, GET_DETAILS } from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import * as ormActions from '../orm/actions';
 import showError from '../../../showError';
 
 axiosRetry(axios, {
@@ -130,6 +131,8 @@ const connectPatreonEpic = action$ =>
         flatMap(token => ([
           actions.storeToken(token),
           actions.getDetails(),
+          ormActions.fetchData({ resource: 'podcastEpisode' }),
+          ormActions.fetchData({ resource: 'meditation' }),
         ])),
         catchApiError(),
       )
@@ -139,12 +142,16 @@ const connectPatreonEpic = action$ =>
 const getPatreonDetailsEpic = (action$, store) =>
   action$.pipe(
     ofType(GET_DETAILS),
-    switchMap(() => (
-      getPatreonDetails(selectors.token(store.getState())).pipe(
-        map(details => actions.storeDetails(details)),
-        catchApiError(),
-      )
-    )),
+    switchMap(() => {
+      const token = selectors.token(store.getState());
+      if (token) {
+        return getPatreonDetails(token).pipe(
+          map(details => actions.storeDetails(details)),
+          catchApiError(),
+        );
+      }
+      return Observable.never();
+    }),
   );
 
 export default combineEpics(connectPatreonEpic, getPatreonDetailsEpic);

@@ -20,6 +20,7 @@ import patreonBackground from '../../assets/patreon_bg.png';
 import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
 import * as constants from '../state/ducks/patreon/constants';
+import * as ormActions from '../state/ducks/orm/actions';
 import appStyles from '../styles';
 
 const styles = StyleSheet.create({
@@ -217,6 +218,7 @@ const PatreonConnectButton = ({
   isConnected,
   connect: connectPatreon,
   disconnect,
+  fetchData,
 }) => {
   const title = isConnected ? 'Disconnect Patreon' : 'Connect with Patreon';
   const onPress = (
@@ -229,7 +231,11 @@ const PatreonConnectButton = ({
           {
             text: 'Disconnect',
             style: 'destructive',
-            onPress: () => disconnect(),
+            onPress: () => {
+              disconnect();
+              fetchData({ resource: 'podcastEpisode' });
+              fetchData({ resource: 'meditation' });
+            },
           },
         ],
       )
@@ -250,9 +256,15 @@ PatreonConnectButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
 };
 
-const PatreonManageButton = ({ isConnected, pledge, getDetails }) => (
+const PatreonManageButton = ({
+  isConnected,
+  pledge,
+  getDetails,
+  fetchData,
+}) => (
   isConnected &&
     <PatreonButton
       title="Manage Your Pledge"
@@ -265,7 +277,11 @@ const PatreonManageButton = ({ isConnected, pledge, getDetails }) => (
         const pledgeUrl =
           `${constants.BASE_URL}/${pledgeSlug}`;
         WebBrowser.openAuthSessionAsync(pledgeUrl)
-          .then(() => getDetails());
+          .then(() => {
+            getDetails();
+            fetchData({ resource: 'podcastEpisode' });
+            fetchData({ resource: 'meditation' });
+          });
       }}
     />
 );
@@ -317,4 +333,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actions)(PatreonScreen);
+const allActions = {
+  ...actions,
+  ...ormActions,
+};
+
+export default connect(mapStateToProps, allActions)(PatreonScreen);

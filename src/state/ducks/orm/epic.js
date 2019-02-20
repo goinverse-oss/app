@@ -73,7 +73,7 @@ const fetchDataEpic = (action$, store) => {
   );
 
   return action$.ofType(FETCH_DATA)
-    .switchMap(action => (
+    .mergeMap(action => (
       sendAPIRequest(client(store.getState()), action.payload)
         .map(json => receiveData({
           ..._.pick(action.payload, ['resource', 'id']),
