@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
-import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import PodcastEpisodeListCard from '../components/PodcastEpisodeListCard';
@@ -19,7 +18,6 @@ const PodcastScreen = ({
   episodes,
   refreshing,
   refreshCategory,
-  navigation,
 }) => (
   <ScrollView
     refreshControl={
@@ -35,10 +33,6 @@ const PodcastScreen = ({
           <PodcastEpisodeListCard
             key={episode.id}
             episode={episode}
-            onPress={() => navigation.navigate({
-              routeName: 'SinglePodcastEpisode',
-              params: { episode },
-            })}
           />
         ),
       )
@@ -52,7 +46,6 @@ PodcastScreen.propTypes = {
   ),
   refreshing: PropTypes.bool.isRequired,
   refreshCategory: PropTypes.func.isRequired,
-  navigation: appPropTypes.navigation.isRequired,
 };
 
 PodcastScreen.defaultProps = {
@@ -78,7 +71,11 @@ function mapDispatchToProps(dispatch, { navigation }) {
     refreshCategory: () => {
       dispatch(
         fetchData({
-          id: podcast.id,
+          resource: 'podcastEpisodes',
+          collection: {
+            field: 'podcast',
+            id: podcast.id,
+          },
         }),
       );
     },

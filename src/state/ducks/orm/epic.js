@@ -17,26 +17,49 @@ import 'rxjs/add/observable/fromPromise';
 import _ from 'lodash';
 import { createClient } from 'contentful/dist/contentful.browser';
 import { singular } from 'pluralize';
+import parse from 'url-parse';
 
 import { FETCH_DATA } from './types';
 import { receiveData, receiveApiError } from './actions';
+import * as patreonSelectors from '../patreon/selectors';
 import config from '../../../../config.json';
 import showError from '../../../showError';
 
 /**
  * Fetch API data.
  *
+ * If 'id' is provided, fetch one entry. If not,
+ * fetch all entries of the specified resource type,
+ * subject to the optional collection filter.
+ *
+ * @param {object} client contentful client object
+ * @param {string} resource what to fetch; e.g. 'podcastEpisodes', 'meditations'
+ * @param {string} id resource ID
+ * @param {object} collection optional collection filter with keys:
+ *   field: name of related resource field; e.g. 'podcast', 'category'
+ *   id: ID of collection resource
  * @return {Observable} emitting an axios response object
  */
-function sendAPIRequest(client, { resource, id, ...query }) {
+function sendAPIRequest(client, { resource, id, collection }) {
   let promise;
   if (id) {
-    promise = client.getEntry(id, query);
+    promise = client.getEntry(id);
   } else {
     const contentType = singular(resource);
-    promise = client.getEntries({ content_type: contentType, ...query });
+    const filter = {};
+    if (collection) {
+      filter[`fields.${collection.field}.sys.id`] = collection.id;
+    }
+    promise = client.getEntries({ content_type: contentType, ...filter });
   }
   return Observable.fromPromise(promise);
+}
+
+function patreonAuthHeader(state) {
+  const token = patreonSelectors.token(state);
+  return token ? {
+    'x-theliturgists-patreon-token': token,
+  } : {};
 }
 
 /**
@@ -48,23 +71,33 @@ function sendAPIRequest(client, { resource, id, ...query }) {
  *   RECEIVE_DATA: on success
  *   RECEIVE_API_ERROR: on failure
  */
-const fetchDataEpic = (action$) => {
-  const client = createClient({
-    ...config.contentful,
-  });
+const fetchDataEpic = (action$, store) => {
+  const url = parse(config.apiBaseUrl);
+  const client = state => (
+    createClient({
+      host: url.host,
+      basePath: `${url.pathname}/contentful`,
+      headers: patreonAuthHeader(state),
+
+      // these are filled in by our backend proxy
+      space: 'dummy',
+      environment: 'dummy',
+      accessToken: 'dummy',
+    })
+  );
 
   return action$.ofType(FETCH_DATA)
-    .switchMap(action => (
-      sendAPIRequest(client, action.payload)
+    .mergeMap(action => (
+      sendAPIRequest(client(store.getState()), action.payload)
         .map(json => receiveData({
-          ..._.pick(action.payload, ['resource', 'id']),
+          ..._.pick(action.payload, ['resource', 'id', 'collection']),
           json,
         }))
         .catch((error) => {
           showError(error);
           return Observable.of(
             receiveApiError({
-              ..._.pick(action.payload, ['resource', 'id']),
+              ..._.pick(action.payload, ['resource', 'id', 'collection']),
               error,
             }),
           );

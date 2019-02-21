@@ -117,8 +117,8 @@ function mapStateToProps(state) {
   return {
     isLoading: selectors.isLoading(state),
     isBuffering: selectors.isBuffering(state),
-    elapsed: selectors.elapsed(state),
-    duration: selectors.duration(state),
+    elapsed: moment.duration(selectors.elapsed(state)),
+    duration: moment.duration(selectors.duration(state)),
   };
 }
 

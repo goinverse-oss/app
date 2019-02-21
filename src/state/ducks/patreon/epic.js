@@ -17,6 +17,7 @@ import {
 
 import _ from 'lodash';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { AuthSession } from 'expo';
 import qs from 'qs';
 
@@ -25,7 +26,13 @@ import config from '../../../../config.json';
 import { CONNECT, GET_DETAILS } from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import * as ormActions from '../orm/actions';
 import showError from '../../../showError';
+
+axiosRetry(axios, {
+  retries: 5,
+  retryDelay: axiosRetry.exponentialDelay,
+});
 
 function generateCsrfToken() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -124,6 +131,8 @@ const connectPatreonEpic = action$ =>
         flatMap(token => ([
           actions.storeToken(token),
           actions.getDetails(),
+          ormActions.fetchData({ resource: 'podcastEpisode' }),
+          ormActions.fetchData({ resource: 'meditation' }),
         ])),
         catchApiError(),
       )
@@ -133,12 +142,16 @@ const connectPatreonEpic = action$ =>
 const getPatreonDetailsEpic = (action$, store) =>
   action$.pipe(
     ofType(GET_DETAILS),
-    switchMap(() => (
-      getPatreonDetails(selectors.token(store.getState())).pipe(
-        map(details => actions.storeDetails(details)),
-        catchApiError(),
-      )
-    )),
+    switchMap(() => {
+      const token = selectors.token(store.getState());
+      if (token) {
+        return getPatreonDetails(token).pipe(
+          map(details => actions.storeDetails(details)),
+          catchApiError(),
+        );
+      }
+      return Observable.never();
+    }),
   );
 
 export default combineEpics(connectPatreonEpic, getPatreonDetailsEpic);
