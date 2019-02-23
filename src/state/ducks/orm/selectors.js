@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { createSelector } from 'redux-orm';
 
 import orm from '../../orm';
@@ -24,9 +25,18 @@ import { getModelName } from './utils';
 // that Session instance as an argument instead.
 const dbStateSelector = state => state.orm.reduxOrm;
 
+function getWithFallback(objs, path, defaultValue) {
+  const obj = objs.find(o => _.has(o, path));
+  return _.get(obj, path, defaultValue);
+}
+
 const modelToObject = {
   Meditation: meditation => ({
     ...meditation.ref, // attributes
+    largeImageUrl: getWithFallback(
+      [meditation.ref, _.get(meditation.category, 'ref')],
+      'largeImageUrl',
+    ),
     ...{
       // relationships
       category: _.get(meditation, 'category.ref'),
@@ -74,6 +84,14 @@ const modelToObject = {
   }),
   PodcastEpisode: episode => ({
     ...episode.ref, // attributes
+    largeImageUrl: getWithFallback(
+      [
+        episode.ref,
+        _.get(episode.season, 'ref'),
+        _.get(episode.podcast, 'ref'),
+      ],
+      'largeImageUrl',
+    ),
     ...{
       // relationships
       podcast: _.get(episode, 'podcast.ref'),
@@ -108,10 +126,10 @@ const modelToObject = {
 };
 
 const modelOrderArgs = {
-  Meditation: ['publishedAt', 'desc'],
+  Meditation: ['publishedAt', 'title'],
   MeditationCategory: ['title'],
   Podcast: ['title'],
-  PodcastEpisode: ['title'],
+  PodcastEpisode: ['publishedAt', 'title'],
   PodcastSeason: ['title'],
   Contributor: ['name'],
   Tag: ['name'],
@@ -180,6 +198,34 @@ export function collectionSelector(state, type) {
 export function instanceSelector(state, type, id) {
   return instanceSelectors[type](state, id);
 }
+
+export const recentMediaItemsSelector = createSelector(
+  orm,
+  dbStateSelector,
+  (session) => {
+    const limit = 5;
+    const podcastEpisodes = (
+      session.PodcastEpisode.all()
+        .orderBy('publishedAt')
+        .toModelArray()
+        .map(modelToObject.PodcastEpisode)
+        .map(obj => ({ ...obj, type: 'podcastEpisode' }))
+        .slice(0, limit)
+    );
+    const meditations = (
+      session.Meditation.all()
+        .orderBy('publishedAt')
+        .toModelArray()
+        .map(modelToObject.Meditation)
+        .map(obj => ({ ...obj, type: 'meditation' }))
+        .slice(0, limit)
+    );
+    const items = podcastEpisodes.concat(meditations);
+    return items.sort((a, b) => (
+      moment(b.publishedAt) - moment(a.publishedAt)
+    )).slice(0, limit);
+  },
+);
 
 export const apiLoadingSelector = (state, resource) => _.get(state, ['orm.api.loading', resource], false);
 export const apiErrorSelector = state => _.get(state, 'orm.api.error');

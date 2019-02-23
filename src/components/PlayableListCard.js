@@ -18,6 +18,7 @@ import ListCard from './ListCard';
 import SquareImage from './SquareImage';
 import TextPill from './TextPill';
 import { formatMinutesString } from './utils';
+import * as navActions from '../navigation/actions';
 
 import appPropTypes from '../propTypes';
 import * as actions from '../state/ducks/playback/actions';
@@ -100,9 +101,14 @@ const styles = StyleSheet.create({
   },
 });
 
-function formatFooter({ duration, publishedAt, formatDuration }) {
+export function formatFooter({
+  duration,
+  publishedAt,
+  formatDuration: fmt,
+}) {
   const separator = ' • ';
   const strings = [];
+  const formatDuration = fmt || formatMinutesString;
   if (duration) {
     strings.push(formatDuration(duration));
   }
@@ -237,22 +243,7 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
       );
       navigation.navigate('Player');
     },
-    openItem: () => {
-      const routes = {
-        podcastEpisode: 'SinglePodcastEpisode',
-        meditation: 'SingleMeditation',
-      };
-      const routeParamNames = {
-        podcastEpisode: 'episode',
-        meditation: 'meditation',
-      };
-      navigation.navigate({
-        routeName: routes[item.type],
-        params: {
-          [routeParamNames[item.type]]: item,
-        },
-      });
-    },
+    openItem: () => navActions.openItem(navigation, item),
     openPatreon: () => {
       navigation.navigate('Patreon');
     },
