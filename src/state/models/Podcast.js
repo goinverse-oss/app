@@ -12,6 +12,7 @@ Podcast.fields = {
   title: attr(),
   description: attr(),
   imageUrl: attr(),
+  largeImageUrl: attr(),
   tags: many('Tag'),
   contributors: many('Contributor'),
   // episodes: created implicitly by fk() on PodcastEpisode
@@ -23,6 +24,7 @@ Podcast.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   imageUrl: PropTypes.string,
+  largeImageUrl: PropTypes.string,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
 };

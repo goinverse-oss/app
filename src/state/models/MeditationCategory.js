@@ -12,6 +12,7 @@ MeditationCategory.fields = {
   title: attr(),
   description: attr(),
   imageUrl: attr(),
+  largeImageUrl: attr(),
   tags: many('Tag'),
   // meditations: created implicitly by fk() on Meditation
   createdAt: attr(),
@@ -22,6 +23,7 @@ MeditationCategory.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   imageUrl: PropTypes.string,
+  largeImageUrl: PropTypes.string,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
 };
