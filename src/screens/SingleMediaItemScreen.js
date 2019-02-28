@@ -13,6 +13,7 @@ import SocialLinksSection from '../components/SocialLinksSection';
 import TagList from '../components/TagList';
 
 import * as playbackActions from '../state/ducks/playback/actions';
+import { getImageSource } from '../state/ducks/orm/utils';
 
 const padding = 15;
 
@@ -38,9 +39,7 @@ const SingleMediaItemScreen = ({ item, play }) => (
   <ScrollView style={styles.container}>
     <View style={styles.subContainer}>
       <PlayableItemHeader
-        coverImageSource={{
-          uri: item.imageUrl,
-        }}
+        coverImageSource={getImageSource(item)}
         title={item.title}
         description={item.description}
         duration={item.duration}

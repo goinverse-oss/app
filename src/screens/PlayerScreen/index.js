@@ -10,6 +10,7 @@ import { screenRelativeWidth } from '../../components/utils';
 import appPropTypes from '../../propTypes';
 import * as actions from '../../state/ducks/playback/actions';
 import * as selectors from '../../state/ducks/playback/selectors';
+import { getImageSource } from '../../state/ducks/orm/utils';
 import appStyles from '../../styles';
 
 import AudioTimeline from './AudioTimeline';
@@ -85,7 +86,7 @@ class PlayerScreen extends React.Component {
           {
             item ? (
               <SquareImage
-                source={{ uri: item.imageUrl }}
+                source={getImageSource(item)}
                 width={screenRelativeWidth(1)}
               />
             ) : null

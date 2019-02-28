@@ -25,18 +25,9 @@ import { getModelName } from './utils';
 // that Session instance as an argument instead.
 const dbStateSelector = state => state.orm.reduxOrm;
 
-function getWithFallback(objs, path, defaultValue) {
-  const obj = objs.find(o => _.has(o, path));
-  return _.get(obj, path, defaultValue);
-}
-
 const modelToObject = {
   Meditation: meditation => ({
     ...meditation.ref, // attributes
-    largeImageUrl: getWithFallback(
-      [meditation.ref, _.get(meditation.category, 'ref')],
-      'largeImageUrl',
-    ),
     ...{
       // relationships
       category: _.get(meditation, 'category.ref'),
@@ -53,7 +44,8 @@ const modelToObject = {
         .orderBy('publishedAt', 'desc')
         .toRefArray().map(
           m => ({
-            ..._.omit(m, 'category'),
+            ...m,
+            category: meditationCategory.ref,
             type: 'meditation',
           }),
         ),
@@ -68,7 +60,8 @@ const modelToObject = {
         .orderBy('publishedAt', 'desc')
         .toRefArray().map(
           e => ({
-            ..._.omit(e, 'podcast'),
+            ...e,
+            podcast: podcast.ref,
             type: 'podcastEpisode',
           }),
         ),
@@ -76,7 +69,8 @@ const modelToObject = {
         .orderBy('number', 'asc')
         .toRefArray().map(
           s => ({
-            ..._.omit(s, 'podcast'),
+            ...s,
+            podcast: podcast.ref,
             type: 'podcastSeason',
           }),
         ),
@@ -84,14 +78,6 @@ const modelToObject = {
   }),
   PodcastEpisode: episode => ({
     ...episode.ref, // attributes
-    largeImageUrl: getWithFallback(
-      [
-        episode.ref,
-        _.get(episode.season, 'ref'),
-        _.get(episode.podcast, 'ref'),
-      ],
-      'largeImageUrl',
-    ),
     ...{
       // relationships
       podcast: _.get(episode, 'podcast.ref'),
@@ -111,7 +97,8 @@ const modelToObject = {
         .orderBy('publishedAt', 'desc')
         .toRefArray().map(
           e => ({
-            ..._.omit(e, 'season'),
+            ...e,
+            season: season.ref,
             type: 'podcastEpisode',
           }),
         ),
@@ -206,7 +193,7 @@ export const recentMediaItemsSelector = createSelector(
     const limit = 5;
     const podcastEpisodes = (
       session.PodcastEpisode.all()
-        .orderBy('publishedAt')
+        .orderBy('publishedAt', 'desc')
         .toModelArray()
         .map(modelToObject.PodcastEpisode)
         .map(obj => ({ ...obj, type: 'podcastEpisode' }))
@@ -214,7 +201,7 @@ export const recentMediaItemsSelector = createSelector(
     );
     const meditations = (
       session.Meditation.all()
-        .orderBy('publishedAt')
+        .orderBy('publishedAt', 'desc')
         .toModelArray()
         .map(modelToObject.Meditation)
         .map(obj => ({ ...obj, type: 'meditation' }))

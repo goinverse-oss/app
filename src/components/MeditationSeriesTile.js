@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import SeriesTile from './SeriesTile';
 import MeditationCategory from '../state/models/MeditationCategory';
+import { getImageSource } from '../state/ducks/orm/utils';
 
 const formatMeditationCount = (meditationCount) => {
   let meditationString = 'Meditations';
@@ -15,7 +16,7 @@ const formatMeditationCount = (meditationCount) => {
 
 const MeditationSeriesTile = ({ meditationCategory, onPress }) => (
   <SeriesTile
-    imageUrl={meditationCategory.imageUrl}
+    imageSource={getImageSource(meditationCategory)}
     title={meditationCategory.title}
     onPress={() => onPress(meditationCategory)}
     description={

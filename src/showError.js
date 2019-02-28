@@ -15,7 +15,7 @@ export default function showError(error) {
     'error',
     error.message || 'Error',
     [
-      `URL: ${error.config.url}`,
+      _.get(error, 'config.url', ''),
       _.get(error, 'request._response', ''),
     ].join('\n'),
   );

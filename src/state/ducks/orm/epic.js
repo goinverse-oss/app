@@ -50,7 +50,11 @@ function sendAPIRequest(client, { resource, id, collection }) {
     if (collection) {
       filter[`fields.${collection.field}.sys.id`] = collection.id;
     }
-    promise = client.getEntries({ content_type: contentType, ...filter });
+    promise = client.getEntries({
+      content_type: contentType,
+      limit: 1000,
+      ...filter,
+    });
   }
   return Observable.fromPromise(promise);
 }

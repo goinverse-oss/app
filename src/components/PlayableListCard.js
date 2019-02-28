@@ -22,6 +22,7 @@ import * as navActions from '../navigation/actions';
 
 import appPropTypes from '../propTypes';
 import * as actions from '../state/ducks/playback/actions';
+import { getImageSource } from '../state/ducks/orm/utils';
 
 const styles = StyleSheet.create({
   card: {
@@ -157,7 +158,7 @@ const PlayableListCard = ({
     <TouchableWithoutFeedback onPress={() => onPlay()}>
       <View style={styles.imageContainer} >
         <SquareImage
-          source={{ uri: item.imageUrl }}
+          source={getImageSource(item)}
           width={86}
           style={styles.image}
         />
@@ -244,9 +245,7 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
       navigation.navigate('Player');
     },
     openItem: () => navActions.openItem(navigation, item),
-    openPatreon: () => {
-      navigation.navigate('Patreon');
-    },
+    openPatreon: () => navigation.navigate('Patreon'),
   };
 }
 
