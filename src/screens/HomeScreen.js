@@ -18,6 +18,7 @@ import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import * as navActions from '../navigation/actions';
 import { recentMediaItemsSelector } from '../state/ducks/orm/selectors';
+import { getImageSource } from '../state/ducks/orm/utils';
 import { fetchData } from '../state/ducks/orm/actions';
 import { screenRelativeWidth, screenRelativeHeight } from '../components/utils';
 import { formatFooter } from '../components/PlayableListCard';
@@ -75,7 +76,7 @@ class HomeScreen extends React.Component {
               <View style={styles.itemContainer}>
                 <Image
                   style={styles.largeImage}
-                  source={{ uri: item.largeImageUrl }}
+                  source={getImageSource(item, true)}
                 />
                 <View style={styles.mediaTypeContainer}>
                   <TextPill style={styles.mediaType}>
@@ -117,7 +118,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch, { navigation }) {
   return {
     refresh: () => {
+      dispatch(fetchData({ resource: 'podcasts' }));
       dispatch(fetchData({ resource: 'podcastEpisodes' }));
+      dispatch(fetchData({ resource: 'meditationCategories' }));
       dispatch(fetchData({ resource: 'meditations' }));
     },
     openItem: item => navActions.openItem(navigation, item),

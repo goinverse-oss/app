@@ -6,6 +6,8 @@ import moment from 'moment';
 import SeriesTile from './SeriesTile';
 import Podcast from '../state/models/Podcast';
 
+import { getImageSource } from '../state/ducks/orm/utils';
+
 const formatEpisodeCount = (episodeCount) => {
   let episodeString = 'episodes';
   if (episodeCount === 1) {
@@ -28,7 +30,7 @@ const formatPodcastDescription = (episodeCount, latestEpisode) => {
 
 const PodcastSeriesTile = ({ podcast, onPress }) => (
   <SeriesTile
-    imageUrl={podcast.imageUrl}
+    imageSource={getImageSource(podcast)}
     title={podcast.title}
     onPress={() => onPress(podcast)}
     description={formatPodcastDescription(

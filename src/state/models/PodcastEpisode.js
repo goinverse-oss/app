@@ -21,6 +21,8 @@ PodcastEpisode.fields = {
   seasonEpisodeNumber: attr(),
   tags: many('Tag'),
   contributors: many('Contributor', 'podcastEpisodes'),
+  patronsOnly: attr(),
+  isFreePreview: attr(),
   createdAt: attr(),
   updatedAt: attr(),
 };
@@ -34,6 +36,8 @@ PodcastEpisode.propTypes = {
   duration: PropTypes.string,
   seasonEpisodeNumber: PropTypes.number,
   publishedAt: PropTypes.string,
+  patronsOnly: PropTypes.bool,
+  isFreePreview: PropTypes.bool,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
 };

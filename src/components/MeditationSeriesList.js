@@ -19,11 +19,12 @@ const MeditationSeriesList = ({ meditationCategories, onPressMeditationCategory 
     <ScrollView>
       <View style={styles.list}>
         {meditationCategories.map(meditationCategory => (
-          <MeditationSeriesTile
-            key={meditationCategory.title}
-            meditationCategory={meditationCategory}
-            onPress={() => onPressMeditationCategory(meditationCategory)}
-          />
+          meditationCategory.meditations.length > 0 &&
+            <MeditationSeriesTile
+              key={meditationCategory.title}
+              meditationCategory={meditationCategory}
+              onPress={() => onPressMeditationCategory(meditationCategory)}
+            />
         ))}
       </View>
     </ScrollView>

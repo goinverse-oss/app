@@ -6,6 +6,8 @@ import fonts from 'react-native-elements/src/config/fonts';
 import colors from '../styles/colors';
 import SquareImage from './SquareImage';
 
+import appPropTypes from '../propTypes';
+
 
 const styles = StyleSheet.create({
   // Tile wrapper base
@@ -70,13 +72,13 @@ const styles = StyleSheet.create({
 });
 
 const SeriesTile = ({
-  onPress, imageUrl, title, description,
+  onPress, imageSource, title, description,
 }) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <SquareImage
-          source={{ uri: imageUrl }}
+          source={imageSource}
           width={150}
         />
       </View>
@@ -89,13 +91,14 @@ const SeriesTile = ({
 );
 
 SeriesTile.propTypes = {
-  imageUrl: PropTypes.string.isRequired,
+  imageSource: appPropTypes.imageSource,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onPress: PropTypes.func,
 };
 
 SeriesTile.defaultProps = {
+  imageSource: undefined,
   onPress: () => {},
 };
 

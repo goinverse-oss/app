@@ -24,14 +24,16 @@ function contentType(type) {
 }
 
 function timestamps() {
+  const updatedAt = moment();
   return {
     createdAt: `${moment()}`,
-    updatedAt: `${moment()}`,
+    updatedAt: `${updatedAt}`,
+    publishedAt: `${updatedAt}`,
   };
 }
 
 function getExpectedTimestamps(item) {
-  return _.pick(item.sys, ['createdAt', 'updatedAt']);
+  return _.pick(item.sys, ['createdAt', 'updatedAt', 'publishedAt']);
 }
 
 function getExpectedRelationships(item) {
@@ -432,6 +434,8 @@ describe('orm reducer', () => {
             'description',
             'createdAt',
             'updatedAt',
+            'publishedAt',
+            'category',
           ]),
         }),
       ),
