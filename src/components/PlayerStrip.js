@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
 function getSeriesTitle(item) {
   const group = ['category', 'podcast', 'liturgy'].find(g => _.has(item, g));
-  return _.isUndefined(group) ? null : item[group].title;
+  return _.get(item, [group, 'title']);
 }
 
 const PlayerStrip = ({ item, navigation: { navigate } }) => (

@@ -88,3 +88,11 @@ export function getImageSource(item, large = false) {
   const collectionImageUrl = collection[imageKey] || collection[imageUrlKey];
   return collectionImageUrl ? imageSource(collectionImageUrl) : placeholderImage;
 }
+
+export function getMediaSource(item) {
+  const uri = item.media || item.mediaUrl;
+  if (uri) {
+    return { uri };
+  }
+  return undefined;
+}

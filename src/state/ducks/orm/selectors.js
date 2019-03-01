@@ -113,10 +113,10 @@ const modelToObject = {
 };
 
 const modelOrderArgs = {
-  Meditation: ['publishedAt', 'title'],
+  Meditation: [['publishedAt', 'title'], ['desc', 'asc']],
   MeditationCategory: ['title'],
   Podcast: ['title'],
-  PodcastEpisode: ['publishedAt', 'title'],
+  PodcastEpisode: [['publishedAt', 'title'], ['desc', 'asc']],
   PodcastSeason: ['title'],
   Contributor: ['name'],
   Tag: ['name'],
