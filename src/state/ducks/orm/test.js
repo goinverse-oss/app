@@ -23,12 +23,13 @@ function contentType(type) {
   };
 }
 
+const now = moment();
+
 function timestamps() {
-  const updatedAt = moment();
   return {
-    createdAt: `${moment()}`,
-    updatedAt: `${updatedAt}`,
-    publishedAt: `${updatedAt}`,
+    createdAt: `${now}`,
+    updatedAt: `${now}`,
+    publishedAt: `${now}`,
   };
 }
 
