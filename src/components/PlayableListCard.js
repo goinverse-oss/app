@@ -17,12 +17,14 @@ import pluralize from 'pluralize';
 import ListCard from './ListCard';
 import SquareImage from './SquareImage';
 import TextPill from './TextPill';
+import { renderDescription } from './ItemDescription';
 import { formatMinutesString } from './utils';
 import * as navActions from '../navigation/actions';
 
 import appPropTypes from '../propTypes';
 import * as actions from '../state/ducks/playback/actions';
 import { getImageSource } from '../state/ducks/orm/utils';
+
 
 const styles = StyleSheet.create({
   card: {
@@ -137,6 +139,10 @@ const PatronsOnlyIcon = () => (
   <FontAwesome name="lock" style={styles.patronsOnlyIcon} />
 );
 
+function stripTags(html) {
+  return html.replace(/<[^>]+>/g, '');
+}
+
 const PlayableListCard = ({
   style,
   formatDuration,
@@ -194,7 +200,7 @@ const PlayableListCard = ({
           ]}
           numberOfLines={2}
         >
-          {item.description}
+          {stripTags(renderDescription(item.description))}
         </Text>
       </View>
       {isSearchResult ? null : (
