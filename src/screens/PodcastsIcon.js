@@ -8,7 +8,8 @@ const PodcastsIcon = ({ tintColor }) => (
     name="rss"
     style={{
       color: tintColor,
-      fontSize: 32,
+      fontSize: 24,
+      height: 30,
     }}
   />
 );
