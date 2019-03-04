@@ -8,7 +8,11 @@ import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import Meditation from '../state/models/Meditation';
-import { meditationCategorySelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
+import {
+  meditationCategorySelector,
+  meditationsSelector,
+  apiLoadingSelector,
+} from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
 
 /**
@@ -56,7 +60,7 @@ function mapStateToProps(state, { navigation }) {
   const { state: { params: { category } } } = navigation;
   const meditations = (
     category.title === 'All Meditations'
-      ? category.meditations
+      ? meditationsSelector(state)
       : meditationCategorySelector(state, category.id).meditations
   );
   return {
