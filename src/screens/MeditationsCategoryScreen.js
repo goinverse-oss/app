@@ -17,13 +17,13 @@ import { fetchData } from '../state/ducks/orm';
 const MeditationsCategoryScreen = ({
   meditations,
   refreshing,
-  refreshCategory,
+  refreshMeditations,
 }) => (
   <ScrollView
     refreshControl={
       <RefreshControl
         refreshing={refreshing}
-        onRefresh={() => refreshCategory()}
+        onRefresh={() => refreshMeditations()}
       />
     }
   >
@@ -45,7 +45,7 @@ MeditationsCategoryScreen.propTypes = {
     PropTypes.shape(Meditation.propTypes).isRequired,
   ),
   refreshing: PropTypes.bool.isRequired,
-  refreshCategory: PropTypes.func.isRequired,
+  refreshMeditations: PropTypes.func.isRequired,
 };
 
 MeditationsCategoryScreen.defaultProps = {
@@ -69,22 +69,12 @@ function mapStateToProps(state, { navigation }) {
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  const { state: { params: { category } } } = navigation;
-
+function mapDispatchToProps(dispatch) {
   return {
-    refreshCategory: () => {
-      let collection;
-      if (category.title !== 'All Meditations') {
-        collection = {
-          field: 'category',
-          id: category.id,
-        };
-      }
+    refreshMeditations: () => {
       dispatch(
         fetchData({
           resource: 'meditations',
-          collection,
         }),
       );
     },

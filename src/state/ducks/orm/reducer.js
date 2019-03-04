@@ -52,9 +52,11 @@ export default combineReducers({
         let querySet = Model.all();
         const { collection } = action.payload;
         if (collection) {
-          // Filtered refresh fron a podcast/category screen
+          // Filtered refresh (not actually used at the moment; left over
+          // from a previous iteration)
           querySet = querySet.filter(
-            obj => _.get(obj, [collection.field, 'id']) === collection.id,
+            // in reducers, relations are _just_ the id of the related object
+            obj => obj[collection.field] === collection.id,
           );
         }
         querySet = querySet.filter(
