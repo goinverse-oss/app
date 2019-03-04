@@ -26,6 +26,17 @@ export const getDetails = createAction(types.GET_DETAILS);
 export const storeToken = createAction(types.STORE_TOKEN);
 
 /**
+ * Refresh the Patreon access token (after it has expired).
+ *
+ * @param payload {object}
+ *   originalError {Error} the error that prompted this refresh,
+ *     which will be stored and displayed if the refresh fails.
+ *   retryAction {Action} the action that prompted this refresh,
+ *     which will be re-dispatched after the token is refreshed.
+ */
+export const refreshAccessToken = createAction(types.REFRESH_ACCESS_TOKEN);
+
+/**
  * Save the Patreon pledge details.
  */
 export const storeDetails = createAction(types.STORE_DETAILS);

@@ -11,6 +11,8 @@ import * as selectors from './selectors';
 import { getModelName, getRelationships } from './utils';
 import epic from './epic';
 
+import * as patreonActions from '../patreon/actions';
+
 jest.mock('contentful/dist/contentful.browser');
 
 function contentType(type) {
@@ -511,6 +513,8 @@ describe('api epic', () => {
     const error = new Error('whoops');
 
     beforeEach(() => {
+      _.set(error, 'response.status', 500);
+
       // TODO: get rid of this hack as well.
       contentful.__setError(error);
     });
@@ -523,6 +527,35 @@ describe('api epic', () => {
 
       expect(errorAction.type).toEqual(types.RECEIVE_API_ERROR);
       expect(errorAction.payload.error).toBeInstanceOf(Error);
+    });
+  });
+
+  describe('when Patreon token is expired', () => {
+    const error = new Error('patreon token expired');
+
+    beforeEach(() => {
+      _.set(error, 'response.status', 401);
+
+      // XXX: hack.
+      contentful.__setError(error);
+    });
+
+    test('fetchData() leads to refreshAccessToken()', async () => {
+      const args = { resource: 'foo' };
+      const retryAction = actions.fetchData(args);
+      const errorAction = actions.receiveApiError({
+        resource: 'foo',
+        error,
+      });
+
+      const action$ = ActionsObservable.of(retryAction);
+      const refreshAction = await epic(action$, store).toPromise();
+
+      const expectedAction = patreonActions.refreshAccessToken({
+        retryAction,
+        errorAction,
+      });
+      expect(expectedAction).toEqual(refreshAction);
     });
   });
 });

@@ -273,10 +273,10 @@ const PatreonRefreshButton = ({
     />
 );
 
-PatreonConnectButton.propTypes = {
+PatreonRefreshButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
-  connect: PropTypes.func.isRequired,
-  disconnect: PropTypes.func.isRequired,
+  getDetails: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
 };
 
 const PatreonScreen = props => (
