@@ -51,9 +51,8 @@ function getPatreonToken() {
   const csrfToken = generateCsrfToken();
   const redirectUrl = AuthSession.getRedirectUrl();
   const authUrl = (
-    'https://www.patreon.com/oauth2/authorize' +
+    `${config.apiBaseUrl}/patreon/authorize` +
     '?response_type=code' +
-    `&client_id=${config.patreonClientId}` +
     `&redirect_uri=${redirectUrl}` +
     `&state=${csrfToken}`
   );
