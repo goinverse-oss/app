@@ -17,13 +17,13 @@ import { fetchData } from '../state/ducks/orm';
 const PodcastScreen = ({
   episodes,
   refreshing,
-  refreshCategory,
+  refreshPodcastEpisodes,
 }) => (
   <ScrollView
     refreshControl={
       <RefreshControl
         refreshing={refreshing}
-        onRefresh={() => refreshCategory()}
+        onRefresh={() => refreshPodcastEpisodes()}
       />
     }
   >
@@ -45,7 +45,7 @@ PodcastScreen.propTypes = {
     PropTypes.shape(PodcastEpisode.propTypes).isRequired,
   ),
   refreshing: PropTypes.bool.isRequired,
-  refreshCategory: PropTypes.func.isRequired,
+  refreshPodcastEpisodes: PropTypes.func.isRequired,
 };
 
 PodcastScreen.defaultProps = {
@@ -59,23 +59,17 @@ function mapStateToProps(state, { navigation }) {
     episodes,
     isPatron: patreonSelectors.isPatron(state),
     refreshing: (
-      apiLoadingSelector(state, 'podcast')
+      apiLoadingSelector(state, 'podcastEpisodes')
     ),
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  const { state: { params: { podcast } } } = navigation;
-
+function mapDispatchToProps(dispatch) {
   return {
-    refreshCategory: () => {
+    refreshPodcastEpisodes: () => {
       dispatch(
         fetchData({
           resource: 'podcastEpisodes',
-          collection: {
-            field: 'podcast',
-            id: podcast.id,
-          },
         }),
       );
     },

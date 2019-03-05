@@ -8,7 +8,11 @@ import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import Meditation from '../state/models/Meditation';
-import { meditationCategorySelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
+import {
+  meditationCategorySelector,
+  meditationsSelector,
+  apiLoadingSelector,
+} from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
 
 /**
@@ -17,13 +21,13 @@ import { fetchData } from '../state/ducks/orm';
 const MeditationsCategoryScreen = ({
   meditations,
   refreshing,
-  refreshCategory,
+  refreshMeditations,
 }) => (
   <ScrollView
     refreshControl={
       <RefreshControl
         refreshing={refreshing}
-        onRefresh={() => refreshCategory()}
+        onRefresh={() => refreshMeditations()}
       />
     }
   >
@@ -45,7 +49,7 @@ MeditationsCategoryScreen.propTypes = {
     PropTypes.shape(Meditation.propTypes).isRequired,
   ),
   refreshing: PropTypes.bool.isRequired,
-  refreshCategory: PropTypes.func.isRequired,
+  refreshMeditations: PropTypes.func.isRequired,
 };
 
 MeditationsCategoryScreen.defaultProps = {
@@ -56,7 +60,7 @@ function mapStateToProps(state, { navigation }) {
   const { state: { params: { category } } } = navigation;
   const meditations = (
     category.title === 'All Meditations'
-      ? category.meditations
+      ? meditationsSelector(state)
       : meditationCategorySelector(state, category.id).meditations
   );
   return {
@@ -69,22 +73,12 @@ function mapStateToProps(state, { navigation }) {
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  const { state: { params: { category } } } = navigation;
-
+function mapDispatchToProps(dispatch) {
   return {
-    refreshCategory: () => {
-      let collection;
-      if (category.title !== 'All Meditations') {
-        collection = {
-          field: 'category',
-          id: category.id,
-        };
-      }
+    refreshMeditations: () => {
       dispatch(
         fetchData({
           resource: 'meditations',
-          collection,
         }),
       );
     },
