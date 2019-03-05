@@ -3,7 +3,7 @@
 yarn global add exp
 
 fail=
-for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH PATREON_CLIENT_ID ; do
+for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH ; do
   eval value=\$$name
   if [[ -z ${value} ]]; then
     echo >&2 "Missing required env variable: ${name}"
@@ -16,9 +16,7 @@ if [[ -n $fail ]]; then
 fi
 
 api_url="https://staging.api.theliturgists.com"
-json -I -f config.json \
-  -e "this.apiBaseUrl='${api_url}'" \
-  -e "this.patreonClientId='${PATREON_CLIENT_ID}'" \
+json -I -f config.json -e "this.apiBaseUrl='${api_url}'"
 
 exp login -u "${EXPO_USERNAME}" -p "${EXPO_PASSWORD}"
 
