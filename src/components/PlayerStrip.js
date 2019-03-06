@@ -14,54 +14,66 @@ import { getImageSource } from '../state/ducks/orm/utils';
 const styles = StyleSheet.create({
   container: {
     padding: 7,
+    paddingLeft: 18,
+    paddingRight: 7,
+    height: 50,
     flexDirection: 'row',
     backgroundColor: '#fff',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  imageContaner: {
-    width: 10,
-    height: 10,
+  imageContainer: {
+    width: 30,
+    height: 30,
+    alignSelf: 'center',
   },
   item: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   itemDescription: {
     flex: 1,
     marginVertical: 10,
     marginLeft: 5,
+    textAlign: 'center',
   },
   title: {
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
   },
   seriesTitle: {
-    marginTop: 5,
+    marginTop: 1,
     fontSize: 10,
+    textAlign: 'center',
   },
   controls: {
     marginLeft: 'auto',
   },
   jumpButtonIconStyle: {
-
+    display: 'none',
   },
   jumpButtonStyle: {
-
+    height: 0,
+    width: 0,
   },
   playButtonIconStyle: {
-    fontSize: 36,
+    marginTop: -3,
+    fontSize: 16,
+    color: '#7B7B7B',
   },
   pauseButtonIconStyle: {
-    marginTop: 4,
-    fontSize: 36,
+    marginTop: 2,
+    fontSize: 16,
+    color: '#7B7B7B',
   },
   playbackButtonStyle: {
-    width: 50,
-    height: 50,
+    width: 25,
+    height: 25,
     borderRadius: 25,
-    margin: 0,
+    borderColor: '#7B7B7B',
+    borderWidth: 1,
   },
 });
 
