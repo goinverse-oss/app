@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Platform, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -21,6 +21,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'space-between',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.11,
+        shadowOffset: { width: 0, height: -3 },
+        shadowRadius: 21,
+      },
+      android: {
+        elevation: 100,
+        zIndex: 100,
+      },
+    }),
   },
   imageContainer: {
     width: 30,
@@ -35,16 +47,16 @@ const styles = StyleSheet.create({
   itemDescription: {
     flex: 1,
     marginVertical: 10,
-    marginLeft: 5,
     textAlign: 'center',
   },
   title: {
     fontSize: 14,
     fontWeight: '600',
     textAlign: 'center',
+    marginTop: -2,
   },
   seriesTitle: {
-    marginTop: 1,
+    marginTop: 2,
     fontSize: 10,
     textAlign: 'center',
   },
