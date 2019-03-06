@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ScrollView, RefreshControl } from 'react-native';
+import { View, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
@@ -14,6 +14,12 @@ import {
   apiLoadingSelector,
 } from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 7,
+  },
+});
 
 /**
  * List of meditations in category, sorted by publish date.
@@ -31,16 +37,18 @@ const MeditationsCategoryScreen = ({
       />
     }
   >
-    {
-      meditations.map(
-        meditation => (
-          <MeditationListCard
-            key={meditation.id}
-            meditation={meditation}
-          />
-        ),
-      )
-    }
+    <View style={styles.container}>
+      {
+        meditations.map(
+          meditation => (
+            <MeditationListCard
+              key={meditation.id}
+              meditation={meditation}
+            />
+          ),
+        )
+      }
+    </View>
   </ScrollView>
 );
 
