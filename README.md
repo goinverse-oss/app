@@ -6,7 +6,7 @@ This is the Liturgists App for both iOS and Android built with React Native.
 
 ### macOS
 
-1. [Install XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+1. [Install XCode](https://itunes.apple.com/us/app/xcode/id497799835)
 1. Install Homebrew
 1. `brew install node`
 1. `brew install yarn`
