@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ScrollView, RefreshControl } from 'react-native';
+import { View, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
@@ -10,6 +10,12 @@ import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import PodcastEpisode from '../state/models/PodcastEpisode';
 import { podcastSelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 7,
+  },
+});
 
 /**
  * List of episodes in podcast, sorted by publish date.
@@ -27,16 +33,18 @@ const PodcastScreen = ({
       />
     }
   >
-    {
-      episodes.map(
-        episode => (
-          <PodcastEpisodeListCard
-            key={episode.id}
-            episode={episode}
-          />
-        ),
-      )
-    }
+    <View style={styles.container}>
+      {
+        episodes.map(
+          episode => (
+            <PodcastEpisodeListCard
+              key={episode.id}
+              episode={episode}
+            />
+          ),
+        )
+      }
+    </View>
   </ScrollView>
 );
 
