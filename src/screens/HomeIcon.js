@@ -7,7 +7,8 @@ const HomeIcon = ({ tintColor }) => (
     name="md-home"
     style={{
       color: tintColor,
-      fontSize: 32,
+      fontSize: 28,
+      height: 32,
     }}
   />
 );

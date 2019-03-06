@@ -9,6 +9,7 @@ const MeditationsIcon = ({ tintColor }) => (
     style={{
       color: tintColor,
       fontSize: 24,
+      height: 32,
     }}
   />
 );

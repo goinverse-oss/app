@@ -80,6 +80,7 @@ const Tabs = createBottomTabNavigator({
     style: {
       borderTopWidth: 0,
       padding: 5,
+      height: 55,
 
       ...Platform.select({
         ios: {

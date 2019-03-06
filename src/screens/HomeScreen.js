@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
   },
   largeImage: {
     width: screenRelativeWidth(0.85),
-    height: screenRelativeHeight(0.62),
+    flex: 1,
     borderRadius: 4,
-    marginBottom: screenRelativeHeight(0.03),
+    marginBottom: 20,
+    resizeMode: 'cover',
   },
   mediaTypeContainer: {
     flexDirection: 'row',
