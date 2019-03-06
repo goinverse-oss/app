@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 import { ViewPropTypes, View, Text, StyleSheet } from 'react-native';
-import { normalize } from 'react-native-elements';
 
 import PlayButton from './PlayButton';
 import SquareImage from './SquareImage';
@@ -18,19 +17,20 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '30%',
-    marginRight: 20,
+    marginRight: 28,
   },
   metadataContainer: {
-    justifyContent: 'space-around',
     flex: 1,
   },
   title: {
-    fontSize: normalize(15),
+    fontSize: 18,
     fontWeight: '600',
   },
   times: {
-    fontSize: normalize(12),
+    fontSize: 12,
     color: '#797979',
+    marginTop: 5,
+    flex: 2,
   },
 });
 
@@ -67,7 +67,7 @@ const PlayableItemHeader = ({
       />
     </View>
     <View style={styles.metadataContainer}>
-      <Text style={styles.title} numberOfLines={1}>{title}</Text>
+      <Text style={styles.title} numberOfLines={2}>{title}</Text>
       <Text style={styles.times}>
         {formatFooter({
           duration, publishedAt, formatDuration, formatPublishedAt,
