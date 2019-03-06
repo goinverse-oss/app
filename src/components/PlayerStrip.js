@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Platform, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -14,54 +14,79 @@ import { getImageSource } from '../state/ducks/orm/utils';
 const styles = StyleSheet.create({
   container: {
     padding: 7,
+    paddingLeft: 18,
+    paddingRight: 7,
+    height: 50,
     flexDirection: 'row',
     backgroundColor: '#fff',
     justifyContent: 'space-between',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.11,
+        shadowOffset: { width: 0, height: -3 },
+        shadowRadius: 21,
+      },
+      android: {
+        elevation: 100,
+        zIndex: 100,
+      },
+    }),
   },
-  imageContaner: {
-    width: 10,
-    height: 10,
+  imageContainer: {
+    width: 30,
+    height: 30,
+    alignSelf: 'center',
   },
   item: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   itemDescription: {
     flex: 1,
     marginVertical: 10,
-    marginLeft: 5,
+    textAlign: 'center',
+    marginLeft: 10,
   },
   title: {
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
+    marginTop: -2,
   },
   seriesTitle: {
-    marginTop: 5,
+    marginTop: 2,
     fontSize: 10,
+    textAlign: 'center',
   },
   controls: {
     marginLeft: 'auto',
   },
   jumpButtonIconStyle: {
-
+    display: 'none',
   },
   jumpButtonStyle: {
-
+    height: 0,
+    width: 0,
   },
   playButtonIconStyle: {
-    fontSize: 36,
+    marginTop: -3,
+    fontSize: 16,
+    color: '#7B7B7B',
   },
   pauseButtonIconStyle: {
-    marginTop: 4,
-    fontSize: 36,
+    marginTop: 2,
+    fontSize: 16,
+    color: '#7B7B7B',
   },
   playbackButtonStyle: {
-    width: 50,
-    height: 50,
+    width: 25,
+    height: 25,
     borderRadius: 25,
-    margin: 0,
+    borderColor: '#7B7B7B',
+    borderWidth: 1,
   },
 });
 
