@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import { fk, many, attr, Model } from 'redux-orm';
 import propTypesMixin from '@theliturgists/redux-orm-proptypes';
 
@@ -13,10 +12,12 @@ Meditation.fields = {
   title: attr(),
   description: attr(),
   imageUrl: attr(),
+  largeImageUrl: attr(),
   mediaUrl: attr(),
   duration: attr(),
   publishedAt: attr(),
-  status: attr(),
+  patronsOnly: attr(),
+  isFreePreview: attr(),
   category: fk('MeditationCategory', 'meditations'),
   tags: many('Tag'),
   contributors: many('Contributor', 'meditations'),
@@ -28,12 +29,14 @@ Meditation.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   imageUrl: PropTypes.string,
+  largeImageUrl: PropTypes.string,
   mediaUrl: PropTypes.string,
-  duration: momentPropTypes.momentDurationObj,
-  publishedAt: momentPropTypes.momentObj,
-  status: PropTypes.oneOf(['published', 'draft']),
-  createdAt: momentPropTypes.momentObj,
-  updatedAt: momentPropTypes.momentObj,
+  duration: PropTypes.string,
+  publishedAt: PropTypes.string,
+  patronsOnly: PropTypes.bool,
+  isFreePreview: PropTypes.bool,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
 };
 
 export default Meditation;

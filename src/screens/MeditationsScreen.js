@@ -8,6 +8,7 @@ import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import { fetchData } from '../state/ducks/orm';
+import MeditationCategory from '../state/models/MeditationCategory';
 import {
   meditationsSelector,
   meditationCategoriesSelector,
@@ -24,11 +25,10 @@ class MeditationsScreen extends Component {
   }
 
   render() {
-    const { meditations, categories, navigation } = this.props;
+    const { categories, navigation } = this.props;
     const meditationCategories = [
       {
         title: 'All Meditations',
-        meditations,
         imageUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
       },
       ...categories,
@@ -56,11 +56,8 @@ class MeditationsScreen extends Component {
 }
 
 MeditationsScreen.propTypes = {
-  meditations: PropTypes.arrayOf(
-    PropTypes.shape({}),
-  ),
   categories: PropTypes.arrayOf(
-    PropTypes.shape({}),
+    PropTypes.shape(MeditationCategory.propTypes),
   ),
   fetchMeditations: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
@@ -68,7 +65,6 @@ MeditationsScreen.propTypes = {
 };
 
 MeditationsScreen.defaultProps = {
-  meditations: [],
   categories: [],
 };
 

@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment-timezone';
+import { Image } from 'react-native';
 
 import Meditation from './state/models/Meditation';
 import PodcastEpisode from './state/models/PodcastEpisode';
 
-const imageSource = PropTypes.shape({
-  uri: PropTypes.string.isRequired,
-});
+const imageSource = Image.propTypes.source;
 
 export default {
   imageSource,

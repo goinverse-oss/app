@@ -1,28 +1,28 @@
 import _ from 'lodash';
-import moment from 'moment';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 
 import orm from '../../orm';
 
 import { FETCH_DATA, RECEIVE_DATA, RECEIVE_API_ERROR } from './types';
-import { getModelName, getContentType, getFields, getRelationships } from './utils';
+import { getModelName, getContentType, getFields, getRelationships, getAssets } from './utils';
 
 const defaultORMState = orm.session().state;
 const defaultAPIState = {};
 
-function momentize(modelName, entry) {
-  const momentized = {
-    createdAt: moment(entry.sys.createdAt),
-    updatedAt: moment(entry.sys.updatedAt),
+function getTimestamps(modelName, entry) {
+  const timestamps = {
+    createdAt: entry.sys.createdAt,
+    updatedAt: entry.sys.updatedAt,
+
+    // allow overriding with explicit field, but fall back
+    // to updatedAt, which is the actual last publish timestamp
+    publishedAt: _.get(entry, 'fields.publishedAt', entry.sys.updatedAt),
   };
-  if (_.has(entry, 'fields.publishedAt')) {
-    momentized.publishedAt = moment(entry.fields.publishedAt);
-  }
   if (_.has(entry, 'fields.duration')) {
-    momentized.duration = moment.duration(entry.fields.duration);
+    timestamps.duration = entry.fields.duration;
   }
-  return momentized;
+  return timestamps;
 }
 
 export default combineReducers({
@@ -36,33 +36,59 @@ export default combineReducers({
         const relJson = {
           id: relatedEntry.sys.id,
           ...getFields(relatedEntry),
-          ...momentize(relModelName, relatedEntry),
+          ...getAssets(relatedEntry),
+          ...getTimestamps(relModelName, relatedEntry),
         };
         return RelModel.upsert(relJson);
       }
 
       const data = action.payload.json;
+      if (_.isArray(data.items)) {
+        // Replace any existing instances of this model
+        // with what we're receiving from the server
+        const newIds = new Set(_.map(data.items, 'sys.id'));
+        const modelName = getModelName(action.payload.resource);
+        const Model = session[modelName];
+        let querySet = Model.all();
+        const { collection } = action.payload;
+        if (collection) {
+          // Filtered refresh (not actually used at the moment; left over
+          // from a previous iteration)
+          querySet = querySet.filter(
+            // in reducers, relations are _just_ the id of the related object
+            obj => obj[collection.field] === collection.id,
+          );
+        }
+        querySet = querySet.filter(
+          obj => !newIds.has(obj.id),
+        );
+        querySet.delete();
+      }
+
       (_.isArray(data.items) ? data.items : [data]).forEach((item) => {
         const modelName = getModelName(getContentType(item));
         const Model = session[modelName];
         const instanceJson = {
           id: item.sys.id,
           ...getFields(item),
-          ...momentize(modelName, item),
+          ...getAssets(item),
+          ...getTimestamps(modelName, item),
         };
         const instance = Model.upsert(instanceJson);
         _.each(getRelationships(item), (relatedEntry, relName) => {
           let newRel;
-          if (_.isArray(relatedEntry)) {
-            // Redux-ORM handles the merge of new and old arrays
-            newRel = relatedEntry.map(saveRelationship);
-          } else {
-            newRel = saveRelationship(relatedEntry);
-          }
+          if (relatedEntry) {
+            if (_.isArray(relatedEntry)) {
+              // Redux-ORM handles the merge of new and old arrays
+              newRel = relatedEntry.map(saveRelationship);
+            } else {
+              newRel = saveRelationship(relatedEntry);
+            }
 
-          instance.update({
-            [relName]: newRel,
-          });
+            instance.update({
+              [relName]: newRel,
+            });
+          }
         });
       });
       return session.state;

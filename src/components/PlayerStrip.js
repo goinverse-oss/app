@@ -9,6 +9,7 @@ import SquareImage from '../components/SquareImage';
 import Controls from '../screens/PlayerScreen/Controls';
 import * as actions from '../state/ducks/playback/actions';
 import * as selectors from '../state/ducks/playback/selectors';
+import { getImageSource } from '../state/ducks/orm/utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
 
 function getSeriesTitle(item) {
   const group = ['category', 'podcast', 'liturgy'].find(g => _.has(item, g));
-  return _.isUndefined(group) ? null : item[group].title;
+  return _.get(item, [group, 'title']);
 }
 
 const PlayerStrip = ({ item, navigation: { navigate } }) => (
@@ -78,7 +79,7 @@ const PlayerStrip = ({ item, navigation: { navigate } }) => (
         <View style={styles.item}>
           <View style={styles.imageContainer}>
             <SquareImage
-              source={{ uri: item.imageUrl }}
+              source={getImageSource(item)}
               width={10}
             />
           </View>

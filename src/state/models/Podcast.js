@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import { many, attr, Model } from 'redux-orm';
 import propTypesMixin from '@theliturgists/redux-orm-proptypes';
 
@@ -13,6 +12,7 @@ Podcast.fields = {
   title: attr(),
   description: attr(),
   imageUrl: attr(),
+  largeImageUrl: attr(),
   tags: many('Tag'),
   contributors: many('Contributor'),
   // episodes: created implicitly by fk() on PodcastEpisode
@@ -24,8 +24,9 @@ Podcast.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   imageUrl: PropTypes.string,
-  createdAt: momentPropTypes.momentObj,
-  updatedAt: momentPropTypes.momentObj,
+  largeImageUrl: PropTypes.string,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
 };
 
 export default Podcast;

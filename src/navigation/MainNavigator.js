@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Animated, StyleSheet, Dimensions, Platform, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
-import { connect } from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
 import { GestureHandler, LinearGradient } from 'expo';
 
@@ -21,8 +19,19 @@ import SingleMeditationScreen from '../screens/SingleMeditationScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 import PodcastsIcon from '../screens/PodcastsIcon';
+import HomeIcon from '../screens/HomeIcon';
+
+import { setDropdown } from '../showError';
 
 const { DrawerLayout } = GestureHandler;
+
+const HomeNavigator = createStackNavigator({
+  Home: HomeScreen,
+}, {
+  navigationOptions: {
+    tabBarIcon: HomeIcon,
+  },
+});
 
 const PodcastsNavigator = createStackNavigator({
   Podcasts: PodcastsScreen,
@@ -60,7 +69,7 @@ const TabBar = props => (
 );
 
 const Tabs = createBottomTabNavigator({
-  Home: { screen: HomeScreen },
+  Home: { screen: HomeNavigator },
   Podcasts: { screen: PodcastsNavigator },
   Meditations: { screen: MeditationsNavigator },
 }, {
@@ -71,6 +80,7 @@ const Tabs = createBottomTabNavigator({
     style: {
       borderTopWidth: 0,
       padding: 5,
+      height: 55,
 
       ...Platform.select({
         ios: {
@@ -135,7 +145,6 @@ class MainNavigator extends React.Component {
     this.state = {
       drawer: null,
     };
-    this.dropDown = null;
   }
 
   getAnimatedStyles(progressValue) {
@@ -157,18 +166,6 @@ class MainNavigator extends React.Component {
   }
 
   render() {
-    const { apiError } = this.props;
-    if (apiError && this.dropDown) {
-      this.dropDown.alertWithType(
-        'error',
-        apiError.message,
-        [
-          `URL: ${apiError.config.url}`,
-          _.get(apiError, 'request._response', ''),
-        ].join('\n'),
-      );
-    }
-
     return (
       <LinearGradient style={styles.gradient} colors={['#FFFFFF00', '#F95A570C']}>
         <DrawerLayout
@@ -196,8 +193,10 @@ class MainNavigator extends React.Component {
                   navigation={this.props.navigation}
                 />
                 <DropdownAlert
-                  ref={(ref) => { this.dropDown = ref; }}
+                  ref={(ref) => { setDropdown(ref); }}
                   messageNumOfLines={10}
+                  closeInterval={null}
+                  showCancel
                 />
               </Animated.View>
             )
@@ -211,17 +210,11 @@ class MainNavigator extends React.Component {
 MainNavigator.propTypes = {
   // react-navigation internal navigation state object
   navigation: PropTypes.shape({}).isRequired,
-  apiError: PropTypes.instanceOf(Error),
+  apiError: PropTypes.shape({}),
 };
 
 MainNavigator.defaultProps = {
   apiError: null,
 };
 
-function mapStateToProps(state) {
-  return {
-    apiError: _.get(state, 'orm.api.error'),
-  };
-}
-
-export default connect(mapStateToProps)(MainNavigator);
+export default MainNavigator;

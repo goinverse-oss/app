@@ -23,15 +23,18 @@ function contentType(type) {
   };
 }
 
+const now = moment();
+
 function timestamps() {
   return {
-    createdAt: moment(),
-    updatedAt: moment(),
+    createdAt: `${now}`,
+    updatedAt: `${now}`,
+    publishedAt: `${now}`,
   };
 }
 
 function getExpectedTimestamps(item) {
-  return _.pick(item.sys, ['createdAt', 'updatedAt']);
+  return _.pick(item.sys, ['createdAt', 'updatedAt', 'publishedAt']);
 }
 
 function getExpectedRelationships(item) {
@@ -301,7 +304,7 @@ describe('orm reducer', () => {
   let store;
 
   beforeEach(() => {
-    store = configureStore({ noEpic: true });
+    ({ store } = configureStore({ noEpic: true }));
   });
 
   cases.forEach(({ description, apiJson, relationships }) => {
@@ -432,6 +435,8 @@ describe('orm reducer', () => {
             'description',
             'createdAt',
             'updatedAt',
+            'publishedAt',
+            'category',
           ]),
         }),
       ),
@@ -468,8 +473,10 @@ describe('api epic', () => {
   // These tests are very simple; one action leads to a single other.
   // Other tests that result in multiple actions from the epic
   // will have to be a little more complicated.
+  let store;
 
   describe('when API call succeeds', () => {
+    ({ store } = configureStore({ noEpic: true }));
     const payload = {
       items: {
         fields: {
@@ -490,7 +497,7 @@ describe('api epic', () => {
       const args = { resource: 'foo' };
 
       const action$ = ActionsObservable.of(actions.fetchData(args));
-      const responseAction = await epic(action$).toPromise();
+      const responseAction = await epic(action$, store).toPromise();
 
       const expectedAction = actions.receiveData({
         ...args,
@@ -512,7 +519,7 @@ describe('api epic', () => {
       const args = { resource: 'foo' };
 
       const action$ = ActionsObservable.of(actions.fetchData(args));
-      const errorAction = await epic(action$).toPromise();
+      const errorAction = await epic(action$, store).toPromise();
 
       expect(errorAction.type).toEqual(types.RECEIVE_API_ERROR);
       expect(errorAction.payload.error).toBeInstanceOf(Error);

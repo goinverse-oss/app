@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 
 import SeriesTile from './SeriesTile';
 import Podcast from '../state/models/Podcast';
+
+import { getImageSource } from '../state/ducks/orm/utils';
 
 const formatEpisodeCount = (episodeCount) => {
   let episodeString = 'episodes';
@@ -13,24 +16,27 @@ const formatEpisodeCount = (episodeCount) => {
   return `${episodeCount} ${episodeString}`;
 };
 
-const formatPodcastDescription = (episodeCount, lastUpdated) => {
+const formatPodcastDescription = (episodeCount, latestEpisode) => {
   const separator = ' • ';
   const strings = [];
   if (!_.isNull(episodeCount)) {
     strings.push(formatEpisodeCount(episodeCount));
   }
-  if (!_.isNull(lastUpdated)) {
-    strings.push(lastUpdated.fromNow());
+  if (!_.isNull(latestEpisode)) {
+    strings.push(moment(latestEpisode.publishedAt).fromNow());
   }
   return strings.join(separator);
 };
 
 const PodcastSeriesTile = ({ podcast, onPress }) => (
   <SeriesTile
-    imageUrl={podcast.imageUrl}
+    imageSource={getImageSource(podcast)}
     title={podcast.title}
     onPress={() => onPress(podcast)}
-    description={formatPodcastDescription(podcast.episodes.length, podcast.updatedAt)}
+    description={formatPodcastDescription(
+      podcast.episodes.length,
+      _.get(podcast.episodes, 0, null),
+    )}
   />
 );
 

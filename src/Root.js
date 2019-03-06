@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
 import { useScreens } from 'react-native-screens';
 
@@ -21,14 +22,18 @@ class App extends React.Component {
   }
 }
 
+const { store, persistor } = configureStore();
+
 /**
  * App entry point. Wraps everything else so that
  * child components have access to the navigation
  * functions and the redux store.
  */
 const Root = () => (
-  <Provider store={configureStore()}>
-    <App />
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );
 

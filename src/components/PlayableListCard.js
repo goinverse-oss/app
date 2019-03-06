@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import {
   View,
   ViewPropTypes,
@@ -10,16 +11,20 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import Icon from '@expo/vector-icons/Foundation';
+import { Foundation, FontAwesome } from '@expo/vector-icons';
 import pluralize from 'pluralize';
 
 import ListCard from './ListCard';
 import SquareImage from './SquareImage';
 import TextPill from './TextPill';
+import { renderDescription } from './ItemDescription';
 import { formatMinutesString } from './utils';
+import * as navActions from '../navigation/actions';
 
 import appPropTypes from '../propTypes';
 import * as actions from '../state/ducks/playback/actions';
+import { getImageSource } from '../state/ducks/orm/utils';
+
 
 const styles = StyleSheet.create({
   card: {
@@ -58,8 +63,21 @@ const styles = StyleSheet.create({
   textContainer: {
   },
   title: {
+    flex: 1,
     fontSize: 15,
     fontWeight: '600',
+    flexWrap: 'wrap',
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  previewLabel: {
+    marginLeft: 7,
+  },
+  patronsOnlyIcon: {
+    fontSize: 12,
+    marginLeft: 7,
   },
   description: {
     fontSize: 12,
@@ -86,16 +104,43 @@ const styles = StyleSheet.create({
   },
 });
 
-function formatFooter({ duration, publishedAt, formatDuration }) {
+export function formatFooter({
+  duration,
+  publishedAt,
+  formatDuration: fmt,
+}) {
   const separator = ' • ';
   const strings = [];
+  const formatDuration = fmt || formatMinutesString;
   if (duration) {
     strings.push(formatDuration(duration));
   }
   if (!_.isUndefined(publishedAt)) {
-    strings.push(publishedAt.fromNow());
+    strings.push(moment(publishedAt).fromNow());
   }
   return strings.join(separator);
+}
+
+function accessStyle({ patronsOnly, isFreePreview }) {
+  return (!patronsOnly || isFreePreview) ? {} : {
+    opacity: 0.5,
+  };
+}
+
+const PlayIcon = () => (
+  <Foundation name="play" style={styles.playIcon} />
+);
+
+const PreviewLabel = () => (
+  <TextPill style={styles.previewLabel}>Free Preview</TextPill>
+);
+
+const PatronsOnlyIcon = () => (
+  <FontAwesome name="lock" style={styles.patronsOnlyIcon} />
+);
+
+function stripTags(html) {
+  return html.replace(/<[^>]+>/g, '');
 }
 
 const PlayableListCard = ({
@@ -104,18 +149,26 @@ const PlayableListCard = ({
   isSearchResult,
   navigation,
   item,
-  play,
+  canAccess,
+  onPlay,
   ...props
 }) => (
-  <ListCard style={[styles.card, style]} {...props}>
-    <TouchableWithoutFeedback onPress={() => play()}>
+  <ListCard
+    style={[
+      styles.card,
+      style,
+      accessStyle(item),
+    ]}
+    {...props}
+  >
+    <TouchableWithoutFeedback onPress={() => onPlay()}>
       <View style={styles.imageContainer} >
         <SquareImage
-          source={{ uri: item.imageUrl }}
+          source={getImageSource(item)}
           width={86}
           style={styles.image}
         />
-        <Icon name="play" style={styles.playIcon} />
+        <PlayIcon />
         <View style={styles.playCircle} />
       </View>
     </TouchableWithoutFeedback>
@@ -129,7 +182,17 @@ const PlayableListCard = ({
         </View>
       ) : null}
       <View style={styles.textContainer}>
-        <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
+          {
+            item.patronsOnly
+              && (
+                item.isFreePreview
+                  ? <PreviewLabel />
+                  : <PatronsOnlyIcon />
+              )
+          }
+        </View>
         <Text
           style={[
             styles.description,
@@ -137,7 +200,7 @@ const PlayableListCard = ({
           ]}
           numberOfLines={2}
         >
-          {item.description}
+          {stripTags(renderDescription(item.description))}
         </Text>
       </View>
       {isSearchResult ? null : (
@@ -157,7 +220,9 @@ PlayableListCard.propTypes = {
   item: appPropTypes.mediaItem.isRequired,
   formatDuration: PropTypes.func,
   isSearchResult: PropTypes.bool,
-  play: PropTypes.func.isRequired,
+  canAccess: PropTypes.bool.isRequired,
+  onPlay: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 PlayableListCard.defaultProps = {
@@ -166,9 +231,18 @@ PlayableListCard.defaultProps = {
   isSearchResult: false,
 };
 
+function mapStateToProps(state, { item }) {
+  return {
+    canAccess: (
+      !_.get(item, 'patronsOnly', false)
+        || _.get(item, 'isFreePreview', false)
+    ),
+  };
+}
+
 function mapDispatchToProps(dispatch, { navigation, item }) {
   return {
-    play: () => {
+    openPlayer: () => {
       dispatch(
         actions.setPlaying(
           _.pick(item, ['type', 'id']),
@@ -176,9 +250,22 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
       );
       navigation.navigate('Player');
     },
+    openItem: () => navActions.openItem(navigation, item),
+    openPatreon: () => navigation.navigate('Patreon'),
+  };
+}
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  const { canAccess } = stateProps;
+  const { openPlayer, openItem, openPatreon } = dispatchProps;
+  return {
+    ...ownProps,
+    ...stateProps,
+    onPlay: canAccess ? openPlayer : openPatreon,
+    onPress: canAccess ? openItem : openPatreon,
   };
 }
 
 export default withNavigation(
-  connect(null, mapDispatchToProps)(PlayableListCard),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps)(PlayableListCard),
 );

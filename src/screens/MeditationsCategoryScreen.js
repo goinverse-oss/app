@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
-import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import Meditation from '../state/models/Meditation';
-import { meditationCategorySelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
+import {
+  meditationCategorySelector,
+  meditationsSelector,
+  apiLoadingSelector,
+} from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
 
 /**
@@ -18,14 +21,13 @@ import { fetchData } from '../state/ducks/orm';
 const MeditationsCategoryScreen = ({
   meditations,
   refreshing,
-  refreshCategory,
-  navigation,
+  refreshMeditations,
 }) => (
   <ScrollView
     refreshControl={
       <RefreshControl
         refreshing={refreshing}
-        onRefresh={() => refreshCategory()}
+        onRefresh={() => refreshMeditations()}
       />
     }
   >
@@ -35,10 +37,6 @@ const MeditationsCategoryScreen = ({
           <MeditationListCard
             key={meditation.id}
             meditation={meditation}
-            onPress={() => navigation.navigate({
-              routeName: 'SingleMeditation',
-              params: { meditation },
-            })}
           />
         ),
       )
@@ -51,8 +49,7 @@ MeditationsCategoryScreen.propTypes = {
     PropTypes.shape(Meditation.propTypes).isRequired,
   ),
   refreshing: PropTypes.bool.isRequired,
-  refreshCategory: PropTypes.func.isRequired,
-  navigation: appPropTypes.navigation.isRequired,
+  refreshMeditations: PropTypes.func.isRequired,
 };
 
 MeditationsCategoryScreen.defaultProps = {
@@ -63,7 +60,7 @@ function mapStateToProps(state, { navigation }) {
   const { state: { params: { category } } } = navigation;
   const meditations = (
     category.title === 'All Meditations'
-      ? category.meditations
+      ? meditationsSelector(state)
       : meditationCategorySelector(state, category.id).meditations
   );
   return {
@@ -76,23 +73,14 @@ function mapStateToProps(state, { navigation }) {
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  const { state: { params: { category } } } = navigation;
-
+function mapDispatchToProps(dispatch) {
   return {
-    refreshCategory: () => {
-      let action;
-      if (category.title === 'All Meditations') {
-        action = fetchData({
+    refreshMeditations: () => {
+      dispatch(
+        fetchData({
           resource: 'meditations',
-        });
-      } else {
-        action = fetchData({
-          id: category.id,
-          // TODO: ensure related meditations are also fetched/updated?
-        });
-      }
-      dispatch(action);
+        }),
+      );
     },
   };
 }

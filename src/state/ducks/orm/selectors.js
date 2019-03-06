@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { createSelector } from 'redux-orm';
 
 import orm from '../../orm';
@@ -43,7 +44,8 @@ const modelToObject = {
         .orderBy('publishedAt', 'desc')
         .toRefArray().map(
           m => ({
-            ..._.omit(m, 'category'),
+            ...m,
+            category: meditationCategory.ref,
             type: 'meditation',
           }),
         ),
@@ -58,7 +60,8 @@ const modelToObject = {
         .orderBy('publishedAt', 'desc')
         .toRefArray().map(
           e => ({
-            ..._.omit(e, 'podcast'),
+            ...e,
+            podcast: podcast.ref,
             type: 'podcastEpisode',
           }),
         ),
@@ -66,7 +69,8 @@ const modelToObject = {
         .orderBy('number', 'asc')
         .toRefArray().map(
           s => ({
-            ..._.omit(s, 'podcast'),
+            ...s,
+            podcast: podcast.ref,
             type: 'podcastSeason',
           }),
         ),
@@ -93,7 +97,8 @@ const modelToObject = {
         .orderBy('publishedAt', 'desc')
         .toRefArray().map(
           e => ({
-            ..._.omit(e, 'season'),
+            ...e,
+            season: season.ref,
             type: 'podcastEpisode',
           }),
         ),
@@ -108,10 +113,10 @@ const modelToObject = {
 };
 
 const modelOrderArgs = {
-  Meditation: ['publishedAt', 'desc'],
+  Meditation: [['publishedAt', 'title'], ['desc', 'asc']],
   MeditationCategory: ['title'],
   Podcast: ['title'],
-  PodcastEpisode: ['title'],
+  PodcastEpisode: [['publishedAt', 'title'], ['desc', 'asc']],
   PodcastSeason: ['title'],
   Contributor: ['name'],
   Tag: ['name'],
@@ -180,6 +185,34 @@ export function collectionSelector(state, type) {
 export function instanceSelector(state, type, id) {
   return instanceSelectors[type](state, id);
 }
+
+export const recentMediaItemsSelector = createSelector(
+  orm,
+  dbStateSelector,
+  (session) => {
+    const limit = 5;
+    const podcastEpisodes = (
+      session.PodcastEpisode.all()
+        .orderBy('publishedAt', 'desc')
+        .toModelArray()
+        .map(modelToObject.PodcastEpisode)
+        .map(obj => ({ ...obj, type: 'podcastEpisode' }))
+        .slice(0, limit)
+    );
+    const meditations = (
+      session.Meditation.all()
+        .orderBy('publishedAt', 'desc')
+        .toModelArray()
+        .map(modelToObject.Meditation)
+        .map(obj => ({ ...obj, type: 'meditation' }))
+        .slice(0, limit)
+    );
+    const items = podcastEpisodes.concat(meditations);
+    return items.sort((a, b) => (
+      moment(b.publishedAt) - moment(a.publishedAt)
+    )).slice(0, limit);
+  },
+);
 
 export const apiLoadingSelector = (state, resource) => _.get(state, ['orm.api.loading', resource], false);
 export const apiErrorSelector = state => _.get(state, 'orm.api.error');

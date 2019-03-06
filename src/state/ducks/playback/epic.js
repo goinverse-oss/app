@@ -8,11 +8,18 @@ import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK } from './types';
 import { setStatus, setSound, setPendingSeek } from './actions';
 import * as selectors from './selectors';
 import { instanceSelector } from '../orm/selectors';
+import { getMediaSource } from '../orm/utils';
+import showError from '../../../showError';
 
-function startPlayback(mediaUrl) {
+function startPlayback(mediaSource) {
+  if (!mediaSource) {
+    showError('No audio URL for this item');
+    return Observable.never();
+  }
+
   return Observable.create((subscriber) => {
     Audio.Sound.createAsync(
-      { uri: mediaUrl },
+      mediaSource,
       { shouldPlay: true },
       status => subscriber.next(
         setStatus(status),
@@ -38,13 +45,14 @@ const startPlayingEpic = (action$, store) =>
     mergeMap((action) => {
       const state = store.getState();
       const { type, id } = action.payload;
-      const { mediaUrl } = instanceSelector(state, type, id);
+      const item = instanceSelector(state, type, id);
+      const mediaSource = getMediaSource(item);
       const prevSound = selectors.getSound(state);
       if (prevSound) {
         prevSound.stopAsync();
       }
 
-      return startPlayback(mediaUrl);
+      return startPlayback(mediaSource);
     }),
   );
 

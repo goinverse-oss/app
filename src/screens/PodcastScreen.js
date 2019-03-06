@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
-import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import PodcastEpisodeListCard from '../components/PodcastEpisodeListCard';
@@ -18,14 +17,13 @@ import { fetchData } from '../state/ducks/orm';
 const PodcastScreen = ({
   episodes,
   refreshing,
-  refreshCategory,
-  navigation,
+  refreshPodcastEpisodes,
 }) => (
   <ScrollView
     refreshControl={
       <RefreshControl
         refreshing={refreshing}
-        onRefresh={() => refreshCategory()}
+        onRefresh={() => refreshPodcastEpisodes()}
       />
     }
   >
@@ -35,10 +33,6 @@ const PodcastScreen = ({
           <PodcastEpisodeListCard
             key={episode.id}
             episode={episode}
-            onPress={() => navigation.navigate({
-              routeName: 'SinglePodcastEpisode',
-              params: { episode },
-            })}
           />
         ),
       )
@@ -51,8 +45,7 @@ PodcastScreen.propTypes = {
     PropTypes.shape(PodcastEpisode.propTypes).isRequired,
   ),
   refreshing: PropTypes.bool.isRequired,
-  refreshCategory: PropTypes.func.isRequired,
-  navigation: appPropTypes.navigation.isRequired,
+  refreshPodcastEpisodes: PropTypes.func.isRequired,
 };
 
 PodcastScreen.defaultProps = {
@@ -66,19 +59,17 @@ function mapStateToProps(state, { navigation }) {
     episodes,
     isPatron: patreonSelectors.isPatron(state),
     refreshing: (
-      apiLoadingSelector(state, 'podcast')
+      apiLoadingSelector(state, 'podcastEpisodes')
     ),
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  const { state: { params: { podcast } } } = navigation;
-
+function mapDispatchToProps(dispatch) {
   return {
-    refreshCategory: () => {
+    refreshPodcastEpisodes: () => {
       dispatch(
         fetchData({
-          id: podcast.id,
+          resource: 'podcastEpisodes',
         }),
       );
     },

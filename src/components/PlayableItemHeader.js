@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import { ViewPropTypes, View, Text, StyleSheet } from 'react-native';
 import { normalize } from 'react-native-elements';
-import momentPropTypes from 'react-moment-proptypes';
 
 import PlayButton from './PlayButton';
 import SquareImage from './SquareImage';
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 function formatFooter({
-  duration, publishedAt, formatDuration, formatpublishedAt,
+  duration, publishedAt, formatDuration, formatPublishedAt,
 }) {
   const separator = ' • ';
   const strings = [];
@@ -43,7 +43,7 @@ function formatFooter({
     strings.push(formatDuration(duration));
   }
   if (!_.isNull(publishedAt)) {
-    strings.push(formatpublishedAt(publishedAt));
+    strings.push(formatPublishedAt(publishedAt));
   }
   return strings.join(separator);
 }
@@ -56,7 +56,7 @@ const PlayableItemHeader = ({
   publishedAt,
   onPlay,
   formatDuration,
-  formatpublishedAt,
+  formatPublishedAt,
   ...props
 }) => (
   <View style={[styles.container, style]} {...props}>
@@ -70,7 +70,7 @@ const PlayableItemHeader = ({
       <Text style={styles.title} numberOfLines={1}>{title}</Text>
       <Text style={styles.times}>
         {formatFooter({
-          duration, publishedAt, formatDuration, formatpublishedAt,
+          duration, publishedAt, formatDuration, formatPublishedAt,
         })}
       </Text>
       <PlayButton onPress={onPlay} text="Listen" />
@@ -82,11 +82,11 @@ PlayableItemHeader.propTypes = {
   coverImageSource: AppPropTypes.imageSource.isRequired,
   style: ViewPropTypes.style,
   title: PropTypes.string.isRequired,
-  duration: momentPropTypes.momentDurationObj,
-  publishedAt: momentPropTypes.momentObj,
+  duration: PropTypes.string,
+  publishedAt: PropTypes.string,
   onPlay: PropTypes.func,
   formatDuration: PropTypes.func,
-  formatpublishedAt: PropTypes.func,
+  formatPublishedAt: PropTypes.func,
 };
 
 PlayableItemHeader.defaultProps = {
@@ -95,7 +95,7 @@ PlayableItemHeader.defaultProps = {
   publishedAt: null,
   onPlay: () => {},
   formatDuration: formatMinutesString,
-  formatpublishedAt: m => `${m.fromNow()}`,
+  formatPublishedAt: publishedAt => `${moment(publishedAt).fromNow()}`,
 };
 
 export default PlayableItemHeader;
