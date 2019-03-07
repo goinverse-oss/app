@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   },
   pauseButtonIconStyle: {
     marginTop: 2,
+    marginLeft: 1,
     fontSize: 16,
     color: '#7B7B7B',
   },
