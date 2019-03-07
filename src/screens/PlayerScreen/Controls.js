@@ -24,33 +24,38 @@ const styles = StyleSheet.create({
   playbackButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 80,
-    height: 80,
+    width: 64,
+    height: 64,
     borderRadius: 40,
-    borderColor: '#000',
-    borderWidth: 2,
-    margin: 10,
+    borderColor: '#7B7B7B',
+    borderWidth: 4,
+    marginLeft: 30,
+    marginRight: 30,
   },
   playIcon: {
     paddingTop: 4,
-    paddingLeft: 2,
-    fontSize: 48,
+    paddingLeft: 5,
+    fontSize: 36,
+    color: '#7B7B7B',
   },
   pauseIcon: {
     fontSize: 48,
+    color: '#7B7B7B',
   },
   jumpIconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   jumpIcon: {
-    fontSize: 56,
+    fontSize: 44,
+    color: '#7B7B7B',
   },
   jumpIconText: {
     position: 'absolute',
-    fontSize: 12,
-    bottom: 17,
+    fontSize: 10,
+    bottom: 13,
     backgroundColor: '#fff',
+    color: '#7B7B7B',
   },
 });
 
