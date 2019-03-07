@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { WebBrowser } from 'expo';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
 import patreonButton from '../../assets/patreon_button_blank.png';
@@ -19,7 +18,6 @@ import patreonBackground from '../../assets/patreon_bg.png';
 
 import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
-import * as constants from '../state/ducks/patreon/constants';
 import * as ormActions from '../state/ducks/orm/actions';
 import appStyles from '../styles';
 
@@ -259,29 +257,18 @@ PatreonConnectButton.propTypes = {
   fetchData: PropTypes.func.isRequired,
 };
 
-const PatreonManageButton = ({
+const PatreonRefreshButton = ({
   isConnected,
-  pledge,
   getDetails,
   fetchData,
 }) => (
   isConnected &&
     <PatreonButton
-      title="Manage Your Pledge"
+      title="Refresh Patron Status"
       onPress={() => {
-        const pledgeSlug = _.get(
-          pledge,
-          'reward.campaign.pledge_url',
-          constants.PLEDGE_SLUG,
-        );
-        const pledgeUrl =
-          `${constants.BASE_URL}/${pledgeSlug}`;
-        WebBrowser.openAuthSessionAsync(pledgeUrl)
-          .then(() => {
-            getDetails();
-            fetchData({ resource: 'podcastEpisode' });
-            fetchData({ resource: 'meditation' });
-          });
+        getDetails();
+        fetchData({ resource: 'podcastEpisode' });
+        fetchData({ resource: 'meditation' });
       }}
     />
 );
@@ -297,7 +284,7 @@ const PatreonScreen = props => (
     <StatusBar barStyle="light-content" />
     <ImageBackground style={styles.bg} source={patreonBackground}>
       <PatreonStatus {...props} />
-      <PatreonManageButton {...props} />
+      <PatreonRefreshButton {...props} />
       <PatreonConnectButton {...props} />
     </ImageBackground>
   </View>
