@@ -58,6 +58,7 @@ buck-out/
 
 # Visual Studio Code Files
 .vscode
+*.code-workspace
 
 # Local configuration
 config.json
