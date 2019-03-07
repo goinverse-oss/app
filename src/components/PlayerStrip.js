@@ -14,8 +14,7 @@ import { getImageSource } from '../state/ducks/orm/utils';
 const styles = StyleSheet.create({
   container: {
     padding: 7,
-    paddingLeft: 18,
-    paddingRight: 7,
+    paddingHorizontal: 18,
     height: 50,
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 10,
     textAlign: 'center',
-    marginLeft: 10,
+    marginHorizontal: 10,
   },
   title: {
     fontSize: 14,
@@ -79,17 +78,18 @@ const styles = StyleSheet.create({
   },
   pauseButtonIconStyle: {
     marginTop: 2,
+    marginLeft: 1,
     fontSize: 16,
     color: '#7B7B7B',
   },
   playbackButtonStyle: {
-    width: 25,
-    height: 25,
-    borderRadius: 25,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
     borderColor: '#7B7B7B',
     borderWidth: 1,
     marginLeft: 0,
-    marginRight: 10,
+    marginRight: 0,
   },
 });
 
@@ -115,15 +115,16 @@ const PlayerStrip = ({ item, navigation: { navigate } }) => (
             <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
             <Text style={styles.seriesTitle} numberOfLines={1}>{getSeriesTitle(item)}</Text>
           </View>
+          {/* XXX: this can be simplified to just use the PlaybackButton instead. */}
+          <Controls
+            style={styles.controls}
+            jumpButtonStyle={styles.jumpButtonStyle}
+            jumpButtonIconStyle={styles.jumpButtonIconStyle}
+            playbackButtonStyle={styles.playbackButtonStyle}
+            playButtonIconStyle={styles.playButtonIconStyle}
+            pauseButtonIconStyle={styles.pauseButtonIconStyle}
+          />
         </View>
-        <Controls
-          style={styles.controls}
-          jumpButtonStyle={styles.jumpButtonStyle}
-          jumpButtonIconStyle={styles.jumpButtonIconStyle}
-          playbackButtonStyle={styles.playbackButtonStyle}
-          playButtonIconStyle={styles.playButtonIconStyle}
-          pauseButtonIconStyle={styles.pauseButtonIconStyle}
-        />
       </View>
     </TouchableWithoutFeedback>
   ) : null
