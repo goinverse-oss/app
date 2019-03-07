@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   pauseIcon: {
     fontSize: 48,
     color: '#7B7B7B',
+    marginTop: 4,
   },
   jumpIconContainer: {
     justifyContent: 'center',
