@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
     width: 0,
   },
   playButtonIconStyle: {
-    marginTop: -3,
+    marginTop: -2,
+    marginLeft: -2,
     fontSize: 16,
     color: '#7B7B7B',
   },
