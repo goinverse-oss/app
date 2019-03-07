@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
 import SquareImage from '../../components/SquareImage';
-import { screenRelativeWidth } from '../../components/utils';
+import { screenRelativeWidth, screenRelativeHeight } from '../../components/utils';
 import appPropTypes from '../../propTypes';
 import * as actions from '../../state/ducks/playback/actions';
 import * as selectors from '../../state/ducks/playback/selectors';
@@ -37,29 +37,36 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
-    flex: 1,
-    marginTop: 30,
+    height: screenRelativeHeight(0.5),
     borderRadius: 4,
+    flexDirection: 'column',
+    position: 'absolute',
+    top: screenRelativeHeight(0.05),
+  },
+  coverArtImage: {
+    maxHeight: screenRelativeWidth(1) - 90,
   },
   mediaContainer: {
-    width: '100%',
-    height: '40%',
-    marginTop: 30,
+    height: 194,
+    width: '95%',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: screenRelativeHeight(0.09),
   },
   title: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: '600',
   },
   seriesTitle: {
     marginTop: 5,
-    fontSize: 13,
+    fontSize: 16,
+    color: '#7B7B7B',
   },
   timeline: {
     marginTop: 10,
   },
   controls: {
-    marginTop: 20,
+    marginTop: 30,
   },
 });
 
@@ -87,7 +94,8 @@ class PlayerScreen extends React.Component {
             item ? (
               <SquareImage
                 source={getImageSource(item)}
-                width={screenRelativeWidth(1)}
+                width={0.8}
+                style={styles.coverArtImage}
               />
             ) : null
           }

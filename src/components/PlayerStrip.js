@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
     width: 0,
   },
   playButtonIconStyle: {
-    marginTop: -3,
+    marginTop: -2,
+    marginLeft: -2,
     fontSize: 16,
     color: '#7B7B7B',
   },
@@ -87,6 +88,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderColor: '#7B7B7B',
     borderWidth: 1,
+    marginLeft: 0,
+    marginRight: 10,
   },
 });
 
