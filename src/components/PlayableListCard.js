@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     fontSize: 16,
     color: '#fff',
+    left: 40,
+    top: 35,
   },
   playCircle: {
     position: 'absolute',
