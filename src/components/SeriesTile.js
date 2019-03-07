@@ -7,7 +7,11 @@ import colors from '../styles/colors';
 import SquareImage from './SquareImage';
 
 import appPropTypes from '../propTypes';
+import { screenRelativeWidth } from './utils';
 
+
+// using the width of the container, adjusted for padding, margin, and border radius
+const imageWidth = screenRelativeWidth(0.46) - 9 - 6 - 4;
 
 const styles = StyleSheet.create({
   // Tile wrapper base
@@ -20,7 +24,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     marginVertical: 6,
     padding: 9,
-    width: '46%',
+    width: screenRelativeWidth(0.46),
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
@@ -40,7 +44,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     width: null,
-    height: 150,
+    height: imageWidth,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -79,7 +83,7 @@ const SeriesTile = ({
       <View style={styles.imageContainer}>
         <SquareImage
           source={imageSource}
-          width={150}
+          width={imageWidth}
         />
       </View>
       <View style={styles.textContainer}>
