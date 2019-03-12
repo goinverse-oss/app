@@ -66,8 +66,23 @@ class HomeScreen extends React.Component {
 
   render() {
     const { items, onItemPress } = this.props;
+
+    // Use explicit snap offsets to center each image in the middle of the list,
+    // but still allow snapping to the start and end of the list.
+    const snapWidth = styles.largeImage.width + 20;
+    const snapOffsets = items.slice(1, -1).map(
+      (item, i) => (
+        ((i + 1) * snapWidth) - 7.5
+      ),
+    );
     return (
-      <ScrollView horizontal contentContainerStyle={styles.container}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToOffsets={snapOffsets}
+        decelerationRate="fast"
+        contentContainerStyle={styles.container}
+      >
         {
           items.map(item => (
             <TouchableWithoutFeedback
