@@ -1,4 +1,4 @@
-import { combineEpics } from 'redux-observable';
+import { ofType, combineEpics } from 'redux-observable';
 
 // redux-observable pulls in a minimal subset of RxJS
 // to keep the bundle size small, so here we explicitly
@@ -8,11 +8,11 @@ import { combineEpics } from 'redux-observable';
 // another operator.
 // https://redux-observable.js.org/docs/Troubleshooting.html
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/fromPromise';
+import {
+  map,
+  mergeMap,
+  catchError,
+} from 'rxjs/operators';
 
 import _ from 'lodash';
 import { createClient } from 'contentful/dist/contentful.browser';
@@ -21,6 +21,7 @@ import parse from 'url-parse';
 
 import { FETCH_DATA } from './types';
 import { receiveData, receiveApiError } from './actions';
+import * as patreonActions from '../patreon/actions';
 import * as patreonSelectors from '../patreon/selectors';
 import config from '../../../../config.json';
 import showError from '../../../showError';
@@ -40,7 +41,7 @@ import showError from '../../../showError';
  *   id: ID of collection resource
  * @return {Observable} emitting an axios response object
  */
-function sendAPIRequest(client, { resource, id, collection }) {
+function sendApiRequest(client, { resource, id, collection }) {
   let promise;
   if (id) {
     promise = client.getEntry(id);
@@ -50,6 +51,7 @@ function sendAPIRequest(client, { resource, id, collection }) {
     if (collection) {
       filter[`fields.${collection.field}.sys.id`] = collection.id;
     }
+
     promise = client.getEntries({
       content_type: contentType,
       limit: 1000,
@@ -64,6 +66,29 @@ function patreonAuthHeader(state) {
   return token ? {
     'x-theliturgists-patreon-token': token,
   } : {};
+}
+
+function catchApiError(retryAction) {
+  return catchError((error) => {
+    const errorAction = receiveApiError({
+      ..._.pick(retryAction.payload, ['resource', 'id', 'collection']),
+      error,
+    });
+
+    if (retryAction && error.response.status === 401) {
+      // Patreon token has expired; try (once) to refresh it,
+      // then retry the related action
+      return Observable.of(
+        patreonActions.refreshAccessToken({
+          retryAction,
+          errorAction,
+        }),
+      );
+    }
+
+    showError(error);
+    return Observable.of(errorAction);
+  });
 }
 
 /**
@@ -90,23 +115,21 @@ const fetchDataEpic = (action$, store) => {
     })
   );
 
-  return action$.ofType(FETCH_DATA)
-    .mergeMap(action => (
-      sendAPIRequest(client(store.getState()), action.payload)
-        .map(json => receiveData({
+  return action$.pipe(
+    ofType(FETCH_DATA),
+    mergeMap(action => (
+      sendApiRequest(
+        client(store.getState()),
+        action.payload,
+      ).pipe(
+        map(json => receiveData({
           ..._.pick(action.payload, ['resource', 'id', 'collection']),
           json,
-        }))
-        .catch((error) => {
-          showError(error);
-          return Observable.of(
-            receiveApiError({
-              ..._.pick(action.payload, ['resource', 'id', 'collection']),
-              error,
-            }),
-          );
-        })
-    ));
+        })),
+        catchApiError(action),
+      )
+    )),
+  );
 };
 
 export default combineEpics(fetchDataEpic);

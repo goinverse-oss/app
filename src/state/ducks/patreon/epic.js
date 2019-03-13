@@ -1,12 +1,5 @@
 import { ofType, combineEpics } from 'redux-observable';
 
-// redux-observable pulls in a minimal subset of RxJS
-// to keep the bundle size small, so here we explicitly
-// pull in just the things we need, including operators
-// on Observable. It's a little weird, but you get used
-// to the error messages that tell you you need to import
-// another operator.
-// https://redux-observable.js.org/docs/Troubleshooting.html
 import { Observable } from 'rxjs/Observable';
 import {
   switchMap,
@@ -23,7 +16,7 @@ import qs from 'qs';
 
 import config from '../../../../config.json';
 
-import { CONNECT, GET_DETAILS } from './types';
+import { CONNECT, GET_DETAILS, REFRESH_ACCESS_TOKEN } from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
 import * as ormActions from '../orm/actions';
@@ -71,7 +64,7 @@ function getPatreonToken() {
               grant_type: 'authorization_code',
               redirect_uri: redirectUrl,
             }),
-          ).then(response => response.data.access_token);
+          ).then(response => response.data);
         }
 
         if (result.type === 'error') {
@@ -106,10 +99,34 @@ function getPatreonDetails(token) {
   );
 }
 
-function catchApiError() {
+function refreshPatreonAccessToken(refreshToken) {
+  return Observable.fromPromise(
+    axios.post(
+      `${config.apiBaseUrl}/patreon/validate`,
+      qs.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }),
+    )
+      .then(response => response.data),
+  );
+}
+
+function catchApiError(retryAction) {
   return catchError((e) => {
+    const errorAction = actions.storeError(e);
+
+    if (retryAction && e.response.status === 401) {
+      return Observable.of(
+        actions.refreshAccessToken({
+          retryAction,
+          errorAction,
+        }),
+      );
+    }
+
     showError(e);
-    return Observable.of(actions.storeError(e));
+    return Observable.of(errorAction);
   });
 }
 
@@ -127,8 +144,8 @@ const connectPatreonEpic = action$ =>
     ofType(CONNECT),
     switchMap(() => (
       getPatreonToken().pipe(
-        flatMap(token => ([
-          actions.storeToken(token),
+        flatMap(tokenData => ([
+          actions.storeToken(tokenData),
           actions.getDetails(),
           ormActions.fetchData({ resource: 'podcastEpisode' }),
           ormActions.fetchData({ resource: 'meditation' }),
@@ -141,16 +158,43 @@ const connectPatreonEpic = action$ =>
 const getPatreonDetailsEpic = (action$, store) =>
   action$.pipe(
     ofType(GET_DETAILS),
-    switchMap(() => {
+    switchMap((action) => {
       const token = selectors.token(store.getState());
       if (token) {
         return getPatreonDetails(token).pipe(
           map(details => actions.storeDetails(details)),
-          catchApiError(),
+          catchApiError(action),
         );
       }
       return Observable.never();
     }),
   );
 
-export default combineEpics(connectPatreonEpic, getPatreonDetailsEpic);
+const refreshPatreonTokenEpic = (action$, store) =>
+  action$.pipe(
+    ofType(REFRESH_ACCESS_TOKEN),
+    switchMap((action) => {
+      const { retryAction, errorAction } = action.payload;
+      const refreshToken = selectors.refreshToken(store.getState());
+      if (refreshToken) {
+        return refreshPatreonAccessToken(refreshToken).pipe(
+          flatMap(tokenData => ([
+            actions.storeToken(tokenData),
+            ...(retryAction ? [retryAction] : []),
+          ])),
+          catchError(() => {
+            // TODO: report refresh error to Sentry? This is weird Patreon behavior.
+            showError(errorAction.payload);
+            return Observable.of(errorAction);
+          }),
+        );
+      }
+      return Observable.of(errorAction);
+    }),
+  );
+
+export default combineEpics(
+  connectPatreonEpic,
+  getPatreonDetailsEpic,
+  refreshPatreonTokenEpic,
+);

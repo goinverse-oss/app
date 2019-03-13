@@ -2,11 +2,15 @@ import _ from 'lodash';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 
 export function token(state) {
-  return state.auth.patreonToken;
+  return _.get(state.auth.patreonToken, 'access_token');
+}
+
+export function refreshToken(state) {
+  return _.get(state.auth.patreonToken, 'refresh_token');
 }
 
 export function isConnected(state) {
-  return token(state) !== null;
+  return !!token(state);
 }
 
 export function getPledge(state) {
