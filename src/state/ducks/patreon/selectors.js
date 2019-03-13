@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 
+import { CAMPAIGN_URL } from './constants';
+
 export function token(state) {
   return _.get(state.auth.patreonToken, 'access_token');
 }
@@ -24,7 +26,7 @@ export function getPledge(state) {
   const userId = state.patreon.details.data.id;
   const user = data.find('user', userId);
   const pledges = user.pledges.filter(
-    p => p.reward.campaign.url === 'https://www.patreon.com/bdhtest',
+    p => p.reward.campaign.url === CAMPAIGN_URL,
   );
   return pledges.length > 0 ? pledges[0] : null;
 }
