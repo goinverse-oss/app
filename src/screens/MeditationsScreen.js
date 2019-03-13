@@ -29,7 +29,7 @@ class MeditationsScreen extends Component {
     const meditationCategories = [
       {
         title: 'All Meditations',
-        imageUrl: 'https://static1.squarespace.com/static/52fd5845e4b074ebcf586e7b/t/5a6b935be4966b484105c9d3/1516999519606/Centering+Prayer+Cover+Art.jpeg?format=500w',
+        imageUrl: 'https://images.ctfassets.net/80rg4ikyq3mh/4fw1cG2nsTZ9Upl3jpWDVH/3c71279543e32f52240f9b55d76d9313/meditation-2240777_1280.jpg',
       },
       ...categories,
     ];
