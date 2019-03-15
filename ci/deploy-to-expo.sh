@@ -3,7 +3,7 @@
 yarn global add exp
 
 fail=
-for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH ; do
+for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH SENTRY_AUTH_TOKEN SENTRY_DSN ; do
   eval value=\$$name
   if [[ -z ${value} ]]; then
     echo >&2 "Missing required env variable: ${name}"
@@ -16,7 +16,9 @@ if [[ -n $fail ]]; then
 fi
 
 api_url="https://staging.api.theliturgists.com"
-json -I -f config.json -e "this.apiBaseUrl='${api_url}'"
+json -I -f config.json \
+  -e "this.apiBaseUrl='${api_url}'" \
+  -e "this.sentryPublicDSN='${SENTRY_DSN}'"
 
 exp login -u "${EXPO_USERNAME}" -p "${EXPO_PASSWORD}"
 
