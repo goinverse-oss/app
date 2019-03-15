@@ -55,6 +55,7 @@
     "redux-persist-expo-securestore": "^0.1.1",
     "remarkable": "^1.7.1",
     "rxjs": "^5.5.6",
+    "sentry-expo": "^1.11.2",
     "url-parse": "^1.4.4"
   },
   "devDependencies": {

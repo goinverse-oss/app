@@ -5,7 +5,10 @@
     "slug": "app",
     "privacy": "unlisted",
     "sdkVersion": "31.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "0.0.1",
     "orientation": "portrait",
     "entryPoint": "index.js",
@@ -18,6 +21,17 @@
     "scheme": "theliturgists.app",
     "ios": {
       "supportsTablet": true
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "the-liturgists",
+            "project": "app"
+          }
+        }
+      ]
     }
   }
 }

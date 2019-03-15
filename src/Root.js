@@ -1,4 +1,5 @@
 import React from 'react';
+import Sentry from 'sentry-expo';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
@@ -7,6 +8,15 @@ import { useScreens } from 'react-native-screens';
 import MainNavigator from './navigation/MainNavigator';
 import { setTopLevelNavigator } from './navigation/NavigationService';
 import configureStore from './state/store';
+
+import config from '../config.json';
+
+
+if (config.sentryPublicDSN) {
+  // Remove this once Sentry is correctly setup.
+  Sentry.enableInExpoDevelopment = true;
+  Sentry.config(config.sentryPublicDSN).install();
+}
 
 useScreens();
 
