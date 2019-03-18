@@ -6,4 +6,5 @@ export default (
     .configure() // controls connection & communication settings
     .useReactNative() // add all built-in react native plugins
     .use(reactotronRedux())
+    .connect()
 );

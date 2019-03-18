@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { persistReducer, persistStore, createMigrate } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
@@ -48,8 +48,13 @@ export default function configureStore({ noEpic = false } = {}) {
   const epicMiddleware = createEpicMiddleware(epic);
   const enhancer = applyMiddleware(epicMiddleware);
 
-  const store = Reactotron.createStore(persistedReducer, enhancer);
-  Reactotron.connect();
+  const store = createStore(
+    persistedReducer,
+    compose(
+      enhancer,
+      Reactotron.createEnhancer(),
+    ),
+  );
 
   // https://facebook.github.io/react-native/blog/2016/03/24/introducing-hot-reloading.html
   if (module.hot) {
