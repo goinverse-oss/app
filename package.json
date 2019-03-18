@@ -85,8 +85,8 @@
     "react-native-debugger-open": "^0.3.15",
     "react-native-storybook-loader": "^1.7.0",
     "react-test-renderer": "16.0.0-beta.5",
-    "reactotron-react-native": "^2.1.0",
-    "reactotron-redux": "^2.1.0",
+    "reactotron-react-native": "^3",
+    "reactotron-redux": "^3",
     "source-map-support": "^0.5.6"
   },
   "jest": {
