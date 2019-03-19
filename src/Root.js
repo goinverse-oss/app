@@ -8,8 +8,12 @@ import { useScreens } from 'react-native-screens';
 import MainNavigator from './navigation/MainNavigator';
 import { setTopLevelNavigator } from './navigation/NavigationService';
 import configureStore from './state/store';
+import Reactotron from '../reactotron-config';
 
 import config from '../config.json';
+
+// eslint-disable-next-line
+console.tron = Reactotron;
 
 
 if (config.sentryPublicDSN) {

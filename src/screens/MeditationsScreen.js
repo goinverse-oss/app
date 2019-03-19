@@ -7,11 +7,13 @@ import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
 import * as patreonSelectors from '../state/ducks/patreon/selectors';
-import { fetchData } from '../state/ducks/orm';
+import { fetchData, fetchAsset } from '../state/ducks/orm';
+import { ALL_MEDITATIONS_COVER_ART } from '../state/ducks/orm/actions';
 import MeditationCategory from '../state/models/MeditationCategory';
 import {
   meditationsSelector,
   meditationCategoriesSelector,
+  assetUrlSelector,
   apiLoadingSelector,
 } from '../state/ducks/orm/selectors';
 
@@ -20,16 +22,17 @@ import {
  */
 class MeditationsScreen extends Component {
   componentDidMount() {
-    const { fetchMeditations } = this.props;
+    const { fetchMeditations, fetchAllMeditationsCoverArt } = this.props;
     fetchMeditations();
+    fetchAllMeditationsCoverArt();
   }
 
   render() {
-    const { categories, navigation } = this.props;
+    const { categories, navigation, allMeditationsCoverArtUrl } = this.props;
     const meditationCategories = [
       {
         title: 'All Meditations',
-        imageUrl: 'https://images.ctfassets.net/80rg4ikyq3mh/4fw1cG2nsTZ9Upl3jpWDVH/3c71279543e32f52240f9b55d76d9313/meditation-2240777_1280.jpg',
+        imageUrl: allMeditationsCoverArtUrl,
       },
       ...categories,
     ];
@@ -59,19 +62,23 @@ MeditationsScreen.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape(MeditationCategory.propTypes),
   ),
+  allMeditationsCoverArtUrl: PropTypes.string,
   fetchMeditations: PropTypes.func.isRequired,
+  fetchAllMeditationsCoverArt: PropTypes.func.isRequired,
   refreshing: PropTypes.bool.isRequired,
   navigation: appPropTypes.navigation.isRequired,
 };
 
 MeditationsScreen.defaultProps = {
   categories: [],
+  allMeditationsCoverArtUrl: null,
 };
 
 function mapStateToProps(state) {
   return {
     meditations: meditationsSelector(state),
     categories: meditationCategoriesSelector(state),
+    allMeditationsCoverArtUrl: assetUrlSelector(state, ALL_MEDITATIONS_COVER_ART),
     isPatron: patreonSelectors.isPatron(state),
     refreshing: apiLoadingSelector(state, 'meditations'),
   };
@@ -83,6 +90,9 @@ function mapDispatchToProps(dispatch) {
       fetchData({
         resource: 'meditations',
       }),
+    ),
+    fetchAllMeditationsCoverArt: () => dispatch(
+      fetchAsset(ALL_MEDITATIONS_COVER_ART),
     ),
   };
 }
