@@ -49,21 +49,13 @@ the app in the iOS simulator.
 
 ## Debugging
 
-[react-native-debugger](https://github.com/jhen0409/react-native-debugger) is
-highly recommended, as it allows you to see console logs, React structure,
-Redux state and actions, and network activity all in one place, as if you were
-running your app in Chrome and using its dev tools.
+This app is hooked up to use [Reactotron] which allows you to see console
+logs, Redux state and actions, and network activity all in one place. All you
+need to do is follow their [installation instructions][Reactotron installation]
+launch Reactotron, and reload the Expo app.
 
-### macOS Quickstart
-
-```sh
-$ brew update && brew cask install react-native-debugger
-```
-
-Launch the **React Native Debugger** app (should now be in your `/Applications` folder),
-then start your simulator.
-
-Other platforms: see instructions at linked repo above.
+[Reactotron]: https://github.com/infinitered/reactotron/blob/master/docs/installing.md
+[Reactotron installation]: https://github.com/infinitered/reactotron/blob/master/docs/installing.md
 
 ## Storybook
 

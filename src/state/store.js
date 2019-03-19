@@ -1,12 +1,13 @@
 import _ from 'lodash';
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { persistReducer, persistStore, createMigrate } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
 
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/never';
+
+import Reactotron from '../../reactotron-config';
 
 import reducer from './reducer';
 import epics from './epics';
@@ -45,12 +46,17 @@ const emptyEpic = () => Observable.never();
 export default function configureStore({ noEpic = false } = {}) {
   const epic = noEpic ? emptyEpic : combineEpics(...epics);
   const epicMiddleware = createEpicMiddleware(epic);
-  const enhancer = composeWithDevTools(
-    applyMiddleware(epicMiddleware),
+  const enhancer = applyMiddleware(epicMiddleware);
+
+  const store = createStore(
+    persistedReducer,
+    compose(
+      enhancer,
+      Reactotron.createEnhancer(),
+    ),
   );
 
   // https://facebook.github.io/react-native/blog/2016/03/24/introducing-hot-reloading.html
-  const store = createStore(persistedReducer, enhancer);
   if (module.hot) {
     module.hot.accept(() => {
       // eslint-disable-next-line global-require
@@ -60,7 +66,6 @@ export default function configureStore({ noEpic = false } = {}) {
       );
     });
   }
-
   const persistor = persistStore(store);
 
   return { store, persistor };

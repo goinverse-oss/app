@@ -1,5 +1,8 @@
 import { Constants, KeepAwake, registerRootComponent } from 'expo';
 import _ from 'lodash';
+
+import './reactotron-config';
+
 import Root from './src/Root';
 import storybook from './storybook';
 
