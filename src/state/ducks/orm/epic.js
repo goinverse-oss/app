@@ -19,8 +19,8 @@ import { createClient } from 'contentful/dist/contentful.browser';
 import { singular } from 'pluralize';
 import parse from 'url-parse';
 
-import { FETCH_DATA } from './types';
-import { receiveData, receiveApiError } from './actions';
+import { FETCH_DATA, FETCH_ASSET } from './types';
+import { receiveData, receiveAsset, receiveApiError, ALL_MEDITATIONS_COVER_ART } from './actions';
 import * as patreonActions from '../patreon/actions';
 import * as patreonSelectors from '../patreon/selectors';
 import config from '../../../../config.json';
@@ -61,6 +61,16 @@ function sendApiRequest(client, { resource, id, collection }) {
   return Observable.fromPromise(promise);
 }
 
+const assets = {
+  [ALL_MEDITATIONS_COVER_ART]: '4fw1cG2nsTZ9Upl3jpWDVH',
+};
+
+function getAsset(client, key) {
+  const id = assets[key];
+  const promise = client.getAsset(id);
+  return Observable.fromPromise(promise);
+}
+
 function patreonAuthHeader(state) {
   const token = patreonSelectors.token(state);
   return token ? {
@@ -91,6 +101,20 @@ function catchApiError(retryAction) {
   });
 }
 
+function contentfulClient(state) {
+  const url = parse(config.apiBaseUrl);
+  return createClient({
+    host: url.host,
+    basePath: `${url.pathname}/contentful`,
+    headers: patreonAuthHeader(state),
+
+    // these are filled in by our backend proxy
+    space: 'dummy',
+    environment: 'dummy',
+    accessToken: 'dummy',
+  });
+}
+
 /**
  * Handle requests to fetch API data.
  *
@@ -100,26 +124,12 @@ function catchApiError(retryAction) {
  *   RECEIVE_DATA: on success
  *   RECEIVE_API_ERROR: on failure
  */
-const fetchDataEpic = (action$, store) => {
-  const url = parse(config.apiBaseUrl);
-  const client = state => (
-    createClient({
-      host: url.host,
-      basePath: `${url.pathname}/contentful`,
-      headers: patreonAuthHeader(state),
-
-      // these are filled in by our backend proxy
-      space: 'dummy',
-      environment: 'dummy',
-      accessToken: 'dummy',
-    })
-  );
-
-  return action$.pipe(
+const fetchDataEpic = (action$, store) => (
+  action$.pipe(
     ofType(FETCH_DATA),
     mergeMap(action => (
       sendApiRequest(
-        client(store.getState()),
+        contentfulClient(store.getState()),
         action.payload,
       ).pipe(
         map(json => receiveData({
@@ -129,7 +139,21 @@ const fetchDataEpic = (action$, store) => {
         catchApiError(action),
       )
     )),
-  );
-};
+  )
+);
 
-export default combineEpics(fetchDataEpic);
+const fetchAssetsEpic = (action$, store) => (
+  action$.pipe(
+    ofType(FETCH_ASSET),
+    mergeMap(action => (
+      getAsset(
+        contentfulClient(store.getState()),
+        action.payload,
+      ).pipe(
+        map(json => receiveAsset({ key: action.payload, asset: json })),
+      )
+    )),
+  )
+);
+
+export default combineEpics(fetchDataEpic, fetchAssetsEpic);

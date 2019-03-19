@@ -214,5 +214,11 @@ export const recentMediaItemsSelector = createSelector(
   },
 );
 
+// Contentful URLs don't have a url scheme for some reason.
+export const assetUrlSelector = (state, key) => {
+  const url = _.get(state, `orm.assets.${key}.fields.file.url`);
+  return url ? `https:${url}` : null;
+};
+
 export const apiLoadingSelector = (state, resource) => _.get(state, ['orm.api.loading', resource], false);
 export const apiErrorSelector = state => _.get(state, 'orm.api.error');
