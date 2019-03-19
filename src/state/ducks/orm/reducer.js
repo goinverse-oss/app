@@ -4,10 +4,11 @@ import { handleActions } from 'redux-actions';
 
 import orm from '../../orm';
 
-import { FETCH_DATA, RECEIVE_DATA, RECEIVE_API_ERROR } from './types';
+import { FETCH_DATA, RECEIVE_DATA, RECEIVE_ASSET, RECEIVE_API_ERROR } from './types';
 import { getModelName, getContentType, getFields, getRelationships, getAssets } from './utils';
 
 const defaultORMState = orm.session().state;
+const defaultAssetsState = {};
 const defaultAPIState = {};
 
 function getTimestamps(modelName, entry) {
@@ -94,6 +95,13 @@ export default combineReducers({
       return session.state;
     },
   }, defaultORMState),
+
+  assets: handleActions({
+    [RECEIVE_ASSET]: (state, action) => ({
+      ...state,
+      [action.payload.key]: action.payload.asset,
+    }),
+  }, defaultAssetsState),
 
   api: handleActions({
     [FETCH_DATA]: (state, action) => ({
