@@ -1,3 +1,12 @@
+---
+name: Feature request
+about: Have an idea? Let us know!
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 <!--
 Make sure the title above succinctly describes the issue, and then
 please fill out the template below that matches your purpose, and delete the rest.
@@ -39,27 +48,3 @@ that *must* be true before this issue can be closed. Being explicit about this
 helps clearly define the scope of work and avoid scope creep.
 This is also a good place to list things that are expliltly NOT included.
 -->
-
-
-<!-- Found a bug? Please fill out this template: -->
-
-## Expected behavior
-
-
-## Actual behavior
-
-
-## Steps to reproduce the problem
-
-<!--
-1.
-1.
-1.
--->
-
-## Environment
-
-- App version (or commit SHA):
-- Platform (iOS/Android):
-- Platform OS version:
-- Device:
