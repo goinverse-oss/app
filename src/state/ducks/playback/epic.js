@@ -1,4 +1,5 @@
 import { ofType, combineEpics } from 'redux-observable';
+import { REHYDRATE } from 'redux-persist';
 
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
@@ -11,7 +12,8 @@ import { instanceSelector } from '../orm/selectors';
 import { getMediaSource } from '../orm/utils';
 import showError from '../../../showError';
 
-function startPlayback(mediaSource) {
+function startPlayback(item, shouldPlay = true) {
+  const mediaSource = getMediaSource(item);
   if (!mediaSource) {
     showError('No audio URL for this item');
     return Observable.never();
@@ -20,7 +22,7 @@ function startPlayback(mediaSource) {
   return Observable.create((subscriber) => {
     Audio.Sound.createAsync(
       mediaSource,
-      { shouldPlay: true },
+      { shouldPlay },
       status => subscriber.next(
         setStatus(status),
       ),
@@ -46,13 +48,12 @@ const startPlayingEpic = (action$, store) =>
       const state = store.getState();
       const { type, id } = action.payload;
       const item = instanceSelector(state, type, id);
-      const mediaSource = getMediaSource(item);
       const prevSound = selectors.getSound(state);
       if (prevSound) {
         prevSound.stopAsync();
       }
 
-      return startPlayback(mediaSource);
+      return startPlayback(item);
     }),
   );
 
@@ -107,4 +108,30 @@ const seekEpic = (action$, store) =>
     }),
   );
 
-export default combineEpics(startPlayingEpic, playEpic, pauseEpic, jumpEpic, seekEpic);
+const resumePlaybackOnRehydrateEpic = (action$, store) =>
+  action$.pipe(
+    ofType(REHYDRATE),
+    mergeMap((action) => {
+      if (action.key !== 'root') {
+        return Observable.never();
+      }
+
+      const state = store.getState();
+      const item = selectors.item(state);
+      if (item) {
+        // load the sound, but don't immediately start playback
+        return startPlayback(item, false);
+      }
+
+      return Observable.never();
+    }),
+  );
+
+export default combineEpics(
+  startPlayingEpic,
+  playEpic,
+  pauseEpic,
+  jumpEpic,
+  seekEpic,
+  resumePlaybackOnRehydrateEpic,
+);

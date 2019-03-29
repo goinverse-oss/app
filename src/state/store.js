@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
-import { persistReducer, persistStore, createMigrate } from 'redux-persist';
+import { persistReducer, persistStore, createMigrate, createTransform } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
 
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import Reactotron from '../../reactotron-config';
 
 import reducer from './reducer';
 import epics from './epics';
+import { playbackTransform } from './ducks/playback/reducer';
 
 const migrations = {
   0: state => ({
@@ -22,12 +23,18 @@ const migrations = {
   }),
 };
 
+const PlaybackTransform = createTransform(
+  ...playbackTransform,
+  { whitelist: ['playback'] },
+);
+
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['auth', 'playback'],
+  blacklist: ['auth'],
   version: 0,
   migrate: createMigrate(migrations),
+  transforms: [PlaybackTransform],
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
 
