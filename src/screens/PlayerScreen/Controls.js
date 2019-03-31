@@ -66,8 +66,9 @@ const PlaybackButton = ({
   style,
   playButtonIconStyle,
   pauseButtonIconStyle,
+  disabled,
 }) => (
-  <TouchableWithoutFeedback onPress={onPress}>
+  <TouchableWithoutFeedback onPress={onPress} disabled={disabled}>
     <View style={[styles.playbackButton, style]}>
       {
         isPaused
@@ -84,12 +85,14 @@ PlaybackButton.propTypes = {
   style: ViewPropTypes.style,
   playButtonIconStyle: appPropTypes.iconStyle,
   pauseButtonIconStyle: appPropTypes.iconStyle,
+  disabled: PropTypes.bool,
 };
 
 PlaybackButton.defaultProps = {
   style: {},
   playButtonIconStyle: {},
   pauseButtonIconStyle: {},
+  disabled: false,
 };
 
 const JumpIcon = ({
@@ -124,9 +127,11 @@ let JumpButton = ({
   jumpSeconds,
   jump,
   iconStyle,
+  disabled,
 }) => (
   <TouchableWithoutFeedback
     onPress={() => { jump(jumpSeconds); }}
+    disabled={disabled}
   >
     <View>
       <JumpIcon style={iconStyle} jumpSeconds={jumpSeconds} />
@@ -138,10 +143,12 @@ JumpButton.propTypes = {
   jumpSeconds: PropTypes.number.isRequired,
   jump: PropTypes.func.isRequired,
   iconStyle: appPropTypes.iconStyle,
+  disabled: PropTypes.bool,
 };
 
 JumpButton.defaultProps = {
   iconStyle: {},
+  disabled: false,
 };
 
 JumpButton = connect(null, actions)(JumpButton);
@@ -155,6 +162,7 @@ const Controls = ({
   play,
   pause,
   style,
+  disabled,
   jumpButtonStyle,
   jumpButtonIconStyle,
   playbackButtonStyle,
@@ -166,7 +174,7 @@ const Controls = ({
       style={jumpButtonStyle}
       iconStyle={jumpButtonIconStyle}
       jumpSeconds={-jumpSeconds}
-      disabled={!item}
+      disabled={disabled}
     />
     <PlaybackButton
       style={playbackButtonStyle}
@@ -174,13 +182,13 @@ const Controls = ({
       pauseButtonIconStyle={pauseButtonIconStyle}
       isPaused={isPaused}
       onPress={() => (isPaused ? play(item) : pause(item))}
-      disabled={!item}
+      disabled={disabled}
     />
     <JumpButton
       style={jumpButtonStyle}
       iconStyle={jumpButtonIconStyle}
       jumpSeconds={jumpSeconds}
-      disabled={!item}
+      disabled={disabled}
     />
   </View>
 );
@@ -190,6 +198,7 @@ Controls.propTypes = {
   isPaused: PropTypes.bool.isRequired,
   play: PropTypes.func.isRequired,
   pause: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
   style: ViewPropTypes.style,
   jumpButtonStyle: ViewPropTypes.style,
   playbackButtonStyle: ViewPropTypes.style,
@@ -212,6 +221,7 @@ function mapStateToProps(state) {
   return {
     item: selectors.item(state),
     isPaused: selectors.isPaused(state),
+    disabled: !selectors.item(state) || !selectors.getSound(state),
   };
 }
 
