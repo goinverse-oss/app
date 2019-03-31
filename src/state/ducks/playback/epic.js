@@ -12,7 +12,7 @@ import { instanceSelector } from '../orm/selectors';
 import { getMediaSource } from '../orm/utils';
 import showError from '../../../showError';
 
-function startPlayback(item, shouldPlay = true) {
+function startPlayback(item, initialStatus = {}, shouldPlay = true) {
   const mediaSource = getMediaSource(item);
   if (!mediaSource) {
     showError('No audio URL for this item');
@@ -22,7 +22,7 @@ function startPlayback(item, shouldPlay = true) {
   return Observable.create((subscriber) => {
     Audio.Sound.createAsync(
       mediaSource,
-      { shouldPlay },
+      { ...initialStatus, shouldPlay },
       status => subscriber.next(
         setStatus(status),
       ),
@@ -31,16 +31,6 @@ function startPlayback(item, shouldPlay = true) {
   });
 }
 
-/**
- * Update playback state while playing.
- *
- * Handles:
- *   SET_PLAYING, PLAY: start/resume playback timer
- *   PAUSE: pause playback
- * Emits:
- *   SET_ELAPSED: update the elapsed time each second
- *     while playback is in progress
- */
 const startPlayingEpic = (action$, store) =>
   action$.pipe(
     ofType(SET_PLAYING),
@@ -118,9 +108,10 @@ const resumePlaybackOnRehydrateEpic = (action$, store) =>
 
       const state = store.getState();
       const item = selectors.item(state);
+      const status = selectors.getStatus(state);
       if (item) {
         // load the sound, but don't immediately start playback
-        return startPlayback(item, false);
+        return startPlayback(item, status, false);
       }
 
       return Observable.never();

@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import { handleActions } from '../../utils/reduxActions';
 
 import {
@@ -22,9 +20,6 @@ import {
   // true iff playback is paused
   paused: boolean,
 
-  // time elapsed in playback
-  elapsed: moment.Duration,
-
   // playing sound object
   sound: Expo.Audio.Sound,
 
@@ -37,7 +32,6 @@ const defaultState = {
   item: null,
   playing: false,
   paused: false,
-  elapsed: moment.duration(),
   sound: null,
   status: null,
 };
@@ -49,12 +43,8 @@ export const playbackTransform = [
     playing: false,
     sound: null,
     paused: true,
-    elapsed: inboundState.elapsed.toString(),
   }),
-  outboundState => ({
-    ...outboundState,
-    elapsed: moment.duration(outboundState.elapsed),
-  }),
+  outboundState => outboundState,
 ];
 
 export default handleActions({
