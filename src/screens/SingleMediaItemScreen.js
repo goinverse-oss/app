@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import momentPropTypes from 'react-moment-proptypes';
 
 import appPropTypes from '../propTypes';
 import PlayableItemHeader from '../components/PlayableItemHeader';
@@ -13,6 +15,7 @@ import SocialLinksSection from '../components/SocialLinksSection';
 import TagList from '../components/TagList';
 
 import * as playbackActions from '../state/ducks/playback/actions';
+import * as playbackSelectors from '../state/ducks/playback/selectors';
 import { getImageSource } from '../state/ducks/orm/utils';
 
 const padding = 15;
@@ -35,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SingleMediaItemScreen = ({ item, play }) => (
+const SingleMediaItemScreen = ({ item, elapsed, play }) => (
   <ScrollView style={styles.container}>
     <View style={styles.subContainer}>
       <PlayableItemHeader
@@ -43,6 +46,7 @@ const SingleMediaItemScreen = ({ item, play }) => (
         title={item.title}
         description={item.description}
         duration={item.duration}
+        elapsed={elapsed}
         publishedAt={item.publishedAt}
         onPlay={() => play()}
       />
@@ -61,8 +65,15 @@ const SingleMediaItemScreen = ({ item, play }) => (
 
 SingleMediaItemScreen.propTypes = {
   item: appPropTypes.mediaItem.isRequired,
+  elapsed: momentPropTypes.momentDurationObj.isRequired,
   play: PropTypes.func.isRequired,
 };
+
+function mapStateToProps(state, { item }) {
+  const status = playbackSelectors.getLastStatusForItem(state, item.id);
+  const elapsed = status ? moment.duration(status.positionMillis, 'ms') : moment.duration();
+  return { elapsed };
+}
 
 function mapDispatchToProps(dispatch, { navigation, item }) {
   return {
@@ -79,5 +90,5 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
 
 
 export default withNavigation(
-  connect(null, mapDispatchToProps)(SingleMediaItemScreen),
+  connect(mapStateToProps, mapDispatchToProps)(SingleMediaItemScreen),
 );

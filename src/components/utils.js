@@ -1,11 +1,37 @@
 import { Dimensions } from 'react-native';
 import moment from 'moment';
+import _ from 'lodash';
 
-export function formatMinutesString(durationStr) {
-  const momentObj = moment.duration(durationStr);
+export function formatMinutesString(durationStr, elapsed = moment.duration()) {
+  const momentObj = moment.duration(durationStr).subtract(elapsed);
   const minutes = Math.round(momentObj.asMinutes());
   const suffix = minutes === 1 ? '' : 's';
-  return `${minutes} minute${suffix}`;
+  const remaining = elapsed.asSeconds() > 0 ? ' remaining' : '';
+  return `${minutes} minute${suffix}${remaining}`;
+}
+
+export function formatHumanizeFromNow(publishedAt) {
+  return `${moment(publishedAt).fromNow()}`;
+}
+
+export function formatFooter({
+  duration,
+  elapsed,
+  publishedAt,
+  formatDuration: _formatDuration,
+  formatPublishedAt: _formatPublishedAt,
+}) {
+  const separator = ' • ';
+  const strings = [];
+  const formatDuration = _formatDuration || formatMinutesString;
+  const formatPublishedAt = _formatPublishedAt || formatHumanizeFromNow;
+  if (duration) {
+    strings.push(formatDuration(duration, moment.duration(elapsed)));
+  }
+  if (!_.isUndefined(publishedAt)) {
+    strings.push(formatPublishedAt(publishedAt));
+  }
+  return strings.join(separator);
 }
 
 export function screenRelativeWidth(fraction) {
