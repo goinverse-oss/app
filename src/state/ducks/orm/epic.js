@@ -85,7 +85,7 @@ function catchApiError(retryAction) {
       error,
     });
 
-    if (retryAction && error.response.status === 401) {
+    if (retryAction && _.get(error, 'response.status') === 401) {
       // Patreon token has expired; try (once) to refresh it,
       // then retry the related action
       return Observable.of(

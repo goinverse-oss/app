@@ -47,6 +47,16 @@ export const playbackTransform = [
   outboundState => outboundState,
 ];
 
+function storePodcastEpisodePlaybackStatus(item, status) {
+  if (item.type !== 'podcastEpisode') {
+    return {};
+  }
+
+  return {
+    [item.id]: status,
+  };
+}
+
 export default handleActions({
   [SET_PLAYING]: (state, action) => ({
     ...state,
@@ -70,6 +80,10 @@ export default handleActions({
   [SET_STATUS]: (state, action) => ({
     ...state,
     status: action.payload,
+    playbackStatusPerItem: {
+      ...state.playbackStatusPerItem,
+      ...storePodcastEpisodePlaybackStatus(state.item, action.payload),
+    },
     item: action.payload.didJustFinish ? null : state.item,
   }),
   [SET_PENDING_SEEK]: (state, action) => ({

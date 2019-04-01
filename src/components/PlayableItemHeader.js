@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import moment from 'moment';
 import { ViewPropTypes, View, Text, StyleSheet } from 'react-native';
+import momentPropTypes from 'react-moment-proptypes';
 
 import PlayButton from './PlayButton';
 import SquareImage from './SquareImage';
-import { formatMinutesString, screenRelativeWidth } from './utils';
+import {
+  formatFooter,
+  formatMinutesString,
+  formatHumanizeFromNow,
+  screenRelativeWidth,
+} from './utils';
 
 import AppPropTypes from '../propTypes';
 
@@ -34,26 +39,13 @@ const styles = StyleSheet.create({
   },
 });
 
-function formatFooter({
-  duration, publishedAt, formatDuration, formatPublishedAt,
-}) {
-  const separator = ' • ';
-  const strings = [];
-  if (!_.isNull(duration)) {
-    strings.push(formatDuration(duration));
-  }
-  if (!_.isNull(publishedAt)) {
-    strings.push(formatPublishedAt(publishedAt));
-  }
-  return strings.join(separator);
-}
-
 const PlayableItemHeader = ({
   coverImageSource,
   style,
   title,
   duration,
   publishedAt,
+  elapsed,
   onPlay,
   formatDuration,
   formatPublishedAt,
@@ -70,7 +62,7 @@ const PlayableItemHeader = ({
       <Text style={styles.title} numberOfLines={2}>{title}</Text>
       <Text style={styles.times}>
         {formatFooter({
-          duration, publishedAt, formatDuration, formatPublishedAt,
+          duration, elapsed, publishedAt, formatDuration, formatPublishedAt,
         })}
       </Text>
       <PlayButton onPress={onPlay} text="Listen" />
@@ -84,6 +76,7 @@ PlayableItemHeader.propTypes = {
   title: PropTypes.string.isRequired,
   duration: PropTypes.string,
   publishedAt: PropTypes.string,
+  elapsed: momentPropTypes.momentDurationObj,
   onPlay: PropTypes.func,
   formatDuration: PropTypes.func,
   formatPublishedAt: PropTypes.func,
@@ -93,9 +86,10 @@ PlayableItemHeader.defaultProps = {
   style: {},
   duration: null,
   publishedAt: null,
+  elapsed: moment.duration(),
   onPlay: () => {},
   formatDuration: formatMinutesString,
-  formatPublishedAt: publishedAt => `${moment(publishedAt).fromNow()}`,
+  formatPublishedAt: formatHumanizeFromNow,
 };
 
 export default PlayableItemHeader;

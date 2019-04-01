@@ -31,6 +31,10 @@ export function getStatus(state) {
   return state.playback.status;
 }
 
+export function getLastStatusForItem(state, id) {
+  return _.get(state.playback.playbackStatusPerItem, id, {});
+}
+
 export function elapsed(state) {
   if (state.playback.pendingSeekDestination) {
     return state.playback.pendingSeekDestination;

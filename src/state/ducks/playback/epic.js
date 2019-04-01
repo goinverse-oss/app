@@ -43,7 +43,9 @@ const startPlayingEpic = (action$, store) =>
         prevSound.stopAsync();
       }
 
-      return startPlayback(item);
+      const initialStatus = selectors.getLastStatusForItem(state, id);
+
+      return startPlayback(item, initialStatus);
     }),
   );
 

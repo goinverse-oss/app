@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import moment from 'moment';
 import {
   View,
   ViewPropTypes,
@@ -18,7 +17,7 @@ import ListCard from './ListCard';
 import SquareImage from './SquareImage';
 import TextPill from './TextPill';
 import { renderDescription } from './ItemDescription';
-import { formatMinutesString } from './utils';
+import { formatFooter, formatMinutesString } from './utils';
 import * as navActions from '../navigation/actions';
 
 import appPropTypes from '../propTypes';
@@ -106,23 +105,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export function formatFooter({
-  duration,
-  publishedAt,
-  formatDuration: fmt,
-}) {
-  const separator = ' • ';
-  const strings = [];
-  const formatDuration = fmt || formatMinutesString;
-  if (duration) {
-    strings.push(formatDuration(duration));
-  }
-  if (!_.isUndefined(publishedAt)) {
-    strings.push(moment(publishedAt).fromNow());
-  }
-  return strings.join(separator);
-}
-
 function accessStyle({ patronsOnly, isFreePreview }) {
   return (!patronsOnly || isFreePreview) ? {} : {
     opacity: 0.5,
@@ -151,6 +133,7 @@ const PlayableListCard = ({
   isSearchResult,
   navigation,
   item,
+  elapsed,
   canAccess,
   onPlay,
   ...props
@@ -179,7 +162,7 @@ const PlayableListCard = ({
         <View style={styles.searchHeader}>
           <TextPill style={styles.mediaType}>{pluralize.singular(item.type)}</TextPill>
           <Text style={styles.times}>
-            {formatFooter({ ...item, formatDuration })}
+            {formatFooter({ ...item, elapsed, formatDuration })}
           </Text>
         </View>
       ) : null}
@@ -208,7 +191,7 @@ const PlayableListCard = ({
       {isSearchResult ? null : (
         <View style={styles.footer}>
           <Text style={styles.times}>
-            {formatFooter({ ...item, formatDuration })}
+            {formatFooter({ ...item, elapsed, formatDuration })}
           </Text>
         </View>
       )}
@@ -220,6 +203,7 @@ PlayableListCard.propTypes = {
   style: ViewPropTypes.style,
   navigation: appPropTypes.navigation.isRequired,
   item: appPropTypes.mediaItem.isRequired,
+  elapsed: PropTypes.string,
   formatDuration: PropTypes.func,
   isSearchResult: PropTypes.bool,
   canAccess: PropTypes.bool.isRequired,
@@ -229,6 +213,7 @@ PlayableListCard.propTypes = {
 
 PlayableListCard.defaultProps = {
   style: {},
+  elapsed: 'P0D',
   formatDuration: formatMinutesString,
   isSearchResult: false,
 };
