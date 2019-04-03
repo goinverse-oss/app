@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { persistReducer, persistStore, createMigrate, createTransform } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
@@ -57,7 +58,7 @@ export default function configureStore({ noEpic = false } = {}) {
 
   const store = createStore(
     persistedReducer,
-    compose(
+    composeWithDevTools(
       enhancer,
       Reactotron.createEnhancer(),
     ),
