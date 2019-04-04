@@ -2,7 +2,7 @@ import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
 
 import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { switchMap, mergeMap } from 'rxjs/operators';
 import { Audio } from 'expo';
 
 import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK } from './types';
@@ -34,7 +34,7 @@ function startPlayback(item, initialStatus = {}, shouldPlay = true) {
 const startPlayingEpic = (action$, store) =>
   action$.pipe(
     ofType(SET_PLAYING),
-    mergeMap((action) => {
+    switchMap((action) => {
       const state = store.getState();
       const { type, id } = action.payload;
       const item = instanceSelector(state, type, id);
@@ -77,9 +77,11 @@ const jumpEpic = (action$, store) =>
       const positionMillis = status.positionMillis + jumpMillis;
 
       const sound = selectors.getSound(state);
-      sound.setStatusAsync({
-        positionMillis,
-      });
+      if (sound) {
+        sound.setStatusAsync({
+          positionMillis,
+        });
+      }
       return Observable.never();
     }),
   );
@@ -104,7 +106,7 @@ const resumePlaybackOnRehydrateEpic = (action$, store) =>
   action$.pipe(
     ofType(REHYDRATE),
     mergeMap((action) => {
-      if (action.key !== 'root') {
+      if (action.key !== 'playback') {
         return Observable.never();
       }
 
