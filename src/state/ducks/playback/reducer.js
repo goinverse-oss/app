@@ -1,3 +1,7 @@
+import _ from 'lodash';
+import { persistReducer, createTransform } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
+
 import { handleActions } from '../../utils/reduxActions';
 
 import {
@@ -36,58 +40,89 @@ const defaultState = {
   status: null,
 };
 
-// define here alongside state; used at top level
-export const playbackTransform = [
-  inboundState => ({
-    ...inboundState,
-    playing: false,
-    sound: null,
-    paused: true,
-  }),
-  outboundState => outboundState,
+export const playbackTransforms = [
+  createTransform(
+    () => null, // clear sound
+    outboundState => outboundState,
+    { whitelist: ['sound'] },
+  ),
+  createTransform(
+    () => false, // pause playback
+    outboundState => outboundState,
+    { whitelist: ['playing'] },
+  ),
+  createTransform(
+    () => true, // pause playback
+    outboundState => outboundState,
+    { whitelist: ['paused'] },
+  ),
 ];
 
-function storePodcastEpisodePlaybackStatus(item, status) {
+const persistConfig = {
+  key: 'playback',
+  storage,
+  transforms: playbackTransforms,
+};
+
+function storePodcastEpisodePlaybackStatus(playbackStatusPerItem, item, status) {
   if (item.type !== 'podcastEpisode') {
-    return {};
+    return playbackStatusPerItem;
   }
 
   return {
-    [item.id]: status,
+    ...playbackStatusPerItem,
+    [item.id]: {
+      ..._.get(playbackStatusPerItem, item.id, {}),
+      status,
+    },
   };
 }
 
-export default handleActions({
-  [SET_PLAYING]: (state, action) => ({
-    ...state,
-    item: action.payload,
-    playing: true,
-    paused: false,
-  }),
-  [SET_SOUND]: (state, action) => ({
-    ...state,
-    sound: action.payload,
-  }),
-  [PLAY]: state => ({
-    ...state,
-    playing: true,
-    paused: false,
-  }),
-  [PAUSE]: state => ({
-    ...state,
-    paused: true,
-  }),
-  [SET_STATUS]: (state, action) => ({
-    ...state,
-    status: action.payload,
-    playbackStatusPerItem: {
-      ...state.playbackStatusPerItem,
-      ...storePodcastEpisodePlaybackStatus(state.item, action.payload),
-    },
-    item: action.payload.didJustFinish ? null : state.item,
-  }),
-  [SET_PENDING_SEEK]: (state, action) => ({
-    ...state,
-    pendingSeekDestination: action.payload,
-  }),
-}, defaultState);
+function setInitialStatus(state, item) {
+  const { id } = item;
+  const status = _.get(state.playbackStatusPerItem, id);
+  return status ? { status } : {};
+}
+
+export default persistReducer(
+  persistConfig,
+  handleActions({
+    [SET_PLAYING]: (state, action) => ({
+      ...state,
+      item: action.payload,
+      playing: true,
+      paused: false,
+      ...setInitialStatus(state, action.payload),
+    }),
+    [SET_SOUND]: (state, action) => ({
+      ...state,
+      sound: action.payload,
+    }),
+    [PLAY]: state => ({
+      ...state,
+      playing: true,
+      paused: false,
+    }),
+    [PAUSE]: state => ({
+      ...state,
+      paused: true,
+    }),
+    [SET_STATUS]: (state, action) => ({
+      ...state,
+      status: {
+        ...state.status,
+        ...action.payload,
+      },
+      playbackStatusPerItem: storePodcastEpisodePlaybackStatus(
+        state.playbackStatusPerItem,
+        state.item,
+        action.payload,
+      ),
+      item: action.payload.didJustFinish ? null : state.item,
+    }),
+    [SET_PENDING_SEEK]: (state, action) => ({
+      ...state,
+      pendingSeekDestination: action.payload,
+    }),
+  }, defaultState),
+);
