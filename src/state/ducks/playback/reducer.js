@@ -18,9 +18,6 @@ import {
   // current item playing, if any
   item: PodcastEpisode|Meditation,
 
-  // true iff something has started playback
-  playing: boolean,
-
   // true iff playback is paused
   paused: boolean,
 
@@ -34,7 +31,6 @@ import {
 
 const defaultState = {
   item: null,
-  playing: false,
   paused: false,
   sound: null,
   status: null,
@@ -45,11 +41,6 @@ export const playbackTransforms = [
     () => null, // clear sound
     outboundState => outboundState,
     { whitelist: ['sound'] },
-  ),
-  createTransform(
-    () => false, // pause playback
-    outboundState => outboundState,
-    { whitelist: ['playing'] },
   ),
   createTransform(
     () => true, // pause playback
@@ -65,7 +56,7 @@ const persistConfig = {
 };
 
 function storePodcastEpisodePlaybackStatus(playbackStatusPerItem, item, status) {
-  if (item.type !== 'podcastEpisode') {
+  if (!item || item.type !== 'podcastEpisode') {
     return playbackStatusPerItem;
   }
 
@@ -73,15 +64,9 @@ function storePodcastEpisodePlaybackStatus(playbackStatusPerItem, item, status) 
     ...playbackStatusPerItem,
     [item.id]: {
       ..._.get(playbackStatusPerItem, item.id, {}),
-      status,
+      ...status,
     },
   };
-}
-
-function setInitialStatus(state, item) {
-  const { id } = item;
-  const status = _.get(state.playbackStatusPerItem, id);
-  return status ? { status } : {};
 }
 
 export default persistReducer(
@@ -90,9 +75,7 @@ export default persistReducer(
     [SET_PLAYING]: (state, action) => ({
       ...state,
       item: action.payload,
-      playing: true,
       paused: false,
-      ...setInitialStatus(state, action.payload),
     }),
     [SET_SOUND]: (state, action) => ({
       ...state,
@@ -100,7 +83,6 @@ export default persistReducer(
     }),
     [PLAY]: state => ({
       ...state,
-      playing: true,
       paused: false,
     }),
     [PAUSE]: state => ({
