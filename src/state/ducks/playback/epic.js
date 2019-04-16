@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
 
@@ -20,12 +21,16 @@ function startPlayback(item, initialStatus = {}, shouldPlay = true) {
   }
 
   return Observable.create((subscriber) => {
+    if (!_.isEmpty(initialStatus)) {
+      subscriber.next(setStatus(initialStatus));
+    }
+
     Audio.Sound.createAsync(
       mediaSource,
       { ...initialStatus, shouldPlay },
-      status => subscriber.next(
-        setStatus(status),
-      ),
+      (status) => {
+        subscriber.next(setStatus(status));
+      },
     )
       .then(({ sound }) => subscriber.next(setSound(sound)));
   });
@@ -70,7 +75,7 @@ const pauseEpic = (action$, store) =>
 const jumpEpic = (action$, store) =>
   action$.pipe(
     ofType(JUMP),
-    mergeMap((action) => {
+    switchMap((action) => {
       const jumpMillis = action.payload * 1000;
       const state = store.getState();
       const status = selectors.getStatus(state);
@@ -89,7 +94,7 @@ const jumpEpic = (action$, store) =>
 const seekEpic = (action$, store) =>
   action$.pipe(
     ofType(SEEK),
-    mergeMap((action) => {
+    switchMap((action) => {
       const state = store.getState();
       const sound = selectors.getSound(state);
       return Observable.fromPromise(

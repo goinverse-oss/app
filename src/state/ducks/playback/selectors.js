@@ -11,10 +11,6 @@ export function item(state) {
   return instanceSelector(state, type, id);
 }
 
-export function isPlaying(state) {
-  return state.playback.playing;
-}
-
 export function isPaused(state) {
   return state.playback.paused;
 }
