@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { REHYDRATE } from 'redux-persist';
 
 import configureStore from '../../store';
 
@@ -81,7 +82,7 @@ describe('playback epic', () => {
         },
       },
       fields: {
-        mediaUrl: 'https://httpbin.org/get',
+        mediaUrl: 'https://example.com/url',
       },
     }),
   );
@@ -102,24 +103,32 @@ describe('playback epic', () => {
     ));
     apiActions.forEach(apiAction => store.dispatch(apiAction));
 
-    const playAction = setPlaying(items[0]);
-    store.dispatch(playAction);
-
     // Note: we make this multicast via share(). Otherwise, it's only the _last_
     // subscriber that receives events, and each epic in combineEpics(...)
     // subscribes to this observable in sequence.
     inputAction$ = Observable.create((s) => {
       subscriber = s;
-      subscriber.next(playAction);
     }).share();
 
     action$ = epic(inputAction$, store);
+  });
+
+  afterEach(() => {
+    subscriber.complete();
+    subscriber = null;
   });
 
   test('emits setStatus actions during playback', (done) => {
     let count = 0;
     const status = { isPlaying: true, foo: 'bar' };
     const secondStatus = { isPlaying: true, foo: 'baz' };
+
+    const playAction = setPlaying(items[0]);
+    store.dispatch(playAction);
+
+    // subscriber is not defined until after we call action$.subscribe
+    setTimeout(() => subscriber.next(playAction), 0);
+
     action$.subscribe((action) => {
       const assertions = [
         () => {
@@ -133,13 +142,13 @@ describe('playback epic', () => {
           expect(action).toEqual(setStatus(status));
           store.dispatch(action);
 
-          const playAction = setPlaying(items[1]);
+          const secondPlayAction = setPlaying(items[1]);
 
-          subscriber.next(playAction);
-
-          store.dispatch(playAction);
+          store.dispatch(secondPlayAction);
+          subscriber.next(secondPlayAction);
         },
         () => {
+          // implicitly tests that the "stop" status is _not_ emitted
           expect(action.type).toEqual(SET_SOUND);
           store.dispatch(action);
           const sound = action.payload;
@@ -153,6 +162,38 @@ describe('playback epic', () => {
       ];
       assertions[count]();
       count += 1;
+    });
+  });
+
+  test('restores initial playback status on rehydrate', (done) => {
+    const status = { isPlaying: false, foo: 'bar' };
+    const fakeRehydrateAction = {
+      type: REHYDRATE,
+      key: 'playback',
+      payload: {
+        sound: null,
+        paused: true,
+        status,
+        item: items[0],
+        playbackStatusPerItem: {
+          [items[0].id]: status,
+        },
+
+        // XXX: redux-persist implementation-specific. yuck.
+        _persist: {
+          version: -1,
+          rehydrated: true,
+        },
+      },
+    };
+
+    store.dispatch(fakeRehydrateAction);
+    setTimeout(() => subscriber.next(fakeRehydrateAction), 0);
+
+    action$.subscribe((action) => {
+      expect(action).toEqual(setPlaying(items[0], false));
+      store.dispatch(action);
+      done();
     });
   });
 });

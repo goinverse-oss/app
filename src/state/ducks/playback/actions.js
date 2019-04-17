@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { createAction } from 'redux-actions';
 
 import * as types from './types';
@@ -6,8 +7,12 @@ import * as types from './types';
  * Set the provided item to be playing.
  *
  * @param {PodcastEpisode|Meditation} item media item to play
+ * @param {bool} shouldPlay if true (default), playback will start immediately
  */
-export const setPlaying = createAction(types.SET_PLAYING);
+export const setPlaying = createAction(
+  types.SET_PLAYING,
+  (item, shouldPlay = true) => ({ ..._.pick(item, ['type', 'id']), shouldPlay }),
+);
 
 /**
  * Store the created Sound for later reference.

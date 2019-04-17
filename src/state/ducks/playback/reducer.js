@@ -74,8 +74,8 @@ export default persistReducer(
   handleActions({
     [SET_PLAYING]: (state, action) => ({
       ...state,
-      item: action.payload,
-      paused: false,
+      item: _.pick(action.payload, ['type', 'id']),
+      paused: !_.get(action.payload, 'shouldPlay', true),
     }),
     [SET_SOUND]: (state, action) => ({
       ...state,

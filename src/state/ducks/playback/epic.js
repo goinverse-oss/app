@@ -7,7 +7,7 @@ import { switchMap, mergeMap } from 'rxjs/operators';
 import { Audio } from 'expo';
 
 import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK } from './types';
-import { setStatus, setSound, setPendingSeek } from './actions';
+import { setStatus, setSound, setPlaying, setPendingSeek } from './actions';
 import * as selectors from './selectors';
 import { instanceSelector } from '../orm/selectors';
 import { getMediaSource } from '../orm/utils';
@@ -41,7 +41,7 @@ const startPlayingEpic = (action$, store) =>
     ofType(SET_PLAYING),
     switchMap((action) => {
       const state = store.getState();
-      const { type, id } = action.payload;
+      const { type, id, shouldPlay } = action.payload;
       const item = instanceSelector(state, type, id);
       const prevSound = selectors.getSound(state);
       if (prevSound) {
@@ -50,7 +50,7 @@ const startPlayingEpic = (action$, store) =>
 
       const initialStatus = selectors.getLastStatusForItem(state, id);
 
-      return startPlayback(item, initialStatus);
+      return startPlayback(item, initialStatus, shouldPlay);
     }),
   );
 
@@ -110,20 +110,14 @@ const seekEpic = (action$, store) =>
 const resumePlaybackOnRehydrateEpic = (action$, store) =>
   action$.pipe(
     ofType(REHYDRATE),
-    mergeMap((action) => {
+    switchMap((action) => {
       if (action.key !== 'playback') {
         return Observable.never();
       }
 
       const state = store.getState();
       const item = selectors.item(state);
-      const status = selectors.getStatus(state);
-      if (item) {
-        // load the sound, but don't immediately start playback
-        return startPlayback(item, status, false);
-      }
-
-      return Observable.never();
+      return Observable.of(setPlaying(item, false));
     }),
   );
 
