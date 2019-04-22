@@ -1,58 +1,56 @@
+import _ from 'lodash';
 import { ofType, combineEpics } from 'redux-observable';
+import { REHYDRATE } from 'redux-persist';
 
 import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { switchMap, mergeMap } from 'rxjs/operators';
 import { Audio } from 'expo';
 
 import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK } from './types';
-import { setStatus, setSound, setPendingSeek } from './actions';
+import { setStatus, setSound, setPlaying, setPendingSeek } from './actions';
 import * as selectors from './selectors';
 import { instanceSelector } from '../orm/selectors';
 import { getMediaSource } from '../orm/utils';
 import showError from '../../../showError';
 
-function startPlayback(mediaSource) {
+function startPlayback(item, initialStatus = {}, shouldPlay = true) {
+  const mediaSource = getMediaSource(item);
   if (!mediaSource) {
     showError('No audio URL for this item');
     return Observable.never();
   }
 
   return Observable.create((subscriber) => {
+    if (!_.isEmpty(initialStatus)) {
+      subscriber.next(setStatus(initialStatus));
+    }
+
     Audio.Sound.createAsync(
       mediaSource,
-      { shouldPlay: true },
-      status => subscriber.next(
-        setStatus(status),
-      ),
+      { ...initialStatus, shouldPlay },
+      (status) => {
+        subscriber.next(setStatus(status));
+      },
     )
       .then(({ sound }) => subscriber.next(setSound(sound)));
   });
 }
 
-/**
- * Update playback state while playing.
- *
- * Handles:
- *   SET_PLAYING, PLAY: start/resume playback timer
- *   PAUSE: pause playback
- * Emits:
- *   SET_ELAPSED: update the elapsed time each second
- *     while playback is in progress
- */
 const startPlayingEpic = (action$, store) =>
   action$.pipe(
     ofType(SET_PLAYING),
-    mergeMap((action) => {
+    switchMap((action) => {
       const state = store.getState();
-      const { type, id } = action.payload;
+      const { type, id, shouldPlay } = action.payload;
       const item = instanceSelector(state, type, id);
-      const mediaSource = getMediaSource(item);
       const prevSound = selectors.getSound(state);
       if (prevSound) {
         prevSound.stopAsync();
       }
 
-      return startPlayback(mediaSource);
+      const initialStatus = selectors.getLastStatusForItem(state, id);
+
+      return startPlayback(item, initialStatus, shouldPlay);
     }),
   );
 
@@ -77,16 +75,18 @@ const pauseEpic = (action$, store) =>
 const jumpEpic = (action$, store) =>
   action$.pipe(
     ofType(JUMP),
-    mergeMap((action) => {
+    switchMap((action) => {
       const jumpMillis = action.payload * 1000;
       const state = store.getState();
       const status = selectors.getStatus(state);
       const positionMillis = status.positionMillis + jumpMillis;
 
       const sound = selectors.getSound(state);
-      sound.setStatusAsync({
-        positionMillis,
-      });
+      if (sound) {
+        sound.setStatusAsync({
+          positionMillis,
+        });
+      }
       return Observable.never();
     }),
   );
@@ -94,7 +94,7 @@ const jumpEpic = (action$, store) =>
 const seekEpic = (action$, store) =>
   action$.pipe(
     ofType(SEEK),
-    mergeMap((action) => {
+    switchMap((action) => {
       const state = store.getState();
       const sound = selectors.getSound(state);
       return Observable.fromPromise(
@@ -107,4 +107,25 @@ const seekEpic = (action$, store) =>
     }),
   );
 
-export default combineEpics(startPlayingEpic, playEpic, pauseEpic, jumpEpic, seekEpic);
+const resumePlaybackOnRehydrateEpic = (action$, store) =>
+  action$.pipe(
+    ofType(REHYDRATE),
+    switchMap((action) => {
+      if (action.key !== 'playback') {
+        return Observable.never();
+      }
+
+      const state = store.getState();
+      const item = selectors.item(state);
+      return Observable.of(setPlaying(item, false));
+    }),
+  );
+
+export default combineEpics(
+  startPlayingEpic,
+  playEpic,
+  pauseEpic,
+  jumpEpic,
+  seekEpic,
+  resumePlaybackOnRehydrateEpic,
+);

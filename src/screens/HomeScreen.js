@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import {
   Image,
   Text,
@@ -20,8 +21,8 @@ import * as navActions from '../navigation/actions';
 import { recentMediaItemsSelector } from '../state/ducks/orm/selectors';
 import { getImageSource } from '../state/ducks/orm/utils';
 import { fetchData } from '../state/ducks/orm/actions';
-import { screenRelativeWidth, screenRelativeHeight } from '../components/utils';
-import { formatFooter } from '../components/PlayableListCard';
+import * as playbackSelectors from '../state/ducks/playback/selectors';
+import { screenRelativeWidth, screenRelativeHeight, formatFooter } from '../components/utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -127,7 +128,15 @@ HomeScreen.navigationOptions = ({ screenProps }) => ({
 
 function mapStateToProps(state) {
   return {
-    items: recentMediaItemsSelector(state),
+    items: recentMediaItemsSelector(state).map(
+      (item) => {
+        const status = playbackSelectors.getLastStatusForItem(state, item.id);
+        if (status) {
+          return _.set(item, 'elapsed', moment.duration(status.positionMillis, 'ms'));
+        }
+        return item;
+      },
+    ),
   };
 }
 

@@ -17,8 +17,6 @@ console.tron = Reactotron;
 
 
 if (config.sentryPublicDSN) {
-  // Remove this once Sentry is correctly setup.
-  Sentry.enableInExpoDevelopment = true;
   Sentry.config(config.sentryPublicDSN).install();
 }
 

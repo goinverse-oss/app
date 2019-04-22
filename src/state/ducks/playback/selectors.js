@@ -11,10 +11,6 @@ export function item(state) {
   return instanceSelector(state, type, id);
 }
 
-export function isPlaying(state) {
-  return state.playback.playing;
-}
-
 export function isPaused(state) {
   return state.playback.paused;
 }
@@ -29,6 +25,10 @@ export function isBuffering(state) {
 
 export function getStatus(state) {
   return state.playback.status;
+}
+
+export function getLastStatusForItem(state, id) {
+  return _.get(state.playback.playbackStatusPerItem, id, {});
 }
 
 export function elapsed(state) {
