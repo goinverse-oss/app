@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { ViewPropTypes, View, Text, StyleSheet } from 'react-native';
+import { ViewPropTypes, View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { connect } from 'react-redux';
 import momentPropTypes from 'react-moment-proptypes';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Progress from 'react-native-progress';
 
 import PlayButton from './PlayButton';
 import SquareImage from './SquareImage';
@@ -14,6 +17,9 @@ import {
 } from './utils';
 
 import AppPropTypes from '../propTypes';
+import { getImageSource } from '../state/ducks/orm/utils';
+import * as storageActions from '../state/ducks/storage/actions';
+import * as storageSelectors from '../state/ducks/storage/selectors';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,16 +43,90 @@ const styles = StyleSheet.create({
     marginTop: 5,
     flex: 2,
   },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  downloadButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  downloadIcon: {
+    fontSize: 36,
+  },
+  deleteIcon: {
+    fontSize: 36,
+  },
+  progressIcon: {
+    fontSize: 36,
+  },
+  progressIndicator: {
+    position: 'absolute',
+    bottom: 12.5,
+  },
 });
 
+function progressFraction(progress) {
+  if (!progress) {
+    return 0.0;
+  }
+
+  const { totalBytesWritten, totalBytesExpectedToWrite } = progress;
+  return totalBytesWritten / totalBytesExpectedToWrite;
+}
+
+const DownloadButton = ({ isDownloaded, downloadProgress, onPress }) => {
+  const actionIcon = (
+    isDownloaded
+      ? <Ionicons name="md-cloud-done" style={styles.deleteIcon} />
+      : <Ionicons name="md-cloud-download" style={styles.downloadIcon} />
+  );
+  const progressIcon = (
+    <Ionicons name="md-cloud" style={styles.progressIcon} />
+  );
+  const icon = downloadProgress ? progressIcon : actionIcon;
+  const disabled = (downloadProgress !== null);
+  const progressValue = progressFraction(downloadProgress);
+  const progress = downloadProgress ? (
+    <Progress.Circle
+      style={styles.progressIndicator}
+      progress={progressValue}
+      size={15}
+      color="white"
+    />
+  ) : null;
+  return (
+    <TouchableWithoutFeedback onPress={onPress} disabled={disabled}>
+      <View style={styles.downloadButton}>
+        {icon}
+        {progress}
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+DownloadButton.propTypes = {
+  isDownloaded: PropTypes.bool.isRequired,
+  downloadProgress: PropTypes.shape({
+    totalBytesWritten: PropTypes.number.isRequired,
+    totalBytesExpectedToWrite: PropTypes.number.isRequired,
+  }),
+  onPress: PropTypes.func.isRequired,
+};
+
+DownloadButton.defaultProps = {
+  downloadProgress: null,
+};
+
 const PlayableItemHeader = ({
-  coverImageSource,
+  item,
   style,
-  title,
-  duration,
-  publishedAt,
   elapsed,
+  isDownloaded,
+  downloadProgress,
   onPlay,
+  startDownload,
+  removeDownload,
   formatDuration,
   formatPublishedAt,
   ...props
@@ -54,28 +134,36 @@ const PlayableItemHeader = ({
   <View style={[styles.container, style]} {...props}>
     <View style={styles.imageContainer}>
       <SquareImage
-        source={coverImageSource}
+        source={getImageSource(item)}
         width={screenRelativeWidth(0.3)}
       />
     </View>
     <View style={styles.metadataContainer}>
-      <Text style={styles.title} numberOfLines={2}>{title}</Text>
+      <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
       <Text style={styles.times}>
         {formatFooter({
-          duration, elapsed, publishedAt, formatDuration, formatPublishedAt,
+          duration: item.duration,
+          elapsed,
+          publishedAt: item.publishedAt,
+          formatDuration,
+          formatPublishedAt,
         })}
       </Text>
-      <PlayButton onPress={onPlay} text="Listen" />
+      <View style={styles.actionsContainer}>
+        <PlayButton onPress={onPlay} text="Listen" />
+        <DownloadButton
+          isDownloaded={isDownloaded}
+          downloadProgress={downloadProgress}
+          onPress={isDownloaded ? removeDownload : startDownload}
+        />
+      </View>
     </View>
   </View>
 );
 
 PlayableItemHeader.propTypes = {
-  coverImageSource: AppPropTypes.imageSource.isRequired,
+  item: AppPropTypes.mediaItem.isRequired,
   style: ViewPropTypes.style,
-  title: PropTypes.string.isRequired,
-  duration: PropTypes.string,
-  publishedAt: PropTypes.string,
   elapsed: momentPropTypes.momentDurationObj,
   onPlay: PropTypes.func,
   formatDuration: PropTypes.func,
@@ -84,12 +172,28 @@ PlayableItemHeader.propTypes = {
 
 PlayableItemHeader.defaultProps = {
   style: {},
-  duration: null,
-  publishedAt: null,
   elapsed: moment.duration(),
   onPlay: () => {},
   formatDuration: formatMinutesString,
   formatPublishedAt: formatHumanizeFromNow,
 };
 
-export default PlayableItemHeader;
+function mapStateToProps(state, { item }) {
+  return {
+    isDownloaded: !!storageSelectors.getDownloadPath(state, item),
+    downloadProgress: storageSelectors.getDownloadProgress(state, item),
+  };
+}
+
+function mapDispatchToProps(dispatch, { item }) {
+  return {
+    startDownload: () => {
+      dispatch(storageActions.startDownload(item));
+    },
+    removeDownload: () => {
+      dispatch(storageActions.removeDownload(item));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayableItemHeader);

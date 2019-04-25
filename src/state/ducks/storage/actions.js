@@ -3,17 +3,49 @@ import { createAction } from 'redux-actions';
 import * as types from './types';
 
 /**
- * Store the specified media item's file path.
+ * Store a resumable download object.
  *
- * @param {object} payload keys 'id' and 'path'
- *   id: contentful id
- *   path: file:// path to media file
+ * @param {object} resumableDownload
  */
-export const store = createAction(types.STORE);
+export const storeResumableDownload = createAction(types.STORE_RESUMABLE_DOWNLOAD);
 
 /**
- * Remove the specified media item from the path map.
+ * Start downloading the specified media item.
  *
- * @param {string} id contentful id
+ * @param {object} item media item
  */
-export const remove = createAction(types.REMOVE);
+export const startDownload = createAction(types.START_DOWNLOAD);
+
+/**
+ * Store the progress of the specified download.
+ *
+ * @param {object} item media item
+ * @param {object} progress progress data with these keys:
+ *   totalBytesWritten
+ *   totalBytesExpectedToWrite
+ */
+export const storeProgress = createAction(
+  types.STORE_PROGRESS,
+  (item, progress) => ({ item, progress }),
+);
+
+/**
+ * Store the specified media item's file path.
+ *
+ * @param {object} item media item
+ */
+export const storeDownload = createAction(types.STORE_DOWNLOAD);
+
+/**
+ * Remove the specified media item from the file map.
+ *
+ * @param {object} item media item
+ */
+export const removeDownload = createAction(types.REMOVE_DOWNLOAD);
+
+/**
+ * Remove the specified media item, including the file.
+ *
+ * @param {object} item media item
+ */
+export const removeDownloadAsync = createAction(types.REMOVE_DOWNLOAD_ASYNC);
