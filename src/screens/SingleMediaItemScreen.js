@@ -16,7 +16,6 @@ import TagList from '../components/TagList';
 
 import * as playbackActions from '../state/ducks/playback/actions';
 import * as playbackSelectors from '../state/ducks/playback/selectors';
-import { getImageSource } from '../state/ducks/orm/utils';
 
 const padding = 15;
 
@@ -34,22 +33,14 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: '#EDEDED',
-    marginVertical: 25,
+    marginVertical: 15,
   },
 });
 
 const SingleMediaItemScreen = ({ item, elapsed, play }) => (
   <ScrollView style={styles.container}>
     <View style={styles.subContainer}>
-      <PlayableItemHeader
-        coverImageSource={getImageSource(item)}
-        title={item.title}
-        description={item.description}
-        duration={item.duration}
-        elapsed={elapsed}
-        publishedAt={item.publishedAt}
-        onPlay={() => play()}
-      />
+      <PlayableItemHeader item={item} elapsed={elapsed} onPlay={() => play()} />
       <View style={styles.divider} />
       <ItemDescription description={item.description} />
     </View>

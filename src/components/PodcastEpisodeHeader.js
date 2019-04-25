@@ -4,16 +4,7 @@ import PlayableItemHeader from './PlayableItemHeader';
 import appPropTypes from '../propTypes';
 
 const PodcastEpisodeHeader = ({ podcastEpisode, ...props }) => (
-  <PlayableItemHeader
-    coverImageSource={{
-      uri: podcastEpisode.imageUrl,
-    }}
-    title={podcastEpisode.title}
-    description={podcastEpisode.description}
-    duration={podcastEpisode.duration}
-    publishedAt={podcastEpisode.publishedAt}
-    {...props}
-  />
+  <PlayableItemHeader item={podcastEpisode} {...props} />
 );
 
 PodcastEpisodeHeader.propTypes = {
