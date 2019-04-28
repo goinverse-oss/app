@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
 
-import { Observable, of, merge } from 'rxjs';
+import { Observable, of, from, merge } from 'rxjs';
 import { switchMap, mergeMap } from 'rxjs/operators';
 import { Audio } from 'expo';
 
@@ -12,15 +12,10 @@ import * as selectors from './selectors';
 import { startDownload } from '../storage/actions';
 import { instanceSelector } from '../orm/selectors';
 import { getMediaSource } from '../orm/utils';
+import { getDownloadPath } from '../storage/selectors';
 import showError from '../../../showError';
 
-function startPlayback(item, initialStatus = {}, shouldPlay = true) {
-  const mediaSource = getMediaSource(item);
-  if (!mediaSource) {
-    showError('No audio URL for this item');
-    return Observable.never();
-  }
-
+function startPlayback(mediaSource, initialStatus = {}, shouldPlay = true) {
   return Observable.create((subscriber) => {
     if (!_.isEmpty(initialStatus)) {
       subscriber.next(setStatus(initialStatus));
@@ -51,9 +46,21 @@ const startPlayingEpic = (action$, state$) =>
 
       const initialStatus = selectors.getLastStatusForItem(state, id);
 
+      const offlinePath = getDownloadPath(state, item);
+      if (offlinePath) {
+        const mediaSource = { uri: offlinePath };
+        return startPlayback(mediaSource, initialStatus, shouldPlay);
+      }
+
+      const mediaSource = getMediaSource(item);
+      if (!mediaSource) {
+        showError('No audio URL for this item');
+        return Observable.never();
+      }
+
       return merge(
         of(startDownload(item)),
-        startPlayback(item, initialStatus, shouldPlay),
+        startPlayback(mediaSource, initialStatus, shouldPlay),
       );
     }),
   );
@@ -101,7 +108,7 @@ const seekEpic = (action$, state$) =>
     switchMap((action) => {
       const state = state$.value;
       const sound = selectors.getSound(state);
-      return Observable.fromPromise(
+      return from(
         sound.setStatusAsync({
           positionMillis: action.payload.asMilliseconds(),
         }).then(() => (

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import moment from 'moment';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
@@ -70,9 +69,7 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
   return {
     play: () => {
       dispatch(
-        playbackActions.setPlaying(
-          _.pick(item, ['type', 'id']),
-        ),
+        playbackActions.setPlaying(item),
       );
       navigation.navigate('Player');
     },
