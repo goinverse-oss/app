@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { take, bufferCount } from 'rxjs/operators';
 
 import configureStore from '../../store';
 
@@ -6,6 +7,7 @@ import * as actions from './actions';
 import * as selectors from './selectors';
 import epic from './epic';
 import { getItemDownloadPath } from './utils';
+import { getStateObservable } from '../testUtils';
 
 jest.mock('expo', () => {
   class FileSystem {
@@ -96,9 +98,12 @@ describe('storage epic', () => {
   });
 
   test('startDownload starts a download', async () => {
-    const inputAction$ = Observable.of(actions.startDownload(item));
-    const action$ = epic(inputAction$, store);
-    const allActions = await action$.take(2).bufferCount(2).toPromise();
+    const inputAction$ = of(actions.startDownload(item));
+    const action$ = epic(inputAction$, getStateObservable(store));
+    const allActions = await action$.pipe(
+      take(2),
+      bufferCount(2),
+    ).toPromise();
 
     // mock savable() function returns this simplified state
     expect(allActions[0]).toEqual(actions.storeResumableDownload({ url, fileUrl }));
@@ -110,9 +115,9 @@ describe('storage epic', () => {
     // eslint-disable-next-line
     const { FileSystem } = require('expo');
 
-    const inputAction$ = Observable.of(actions.removeDownloadAsync(item));
-    const action$ = epic(inputAction$, store);
-    const action = await action$.take(1).toPromise();
+    const inputAction$ = of(actions.removeDownloadAsync(item));
+    const action$ = epic(inputAction$, getStateObservable(store));
+    const action = await action$.pipe(take(1)).toPromise();
     expect(action).toEqual(actions.removeDownload(item));
 
     const path = getItemDownloadPath(item);

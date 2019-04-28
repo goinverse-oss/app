@@ -10,6 +10,7 @@ import * as actions from './actions';
 import * as selectors from './selectors';
 import { getModelName, getRelationships } from './utils';
 import epic from './epic';
+import { getStateObservable } from '../testUtils';
 
 import * as patreonActions from '../patreon/actions';
 
@@ -499,7 +500,7 @@ describe('api epic', () => {
       const args = { resource: 'foo' };
 
       const action$ = ActionsObservable.of(actions.fetchData(args));
-      const responseAction = await epic(action$, store).toPromise();
+      const responseAction = await epic(action$, getStateObservable(store)).toPromise();
 
       const expectedAction = actions.receiveData({
         ...args,
@@ -523,7 +524,7 @@ describe('api epic', () => {
       const args = { resource: 'foo' };
 
       const action$ = ActionsObservable.of(actions.fetchData(args));
-      const errorAction = await epic(action$, store).toPromise();
+      const errorAction = await epic(action$, getStateObservable(store)).toPromise();
 
       expect(errorAction.type).toEqual(types.RECEIVE_API_ERROR);
       expect(errorAction.payload.error).toBeInstanceOf(Error);
@@ -549,7 +550,7 @@ describe('api epic', () => {
       });
 
       const action$ = ActionsObservable.of(retryAction);
-      const refreshAction = await epic(action$, store).toPromise();
+      const refreshAction = await epic(action$, getStateObservable(store)).toPromise();
 
       const expectedAction = patreonActions.refreshAccessToken({
         retryAction,

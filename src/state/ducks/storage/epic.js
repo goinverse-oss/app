@@ -10,15 +10,21 @@ import { getItemBasePath, getItemDownloadPath } from './utils';
 import { getMediaSource } from '../orm/utils';
 
 
-const startDownloadEpic = (action$, store) =>
+const startDownloadEpic = (action$, state$) =>
   action$.pipe(
     ofType(START_DOWNLOAD),
     mergeMap(action => (
       Observable.create((subscriber) => {
         const item = action.payload;
 
+        const minProgressMillis = 200;
+        let lastUpdate = null;
+
         const onProgress = (progress) => {
-          subscriber.next(storeProgress(item, progress));
+          if (!lastUpdate || Date.now() - lastUpdate > minProgressMillis) {
+            subscriber.next(storeProgress(item, progress));
+            lastUpdate = Date.now();
+          }
         };
 
         const basePath = getItemBasePath(item);
@@ -36,7 +42,7 @@ const startDownloadEpic = (action$, store) =>
               itemPath,
               {},
               onProgress,
-              getResumableDownload(store.getState(), item),
+              getResumableDownload(state$.value, item),
             );
             subscriber.next(storeResumableDownload(download.savable()));
             download.downloadAsync()
