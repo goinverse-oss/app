@@ -2,13 +2,14 @@ import _ from 'lodash';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
 
-import { Observable } from 'rxjs';
+import { Observable, of, merge } from 'rxjs';
 import { switchMap, mergeMap } from 'rxjs/operators';
 import { Audio } from 'expo';
 
 import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK } from './types';
 import { setStatus, setSound, setPlaying, setPendingSeek } from './actions';
 import * as selectors from './selectors';
+import { startDownload } from '../storage/actions';
 import { instanceSelector } from '../orm/selectors';
 import { getMediaSource } from '../orm/utils';
 import showError from '../../../showError';
@@ -36,11 +37,11 @@ function startPlayback(item, initialStatus = {}, shouldPlay = true) {
   });
 }
 
-const startPlayingEpic = (action$, store) =>
+const startPlayingEpic = (action$, state$) =>
   action$.pipe(
     ofType(SET_PLAYING),
     switchMap((action) => {
-      const state = store.getState();
+      const state = state$.value;
       const { type, id, shouldPlay } = action.payload;
       const item = instanceSelector(state, type, id);
       const prevSound = selectors.getSound(state);
@@ -50,34 +51,37 @@ const startPlayingEpic = (action$, store) =>
 
       const initialStatus = selectors.getLastStatusForItem(state, id);
 
-      return startPlayback(item, initialStatus, shouldPlay);
+      return merge(
+        of(startDownload(item)),
+        startPlayback(item, initialStatus, shouldPlay),
+      );
     }),
   );
 
-const playEpic = (action$, store) =>
+const playEpic = (action$, state$) =>
   action$.pipe(
     ofType(PLAY),
     mergeMap(() => {
-      selectors.getSound(store.getState()).playAsync();
+      selectors.getSound(state$.value).playAsync();
       return Observable.never();
     }),
   );
 
-const pauseEpic = (action$, store) =>
+const pauseEpic = (action$, state$) =>
   action$.pipe(
     ofType(PAUSE),
     mergeMap(() => {
-      selectors.getSound(store.getState()).pauseAsync();
+      selectors.getSound(state$.value).pauseAsync();
       return Observable.never();
     }),
   );
 
-const jumpEpic = (action$, store) =>
+const jumpEpic = (action$, state$) =>
   action$.pipe(
     ofType(JUMP),
     switchMap((action) => {
       const jumpMillis = action.payload * 1000;
-      const state = store.getState();
+      const state = state$.value;
       const status = selectors.getStatus(state);
       const positionMillis = status.positionMillis + jumpMillis;
 
@@ -91,11 +95,11 @@ const jumpEpic = (action$, store) =>
     }),
   );
 
-const seekEpic = (action$, store) =>
+const seekEpic = (action$, state$) =>
   action$.pipe(
     ofType(SEEK),
     switchMap((action) => {
-      const state = store.getState();
+      const state = state$.value;
       const sound = selectors.getSound(state);
       return Observable.fromPromise(
         sound.setStatusAsync({
@@ -107,7 +111,7 @@ const seekEpic = (action$, store) =>
     }),
   );
 
-const resumePlaybackOnRehydrateEpic = (action$, store) =>
+const resumePlaybackOnRehydrateEpic = (action$, state$) =>
   action$.pipe(
     ofType(REHYDRATE),
     switchMap((action) => {
@@ -115,9 +119,12 @@ const resumePlaybackOnRehydrateEpic = (action$, store) =>
         return Observable.never();
       }
 
-      const state = store.getState();
+      const state = state$.value;
       const item = selectors.item(state);
-      return Observable.of(setPlaying(item, false));
+      if (!item) {
+        return Observable.never();
+      }
+      return of(setPlaying(item, false));
     }),
   );
 

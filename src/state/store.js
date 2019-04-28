@@ -46,7 +46,7 @@ const emptyEpic = () => Observable.never();
  */
 export default function configureStore({ noEpic = false } = {}) {
   const epic = noEpic ? emptyEpic : combineEpics(...epics);
-  const epicMiddleware = createEpicMiddleware(epic);
+  const epicMiddleware = createEpicMiddleware();
   const enhancer = applyMiddleware(epicMiddleware);
 
   const store = createStore(
@@ -68,6 +68,8 @@ export default function configureStore({ noEpic = false } = {}) {
     });
   }
   const persistor = persistStore(store);
+
+  epicMiddleware.run(epic);
 
   return { store, persistor };
 }

@@ -1,4 +1,6 @@
-import { Observable } from 'rxjs';
+import _ from 'lodash';
+import { Observable, of } from 'rxjs';
+import { share, take } from 'rxjs/operators';
 import { REHYDRATE } from 'redux-persist';
 
 import configureStore from '../../store';
@@ -8,6 +10,8 @@ import { setPlaying, setStatus } from './actions';
 import { getStatus, getLastStatusForItem } from './selectors';
 import epic from './epic';
 import { receiveData } from '../orm/actions';
+import { START_DOWNLOAD } from '../storage/types';
+import { getStateObservable } from '../testUtils';
 
 
 jest.mock('expo', () => {
@@ -89,7 +93,6 @@ describe('playback epic', () => {
 
   let store;
   let inputAction$;
-  let action$;
   let subscriber;
 
   beforeEach(async () => {
@@ -102,23 +105,18 @@ describe('playback epic', () => {
       })
     ));
     apiActions.forEach(apiAction => store.dispatch(apiAction));
+  });
 
+  test('emits setStatus actions during playback', (done) => {
     // Note: we make this multicast via share(). Otherwise, it's only the _last_
     // subscriber that receives events, and each epic in combineEpics(...)
     // subscribes to this observable in sequence.
     inputAction$ = Observable.create((s) => {
       subscriber = s;
-    }).share();
+    }).pipe(share());
 
-    action$ = epic(inputAction$, store);
-  });
+    const action$ = epic(inputAction$, getStateObservable(store));
 
-  afterEach(() => {
-    subscriber.complete();
-    subscriber = null;
-  });
-
-  test('emits setStatus actions during playback', (done) => {
     let count = 0;
     const status = { isPlaying: true, foo: 'bar' };
     const secondStatus = { isPlaying: true, foo: 'baz' };
@@ -127,10 +125,18 @@ describe('playback epic', () => {
     store.dispatch(playAction);
 
     // subscriber is not defined until after we call action$.subscribe
-    setTimeout(() => subscriber.next(playAction), 0);
+    setTimeout(() => subscriber.next(playAction), 1000);
+
+    const assertDownloadAction = (action, expectedItem) => {
+      expect(action.type).toEqual(START_DOWNLOAD);
+      const item = action.payload;
+      expect(item).toBeDefined();
+      expect(_.pick(item, ['id', 'type'])).toEqual(_.pick(expectedItem, ['id', 'type']));
+    };
 
     action$.subscribe((action) => {
       const assertions = [
+        () => assertDownloadAction(action, items[0]),
         () => {
           expect(action.type).toEqual(SET_SOUND);
           store.dispatch(action);
@@ -147,6 +153,7 @@ describe('playback epic', () => {
           store.dispatch(secondPlayAction);
           subscriber.next(secondPlayAction);
         },
+        () => assertDownloadAction(action, items[1]),
         () => {
           // implicitly tests that the "stop" status is _not_ emitted
           expect(action.type).toEqual(SET_SOUND);
@@ -160,12 +167,15 @@ describe('playback epic', () => {
           done();
         },
       ];
-      assertions[count]();
+
+      // increment count first, because this callback can be called again
+      // before it returns
       count += 1;
+      assertions[count - 1]();
     });
   });
 
-  test('restores initial playback status on rehydrate', (done) => {
+  test('restores initial playback status on rehydrate', async () => {
     const status = { isPlaying: false, foo: 'bar' };
     const fakeRehydrateAction = {
       type: REHYDRATE,
@@ -188,12 +198,9 @@ describe('playback epic', () => {
     };
 
     store.dispatch(fakeRehydrateAction);
-    setTimeout(() => subscriber.next(fakeRehydrateAction), 0);
+    const action$ = epic(of(fakeRehydrateAction), getStateObservable(store));
 
-    action$.subscribe((action) => {
-      expect(action).toEqual(setPlaying(items[0], false));
-      store.dispatch(action);
-      done();
-    });
+    const action = await action$.pipe(take(1)).toPromise();
+    expect(action).toEqual(setPlaying(items[0], false));
   });
 });

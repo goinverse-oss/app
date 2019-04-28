@@ -1,13 +1,6 @@
 import { ofType, combineEpics } from 'redux-observable';
 
-// redux-observable pulls in a minimal subset of RxJS
-// to keep the bundle size small, so here we explicitly
-// pull in just the things we need, including operators
-// on Observable. It's a little weird, but you get used
-// to the error messages that tell you you need to import
-// another operator.
-// https://redux-observable.js.org/docs/Troubleshooting.html
-import { Observable } from 'rxjs/Observable';
+import { of, from } from 'rxjs';
 import {
   map,
   mergeMap,
@@ -58,7 +51,7 @@ function sendApiRequest(client, { resource, id, collection }) {
       ...filter,
     });
   }
-  return Observable.fromPromise(promise);
+  return from(promise);
 }
 
 const assets = {
@@ -68,7 +61,7 @@ const assets = {
 function getAsset(client, key) {
   const id = assets[key];
   const promise = client.getAsset(id);
-  return Observable.fromPromise(promise);
+  return from(promise);
 }
 
 function patreonAuthHeader(state) {
@@ -88,7 +81,7 @@ function catchApiError(retryAction) {
     if (retryAction && _.get(error, 'response.status') === 401) {
       // Patreon token has expired; try (once) to refresh it,
       // then retry the related action
-      return Observable.of(
+      return of(
         patreonActions.refreshAccessToken({
           retryAction,
           errorAction,
@@ -97,7 +90,7 @@ function catchApiError(retryAction) {
     }
 
     showError(error);
-    return Observable.of(errorAction);
+    return of(errorAction);
   });
 }
 
@@ -124,12 +117,12 @@ function contentfulClient(state) {
  *   RECEIVE_DATA: on success
  *   RECEIVE_API_ERROR: on failure
  */
-const fetchDataEpic = (action$, store) => (
+const fetchDataEpic = (action$, state$) => (
   action$.pipe(
     ofType(FETCH_DATA),
     mergeMap(action => (
       sendApiRequest(
-        contentfulClient(store.getState()),
+        contentfulClient(state$.value),
         action.payload,
       ).pipe(
         map(json => receiveData({
@@ -142,12 +135,12 @@ const fetchDataEpic = (action$, store) => (
   )
 );
 
-const fetchAssetsEpic = (action$, store) => (
+const fetchAssetsEpic = (action$, state$) => (
   action$.pipe(
     ofType(FETCH_ASSET),
     mergeMap(action => (
       getAsset(
-        contentfulClient(store.getState()),
+        contentfulClient(state$.value),
         action.payload,
       ).pipe(
         map(json => receiveAsset({ key: action.payload, asset: json })),

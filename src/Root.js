@@ -3,7 +3,7 @@ import Sentry from 'sentry-expo';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
-import { useScreens } from 'react-native-screens';
+// import { useScreens } from 'react-native-screens';
 
 import MainNavigator from './navigation/MainNavigator';
 import { setTopLevelNavigator } from './navigation/NavigationService';
@@ -20,7 +20,9 @@ if (config.sentryPublicDSN) {
   Sentry.config(config.sentryPublicDSN).install();
 }
 
-useScreens();
+// disable react-native-screens until this critical issue is resolved:
+// https://github.com/kmagiera/react-native-screens/issues/61
+// useScreens();
 
 const AppContainer = createAppContainer(MainNavigator);
 
