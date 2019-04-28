@@ -39,7 +39,7 @@ jest.mock('expo', () => {
 
 
 describe('storage reducer', () => {
-  const item = { type: 'blah', id: 'foo' };
+  const item = { type: 'blah', id: 'foo', mediaUrl: 'https://example.com/foo.mp3' };
   const path = getItemDownloadPath(item);
   let store;
 
