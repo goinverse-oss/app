@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
@@ -29,27 +29,16 @@ const MeditationsCategoryScreen = ({
   refreshing,
   refreshMeditations,
 }) => (
-  <ScrollView
-    refreshControl={
-      <RefreshControl
-        refreshing={refreshing}
-        onRefresh={() => refreshMeditations()}
-      />
+  <FlatList
+    style={styles.container}
+    refreshing={refreshing}
+    onRefresh={() => refreshMeditations()}
+    data={meditations}
+    keyExtractor={item => item.id}
+    renderItem={
+      ({ item: meditation }) => <MeditationListCard meditation={meditation} />
     }
-  >
-    <View style={styles.container}>
-      {
-        meditations.map(
-          meditation => (
-            <MeditationListCard
-              key={meditation.id}
-              meditation={meditation}
-            />
-          ),
-        )
-      }
-    </View>
-  </ScrollView>
+  />
 );
 
 MeditationsCategoryScreen.propTypes = {
