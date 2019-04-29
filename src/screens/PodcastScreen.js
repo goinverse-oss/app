@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
@@ -25,27 +25,16 @@ const PodcastScreen = ({
   refreshing,
   refreshPodcastEpisodes,
 }) => (
-  <ScrollView
-    refreshControl={
-      <RefreshControl
-        refreshing={refreshing}
-        onRefresh={() => refreshPodcastEpisodes()}
-      />
+  <FlatList
+    style={styles.container}
+    refreshing={refreshing}
+    onRefresh={() => refreshPodcastEpisodes()}
+    data={episodes}
+    keyExtractor={item => item.id}
+    renderItem={
+      ({ item: episode }) => <PodcastEpisodeListCard episode={episode} />
     }
-  >
-    <View style={styles.container}>
-      {
-        episodes.map(
-          episode => (
-            <PodcastEpisodeListCard
-              key={episode.id}
-              episode={episode}
-            />
-          ),
-        )
-      }
-    </View>
-  </ScrollView>
+  />
 );
 
 PodcastScreen.propTypes = {
