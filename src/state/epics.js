@@ -1,6 +1,7 @@
 import patreonEpic from './ducks/patreon/epic';
 import ormEpic from './ducks/orm/epic';
 import playbackEpic from './ducks/playback/epic';
+import storageEpic from './ducks/storage/epic';
 
 /**
  * All epics should be exported in the array below.
@@ -12,4 +13,5 @@ export default [
   patreonEpic,
   ormEpic,
   playbackEpic,
+  storageEpic,
 ];

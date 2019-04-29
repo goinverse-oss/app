@@ -57,7 +57,7 @@ function formatRemainingTime(duration, elapsed) {
   return `-${formatDuration(remaining)}`;
 }
 
-function renderStatus({ isLoading, isBuffering }) {
+function renderLoadStatus({ isLoading, isBuffering }) {
   if (isLoading) {
     return 'Loading...';
   } else if (isBuffering) {
@@ -66,12 +66,28 @@ function renderStatus({ isLoading, isBuffering }) {
   return '';
 }
 
+function renderBufferProgress({ playableDurationMillis, durationMillis }) {
+  if (playableDurationMillis && durationMillis) {
+    const percent = (playableDurationMillis / durationMillis) * 100;
+    return `Buffered ${Math.floor(percent)}%`;
+  }
+  return '';
+}
+
+function renderStatus(status) {
+  const loadStatus = renderLoadStatus(status);
+  const bufferStatus = renderBufferProgress(status);
+  if (loadStatus.length > 0) {
+    return `${loadStatus}... ${bufferStatus}`;
+  }
+  return bufferStatus;
+}
+
 const AudioTimeline = ({
   style,
   duration,
   elapsed,
-  isLoading,
-  isBuffering,
+  status,
   seek,
   setPendingSeek,
 }) => (
@@ -80,7 +96,7 @@ const AudioTimeline = ({
       <Text style={[styles.time, styles.elapsedTime]}>
         {formatDuration(elapsed)}
       </Text>
-      <Text style={styles.status}>{renderStatus({ isLoading, isBuffering })}</Text>
+      <Text style={styles.status}>{renderStatus(status)}</Text>
       <Text style={styles.time}>
         {formatRemainingTime(duration, elapsed)}
       </Text>
@@ -103,8 +119,7 @@ AudioTimeline.propTypes = {
   style: ViewPropTypes.style,
   elapsed: momentPropTypes.momentDurationObj.isRequired,
   duration: momentPropTypes.momentDurationObj,
-  isLoading: PropTypes.bool.isRequired,
-  isBuffering: PropTypes.bool.isRequired,
+  status: PropTypes.shape({}),
   seek: PropTypes.func.isRequired,
   setPendingSeek: PropTypes.func.isRequired,
 };
@@ -112,14 +127,14 @@ AudioTimeline.propTypes = {
 AudioTimeline.defaultProps = {
   style: {},
   duration: moment.duration(0),
+  status: {},
 };
 
 function mapStateToProps(state) {
   return {
-    isLoading: selectors.isLoading(state),
-    isBuffering: selectors.isBuffering(state),
     elapsed: moment.duration(selectors.elapsed(state)),
     duration: moment.duration(selectors.duration(state)),
+    status: selectors.getStatus(state),
   };
 }
 

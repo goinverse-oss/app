@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import moment from 'moment';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
@@ -16,7 +15,6 @@ import TagList from '../components/TagList';
 
 import * as playbackActions from '../state/ducks/playback/actions';
 import * as playbackSelectors from '../state/ducks/playback/selectors';
-import { getImageSource } from '../state/ducks/orm/utils';
 
 const padding = 15;
 
@@ -34,22 +32,14 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: '#EDEDED',
-    marginVertical: 25,
+    marginVertical: 15,
   },
 });
 
 const SingleMediaItemScreen = ({ item, elapsed, play }) => (
   <ScrollView style={styles.container}>
     <View style={styles.subContainer}>
-      <PlayableItemHeader
-        coverImageSource={getImageSource(item)}
-        title={item.title}
-        description={item.description}
-        duration={item.duration}
-        elapsed={elapsed}
-        publishedAt={item.publishedAt}
-        onPlay={() => play()}
-      />
+      <PlayableItemHeader item={item} elapsed={elapsed} onPlay={() => play()} />
       <View style={styles.divider} />
       <ItemDescription description={item.description} />
     </View>
@@ -79,9 +69,7 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
   return {
     play: () => {
       dispatch(
-        playbackActions.setPlaying(
-          _.pick(item, ['type', 'id']),
-        ),
+        playbackActions.setPlaying(item),
       );
       navigation.navigate('Player');
     },

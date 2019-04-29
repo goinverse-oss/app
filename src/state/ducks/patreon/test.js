@@ -7,6 +7,7 @@ import configureStore from '../../store';
 import * as actions from './actions';
 import * as selectors from './selectors';
 import epic from './epic';
+import { getStateObservable } from '../testUtils';
 
 import config from '../../../../config.json';
 
@@ -97,7 +98,7 @@ describe('patreon epic', () => {
       store.dispatch(actions.storeToken(patreonAuth));
       patreonMock.reply(200, newPatreonAuth);
 
-      const resultAction = await epic(action$, store).toPromise();
+      const resultAction = await epic(action$, getStateObservable(store)).toPromise();
       expect(resultAction).toEqual(retryAction);
     });
 
@@ -109,12 +110,12 @@ describe('patreon epic', () => {
       store.dispatch(actions.storeToken(patreonAuth));
       patreonMock.reply(401, {});
 
-      const resultAction = await epic(action$, store).toPromise();
+      const resultAction = await epic(action$, getStateObservable(store)).toPromise();
       expect(resultAction).toEqual(errorAction);
     });
 
     test("leads to error action if there's no refresh token", async () => {
-      const resultAction = await epic(action$, store).toPromise();
+      const resultAction = await epic(action$, getStateObservable(store)).toPromise();
       expect(resultAction).toEqual(errorAction);
     });
   });

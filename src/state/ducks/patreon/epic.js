@@ -1,6 +1,6 @@
 import { ofType, combineEpics } from 'redux-observable';
 
-import { Observable } from 'rxjs/Observable';
+import { of, from, never } from 'rxjs';
 import {
   switchMap,
   map,
@@ -50,7 +50,7 @@ function getPatreonToken() {
     `&state=${csrfToken}`
   );
   const validateUrl = `${config.apiBaseUrl}/patreon/validate`;
-  return Observable.fromPromise(
+  return from(
     AuthSession.startAsync({ authUrl })
       .then((result) => {
         if (
@@ -83,7 +83,7 @@ function getPatreonToken() {
 }
 
 function getPatreonDetails(token) {
-  return Observable.fromPromise(
+  return from(
     axios.get(
       'https://www.patreon.com/api/oauth2/api/current_user',
       {
@@ -100,7 +100,7 @@ function getPatreonDetails(token) {
 }
 
 function refreshPatreonAccessToken(refreshToken) {
-  return Observable.fromPromise(
+  return from(
     axios.post(
       `${config.apiBaseUrl}/patreon/validate`,
       qs.stringify({
@@ -117,7 +117,7 @@ function catchApiError(retryAction) {
     const errorAction = actions.storeError(e);
 
     if (retryAction && e.response.status === 401) {
-      return Observable.of(
+      return of(
         actions.refreshAccessToken({
           retryAction,
           errorAction,
@@ -126,7 +126,7 @@ function catchApiError(retryAction) {
     }
 
     showError(e);
-    return Observable.of(errorAction);
+    return of(errorAction);
   });
 }
 
@@ -155,27 +155,27 @@ const connectPatreonEpic = action$ =>
     )),
   );
 
-const getPatreonDetailsEpic = (action$, store) =>
+const getPatreonDetailsEpic = (action$, state$) =>
   action$.pipe(
     ofType(GET_DETAILS),
     switchMap((action) => {
-      const token = selectors.token(store.getState());
+      const token = selectors.token(state$.value);
       if (token) {
         return getPatreonDetails(token).pipe(
           map(details => actions.storeDetails(details)),
           catchApiError(action),
         );
       }
-      return Observable.never();
+      return never();
     }),
   );
 
-const refreshPatreonTokenEpic = (action$, store) =>
+const refreshPatreonTokenEpic = (action$, state$) =>
   action$.pipe(
     ofType(REFRESH_ACCESS_TOKEN),
     switchMap((action) => {
       const { retryAction, errorAction } = action.payload;
-      const refreshToken = selectors.refreshToken(store.getState());
+      const refreshToken = selectors.refreshToken(state$.value);
       if (refreshToken) {
         return refreshPatreonAccessToken(refreshToken).pipe(
           flatMap(tokenData => ([
@@ -185,11 +185,11 @@ const refreshPatreonTokenEpic = (action$, store) =>
           catchError(() => {
             // TODO: report refresh error to Sentry? This is weird Patreon behavior.
             showError(errorAction.payload);
-            return Observable.of(errorAction);
+            return of(errorAction);
           }),
         );
       }
-      return Observable.of(errorAction);
+      return of(errorAction);
     }),
   );
 

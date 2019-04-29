@@ -231,9 +231,7 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
   return {
     openPlayer: () => {
       dispatch(
-        actions.setPlaying(
-          _.pick(item, ['type', 'id']),
-        ),
+        actions.setPlaying(item),
       );
       navigation.navigate('Player');
     },
