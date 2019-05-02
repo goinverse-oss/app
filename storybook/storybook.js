@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { getStorybookUI, configure } from '@storybook/react-native';
 
 import { loadStories } from './storyLoader';
@@ -23,6 +23,8 @@ const StorybookNavigator = createSwitchNavigator({
   Storybook: { screen: StorybookScreen },
 });
 
+const StorybookContainer = createAppContainer(StorybookNavigator);
+
 // This assumes that storybook is running on the same host as your RN packager,
 // to set manually use, e.g. host: 'localhost' option
 const StorybookUIRoot = getStorybookUI({ port: 7007, onDeviceUI: true });
@@ -33,7 +35,7 @@ const StorybookUIRoot = getStorybookUI({ port: 7007, onDeviceUI: true });
 class StorybookUIHMRRoot extends Component {
   render() {
     return (
-      <StorybookNavigator />
+      <StorybookContainer />
     );
   }
 }
