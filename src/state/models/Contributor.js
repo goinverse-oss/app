@@ -10,8 +10,12 @@ Contributor.modelName = 'Contributor';
 
 Contributor.fields = {
   name: attr(),
-  url: attr(),
+  title: attr(),
+  organization: attr(),
+  bio: attr(),
+  website: attr(),
   imageUrl: attr(),
+  image: attr(),
   twitter: attr(),
   facebook: attr(),
   createdAt: attr(),
@@ -20,8 +24,12 @@ Contributor.fields = {
 
 Contributor.propTypes = {
   name: PropTypes.string,
-  url: PropTypes.string,
+  title: PropTypes.string,
+  organization: PropTypes.string,
+  bio: PropTypes.string,
+  website: PropTypes.string,
   imageUrl: PropTypes.string,
+  image: PropTypes.string,
   twitter: PropTypes.string,
   facebook: PropTypes.string,
   createdAt: PropTypes.string,

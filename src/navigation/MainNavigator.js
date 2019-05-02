@@ -16,6 +16,8 @@ import SinglePodcastEpisodeScreen from '../screens/SinglePodcastEpisodeScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
 import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
 import SingleMeditationScreen from '../screens/SingleMeditationScreen';
+import ContributorScreen from '../screens/ContributorScreen';
+import SearchResultsScreen from '../screens/SearchResultsScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 import PodcastsIcon from '../screens/PodcastsIcon';
@@ -37,11 +39,9 @@ const PodcastsNavigator = createStackNavigator({
   Podcasts: PodcastsScreen,
   Podcast: PodcastScreen,
   SinglePodcastEpisode: SinglePodcastEpisodeScreen,
-}, {
-  navigationOptions: {
-    tabBarIcon: MeditationsIcon,
-  },
-});
+  Contributor: ContributorScreen,
+  SearchResults: SearchResultsScreen,
+}, {});
 
 PodcastsNavigator.navigationOptions = {
   tabBarIcon: PodcastsIcon,
@@ -51,11 +51,9 @@ const MeditationsNavigator = createStackNavigator({
   AllMeditationCategories: MeditationsScreen,
   MeditationsCategory: MeditationsCategoryScreen,
   SingleMeditation: SingleMeditationScreen,
-}, {
-  navigationOptions: {
-    tabBarIcon: MeditationsIcon,
-  },
-});
+  Contributor: ContributorScreen,
+  SearchResults: SearchResultsScreen,
+}, {});
 
 MeditationsNavigator.navigationOptions = {
   tabBarIcon: MeditationsIcon,

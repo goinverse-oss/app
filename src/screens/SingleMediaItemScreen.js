@@ -36,7 +36,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const SingleMediaItemScreen = ({ item, elapsed, play }) => (
+const SingleMediaItemScreen = ({
+  item, elapsed, play, navigation,
+}) => (
   <ScrollView style={styles.container}>
     <View style={styles.subContainer}>
       <PlayableItemHeader item={item} elapsed={elapsed} onPlay={() => play()} />
@@ -44,7 +46,13 @@ const SingleMediaItemScreen = ({ item, elapsed, play }) => (
       <ItemDescription description={item.description} />
     </View>
     <View style={styles.peopleContainer}>
-      <PersonList people={item.contributors} />
+      <PersonList
+        people={item.contributors}
+        onPressPerson={(person) => {
+          const params = { contributor: person };
+          navigation.navigate({ routeName: 'Contributor', params });
+        }}
+      />
     </View>
     <View style={styles.subContainer}>
       <TagList tags={item.tags} />
@@ -57,6 +65,7 @@ SingleMediaItemScreen.propTypes = {
   item: appPropTypes.mediaItem.isRequired,
   elapsed: momentPropTypes.momentDurationObj.isRequired,
   play: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 function mapStateToProps(state, { item }) {

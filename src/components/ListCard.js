@@ -7,8 +7,6 @@ import Card from './Card';
 const styles = StyleSheet.create({
   card: {
     padding: 10,
-    marginHorizontal: 7,
-    marginVertical: 7,
   },
 });
 

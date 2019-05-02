@@ -15,6 +15,10 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 7,
   },
+  card: {
+    marginHorizontal: 14,
+    marginVertical: 7,
+  },
 });
 
 /**
@@ -32,7 +36,7 @@ const PodcastScreen = ({
     data={episodes}
     keyExtractor={item => item.id}
     renderItem={
-      ({ item: episode }) => <PodcastEpisodeListCard episode={episode} />
+      ({ item: episode }) => <PodcastEpisodeListCard style={styles.card} episode={episode} />
     }
   />
 );
