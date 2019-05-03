@@ -11,6 +11,7 @@ import {
 
 import AppPropTypes from '../propTypes';
 import CircleImage from './CircleImage';
+import { getImageSource } from '../state/ducks/orm/utils';
 
 const shadowRadius = 6;
 
@@ -53,7 +54,7 @@ const PersonCard = ({ person, onPress, style }) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={[styles.card, style]}>
       <CircleImage
-        source={{ uri: person.imageUrl }}
+        source={getImageSource(person)}
         diameter={70}
         style={styles.picture}
       />
