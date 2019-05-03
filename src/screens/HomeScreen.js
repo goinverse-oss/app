@@ -43,9 +43,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: screenRelativeHeight(0.01),
   },
-  mediaType: {
-    backgroundColor: '#797979',
-  },
   title: {
     fontSize: 24,
     fontWeight: '600',
@@ -96,7 +93,7 @@ class HomeScreen extends React.Component {
                   source={getImageSource(item, true)}
                 />
                 <View style={styles.mediaTypeContainer}>
-                  <TextPill style={styles.mediaType}>
+                  <TextPill>
                     {item.type.replace('Episode', '')}
                   </TextPill>
                 </View>
