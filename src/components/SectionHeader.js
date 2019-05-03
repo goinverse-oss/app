@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, ViewPropTypes } from 'react-native';
 
 const styles = StyleSheet.create({
   header: {
@@ -10,14 +10,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const SectionHeader = ({ children }) => (
-  <Text style={styles.header}>
+const SectionHeader = ({ style, children }) => (
+  <Text style={[styles.header, style]}>
     {children}
   </Text>
 );
 
 SectionHeader.propTypes = {
+  style: ViewPropTypes.style,
   children: PropTypes.string.isRequired,
+};
+
+SectionHeader.defaultProps = {
+  style: {},
 };
 
 export default SectionHeader;
