@@ -182,6 +182,21 @@ export function collectionSelector(state, type) {
   return collectionSelectors[type](state);
 }
 
+export function filteredCollectionSelector(state, type, filterFunc = () => true) {
+  const modelName = getModelName(type);
+  const selector = createSelector(
+    orm,
+    dbStateSelector,
+    session => session[modelName].all()
+      .orderBy(...modelOrderArgs[modelName])
+      .toModelArray()
+      .filter(filterFunc)
+      .map(modelToObject[modelName])
+      .map(obj => ({ ...obj, type })),
+  );
+  return selector;
+}
+
 export function instanceSelector(state, type, id) {
   return instanceSelectors[type](state, id);
 }

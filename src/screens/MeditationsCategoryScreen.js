@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 7,
   },
+  card: {
+    marginHorizontal: 14,
+    marginVertical: 7,
+  },
 });
 
 /**
@@ -36,7 +40,7 @@ const MeditationsCategoryScreen = ({
     data={meditations}
     keyExtractor={item => item.id}
     renderItem={
-      ({ item: meditation }) => <MeditationListCard meditation={meditation} />
+      ({ item: meditation }) => <MeditationListCard style={styles.card} meditation={meditation} />
     }
   />
 );

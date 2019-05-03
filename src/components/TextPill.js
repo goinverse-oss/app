@@ -10,14 +10,17 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#D2D2D2',
+    backgroundColor: '#797979',
     borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     color: '#FFFFFF',
     fontSize: 10,
+    fontWeight: '500',
   },
 });
 
