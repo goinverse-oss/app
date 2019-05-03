@@ -5,6 +5,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import AppPropTypes from '../propTypes';
 import PersonCard from './PersonCard';
 import SectionHeader from './SectionHeader';
+import TextPill from './TextPill';
 
 const styles = StyleSheet.create({
   list: {
@@ -13,6 +14,12 @@ const styles = StyleSheet.create({
   },
   card: {
     marginHorizontal: 5,
+  },
+  header: {
+    flexDirection: 'row',
+  },
+  headerText: {
+    marginRight: 6,
   },
 
   // pad the end of the list, inside the ScrollView,
@@ -26,7 +33,10 @@ const styles = StyleSheet.create({
 
 const PersonList = ({ people, onPressPerson }) => (
   <View>
-    <SectionHeader>People</SectionHeader>
+    <View style={styles.header}>
+      <SectionHeader style={styles.headerText}>People</SectionHeader>
+      <TextPill>{`${people.length}`}</TextPill>
+    </View>
     <ScrollView horizontal style={styles.list}>
       {people.map(person => (
         <PersonCard
