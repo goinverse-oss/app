@@ -9,9 +9,11 @@ import Contributor from '../../state/models/Contributor';
 import { getTitle } from '../SearchResultsScreen';
 import { filteredCollectionSelector } from '../../state/ducks/orm/selectors';
 import TextPill from '../../components/TextPill';
-import PlayableListCard from '../../components/PlayableListCard';
 import { screenRelativeWidth } from '../../components/utils';
 import appPropTypes from '../../propTypes';
+import PodcastEpisodeListCard from '../../components/PodcastEpisodeListCard';
+import MeditationListCard from '../../components/MeditationListCard';
+import LiturgyItemListCard from '../../components/LiturgyItemListCard';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,35 +54,56 @@ const styles = StyleSheet.create({
 const typeTitles = {
   podcastEpisode: 'Podcasts',
   meditation: 'Meditations',
+  liturgyItem: 'Liturgies',
+};
+
+const listCardTypes = {
+  podcastEpisode: PodcastEpisodeListCard,
+  meditation: MeditationListCard,
+  liturgyItem: props => (
+    <LiturgyItemListCard
+      {...props}
+      renderDescription={item => `from the "${item.liturgy.title}" liturgy`}
+    />
+  ),
 };
 
 const maxEntries = 3;
 
 const Contributions = ({
   style, type, contributor, items, viewAll,
-}) => (
-  <View style={[styles.container, style]}>
-    <View style={styles.titleContainer}>
-      <Text style={styles.title}>{typeTitles[type]}</Text>
-      <TextPill>{`${items.length}`}</TextPill>
+}) => {
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <View style={[styles.container, style]}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{typeTitles[type]}</Text>
+        <TextPill>{`${items.length}`}</TextPill>
+      </View>
+      <View style={styles.items}>
+        {
+          items.slice(0, maxEntries).map(
+            (item) => {
+              const ItemListCard = listCardTypes[item.type];
+              return <ItemListCard key={item.id} style={styles.card} item={item} />;
+            },
+          )
+        }
+      </View>
+      <Button
+        style={styles.button}
+        onPress={() => viewAll()}
+      >
+        <Text style={styles.buttonText}>
+          {`View All ${getTitle({ type, contributor })}`}
+        </Text>
+      </Button>
     </View>
-    <View style={styles.items}>
-      {
-        items.slice(0, maxEntries).map(
-          item => <PlayableListCard key={item.id} style={styles.card} item={item} />,
-        )
-      }
-    </View>
-    <Button
-      style={styles.button}
-      onPress={() => viewAll()}
-    >
-      <Text style={styles.buttonText}>
-        {`View All ${getTitle({ type, contributor })}`}
-      </Text>
-    </Button>
-  </View>
-);
+  );
+};
 
 Contributions.propTypes = {
   // contributor is used in mapStateToProps, but not directly in rendering.

@@ -6,7 +6,6 @@ import { ScrollView, RefreshControl } from 'react-native';
 import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import PodcastSeriesList from '../components/PodcastSeriesList';
-import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import Podcast from '../state/models/Podcast';
 import { fetchData } from '../state/ducks/orm';
 import {
@@ -62,7 +61,6 @@ PodcastsScreen.defaultProps = {
 function mapStateToProps(state) {
   return {
     podcasts: podcastsSelector(state),
-    isPatron: patreonSelectors.isPatron(state),
     refreshing: apiLoadingSelector(state, 'podcasts'),
   };
 }

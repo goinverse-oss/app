@@ -6,7 +6,6 @@ import { FlatList, StyleSheet } from 'react-native';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import PodcastEpisodeListCard from '../components/PodcastEpisodeListCard';
-import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import PodcastEpisode from '../state/models/PodcastEpisode';
 import { podcastSelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
@@ -36,7 +35,7 @@ const PodcastScreen = ({
     data={episodes}
     keyExtractor={item => item.id}
     renderItem={
-      ({ item: episode }) => <PodcastEpisodeListCard style={styles.card} episode={episode} />
+      ({ item }) => <PodcastEpisodeListCard style={styles.card} item={item} />
     }
   />
 );
@@ -58,7 +57,6 @@ function mapStateToProps(state, { navigation }) {
   const { episodes } = podcastSelector(state, podcast.id);
   return {
     episodes,
-    isPatron: patreonSelectors.isPatron(state),
     refreshing: (
       apiLoadingSelector(state, 'podcastEpisodes')
     ),

@@ -5,6 +5,8 @@ import MeditationCategory from './MeditationCategory';
 import Podcast from './Podcast';
 import PodcastEpisode from './PodcastEpisode';
 import PodcastSeason from './PodcastSeason';
+import Liturgy from './Liturgy';
+import LiturgyItem from './LiturgyItem';
 
 export default {
   Tag,
@@ -14,4 +16,6 @@ export default {
   Podcast,
   PodcastEpisode,
   PodcastSeason,
+  Liturgy,
+  LiturgyItem,
 };

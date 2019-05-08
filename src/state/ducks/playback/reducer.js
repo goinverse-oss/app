@@ -16,7 +16,7 @@ import {
 /* playback reducer state shape:
 {
   // current item playing, if any
-  item: PodcastEpisode|Meditation,
+  item: PodcastEpisode|Meditation|LiturgyItem,
 
   // true iff playback is paused
   paused: boolean,

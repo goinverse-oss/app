@@ -26,7 +26,7 @@ const migrations = {
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['auth', 'playback'],
+  blacklist: ['orm', 'auth', 'playback'],
   version: 0,
   migrate: createMigrate(migrations),
 };

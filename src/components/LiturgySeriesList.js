@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import AppPropTypes from '../propTypes';
 import LiturgySeriesTile from './LiturgySeriesTile';
+import Liturgy from '../state/models/Liturgy';
 
 const styles = StyleSheet.create({
   list: {
@@ -28,8 +28,11 @@ const LiturgySeriesList = ({ liturgies, onPressLiturgy }) =>
       </View>
     </ScrollView>
   );
+
 LiturgySeriesList.propTypes = {
-  liturgies: PropTypes.arrayOf(AppPropTypes.liturgy),
+  liturgies: PropTypes.arrayOf(
+    PropTypes.shape(Liturgy.propTypes),
+  ),
   onPressLiturgy: PropTypes.func,
 };
 

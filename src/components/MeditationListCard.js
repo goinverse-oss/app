@@ -4,15 +4,15 @@ import PlayableListCard from './PlayableListCard';
 
 import Meditation from '../state/models/Meditation';
 
-const MeditationListCard = ({ meditation, ...props }) => (
+const MeditationListCard = ({ item, ...props }) => (
   <PlayableListCard
-    item={meditation}
+    item={item}
     {...props}
   />
 );
 
 MeditationListCard.propTypes = {
-  meditation: PropTypes.shape(Meditation.propTypes).isRequired,
+  item: PropTypes.shape(Meditation.propTypes).isRequired,
 };
 
 export default MeditationListCard;

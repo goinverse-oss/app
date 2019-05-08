@@ -5,6 +5,7 @@ import { Image } from 'react-native';
 
 import Meditation from './state/models/Meditation';
 import PodcastEpisode from './state/models/PodcastEpisode';
+import Liturgy from './state/models/Liturgy';
 
 const imageSource = Image.propTypes.source;
 
@@ -20,8 +21,7 @@ export default {
   }),
 
   mediaItem: PropTypes.oneOfType(
-    // TODO: other models
-    [Meditation, PodcastEpisode].map(
+    [Meditation, PodcastEpisode, Liturgy].map(
       Model => PropTypes.shape(Model.propTypes).isRequired,
     ),
   ),

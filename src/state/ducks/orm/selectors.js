@@ -104,6 +104,27 @@ const modelToObject = {
         ),
     },
   }),
+  Liturgy: liturgy => ({
+    ...liturgy.ref,
+    ...{
+      tags: liturgy.tags.toRefArray(),
+      contributors: liturgy.contributors.toRefArray(),
+      items: liturgy.items
+        .orderBy('track', 'asc')
+        .toModelArray()
+        .map(modelToObject.LiturgyItem),
+    },
+  }),
+  LiturgyItem: liturgyItem => ({
+    type: 'liturgyItem',
+    ...liturgyItem.ref, // attributes
+    ...{
+      // relationships
+      liturgy: _.get(liturgyItem, 'liturgy.ref'),
+      contributors: liturgyItem.contributors.toRefArray(),
+      tags: liturgyItem.tags.toRefArray(),
+    },
+  }),
   Contributor: contributor => ({
     ...contributor.ref,
   }),
@@ -112,15 +133,34 @@ const modelToObject = {
   }),
 };
 
-const modelOrderArgs = {
-  Meditation: [['publishedAt', 'title'], ['desc', 'asc']],
-  MeditationCategory: ['title'],
-  Podcast: ['title'],
-  PodcastEpisode: [['publishedAt', 'title'], ['desc', 'asc']],
-  PodcastSeason: ['title'],
-  Contributor: ['name'],
-  Tag: ['name'],
-};
+function getOrderBy(session, modelName) {
+  const modelOrderArgs = {
+    Meditation: [['publishedAt', 'title'], ['desc', 'asc']],
+    MeditationCategory: ['title'],
+    Podcast: ['title'],
+    PodcastEpisode: [['publishedAt', 'title'], ['desc', 'asc']],
+    PodcastSeason: ['title'],
+    Liturgy: [['publishedAt', 'title'], ['desc', 'asc']],
+    LiturgyItem: [
+      [
+        (item) => {
+          const liturgy = session.Liturgy.withId(item.liturgy);
+          return liturgy.publishedAt;
+        },
+        'track',
+        'title',
+      ], [
+        'desc',
+        'asc',
+        'asc',
+      ],
+    ],
+    Contributor: ['name'],
+    Tag: ['name'],
+  };
+
+  return modelOrderArgs[modelName];
+}
 
 const collectionSelectors = {};
 const instanceSelectors = {};
@@ -131,7 +171,7 @@ function createCollectionSelector(type) {
     orm,
     dbStateSelector,
     session => session[modelName].all()
-      .orderBy(...modelOrderArgs[modelName])
+      .orderBy(...getOrderBy(session, modelName))
       .toModelArray()
       .map(modelToObject[modelName])
       .map(obj => ({ ...obj, type })),
@@ -167,6 +207,8 @@ export const meditationCategoriesSelector = createCollectionSelector('meditation
 export const podcastsSelector = createCollectionSelector('podcast');
 export const podcastEpisodesSelector = createCollectionSelector('podcastEpisode');
 export const podcastSeasonsSelector = createCollectionSelector('podcastSeason');
+export const liturgiesSelector = createCollectionSelector('liturgy');
+export const liturgyItemsSelector = createCollectionSelector('liturgyItem');
 export const contributorsSelector = createCollectionSelector('contributor');
 export const tagsSelector = createCollectionSelector('tag');
 
@@ -175,6 +217,8 @@ export const meditationCategorySelector = createInstanceSelector('meditationCate
 export const podcastSelector = createInstanceSelector('podcast');
 export const podcastEpisodeSelector = createInstanceSelector('podcastEpisode');
 export const podcastSeasonSelector = createInstanceSelector('podcastSeason');
+export const liturgySelector = createInstanceSelector('liturgy');
+export const liturgyItemSelector = createInstanceSelector('liturgyItem');
 export const contributorSelector = createInstanceSelector('contributor');
 export const tagSelector = createInstanceSelector('tag');
 
@@ -188,7 +232,7 @@ export function filteredCollectionSelector(state, type, filterFunc = () => true)
     orm,
     dbStateSelector,
     session => session[modelName].all()
-      .orderBy(...modelOrderArgs[modelName])
+      .orderBy(...getOrderBy(session, modelName))
       .toModelArray()
       .filter(filterFunc)
       .map(modelToObject[modelName])
@@ -222,7 +266,19 @@ export const recentMediaItemsSelector = createSelector(
         .map(obj => ({ ...obj, type: 'meditation' }))
         .slice(0, limit)
     );
-    const items = podcastEpisodes.concat(meditations);
+
+    // Liturgies are published as a bunch of `liturgyItem`s at once,
+    // so in the home screen view, show the liturgy rather than
+    // the items.
+    const liturgies = (
+      session.Liturgy.all()
+        .orderBy('publishedAt', 'desc')
+        .toModelArray()
+        .map(modelToObject.Liturgy)
+        .map(obj => ({ ...obj, type: 'liturgy' }))
+        .slice(0, limit)
+    );
+    const items = podcastEpisodes.concat(meditations).concat(liturgies);
     return items.sort((a, b) => (
       moment(b.publishedAt) - moment(a.publishedAt)
     )).slice(0, limit);

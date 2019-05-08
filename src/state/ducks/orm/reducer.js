@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
+import { persistReducer, createMigrate } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
 
 import orm from '../../orm';
 
@@ -26,8 +28,26 @@ function getTimestamps(modelName, entry) {
   return timestamps;
 }
 
-export default combineReducers({
-  reduxOrm: handleActions({
+const migrations = {
+  // reset the previous state to work around the temporary state
+  // where liturgy-related keys don't get merged properly.
+  0: () => ({
+    ...defaultORMState,
+  }),
+};
+
+// Use a separate persisted reducer here so that
+// merges happen at this level, allowing us to add new fields
+// without the empty-table state getting blown away by
+// the PERSIST action.
+const reduxOrmReducer = persistReducer(
+  {
+    key: 'reduxOrm',
+    storage,
+    version: 0,
+    migrate: createMigrate(migrations),
+  },
+  handleActions({
     [RECEIVE_DATA]: (state, action) => {
       const session = orm.session(state);
 
@@ -95,29 +115,40 @@ export default combineReducers({
       return session.state;
     },
   }, defaultORMState),
+);
 
-  assets: handleActions({
-    [RECEIVE_ASSET]: (state, action) => ({
-      ...state,
-      [action.payload.key]: action.payload.asset,
-    }),
-  }, defaultAssetsState),
+export default persistReducer(
+  {
+    key: 'orm',
+    storage,
+    blacklist: ['reduxOrm'],
+  },
+  combineReducers({
+    reduxOrm: reduxOrmReducer,
 
-  api: handleActions({
-    [FETCH_DATA]: (state, action) => ({
-      loading: {
-        ...state.loading,
-        [action.payload.resource]: true,
-      },
-    }),
-    [RECEIVE_DATA]: (state, action) => ({
-      loading: {
-        ...state.loading,
-        [action.payload.resource]: false,
-      },
-    }),
-    [RECEIVE_API_ERROR]: (state, action) => ({
-      error: action.payload.error,
-    }),
-  }, defaultAPIState),
-});
+    assets: handleActions({
+      [RECEIVE_ASSET]: (state, action) => ({
+        ...state,
+        [action.payload.key]: action.payload.asset,
+      }),
+    }, defaultAssetsState),
+
+    api: handleActions({
+      [FETCH_DATA]: (state, action) => ({
+        loading: {
+          ...state.loading,
+          [action.payload.resource]: true,
+        },
+      }),
+      [RECEIVE_DATA]: (state, action) => ({
+        loading: {
+          ...state.loading,
+          [action.payload.resource]: false,
+        },
+      }),
+      [RECEIVE_API_ERROR]: (state, action) => ({
+        error: action.payload.error,
+      }),
+    }, defaultAPIState),
+  }),
+);

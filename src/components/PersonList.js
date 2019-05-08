@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ScrollView, StyleSheet } from 'react-native';
 
-import AppPropTypes from '../propTypes';
 import PersonCard from './PersonCard';
 import SectionHeader from './SectionHeader';
 import TextPill from './TextPill';
+import Contributor from '../state/models/Contributor';
 
 const styles = StyleSheet.create({
   list: {
@@ -52,7 +52,9 @@ const PersonList = ({ people, onPressPerson }) => (
 );
 
 PersonList.propTypes = {
-  people: PropTypes.arrayOf(AppPropTypes.person),
+  people: PropTypes.arrayOf(
+    PropTypes.shape(Contributor.propTypes),
+  ),
   onPressPerson: PropTypes.func,
 };
 

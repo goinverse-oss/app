@@ -43,7 +43,7 @@ const SingleMediaItemScreen = ({
     <View style={styles.subContainer}>
       <PlayableItemHeader item={item} elapsed={elapsed} onPlay={() => play()} />
       <View style={styles.divider} />
-      <ItemDescription description={item.description} />
+      <ItemDescription item={item} />
     </View>
     <View style={styles.peopleContainer}>
       <PersonList

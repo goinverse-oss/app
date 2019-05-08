@@ -6,7 +6,7 @@ import * as types from './types';
 /**
  * Set the provided item to be playing.
  *
- * @param {PodcastEpisode|Meditation} item media item to play
+ * @param {PodcastEpisode|Meditation|LiturgyItem} item media item to play
  * @param {bool} shouldPlay if true (default), playback will start immediately
  */
 export const setPlaying = createAction(
