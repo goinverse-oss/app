@@ -3,6 +3,7 @@ import Sentry from 'sentry-expo';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
+import { AppLoading } from 'expo';
 // import { useScreens } from 'react-native-screens';
 
 import MainNavigator from './navigation/MainNavigator';
@@ -45,7 +46,7 @@ const { store, persistor } = configureStore();
  */
 const Root = () => (
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+    <PersistGate loading={<AppLoading />} persistor={persistor}>
       <App />
     </PersistGate>
   </Provider>
