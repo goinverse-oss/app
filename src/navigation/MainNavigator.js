@@ -16,11 +16,15 @@ import SinglePodcastEpisodeScreen from '../screens/SinglePodcastEpisodeScreen';
 import MeditationsScreen from '../screens/MeditationsScreen';
 import MeditationsCategoryScreen from '../screens/MeditationsCategoryScreen';
 import SingleMeditationScreen from '../screens/SingleMeditationScreen';
+import LiturgiesScreen from '../screens/LiturgiesScreen';
+import LiturgyScreen from '../screens/LiturgyScreen';
+import SingleLiturgyItemScreen from '../screens/SingleLiturgyItemScreen';
 import ContributorScreen from '../screens/ContributorScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 import PodcastsIcon from '../screens/PodcastsIcon';
+import LiturgiesIcon from '../screens/LiturgiesIcon';
 import HomeIcon from '../screens/HomeIcon';
 
 import { setDropdown } from '../showError';
@@ -59,6 +63,18 @@ MeditationsNavigator.navigationOptions = {
   tabBarIcon: MeditationsIcon,
 };
 
+const LiturgiesNavigator = createStackNavigator({
+  Liturgies: LiturgiesScreen,
+  Liturgy: LiturgyScreen,
+  SingleLiturgyItem: SingleLiturgyItemScreen,
+  Contributor: ContributorScreen,
+  SearchResults: SearchResultsScreen,
+}, {});
+
+LiturgiesNavigator.navigationOptions = {
+  tabBarIcon: LiturgiesIcon,
+};
+
 const TabBar = props => (
   <View>
     <PlayerStrip navigation={props.navigation} />
@@ -70,6 +86,7 @@ const Tabs = createBottomTabNavigator({
   Home: { screen: HomeNavigator },
   Podcasts: { screen: PodcastsNavigator },
   Meditations: { screen: MeditationsNavigator },
+  Liturgies: { screen: LiturgiesNavigator },
 }, {
   tabBarComponent: TabBar,
   tabBarOptions: {

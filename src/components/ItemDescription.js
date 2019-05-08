@@ -9,29 +9,38 @@ import { AllHtmlEntities } from 'html-entities';
 import isHtml from 'is-html';
 
 import SectionHeader from './SectionHeader';
+import appPropTypes from '../propTypes';
 
 const md = new Remarkable('commonmark');
 const entities = new AllHtmlEntities();
 
-export function renderDescription(description) {
+export function renderDescription(item) {
+  const { description } = item;
   if (isHtml(description)) {
     return entities.decode(description);
   }
   return md.render(description);
 }
 
-const ItemDescription = ({ description, label }) => (
-  <View>
-    <SectionHeader>{label}</SectionHeader>
-    <HTML
-      html={renderDescription(description)}
-      onLinkPress={(evt, href) => WebBrowser.openBrowserAsync(href)}
-    />
-  </View>
-);
+const ItemDescription = ({ item, label }) => {
+  const description = renderDescription(item);
+  return (
+    <View>
+      <SectionHeader>{label}</SectionHeader>
+      {description
+        ? (
+          <HTML
+            html={description}
+            onLinkPress={(evt, href) => WebBrowser.openBrowserAsync(href)}
+          />
+        ) : null
+      }
+    </View>
+  );
+};
 
 ItemDescription.propTypes = {
-  description: PropTypes.string.isRequired,
+  item: appPropTypes.mediaItem.isRequired,
   label: PropTypes.string,
 };
 

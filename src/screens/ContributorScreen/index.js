@@ -79,6 +79,7 @@ const ContributorScreen = ({ contributor }) => (
     <View style={styles.contributionsContainer}>
       <Contributions type="podcastEpisode" contributor={contributor} />
       <Contributions type="meditation" contributor={contributor} />
+      <Contributions type="liturgyItem" contributor={contributor} />
     </View>
   </ScrollView>
 );

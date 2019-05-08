@@ -6,10 +6,12 @@ import pluralize from 'pluralize';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
-import PlayableListCard from '../components/PlayableListCard';
 import { filteredCollectionSelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
 import { fetchData } from '../state/ducks/orm';
 import appPropTypes from '../propTypes';
+import PodcastEpisodeListCard from '../components/PodcastEpisodeListCard';
+import MeditationListCard from '../components/MeditationListCard';
+import LiturgyItemListCard from '../components/LiturgyItemListCard';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +22,12 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
 });
+
+const listCardTypes = {
+  podcastEpisode: PodcastEpisodeListCard,
+  meditation: MeditationListCard,
+  liturgyItem: LiturgyItemListCard,
+};
 
 /**
  * List of episodes in podcast, sorted by publish date.
@@ -36,7 +44,10 @@ const SearchResultsScreen = ({
     data={items}
     keyExtractor={item => item.id}
     renderItem={
-      ({ item }) => <PlayableListCard style={styles.card} item={item} />
+      ({ item }) => {
+        const ItemListCard = listCardTypes[item.type];
+        return <ItemListCard key={item.id} style={styles.card} item={item} />;
+      }
     }
   />
 );
@@ -90,6 +101,7 @@ export function getTitle({ type, contributor }) {
   const title = {
     podcastEpisode: 'Podcasts',
     meditation: 'Meditations',
+    liturgyItem: 'Liturgies',
   }[type];
   const firstName = contributor.name.split(' ')[0];
   return `${title} with ${firstName}`;

@@ -16,13 +16,13 @@ import pluralize from 'pluralize';
 import ListCard from './ListCard';
 import SquareImage from './SquareImage';
 import TextPill from './TextPill';
-import { renderDescription } from './ItemDescription';
-import { formatFooter, formatMinutesString } from './utils';
+import * as ItemDescription from './ItemDescription';
+import { formatFooter, formatMinutesString, formatHumanizeFromNow } from './utils';
 import * as navActions from '../navigation/actions';
 
 import appPropTypes from '../propTypes';
 import * as actions from '../state/ducks/playback/actions';
-import { getImageSource } from '../state/ducks/orm/utils';
+import { getImageSource, getPublishedAt } from '../state/ducks/orm/utils';
 
 
 const styles = StyleSheet.create({
@@ -129,7 +129,10 @@ function stripTags(html) {
 
 const PlayableListCard = ({
   style,
+  formatTitle,
   formatDuration,
+  formatPublishedAt,
+  renderDescription,
   isSearchResult,
   navigation,
   item,
@@ -162,13 +165,18 @@ const PlayableListCard = ({
         <View style={styles.searchHeader}>
           <TextPill style={styles.mediaType}>{pluralize.singular(item.type)}</TextPill>
           <Text style={styles.times}>
-            {formatFooter({ ...item, elapsed, formatDuration })}
+            {formatFooter({
+              duration: item.duration,
+              publishedAt: getPublishedAt(item),
+              elapsed,
+              formatDuration,
+            })}
           </Text>
         </View>
       ) : null}
       <View style={styles.textContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
+          <Text style={styles.title} numberOfLines={1}>{formatTitle(item)}</Text>
           {
             item.patronsOnly
               && (
@@ -185,13 +193,19 @@ const PlayableListCard = ({
           ]}
           numberOfLines={2}
         >
-          {stripTags(renderDescription(item.description))}
+          {stripTags(renderDescription(item))}
         </Text>
       </View>
       {isSearchResult ? null : (
         <View style={styles.footer}>
           <Text style={styles.times}>
-            {formatFooter({ ...item, elapsed, formatDuration })}
+            {formatFooter({
+              duration: item.duration,
+              publishedAt: getPublishedAt(item),
+              elapsed,
+              formatDuration,
+              formatPublishedAt,
+             })}
           </Text>
         </View>
       )}
@@ -204,7 +218,9 @@ PlayableListCard.propTypes = {
   navigation: appPropTypes.navigation.isRequired,
   item: appPropTypes.mediaItem.isRequired,
   elapsed: PropTypes.string,
+  formatTitle: PropTypes.func,
   formatDuration: PropTypes.func,
+  renderDescription: PropTypes.func,
   isSearchResult: PropTypes.bool,
   canAccess: PropTypes.bool.isRequired,
   onPlay: PropTypes.func.isRequired,
@@ -214,7 +230,10 @@ PlayableListCard.propTypes = {
 PlayableListCard.defaultProps = {
   style: {},
   elapsed: 'P0D',
+  formatTitle: item => item.title,
   formatDuration: formatMinutesString,
+  formatPublishedAt: formatHumanizeFromNow,
+  renderDescription: ItemDescription.renderDescription,
   isSearchResult: false,
 };
 

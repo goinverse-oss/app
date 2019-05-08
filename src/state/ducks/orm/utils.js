@@ -79,6 +79,8 @@ export function getImageSource(item, large = false) {
     collection = item.category;
   } else if (item.type === 'podcastEpisode') {
     collection = item.podcast;
+  } else if (item.type === 'liturgyItem') {
+    collection = item.liturgy;
   }
 
   if (!collection) {
@@ -95,4 +97,12 @@ export function getMediaSource(item) {
     return { uri };
   }
   return undefined;
+}
+
+export function getPublishedAt(item) {
+  if (item.type === 'liturgyItem') {
+    return item.liturgy.publishedAt;
+  }
+
+  return item.publishedAt;
 }
