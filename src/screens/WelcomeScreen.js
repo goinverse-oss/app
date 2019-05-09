@@ -12,8 +12,10 @@ import mountains from '../../assets/welcome/mountains.png';
 import samplePodcast from '../../assets/welcome/samples/podcast.mp3';
 import sampleMeditation from '../../assets/welcome/samples/meditation.mp3';
 import { screenRelativeWidth, screenRelativeHeight } from '../components/utils';
+import CircleImage from '../components/CircleImage';
 import { PlaybackButton } from './PlayerScreen/Controls';
 import { setShowWelcome } from '../state/ducks/welcome/actions';
+import appPropTypes from '../propTypes';
 
 const styles = StyleSheet.create({
   slide: {
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
   sampleContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 108,
+    height: 130,
   },
   sample: {
     justifyContent: 'center',
@@ -85,6 +87,7 @@ const styles = StyleSheet.create({
 });
 
 const backgroundColor = '#ffffff';
+const placeholderImage = 'https://loremflickr.com/81/81';
 const slides = [
   {
     key: 'podcasts',
@@ -97,6 +100,12 @@ const slides = [
     sample: {
       source: samplePodcast,
       label: 'Listen to a Sample',
+    },
+    testimonial: {
+      image: { uri: `${placeholderImage}?random=1` },
+      name: 'Jenny Veracruz',
+      source: 'Twitter',
+      text: 'This podcast does a great job of discussing the question, “Does God have a penis?” I’m very grateful for angsty theologians.',
     },
     backgroundColor,
   },
@@ -112,6 +121,12 @@ const slides = [
       source: sampleMeditation,
       label: 'Try a Meditation',
     },
+    testimonial: {
+      image: { uri: `${placeholderImage}?random=2` },
+      name: 'Shauna Perry',
+      source: 'Twitter',
+      text: 'The “Names of God” meditation was an incredible experience for me. Thank you.',
+    },
     backgroundColor,
   },
   {
@@ -123,6 +138,12 @@ const slides = [
       width: screenRelativeWidth(1.0),
       height: 168,
       resizeMode: 'cover',
+    },
+    testimonial: {
+      image: { uri: `${placeholderImage}?random=3` },
+      name: 'Cameron Wiley',
+      source: 'Twitter',
+      text: 'I\'ve been messed up by a few episodes, but “God, Our Mother” royally effed me up.',
     },
     backgroundColor,
   },
@@ -212,6 +233,69 @@ Sample.propTypes = {
   }).isRequired,
 };
 
+const testimonialStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  imageContainer: {},
+  image: {
+    borderWidth: 0.25,
+    marginRight: 14,
+  },
+  textContainer: {
+    width: 270,
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 2.5,
+  },
+  name: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#333333',
+    marginRight: 3,
+  },
+  source: {
+    fontSize: 17,
+    color: '#D2D2D2',
+  },
+  text: {
+    fontSize: 13,
+    color: '#797979',
+  },
+});
+
+const Testimonial = ({
+  image, name, source, text,
+}) => (
+  <View style={testimonialStyles.container}>
+    <View style={testimonialStyles.imageContainer}>
+      <CircleImage diameter={62} style={testimonialStyles.image} source={image} />
+    </View>
+    <View style={testimonialStyles.textContainer}>
+      <View style={testimonialStyles.nameContainer}>
+        <Text style={testimonialStyles.name}>
+          {name}
+        </Text>
+        <Text style={testimonialStyles.source}>
+          {`via ${source}`}
+        </Text>
+      </View>
+      <Text style={testimonialStyles.text}>
+        {text}
+      </Text>
+    </View>
+  </View>
+);
+
+Testimonial.propTypes = {
+  image: appPropTypes.imageSource.isRequired,
+  name: PropTypes.string.isRequired,
+  source: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+};
+
 const WelcomeButton = ({ title, onPress }) => (
   <TouchableOpacity onPress={onPress}>
     <View style={styles.welcomeButton}>
@@ -238,6 +322,11 @@ const Slide = ({ item, closeWelcome }) => (
           item.sample && <Sample sample={item.sample} />
         }
       </View>
+      {
+        item.testimonial && (
+          <Testimonial {...item.testimonial} />
+        )
+      }
       {
         item.showContinueButton && (
           <WelcomeButton
