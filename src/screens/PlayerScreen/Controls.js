@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const PlaybackButton = ({
+export const PlaybackButton = ({
   isPaused,
   onPress,
   style,
