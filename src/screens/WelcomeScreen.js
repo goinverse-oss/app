@@ -1,0 +1,282 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AppIntroSlider from 'react-native-app-intro-slider';
+import { connect } from 'react-redux';
+import { Audio } from 'expo';
+
+import headphones from '../../assets/welcome/headphones.png';
+import sun from '../../assets/welcome/sun.png';
+import group from '../../assets/welcome/group.png';
+import mountains from '../../assets/welcome/mountains.png';
+import samplePodcast from '../../assets/welcome/samples/podcast.mp3';
+import sampleMeditation from '../../assets/welcome/samples/meditation.mp3';
+import { screenRelativeWidth, screenRelativeHeight } from '../components/utils';
+import { PlaybackButton } from './PlayerScreen/Controls';
+import { setShowWelcome } from '../state/ducks/welcome/actions';
+
+const styles = StyleSheet.create({
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  slideTop: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: screenRelativeHeight(0.4),
+  },
+  slideBottom: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: screenRelativeHeight(0.4),
+  },
+  image: {
+    resizeMode: 'contain',
+  },
+  title: {
+    color: '#333333',
+    fontSize: 35,
+    marginTop: 35,
+    marginBottom: 14,
+  },
+  text: {
+    color: '#797979',
+    fontSize: 17,
+    marginHorizontal: 44,
+    textAlign: 'center',
+  },
+  sampleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 108,
+  },
+  sample: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sampleText: {
+    color: '#797979',
+  },
+  dot: {
+    backgroundColor: '#D2D2D2',
+  },
+  activeDot: {
+    backgroundColor: '#F95A57',
+  },
+  buttonText: {
+    color: '#D2D2D2',
+    fontSize: 17,
+    fontWeight: '500',
+  },
+  welcomeButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F95A57',
+    width: 176,
+    height: 43,
+    borderRadius: 4,
+  },
+  welcomeButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+});
+
+const backgroundColor = '#ffffff';
+const slides = [
+  {
+    key: 'podcasts',
+    title: 'Thoughtful and Evocative',
+    text: 'The Liturgists host honest, fearless conversations through multiple podcasts exploring the most important topics of our day through science, art, and faith.',
+    image: headphones,
+    imageStyle: {
+      height: 143,
+    },
+    sample: {
+      source: samplePodcast,
+      label: 'Listen to a Sample',
+    },
+    backgroundColor,
+  },
+  {
+    key: 'meditations',
+    title: 'Rejuvenation',
+    text: 'Guided meditations and liturgical art offer grounding and growth, no matter where you are in your spiritual journey.',
+    image: sun,
+    imageStyle: {
+      height: 143,
+    },
+    sample: {
+      source: sampleMeditation,
+      label: 'Try a Meditation',
+    },
+    backgroundColor,
+  },
+  {
+    key: 'community',
+    title: "It's Not Just You",
+    text: 'Online communities and live events offer refuge to folks at the margins of organized religious and spiritual communities.',
+    image: group,
+    imageStyle: {
+      width: screenRelativeWidth(1.0),
+      height: 168,
+      resizeMode: 'cover',
+    },
+    backgroundColor,
+  },
+  {
+    key: 'welcome',
+    title: 'Take the Next Step',
+    text: 'Welcome to The Liturgists.\nTap below to get started.',
+    image: mountains,
+    imageStyle: {
+      height: 93,
+    },
+    showContinueButton: true,
+    backgroundColor,
+  },
+];
+
+class Sample extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      isPaused: true,
+      sound: null,
+    };
+  }
+
+  componentDidMount() {
+    const { sample } = this.props;
+
+    const initialStatus = { positionMillis: 0 };
+    Audio.Sound.createAsync(
+      sample.source,
+      initialStatus,
+      (status) => {
+        if (status.didJustFinish) {
+          const { sound } = this.state;
+          if (sound) {
+            sound.setStatusAsync(initialStatus);
+          }
+          this.setState(() => ({ isPaused: true }));
+        }
+      },
+    ).then(
+      ({ sound, status }) => (
+        this.setState(() => ({ sound, status }))
+      ),
+    );
+  }
+
+  componentWillUnmount() {
+    const { sound } = this.state;
+    sound.setOnPlaybackStatusUpdate(null);
+    sound.stopAsync().then(
+      () => sound.unloadAsync(),
+    );
+  }
+
+  togglePlayback() {
+    const { isPaused, sound } = this.state;
+    const promise = isPaused ? sound.playAsync() : sound.pauseAsync();
+    promise.then(
+      () => this.setState(state => ({ isPaused: !state.isPaused })),
+    );
+  }
+
+  render() {
+    const { sample } = this.props;
+    const { isPaused, sound } = this.state;
+    return (
+      <View style={styles.sample}>
+        <PlaybackButton
+          style={styles.playbackButton}
+          isPaused={isPaused}
+          disabled={!sound}
+          onPress={() => this.togglePlayback()}
+        />
+        <Text style={styles.sampleText}>{sample.label}</Text>
+      </View>
+    );
+  }
+}
+
+Sample.propTypes = {
+  sample: PropTypes.shape({
+    // the "number" is the asset number from a require() of the audio file
+    source: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+const WelcomeButton = ({ title, onPress }) => (
+  <TouchableOpacity onPress={onPress}>
+    <View style={styles.welcomeButton}>
+      <Text style={styles.welcomeButtonText}>{title}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
+WelcomeButton.propTypes = {
+  title: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
+
+const Slide = ({ item, closeWelcome }) => (
+  <View style={styles.slide}>
+    <View style={styles.slideTop}>
+      <Image style={[styles.image, item.imageStyle]} source={item.image} />
+      <Text style={styles.title}>{item.title}</Text>
+    </View>
+    <View style={styles.slideBottom}>
+      <Text style={styles.text}>{item.text}</Text>
+      <View style={styles.sampleContainer}>
+        {
+          item.sample && <Sample sample={item.sample} />
+        }
+      </View>
+      {
+        item.showContinueButton && (
+          <WelcomeButton
+            title="Continue"
+            onPress={() => closeWelcome()}
+          />
+        )
+      }
+    </View>
+  </View>
+);
+
+Slide.propTypes = {
+  item: PropTypes.shape({}).isRequired,
+  closeWelcome: PropTypes.func.isRequired,
+};
+
+const WelcomeScreen = ({ closeWelcome }) => (
+  <AppIntroSlider
+    slides={slides}
+    activeDotStyle={styles.activeDot}
+    dotStyle={styles.dot}
+    buttonTextStyle={styles.buttonText}
+    showSkipButton
+    showPrevButton
+    showDoneButton={false}
+    renderItem={item => <Slide item={item} closeWelcome={closeWelcome} />}
+    onSkip={closeWelcome}
+  />
+);
+
+WelcomeScreen.propTypes = {
+  closeWelcome: PropTypes.func.isRequired,
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    closeWelcome: () => dispatch(setShowWelcome(false)),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(WelcomeScreen);

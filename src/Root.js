@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Sentry from 'sentry-expo';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
 import { AppLoading } from 'expo';
@@ -12,6 +13,8 @@ import configureStore from './state/store';
 import Reactotron from '../reactotron-config';
 
 import config from '../config.json';
+import WelcomeScreen from './screens/WelcomeScreen';
+import { shouldShowWelcome } from './state/ducks/welcome/selectors';
 
 // eslint-disable-next-line
 console.tron = Reactotron;
@@ -29,6 +32,10 @@ const AppContainer = createAppContainer(MainNavigator);
 
 class App extends React.Component {
   render() {
+    if (this.props.showWelcome) {
+      return <WelcomeScreen />;
+    }
+
     return (
       <AppContainer
         ref={navigator => setTopLevelNavigator(navigator)}
@@ -36,6 +43,18 @@ class App extends React.Component {
     );
   }
 }
+
+App.propTypes = {
+  showWelcome: PropTypes.bool.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    showWelcome: shouldShowWelcome(state),
+  };
+}
+
+const ReduxApp = connect(mapStateToProps)(App);
 
 const { store, persistor } = configureStore();
 
@@ -47,7 +66,7 @@ const { store, persistor } = configureStore();
 const Root = () => (
   <Provider store={store}>
     <PersistGate loading={<AppLoading />} persistor={persistor}>
-      <App />
+      <ReduxApp />
     </PersistGate>
   </Provider>
 );
