@@ -1,6 +1,5 @@
 import { Dimensions } from 'react-native';
 import moment from 'moment';
-import _ from 'lodash';
 
 export function formatMinutesString(durationStr, elapsed = moment.duration()) {
   const momentObj = moment.duration(durationStr).subtract(elapsed);
@@ -16,8 +15,8 @@ export function formatHumanizeFromNow(publishedAt) {
 
 export function formatFooter({
   duration,
-  elapsed,
   publishedAt,
+  elapsed,
   formatDuration: _formatDuration,
   formatPublishedAt: _formatPublishedAt,
 }) {
@@ -26,10 +25,16 @@ export function formatFooter({
   const formatDuration = _formatDuration || formatMinutesString;
   const formatPublishedAt = _formatPublishedAt || formatHumanizeFromNow;
   if (duration) {
-    strings.push(formatDuration(duration, moment.duration(elapsed)));
+    const durationStr = formatDuration(duration, moment.duration(elapsed));
+    if (durationStr) {
+      strings.push(durationStr);
+    }
   }
-  if (!_.isUndefined(publishedAt)) {
-    strings.push(formatPublishedAt(publishedAt));
+  if (publishedAt) {
+    const publishedAtStr = formatPublishedAt(publishedAt);
+    if (publishedAtStr) {
+      strings.push(publishedAtStr);
+    }
   }
   return strings.join(separator);
 }

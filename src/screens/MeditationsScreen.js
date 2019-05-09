@@ -6,7 +6,6 @@ import { ScrollView, RefreshControl } from 'react-native';
 import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
-import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import { fetchData, fetchAsset } from '../state/ducks/orm';
 import { ALL_MEDITATIONS_COVER_ART } from '../state/ducks/orm/actions';
 import MeditationCategory from '../state/models/MeditationCategory';
@@ -79,7 +78,6 @@ function mapStateToProps(state) {
     meditations: meditationsSelector(state),
     categories: meditationCategoriesSelector(state),
     allMeditationsCoverArtUrl: assetUrlSelector(state, ALL_MEDITATIONS_COVER_ART),
-    isPatron: patreonSelectors.isPatron(state),
     refreshing: apiLoadingSelector(state, 'meditations'),
   };
 }

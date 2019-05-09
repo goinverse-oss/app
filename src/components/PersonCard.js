@@ -9,8 +9,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
-import AppPropTypes from '../propTypes';
 import CircleImage from './CircleImage';
+import Contributor from '../state/models/Contributor';
 import { getImageSource } from '../state/ducks/orm/utils';
 
 const shadowRadius = 6;
@@ -64,7 +64,7 @@ const PersonCard = ({ person, onPress, style }) => (
 );
 
 PersonCard.propTypes = {
-  person: AppPropTypes.person.isRequired,
+  person: PropTypes.shape(Contributor.propTypes).isRequired,
   onPress: PropTypes.func,
   style: ViewPropTypes.style,
 };

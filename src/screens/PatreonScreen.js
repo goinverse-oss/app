@@ -233,6 +233,7 @@ const PatreonConnectButton = ({
               disconnect();
               fetchData({ resource: 'podcastEpisode' });
               fetchData({ resource: 'meditation' });
+              fetchData({ resource: 'liturgyItem' });
             },
           },
         ],
@@ -269,6 +270,7 @@ const PatreonRefreshButton = ({
         getDetails();
         fetchData({ resource: 'podcastEpisode' });
         fetchData({ resource: 'meditation' });
+        fetchData({ resource: 'liturgyItem' });
       }}
     />
 );

@@ -7,23 +7,23 @@ import PlayableListCard from './PlayableListCard';
 import PodcastEpisode from '../state/models/PodcastEpisode';
 import * as playbackSelectors from '../state/ducks/playback/selectors';
 
-const PodcastEpisodeListCard = ({ episode, elapsed, ...props }) => (
+const PodcastEpisodeListCard = ({ item, elapsed, ...props }) => (
   <PlayableListCard
-    item={episode}
+    item={item}
     elapsed={elapsed}
     {...props}
   />
 );
 
 PodcastEpisodeListCard.propTypes = {
-  episode: PropTypes.shape(
+  item: PropTypes.shape(
     PodcastEpisode.propTypes,
   ).isRequired,
   elapsed: PropTypes.string.isRequired,
 };
 
-function mapStateToProps(state, { episode }) {
-  const { id } = episode;
+function mapStateToProps(state, { item }) {
+  const { id } = item;
   const status = playbackSelectors.getLastStatusForItem(state, id);
   const elapsed = status ? moment.duration(status.positionMillis, 'ms') : moment.duration();
   return {

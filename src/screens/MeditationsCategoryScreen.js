@@ -6,7 +6,6 @@ import { FlatList, StyleSheet } from 'react-native';
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import MeditationListCard from '../components/MeditationListCard';
-import * as patreonSelectors from '../state/ducks/patreon/selectors';
 import Meditation from '../state/models/Meditation';
 import {
   meditationCategorySelector,
@@ -40,7 +39,7 @@ const MeditationsCategoryScreen = ({
     data={meditations}
     keyExtractor={item => item.id}
     renderItem={
-      ({ item: meditation }) => <MeditationListCard style={styles.card} meditation={meditation} />
+      ({ item }) => <MeditationListCard style={styles.card} item={item} />
     }
   />
 );
@@ -66,7 +65,6 @@ function mapStateToProps(state, { navigation }) {
   );
   return {
     meditations,
-    isPatron: patreonSelectors.isPatron(state),
     refreshing: (
       apiLoadingSelector(state, 'meditations') ||
       apiLoadingSelector(state, 'meditationCategories')
