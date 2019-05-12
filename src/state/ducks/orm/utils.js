@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import pluralize, { singular } from 'pluralize';
 
-import placeholderImage from '../../../../assets/footer.png';
+import placeholderImage from '../../../../assets/placeholder.png';
 
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.substr(1);
