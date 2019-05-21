@@ -2,17 +2,10 @@ import _ from 'lodash';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 
 import { CAMPAIGN_URL } from './constants';
-
-export function token(state) {
-  return _.get(state.auth.patreonToken, 'access_token');
-}
-
-export function refreshToken(state) {
-  return _.get(state.auth.patreonToken, 'refresh_token');
-}
+import * as authSelectors from '../auth/selectors';
 
 export function isConnected(state) {
-  return !!token(state);
+  return authSelectors.isAuthenticated(state);
 }
 
 export function getPledge(state) {

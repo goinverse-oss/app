@@ -263,7 +263,7 @@ const PatreonRefreshButton = ({
   getDetails,
   fetchData,
 }) => (
-  isConnected &&
+  isConnected ?
     <PatreonButton
       title="Refresh Patron Status"
       onPress={() => {
@@ -273,6 +273,7 @@ const PatreonRefreshButton = ({
         fetchData({ resource: 'liturgyItem' });
       }}
     />
+    : null
 );
 
 PatreonRefreshButton.propTypes = {

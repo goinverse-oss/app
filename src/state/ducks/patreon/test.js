@@ -1,17 +1,7 @@
-import { ActionsObservable } from 'redux-observable';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-
 import configureStore from '../../store';
 // import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
-import epic from './epic';
-import { getStateObservable } from '../testUtils';
-
-import config from '../../../../config.json';
-
-const mock = new MockAdapter(axios);
 
 /*
  * Reducers are tested by stubbing out the epic with one that does nothing,
@@ -28,7 +18,7 @@ const mock = new MockAdapter(axios);
 
 describe('patreon reducer', () => {
   let store;
-  const token = { access_token: 'foo', refresh_token: 'bar' };
+  const token = { liturgistsToken: 'foo' };
 
   beforeEach(() => {
     ({ store } = configureStore({ noEpic: true }));
@@ -63,60 +53,4 @@ describe('patreon reducer', () => {
 
 describe('patreon epic', () => {
   // TODO: mock patreon auth and test epic
-
-  describe('refreshAccessToken()', () => {
-    const retryAction = { type: 'FOO' };
-    const errorAction = { type: 'BAR' };
-    const action = actions.refreshAccessToken({
-      retryAction,
-      errorAction,
-    });
-    let action$;
-    let store;
-
-    let patreonMock;
-
-    beforeEach(() => {
-      ({ store } = configureStore({ noEpic: true }));
-      action$ = ActionsObservable.of(action);
-      patreonMock = mock.onPost(`${config.apiBaseUrl}/patreon/validate`);
-    });
-
-    afterEach(() => {
-      mock.reset();
-    });
-
-    test('leads to retry action if refresh succeeds', async () => {
-      const patreonAuth = {
-        access_token: 'foo',
-        refresh_token: 'bar',
-      };
-      const newPatreonAuth = {
-        access_token: 'baz',
-        refresh_token: 'quux',
-      };
-      store.dispatch(actions.storeToken(patreonAuth));
-      patreonMock.reply(200, newPatreonAuth);
-
-      const resultAction = await epic(action$, getStateObservable(store)).toPromise();
-      expect(resultAction).toEqual(retryAction);
-    });
-
-    test('leads to error action if refresh fails', async () => {
-      const patreonAuth = {
-        access_token: 'foo',
-        refresh_token: 'bar',
-      };
-      store.dispatch(actions.storeToken(patreonAuth));
-      patreonMock.reply(401, {});
-
-      const resultAction = await epic(action$, getStateObservable(store)).toPromise();
-      expect(resultAction).toEqual(errorAction);
-    });
-
-    test("leads to error action if there's no refresh token", async () => {
-      const resultAction = await epic(action$, getStateObservable(store)).toPromise();
-      expect(resultAction).toEqual(errorAction);
-    });
-  });
 });
