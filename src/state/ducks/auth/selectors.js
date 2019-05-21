@@ -1,3 +1,7 @@
+export function token(state) {
+  return state.auth.liturgistsToken;
+}
+
 export function isAuthenticated(state) {
-  return state.auth.authenticated;
+  return !!token(state);
 }

@@ -25,7 +25,7 @@ export default persistReducer(
   persistConfig,
   handleActions({
     [patreonTypes.STORE_TOKEN]: (state, action) => ({
-      patreonToken: action.payload,
+      ...action.payload,
     }),
     [patreonTypes.DISCONNECT]: () => ({
       patreonToken: null,
