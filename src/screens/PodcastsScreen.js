@@ -60,7 +60,7 @@ PodcastsScreen.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    podcasts: podcastsSelector(state),
+    podcasts: podcastsSelector(state).filter(podcast => podcast.episodes.length > 0),
     refreshing: apiLoadingSelector(state, 'podcasts'),
   };
 }
