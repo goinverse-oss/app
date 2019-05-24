@@ -1,5 +1,6 @@
 import { ofType, combineEpics } from 'redux-observable';
 
+import { Alert } from 'react-native';
 import { of, from } from 'rxjs';
 import {
   map,
@@ -15,8 +16,11 @@ import parse from 'url-parse';
 import { FETCH_DATA, FETCH_ASSET } from './types';
 import { receiveData, receiveAsset, receiveApiError, ALL_MEDITATIONS_COVER_ART } from './actions';
 import * as authSelectors from '../auth/selectors';
+import * as patreonActions from '../patreon/actions';
+import * as patreonSelectors from '../patreon/selectors';
 import config from '../../../../config.json';
 import showError from '../../../showError';
+import { navigate } from '../../../navigation/NavigationService';
 
 /**
  * Fetch API data.
@@ -70,12 +74,32 @@ function patreonAuthHeader(state) {
   } : {};
 }
 
-function catchApiError() {
+function catchApiError(state$) {
   return catchError((error) => {
     const errorAction = receiveApiError({ error });
 
-    showError(error);
-    return of(errorAction);
+    const actions = [errorAction];
+
+    const errorCode = _.get(error, 'response.data.code');
+    if (errorCode === 'needPatreonReauth') {
+      if (patreonSelectors.isConnected(state$.value)) {
+        actions.push(patreonActions.disconnect());
+        Alert.alert(
+          'Patreon Error',
+          (
+            'Oops! We had trouble verifying your Patreon account.' +
+            'Please reconnect Patreon to maintain access to patron-only content.'
+          ),
+          [
+            { text: 'Ignore' },
+            { text: 'Reconnect', onPress: () => navigate('Patreon') },
+          ],
+        );
+      }
+    } else {
+      showError(error);
+    }
+    return of(...actions);
   });
 }
 
@@ -114,7 +138,7 @@ const fetchDataEpic = (action$, state$) => (
           ..._.pick(action.payload, ['resource', 'id', 'collection']),
           json,
         })),
-        catchApiError(action),
+        catchApiError(state$),
       )
     )),
   )

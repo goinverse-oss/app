@@ -16,7 +16,7 @@ import qs from 'qs';
 
 import config from '../../../../config.json';
 
-import { CONNECT, GET_DETAILS } from './types';
+import { CONNECT, DISCONNECT, GET_DETAILS } from './types';
 import * as actions from './actions';
 import * as authSelectors from '../auth/selectors';
 import * as ormActions from '../orm/actions';
@@ -126,24 +126,34 @@ const connectPatreonEpic = action$ =>
         flatMap(tokenData => ([
           actions.storeToken(tokenData),
           actions.getDetails(),
-          ormActions.fetchData({ resource: 'podcastEpisode' }),
-          ormActions.fetchData({ resource: 'meditation' }),
-          ormActions.fetchData({ resource: 'liturgyItem' }),
+          ...['podcastEpisode', 'meditation', 'liturgyItem'].map(
+            resource => ormActions.fetchData({ resource }),
+          ),
         ])),
         catchApiError(),
       )
     )),
   );
 
+const disconnectPatreonEpic = action$ =>
+  action$.pipe(
+    ofType(DISCONNECT),
+    switchMap(() => of(
+      ...['podcastEpisode', 'meditation', 'liturgyItem'].map(
+        resource => ormActions.fetchData({ resource }),
+      ),
+    )),
+  );
+
 const getPatreonDetailsEpic = (action$, state$) =>
   action$.pipe(
     ofType(GET_DETAILS),
-    switchMap((action) => {
+    switchMap(() => {
       const token = authSelectors.token(state$.value);
       if (token) {
         return getPatreonDetails(token).pipe(
           map(details => actions.storeDetails(details)),
-          catchApiError(action),
+          catchApiError(),
         );
       }
       return never();
@@ -153,5 +163,6 @@ const getPatreonDetailsEpic = (action$, state$) =>
 
 export default combineEpics(
   connectPatreonEpic,
+  disconnectPatreonEpic,
   getPatreonDetailsEpic,
 );
