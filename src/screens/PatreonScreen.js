@@ -109,7 +109,6 @@ const patronUpsell = newPatronPitch
 
 
 const PatreonStatus = ({
-  isConnected,
   isPatron,
   patronFirstName,
   pledge,
@@ -117,7 +116,7 @@ const PatreonStatus = ({
 }) => (
   <View style={styles.status}>
     <Text style={styles.heading}>
-      {isConnected ? `Hello ${patronFirstName}!` : 'Become a Patron'}
+      {isPatron ? `Hello ${patronFirstName}!` : 'Become a Patron'}
     </Text>
     <Text style={styles.text}>
       {isPatron ? currentPatreonText : newPatronText}
@@ -154,7 +153,6 @@ const PatreonStatus = ({
 );
 
 PatreonStatus.propTypes = {
-  isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
   patronFirstName: PropTypes.string.isRequired,
   pledge: PropTypes.shape({
@@ -188,9 +186,15 @@ PatreonError.defaultProps = {
   error: null,
 };
 
-const PatreonButton = ({ title, onPress, opacity }) => (
+const PatreonButton = ({
+  title,
+  onPress,
+  opacity,
+  disabled,
+}) => (
   <TouchableOpacity
     onPress={onPress}
+    disabled={disabled}
   >
     <ImageBackground
       source={patreonButton}
@@ -206,17 +210,18 @@ PatreonButton.propTypes = {
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
   opacity: PropTypes.number,
+  disabled: PropTypes.bool,
 };
 
 PatreonButton.defaultProps = {
   opacity: 1.0,
+  disabled: false,
 };
 
 const PatreonConnectButton = ({
   isConnected,
   connect: connectPatreon,
   disconnect,
-  fetchData,
 }) => {
   const title = isConnected ? 'Disconnect Patreon' : 'Connect with Patreon';
   const onPress = (
@@ -231,9 +236,6 @@ const PatreonConnectButton = ({
             style: 'destructive',
             onPress: () => {
               disconnect();
-              fetchData({ resource: 'podcastEpisode' });
-              fetchData({ resource: 'meditation' });
-              fetchData({ resource: 'liturgyItem' });
             },
           },
         ],
@@ -255,30 +257,34 @@ PatreonConnectButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
-  fetchData: PropTypes.func.isRequired,
 };
 
 const PatreonRefreshButton = ({
   isConnected,
   getDetails,
   fetchData,
+  loading,
 }) => (
-  isConnected &&
+  isConnected ?
     <PatreonButton
-      title="Refresh Patron Status"
+      title={loading ? 'Refreshing...' : 'Refresh Patron Status'}
+      disabled={loading}
+      opacity={loading ? 0.75 : 1.0}
       onPress={() => {
         getDetails();
-        fetchData({ resource: 'podcastEpisode' });
-        fetchData({ resource: 'meditation' });
-        fetchData({ resource: 'liturgyItem' });
+        ['podcastEpisode', 'meditation', 'liturgyItem'].forEach(
+          resource => fetchData({ resource }),
+        );
       }}
     />
+    : null
 );
 
 PatreonRefreshButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   getDetails: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const PatreonScreen = props => (

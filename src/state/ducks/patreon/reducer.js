@@ -40,7 +40,6 @@ export default handleActions({
   }),
   [STORE_TOKEN]: state => ({
     ...state,
-    loading: false,
   }),
   [GET_DETAILS]: state => ({
     ...state,

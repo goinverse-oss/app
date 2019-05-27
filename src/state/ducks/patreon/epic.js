@@ -16,9 +16,9 @@ import qs from 'qs';
 
 import config from '../../../../config.json';
 
-import { CONNECT, GET_DETAILS, REFRESH_ACCESS_TOKEN } from './types';
+import { CONNECT, DISCONNECT, GET_DETAILS } from './types';
 import * as actions from './actions';
-import * as selectors from './selectors';
+import * as authSelectors from '../auth/selectors';
 import * as ormActions from '../orm/actions';
 import showError from '../../../showError';
 
@@ -83,12 +83,13 @@ function getPatreonToken() {
 }
 
 function getPatreonDetails(token) {
+  const detailsUrl = `${config.apiBaseUrl}/patreon/api/current_user`;
   return from(
     axios.get(
-      'https://www.patreon.com/api/oauth2/api/current_user',
+      detailsUrl,
       {
         headers: {
-          authorization: `Bearer ${token}`,
+          'x-theliturgists-token': token,
         },
         params: {
           includes: 'pledges',
@@ -99,31 +100,9 @@ function getPatreonDetails(token) {
   );
 }
 
-function refreshPatreonAccessToken(refreshToken) {
-  return from(
-    axios.post(
-      `${config.apiBaseUrl}/patreon/validate`,
-      qs.stringify({
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-      }),
-    )
-      .then(response => response.data),
-  );
-}
-
-function catchApiError(retryAction) {
+function catchApiError() {
   return catchError((e) => {
     const errorAction = actions.storeError(e);
-
-    if (retryAction && e.response.status === 401) {
-      return of(
-        actions.refreshAccessToken({
-          retryAction,
-          errorAction,
-        }),
-      );
-    }
 
     showError(e);
     return of(errorAction);
@@ -147,54 +126,43 @@ const connectPatreonEpic = action$ =>
         flatMap(tokenData => ([
           actions.storeToken(tokenData),
           actions.getDetails(),
-          ormActions.fetchData({ resource: 'podcastEpisode' }),
-          ormActions.fetchData({ resource: 'meditation' }),
+          ...['podcastEpisode', 'meditation', 'liturgyItem'].map(
+            resource => ormActions.fetchData({ resource }),
+          ),
         ])),
         catchApiError(),
       )
     )),
   );
 
+const disconnectPatreonEpic = action$ =>
+  action$.pipe(
+    ofType(DISCONNECT),
+    switchMap(() => of(
+      ...['podcastEpisode', 'meditation', 'liturgyItem'].map(
+        resource => ormActions.fetchData({ resource }),
+      ),
+    )),
+  );
+
 const getPatreonDetailsEpic = (action$, state$) =>
   action$.pipe(
     ofType(GET_DETAILS),
-    switchMap((action) => {
-      const token = selectors.token(state$.value);
+    switchMap(() => {
+      const token = authSelectors.token(state$.value);
       if (token) {
         return getPatreonDetails(token).pipe(
           map(details => actions.storeDetails(details)),
-          catchApiError(action),
+          catchApiError(),
         );
       }
       return never();
     }),
   );
 
-const refreshPatreonTokenEpic = (action$, state$) =>
-  action$.pipe(
-    ofType(REFRESH_ACCESS_TOKEN),
-    switchMap((action) => {
-      const { retryAction, errorAction } = action.payload;
-      const refreshToken = selectors.refreshToken(state$.value);
-      if (refreshToken) {
-        return refreshPatreonAccessToken(refreshToken).pipe(
-          flatMap(tokenData => ([
-            actions.storeToken(tokenData),
-            ...(retryAction ? [retryAction] : []),
-          ])),
-          catchError(() => {
-            // TODO: report refresh error to Sentry? This is weird Patreon behavior.
-            showError(errorAction.payload);
-            return of(errorAction);
-          }),
-        );
-      }
-      return of(errorAction);
-    }),
-  );
 
 export default combineEpics(
   connectPatreonEpic,
+  disconnectPatreonEpic,
   getPatreonDetailsEpic,
-  refreshPatreonTokenEpic,
 );

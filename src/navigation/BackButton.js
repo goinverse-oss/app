@@ -8,7 +8,7 @@ import appPropTypes from '../propTypes';
 const styles = StyleSheet.create({
   backIcon: {
     fontSize: 36,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
 });
 

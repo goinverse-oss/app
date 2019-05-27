@@ -7,7 +7,7 @@ import Icon from '@expo/vector-icons/MaterialIcons';
 const styles = StyleSheet.create({
   menuIcon: {
     fontSize: 24,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
 });
 

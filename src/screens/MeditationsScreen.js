@@ -32,6 +32,8 @@ class MeditationsScreen extends Component {
       {
         title: 'All Meditations',
         imageUrl: allMeditationsCoverArtUrl,
+        type: 'meditationCategory',
+        id: 'all',
       },
       ...categories,
     ];
@@ -76,7 +78,9 @@ MeditationsScreen.defaultProps = {
 function mapStateToProps(state) {
   return {
     meditations: meditationsSelector(state),
-    categories: meditationCategoriesSelector(state),
+    categories: meditationCategoriesSelector(state).filter(
+      category => category.meditations.length > 0,
+    ),
     allMeditationsCoverArtUrl: assetUrlSelector(state, ALL_MEDITATIONS_COVER_ART),
     refreshing: apiLoadingSelector(state, 'meditations'),
   };

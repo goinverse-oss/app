@@ -5,6 +5,7 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
+import FeedButton from '../components/FeedButton';
 import PodcastEpisodeListCard from '../components/PodcastEpisodeListCard';
 import PodcastEpisode from '../state/models/PodcastEpisode';
 import { podcastSelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
@@ -52,8 +53,13 @@ PodcastScreen.defaultProps = {
   episodes: [],
 };
 
-function mapStateToProps(state, { navigation }) {
+function getPodcast(navigation) {
   const { state: { params: { podcast } } } = navigation;
+  return podcast;
+}
+
+function mapStateToProps(state, { navigation }) {
+  const podcast = getPodcast(navigation);
   const { episodes } = podcastSelector(state, podcast.id);
   return {
     episodes,
@@ -78,6 +84,7 @@ function mapDispatchToProps(dispatch) {
 PodcastScreen.navigationOptions = ({ screenProps, navigation }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
   headerLeft: <BackButton />,
+  headerRight: <FeedButton collection={getPodcast(navigation)} />,
   title: navigation.state.params.podcast.title,
 });
 
