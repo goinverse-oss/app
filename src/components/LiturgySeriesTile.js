@@ -7,32 +7,31 @@ import SeriesTile from './SeriesTile';
 import Liturgy from '../state/models/Liturgy';
 import { getImageSource } from '../state/ducks/orm/utils';
 
-const formatLiturgyDescription = (liturgyLength, publishedDate) => {
+export const formatLiturgyDescription = (liturgy) => {
+  const liturgyLength = liturgy.items.reduce(
+    (duration, item) => duration.add(moment.duration(item.duration)),
+    moment.duration(),
+  );
+  const { publishedAt } = liturgy;
+
   const separator = ' • ';
   const strings = [];
   if (!_.isNull(liturgyLength)) {
     const minutes = Math.ceil(liturgyLength.asMinutes());
     strings.push(`${minutes} min`);
   }
-  if (!_.isNull(publishedDate)) {
-    strings.push(moment(publishedDate).format('YYYY'));
+  if (!_.isNull(publishedAt)) {
+    strings.push(moment(publishedAt).format('YYYY'));
   }
   return strings.join(separator);
 };
+
 const LiturgySeriesTile = ({ liturgy, onPress }) => (
   <SeriesTile
     imageSource={getImageSource(liturgy)}
     title={liturgy.title}
     onPress={() => onPress(liturgy)}
-    description={
-      formatLiturgyDescription(
-        liturgy.items.reduce(
-          (duration, item) => duration.add(moment.duration(item.duration)),
-          moment.duration(),
-        ),
-        liturgy.publishedAt,
-      )
-    }
+    description={formatLiturgyDescription(liturgy)}
   />
 );
 
