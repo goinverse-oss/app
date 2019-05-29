@@ -140,7 +140,7 @@ const LiturgyScreen = ({
     renderHeader={props => <Header liturgy={liturgy} {...props} />}
     headerBackgroundColor="#ffffff"
     headerFixedBackgroundColor="#ffffff"
-    backgroundScale={1.4}
+    backgroundScale={1}
     isHeaderFixed
     renderParallaxBackground={() => (
       <ImageBackground
@@ -157,8 +157,7 @@ const LiturgyScreen = ({
         </View>
       </ImageBackground>
     )}
-    parallaxBackgroundScrollSpeed={5}
-    parallaxForegroundScrollSpeed={2.5}
+    parallaxBackgroundScrollSpeed={1}
   >
     <FlatList
       style={styles.container}
