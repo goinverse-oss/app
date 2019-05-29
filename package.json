@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.1",
+    "@monterosa/react-native-parallax-scroll": "^1.8.0",
     "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "axios": "^0.18.0",
     "axios-retry": "^3.1.2",

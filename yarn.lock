@@ -670,6 +670,11 @@
     pouchdb-collections "^1.0.1"
     tiny-queue "^0.2.1"
 
+"@monterosa/react-native-parallax-scroll@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@monterosa/react-native-parallax-scroll/-/react-native-parallax-scroll-1.8.0.tgz#04339a772c02818b229582a8b903aca4f9106005"
+  integrity sha512-fFzJvMNN77d78haErRrZ/X64H0Vjz+5CvXSHBqxjlRQmhUB/R7BnqHwO3WFKGv2/Hv30LpL+0MSfHZeukglvDA==
+
 "@octokit/rest@^15.2.3":
   version "15.16.1"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.16.1.tgz#399b06660fe16852cf432059c845d4cdcaf77f5a"
