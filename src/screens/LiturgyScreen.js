@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Animated, FlatList, ImageBackground, Text, View, StyleSheet } from 'react-native';
+import { Animated, FlatList, ImageBackground, ScrollView, Text, View, StyleSheet } from 'react-native';
 import { Constants } from 'expo';
 
-import ParallaxScroll from '@monterosa/react-native-parallax-scroll';
 import BackButton from '../navigation/BackButton';
+import { getCommonNavigationOptions } from '../navigation/common';
 import LiturgyItemListCard from '../components/LiturgyItemListCard';
 import LiturgyItem from '../state/models/LiturgyItem';
 import Liturgy from '../state/models/Liturgy';
@@ -14,16 +14,19 @@ import { liturgySelector, apiLoadingSelector } from '../state/ducks/orm/selector
 import { fetchData } from '../state/ducks/orm';
 import { screenRelativeWidth } from '../components/utils';
 import { getImageSource } from '../state/ducks/orm/utils';
+import appPropTypes from '../propTypes';
 
 
 const coverImageWidth = screenRelativeWidth(1.0);
 const coverImageHeight = coverImageWidth;
-const headerHeight = 44 + Constants.statusBarHeight;
-const overlap = 75;
+const navHeaderHeight = 44;
+const headerHeight = navHeaderHeight + Constants.statusBarHeight;
+const overlap = 100;
 
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 7,
+    marginTop: -overlap,
   },
   card: {
     marginHorizontal: 14,
@@ -50,7 +53,7 @@ const styles = StyleSheet.create({
   },
   cover: {
     height: coverImageHeight,
-    marginTop: 20,
+    marginTop: -navHeaderHeight,
   },
   coverTextContainer: {
     flex: 1,
@@ -74,46 +77,44 @@ const styles = StyleSheet.create({
 });
 
 function mapScrollToRange(animatedValue, outputRange) {
-  return animatedValue.interpolate({
-    inputRange: [0, coverImageHeight - headerHeight - overlap],
+  return animatedValue ? animatedValue.interpolate({
+    inputRange: [0, coverImageHeight - navHeaderHeight - overlap],
     outputRange,
-  });
+  }) : outputRange[0];
 }
 
-const Header = ({ liturgy, animatedValue }) => (
-  <View style={styles.header}>
-    <BackButton />
-    <View style={styles.headerTextWrapper}>
-      <Animated.Text
-        style={[
-          styles.headerText,
-          {
-            opacity: mapScrollToRange(animatedValue, [1, 0]),
-          },
-        ]}
-      >
-        Liturgies
-      </Animated.Text>
-      <Animated.Text
-        style={[
-          styles.headerText,
-          {
-            opacity: mapScrollToRange(animatedValue, [0, 1]),
-          },
-        ]}
-      >
-        {liturgy.title}
-      </Animated.Text>
-    </View>
-
-    {/* placeholder for spacing */}
-    <View style={styles.headerPlaceholder} />
+const Title = ({ liturgy, animatedValue }) => (
+  <View style={styles.headerTextWrapper}>
+    <Animated.Text
+      style={[
+        styles.headerText,
+        {
+          opacity: mapScrollToRange(animatedValue, [1, 0]),
+        },
+      ]}
+    >
+      Liturgies
+    </Animated.Text>
+    <Animated.Text
+      style={[
+        styles.headerText,
+        {
+          opacity: mapScrollToRange(animatedValue, [0, 1]),
+        },
+      ]}
+    >
+      {liturgy.title}
+    </Animated.Text>
   </View>
 );
 
-Header.propTypes = {
+Title.propTypes = {
   liturgy: PropTypes.shape(Liturgy.propTypes).isRequired,
-  animatedValue: PropTypes.instanceOf(Animated.Value).isRequired,
+  animatedValue: PropTypes.instanceOf(Animated.Value),
+};
+
+Title.defaultProps = {
+  animatedValue: null,
 };
 
 function formatLiturgyHeaderDetail(liturgy, items) {
@@ -127,56 +128,76 @@ function formatLiturgyHeaderDetail(liturgy, items) {
 /**
  * List of items in liturgy, sorted by track number.
  */
-const LiturgyScreen = ({
-  liturgy,
-  items,
-  refreshing,
-  refreshLiturgyItems,
-}) => (
-  <ParallaxScroll
-    height={null}
-    headerHeight={headerHeight}
-    parallaxHeight={coverImageHeight - overlap}
-    renderHeader={props => <Header liturgy={liturgy} {...props} />}
-    headerBackgroundColor="#ffffff"
-    headerFixedBackgroundColor="#ffffff"
-    backgroundScale={1}
-    isHeaderFixed
-    renderParallaxBackground={() => (
-      <ImageBackground
-        style={styles.cover}
-        source={getImageSource(liturgy)}
+class LiturgyScreen extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      scrollY: new Animated.Value(0),
+    };
+  }
+
+  componentDidMount() {
+    const { scrollY } = this.state;
+    this.props.navigation.setParams({ scrollY });
+  }
+
+  render() {
+    const {
+      liturgy,
+      items,
+      refreshing,
+      refreshLiturgyItems,
+    } = this.props;
+
+    return (
+      <ScrollView
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  y: this.state.scrollY,
+                },
+              },
+            },
+          ],
+        )}
       >
-        <View style={styles.coverTextContainer}>
-          <Text style={styles.coverTitle}>
-            {liturgy.title}
-          </Text>
-          <Text style={styles.coverDescription}>
-            {formatLiturgyHeaderDetail(liturgy, items)}
-          </Text>
-        </View>
-      </ImageBackground>
-    )}
-    parallaxBackgroundScrollSpeed={1}
-  >
-    <FlatList
-      style={styles.container}
-      refreshing={refreshing}
-      onRefresh={() => refreshLiturgyItems()}
-      data={items}
-      keyExtractor={item => item.id}
-      renderItem={
-        ({ item }) => <LiturgyItemListCard style={styles.card} item={item} />
-      }
-    />
-  </ParallaxScroll>
-);
+        <ImageBackground
+          style={styles.cover}
+          source={getImageSource(liturgy)}
+        >
+          <View style={styles.coverTextContainer}>
+            <Text style={styles.coverTitle}>
+              {liturgy.title}
+            </Text>
+            <Text style={styles.coverDescription}>
+              {formatLiturgyHeaderDetail(liturgy, items)}
+            </Text>
+          </View>
+        </ImageBackground>
+        <FlatList
+          style={styles.container}
+          refreshing={refreshing}
+          onRefresh={() => refreshLiturgyItems()}
+          data={items}
+          keyExtractor={item => item.id}
+          renderItem={
+            ({ item }) => <LiturgyItemListCard style={styles.card} item={item} />
+          }
+        />
+      </ScrollView>
+    );
+  }
+}
 
 LiturgyScreen.propTypes = {
   liturgy: PropTypes.shape(Liturgy.propTypes).isRequired,
   items: PropTypes.arrayOf(
     PropTypes.shape(LiturgyItem.propTypes).isRequired,
   ),
+  navigation: appPropTypes.navigation.isRequired,
   refreshing: PropTypes.bool.isRequired,
   refreshLiturgyItems: PropTypes.func.isRequired,
 };
@@ -209,8 +230,15 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-LiturgyScreen.navigationOptions = () => ({
-  header: null,
+LiturgyScreen.navigationOptions = ({ screenProps, navigation }) => ({
+  ...getCommonNavigationOptions(screenProps.drawer),
+  headerLeft: <BackButton />,
+  headerTitle: (
+    <Title
+      liturgy={navigation.state.params.liturgy}
+      animatedValue={navigation.getParam('scrollY')}
+    />
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LiturgyScreen);
