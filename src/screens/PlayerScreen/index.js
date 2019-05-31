@@ -37,15 +37,14 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
-    height: screenRelativeHeight(0.5),
+    height: screenRelativeWidth(0.8),
     borderRadius: 4,
     flexDirection: 'column',
     position: 'absolute',
     top: screenRelativeHeight(0.05),
+    maxHeight: screenRelativeHeight(0.4),
   },
-  coverArtImage: {
-    maxHeight: screenRelativeWidth(1) - 90,
-  },
+  coverArtImage: {},
   mediaContainer: {
     height: 194,
     width: '95%',
