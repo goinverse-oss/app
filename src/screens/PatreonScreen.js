@@ -56,8 +56,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '900',
-    textTransform: 'uppercase',
+
+    // textTransform doesn't work on Android until react-native 0.57.4,
+    // which will be part of Expo SDK 33.
+    // textTransform: 'uppercase',
+
     marginLeft: 40,
+    marginTop: -2.5,
     fontSize: 13,
   },
   closeIcon: {
@@ -223,7 +228,7 @@ const PatreonConnectButton = ({
   connect: connectPatreon,
   disconnect,
 }) => {
-  const title = isConnected ? 'Disconnect Patreon' : 'Connect with Patreon';
+  const title = isConnected ? 'DISCONNECT PATREON' : 'CONNECT WITH PATREON';
   const onPress = (
     isConnected
       ? () => Alert.alert(
@@ -267,7 +272,7 @@ const PatreonRefreshButton = ({
 }) => (
   isConnected ?
     <PatreonButton
-      title={loading ? 'Refreshing...' : 'Refresh Patron Status'}
+      title={loading ? 'REFRESHING...' : 'REFRESH PATREON STATUS'}
       disabled={loading}
       opacity={loading ? 0.75 : 1.0}
       onPress={() => {
