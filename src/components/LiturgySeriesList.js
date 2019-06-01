@@ -1,33 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, StyleSheet, View } from 'react-native';
 
+import SeriesList from './SeriesList';
 import LiturgySeriesTile from './LiturgySeriesTile';
 import Liturgy from '../state/models/Liturgy';
 
-const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-  },
-});
-
-const LiturgySeriesList = ({ liturgies, onPressLiturgy }) =>
-  (
-    <ScrollView>
-      <View style={styles.list}>
-        {liturgies.map(liturgy => (
-          <LiturgySeriesTile
-            key={liturgy.title}
-            liturgy={liturgy}
-            onPress={() => onPressLiturgy(liturgy)}
-          />
-        ))}
-      </View>
-    </ScrollView>
-  );
+const LiturgySeriesList = ({ liturgies, onPressLiturgy }) => (
+  <SeriesList>
+    {liturgies.map(liturgy => (
+      <LiturgySeriesTile
+        key={liturgy.title}
+        liturgy={liturgy}
+        onPress={() => onPressLiturgy(liturgy)}
+      />
+    ))}
+  </SeriesList>
+);
 
 LiturgySeriesList.propTypes = {
   liturgies: PropTypes.arrayOf(

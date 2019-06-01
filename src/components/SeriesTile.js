@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Platform, TouchableWithoutFeedback, ViewPropTypes } from 'react-native';
 import { normalize } from 'react-native-elements';
 import fonts from 'react-native-elements/src/config/fonts';
 import colors from '../styles/colors';
@@ -13,18 +13,17 @@ import { screenRelativeWidth } from './utils';
 // using the width of the container, adjusted for padding, margin, and border radius
 const imageWidth = screenRelativeWidth(0.46) - 9 - 6 - 4;
 
+const cardWidthFraction = 0.46;
+const cardSpaceWidthFraction = (1.0 - (cardWidthFraction * 2)) / 3;
+
+// export so that SeriesList can use it too
+export const cardMargin = screenRelativeWidth(cardSpaceWidthFraction / 2);
+
 const styles = StyleSheet.create({
-  // Tile wrapper base
   container: {
-    /*
-        Styles to create 2 vertical columns
-        of left justified columns. There might
-        be a more efficient way of doing this
-    */
-    marginHorizontal: 6,
-    marginVertical: 6,
     padding: 9,
     width: screenRelativeWidth(0.46),
+    margin: cardMargin,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
@@ -76,10 +75,10 @@ const styles = StyleSheet.create({
 });
 
 const SeriesTile = ({
-  onPress, imageSource, title, description,
+  onPress, imageSource, title, description, style,
 }) => (
   <TouchableWithoutFeedback onPress={onPress}>
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.imageContainer}>
         <SquareImage
           source={imageSource}
@@ -99,11 +98,13 @@ SeriesTile.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onPress: PropTypes.func,
+  style: ViewPropTypes.style,
 };
 
 SeriesTile.defaultProps = {
   imageSource: undefined,
   onPress: () => {},
+  style: {},
 };
 
 export default SeriesTile;
