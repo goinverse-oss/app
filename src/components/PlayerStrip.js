@@ -77,7 +77,14 @@ const styles = StyleSheet.create({
     color: '#7B7B7B',
   },
   pauseButtonIconStyle: {
-    marginTop: 2,
+    // Mysteriously, the centering of this icon in its container
+    // seems to be different between iOS and Android. So, give it
+    // a nudge downward on iOS.
+    ...Platform.select({
+      ios: {
+        marginTop: 2,
+      },
+    }),
     marginLeft: 1,
     fontSize: 16,
     color: '#7B7B7B',
