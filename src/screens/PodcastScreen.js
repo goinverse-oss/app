@@ -30,7 +30,7 @@ const PodcastScreen = ({
   refreshPodcastEpisodes,
 }) => (
   <FlatList
-    style={styles.container}
+    contentContainerStyle={styles.container}
     refreshing={refreshing}
     onRefresh={() => refreshPodcastEpisodes()}
     data={episodes}
