@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Platform, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { LinearGradient } from 'expo';
 
 import appPropTypes from '../propTypes';
 
@@ -20,6 +21,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -105,12 +108,27 @@ function getSeriesTitle(item) {
   return _.get(item, [group, 'title']);
 }
 
+const PlayerStripContainer = ({ children, ...props }) => (
+  Platform.select({
+    ios: <View style={styles.container} {...props}>{children}</View>,
+    android: (
+      <LinearGradient
+        style={styles.container}
+        colors={['#fbf9fa', '#e5e5e5']}
+        {...props}
+      >
+        {children}
+      </LinearGradient>
+    ),
+  })
+);
+
 const PlayerStrip = ({ item, navigation: { navigate } }) => (
   item ? (
     <TouchableWithoutFeedback
       onPress={() => navigate('PlayerWithHeader')}
     >
-      <View style={styles.container}>
+      <PlayerStripContainer>
         <View style={styles.item}>
           <View style={styles.imageContainer}>
             <SquareImage
@@ -132,7 +150,7 @@ const PlayerStrip = ({ item, navigation: { navigate } }) => (
             pauseButtonIconStyle={styles.pauseButtonIconStyle}
           />
         </View>
-      </View>
+      </PlayerStripContainer>
     </TouchableWithoutFeedback>
   ) : null
 );
