@@ -37,6 +37,7 @@ const HomeNavigator = createStackNavigator({
   navigationOptions: {
     tabBarIcon: HomeIcon,
   },
+  headerLayoutPreset: 'center',
 });
 
 const PodcastsNavigator = createStackNavigator({
@@ -45,7 +46,9 @@ const PodcastsNavigator = createStackNavigator({
   SinglePodcastEpisode: SinglePodcastEpisodeScreen,
   Contributor: ContributorScreen,
   SearchResults: SearchResultsScreen,
-}, {});
+}, {
+  headerLayoutPreset: 'center',
+});
 
 PodcastsNavigator.navigationOptions = {
   tabBarIcon: PodcastsIcon,
@@ -57,7 +60,9 @@ const MeditationsNavigator = createStackNavigator({
   SingleMeditation: SingleMeditationScreen,
   Contributor: ContributorScreen,
   SearchResults: SearchResultsScreen,
-}, {});
+}, {
+  headerLayoutPreset: 'center',
+});
 
 MeditationsNavigator.navigationOptions = {
   tabBarIcon: MeditationsIcon,
@@ -69,7 +74,9 @@ const LiturgiesNavigator = createStackNavigator({
   SingleLiturgyItem: SingleLiturgyItemScreen,
   Contributor: ContributorScreen,
   SearchResults: SearchResultsScreen,
-}, {});
+}, {
+  headerLayoutPreset: 'center',
+});
 
 LiturgiesNavigator.navigationOptions = {
   tabBarIcon: LiturgiesIcon,

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
+  Platform,
   StyleSheet,
   TouchableWithoutFeedback,
   Text,
@@ -41,7 +42,15 @@ const styles = StyleSheet.create({
   pauseIcon: {
     fontSize: 48,
     color: '#7B7B7B',
-    marginTop: 4,
+
+    // Mysteriously, the centering of this icon in its container
+    // seems to be different between iOS and Android. So, give it
+    // a nudge downward on iOS.
+    ...Platform.select({
+      ios: {
+        marginTop: 4,
+      },
+    }),
   },
   jumpIconContainer: {
     justifyContent: 'center',

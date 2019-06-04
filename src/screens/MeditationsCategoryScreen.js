@@ -34,7 +34,7 @@ const MeditationsCategoryScreen = ({
   refreshMeditations,
 }) => (
   <FlatList
-    style={styles.container}
+    contentContainerStyle={styles.container}
     refreshing={refreshing}
     onRefresh={() => refreshMeditations()}
     data={meditations}
