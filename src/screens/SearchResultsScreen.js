@@ -30,7 +30,7 @@ const listCardTypes = {
 };
 
 /**
- * List of episodes in podcast, sorted by publish date.
+ * List of items matching a search - e.g. matches contributor.
  */
 const SearchResultsScreen = ({
   items,
@@ -83,7 +83,8 @@ function makeMapStateToProps(factoryState, { navigation }) {
   };
 }
 
-function mapDispatchToProps(dispatch, { type }) {
+function mapDispatchToProps(dispatch, { navigation }) {
+  const { type } = getParams(navigation);
   return {
     refresh: () => {
       dispatch(
