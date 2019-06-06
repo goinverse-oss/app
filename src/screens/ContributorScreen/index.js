@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import Socials from './Socials';
@@ -12,9 +12,16 @@ import Contributor from '../../state/models/Contributor';
 import { contributorSelector } from '../../state/ducks/orm/selectors';
 import { getImageSource } from '../../state/ducks/orm/utils';
 import { screenRelativeWidth } from '../../components/utils';
+import { defaultShadowStyle } from '../../styles';
+import appPropTypes from '../../propTypes';
 
 const diameter = 148;
 const backdropWidth = screenRelativeWidth(3);
+const imageTop = diameter * 0.75;
+const headerFadeScrollRange = [
+  imageTop + diameter,
+  imageTop + (diameter * 1.25),
+];
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +37,7 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'absolute',
-    top: diameter * 0.75,
+    top: imageTop,
   },
   details: {
     alignItems: 'center',
@@ -55,37 +62,102 @@ const styles = StyleSheet.create({
     paddingHorizontal: 17,
     width: '100%',
   },
+  headerBackground: {
+    flex: 1,
+    backgroundColor: 'white',
+    opacity: 0.0,
+    ...defaultShadowStyle,
+  },
 });
+
+function getHeaderOpacity(animatedValue) {
+  return animatedValue ? animatedValue.interpolate({
+    inputRange: headerFadeScrollRange,
+    outputRange: [0.0, 1.0],
+  }) : 0.0;
+}
+
+const HeaderBackground = ({ animatedValue }) => (
+  <Animated.View
+    style={[
+      styles.headerBackground,
+      {
+        opacity: getHeaderOpacity(animatedValue),
+      },
+    ]}
+  />
+);
+
+HeaderBackground.propTypes = {
+  animatedValue: PropTypes.instanceOf(Animated.Value),
+};
+
+HeaderBackground.defaultProps = {
+  animatedValue: null,
+};
 
 /**
  * Single contributor screen with bio and media.
  */
-const ContributorScreen = ({ contributor }) => (
-  <ScrollView contentContainerStyle={styles.container}>
-    <View style={styles.backdrop} />
-    <CircleImage
-      source={getImageSource(contributor)}
-      diameter={diameter}
-      style={styles.image}
-      shadow
-    />
-    <View style={styles.details}>
-      <Text style={styles.name}>{contributor.name}</Text>
-      <Text style={styles.title}>{contributor.title}</Text>
-      <Text style={styles.organization}>{contributor.organization}</Text>
-      <Socials contributor={contributor} />
-      <Bio contributor={contributor} />
-    </View>
-    <View style={styles.contributionsContainer}>
-      <Contributions type="podcastEpisode" contributor={contributor} />
-      <Contributions type="meditation" contributor={contributor} />
-      <Contributions type="liturgyItem" contributor={contributor} />
-    </View>
-  </ScrollView>
-);
+class ContributorScreen extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      scrollY: new Animated.Value(0),
+    };
+  }
+
+  componentDidMount() {
+    const { scrollY } = this.state;
+    this.props.navigation.setParams({ scrollY });
+  }
+
+  render() {
+    const { contributor } = this.props;
+
+    return (
+      <ScrollView
+        contentContainerStyle={styles.container}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  y: this.state.scrollY,
+                },
+              },
+            },
+          ],
+        )}
+      >
+        <View style={styles.backdrop} />
+        <CircleImage
+          source={getImageSource(contributor)}
+          diameter={diameter}
+          style={styles.image}
+          shadow
+        />
+        <View style={styles.details}>
+          <Text style={styles.name}>{contributor.name}</Text>
+          <Text style={styles.title}>{contributor.title}</Text>
+          <Text style={styles.organization}>{contributor.organization}</Text>
+          <Socials contributor={contributor} />
+          <Bio contributor={contributor} />
+        </View>
+        <View style={styles.contributionsContainer}>
+          <Contributions type="podcastEpisode" contributor={contributor} />
+          <Contributions type="meditation" contributor={contributor} />
+          <Contributions type="liturgyItem" contributor={contributor} />
+        </View>
+      </ScrollView>
+    );
+  }
+}
 
 ContributorScreen.propTypes = {
   contributor: PropTypes.shape(Contributor.propTypes).isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 function makeMapStateToProps(state, { navigation }) {
@@ -97,10 +169,18 @@ function makeMapStateToProps(state, { navigation }) {
   };
 }
 
-ContributorScreen.navigationOptions = () => ({
-  headerLeft: <BackButton />,
-  title: '',
-  headerTransparent: true,
-});
+ContributorScreen.navigationOptions = ({ navigation }) => {
+  const animatedValue = navigation.getParam('scrollY');
+
+  return {
+    headerLeft: <BackButton />,
+    title: navigation.state.params.contributor.name,
+    headerTitleStyle: {
+      opacity: getHeaderOpacity(animatedValue),
+    },
+    headerTransparent: true,
+    headerBackground: <HeaderBackground animatedValue={animatedValue} />,
+  };
+};
 
 export default connect(makeMapStateToProps)(ContributorScreen);
