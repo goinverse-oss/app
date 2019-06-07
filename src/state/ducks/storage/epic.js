@@ -1,7 +1,7 @@
 import { ofType, combineEpics } from 'redux-observable';
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { FileSystem } from 'expo';
+import * as FileSystem from 'expo-file-system';
 
 import { START_DOWNLOAD, REMOVE_DOWNLOAD_ASYNC } from './types';
 import { storeResumableDownload, storeDownload, removeDownload, storeProgress } from './actions';

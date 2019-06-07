@@ -1,9 +1,9 @@
 import { persistReducer } from 'redux-persist';
-import createSecureStore from 'redux-persist-expo-securestore';
 
 import { handleActions } from 'redux-actions';
 
 import * as patreonTypes from '../patreon/types';
+import createSecureStore from '../../redux-persist-expo-securestore';
 
 /* auth reducer state shape:
 {

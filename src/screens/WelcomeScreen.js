@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { connect } from 'react-redux';
-import { Audio } from 'expo';
+import { Audio } from 'expo-av';
 
 import headphones from '../../assets/welcome/headphones.png';
 import sun from '../../assets/welcome/sun.png';

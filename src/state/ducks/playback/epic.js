@@ -4,7 +4,7 @@ import { REHYDRATE } from 'redux-persist';
 
 import { Observable, of, from, merge } from 'rxjs';
 import { switchMap, mergeMap } from 'rxjs/operators';
-import { Audio } from 'expo';
+import { Audio } from 'expo-av';
 
 import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK } from './types';
 import { setStatus, setSound, setPlaying, setPendingSeek } from './actions';

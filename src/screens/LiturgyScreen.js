@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Animated, FlatList, ImageBackground, ScrollView, Text, View, StyleSheet } from 'react-native';
-import { Constants } from 'expo';
+import Constants from 'expo-constants';
 
 import BackButton from '../navigation/BackButton';
 import { getCommonNavigationOptions } from '../navigation/common';

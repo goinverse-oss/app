@@ -1,4 +1,4 @@
-import { FileSystem } from 'expo';
+import * as FileSystem from 'expo-file-system';
 import parse from 'url-parse';
 
 import { getMediaSource } from '../orm/utils';

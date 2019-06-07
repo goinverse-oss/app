@@ -9,15 +9,15 @@ import epic from './epic';
 import { getItemDownloadPath } from './utils';
 import { getStateObservable } from '../testUtils';
 
-jest.mock('expo', () => {
-  class FileSystem {
-    static documentDirectory = 'file:///path/to/app/sandbox';
+jest.mock('expo-file-system', () => {
+  const FileSystem = {
+    documentDirectory: 'file:///path/to/app/sandbox',
 
-    static makeDirectoryAsync() {
+    makeDirectoryAsync() {
       return Promise.resolve();
-    }
+    },
 
-    static createDownloadResumable(url, fileUrl /* other args ignored */) {
+    createDownloadResumable(url, fileUrl /* other args ignored */) {
       return {
         downloadAsync() {
           return Promise.resolve();
@@ -26,14 +26,14 @@ jest.mock('expo', () => {
           return { url, fileUrl };
         },
       };
-    }
+    },
 
-    static removeAsync = jest.fn().mockImplementation(() => Promise.resolve());
-  }
+    removeAsync: jest.fn().mockImplementation(() => Promise.resolve()),
+  };
 
   return {
-    ...jest.requireActual('expo'),
-    FileSystem,
+    ...jest.requireActual('expo-file-system'),
+    ...FileSystem,
   };
 });
 
@@ -113,7 +113,7 @@ describe('storage epic', () => {
 
   test('removeDownload removes a download', async () => {
     // eslint-disable-next-line
-    const { FileSystem } = require('expo');
+    const FileSystem = require('expo-file-system');
 
     const inputAction$ = of(actions.removeDownloadAsync(item));
     const action$ = epic(inputAction$, getStateObservable(store));

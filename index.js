@@ -1,4 +1,6 @@
-import { Constants, KeepAwake, registerRootComponent } from 'expo';
+import { registerRootComponent } from 'expo';
+import Constants from 'expo-constants';
+import { activateKeepAwake } from 'expo-keep-awake';
 import _ from 'lodash';
 
 import './reactotron-config';
@@ -8,7 +10,7 @@ import storybook from './storybook';
 
 // eslint-disable-next-line no-undef
 if (__DEV__) {
-  KeepAwake.activate();
+  activateKeepAwake();
 }
 
 function shouldUseStorybook() {
