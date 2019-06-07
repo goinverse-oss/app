@@ -41,6 +41,7 @@ jest.mock('expo-av', () => {
     ...jest.requireActual('expo-av'),
     Audio: {
       Sound,
+      setAudioModeAsync: () => {},
     },
   };
 });
