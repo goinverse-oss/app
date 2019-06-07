@@ -14,7 +14,7 @@ import { START_DOWNLOAD } from '../storage/types';
 import { getStateObservable } from '../testUtils';
 
 
-jest.mock('expo', () => {
+jest.mock('expo-av', () => {
   class Sound {
     constructor(...args) {
       const [source, initialStatus, onPlaybackStatusUpdate] = args;
@@ -38,7 +38,7 @@ jest.mock('expo', () => {
   }
 
   return {
-    ...jest.requireActual('expo'),
+    ...jest.requireActual('expo-av'),
     Audio: {
       Sound,
     },

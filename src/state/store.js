@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { persistReducer, persistStore, createMigrate } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
+import { AsyncStorage } from 'react-native';
 
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/never';
@@ -25,7 +25,7 @@ const migrations = {
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: AsyncStorage,
   blacklist: ['orm', 'auth', 'playback'],
   version: 0,
   migrate: createMigrate(migrations),

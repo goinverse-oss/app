@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { persistReducer, createTransform } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
+import { AsyncStorage } from 'react-native';
 
 import { handleActions } from '../../utils/reduxActions';
 
@@ -51,7 +51,7 @@ export const playbackTransforms = [
 
 const persistConfig = {
   key: 'playback',
-  storage,
+  storage: AsyncStorage,
   transforms: playbackTransforms,
 };
 
