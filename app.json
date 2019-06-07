@@ -20,7 +20,12 @@
     },
     "scheme": "theliturgists.app",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
     },
     "hooks": {
       "postPublish": [

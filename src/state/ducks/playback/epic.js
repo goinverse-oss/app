@@ -15,6 +15,16 @@ import { getMediaSource } from '../orm/utils';
 import { getDownloadPath } from '../storage/selectors';
 import showError from '../../../showError';
 
+Audio.setAudioModeAsync({
+  allowsRecordingIOS: false,
+  interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+  playsInSilentModeIOS: true,
+  interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+  shouldDuckAndroid: false,
+  playThroughEarpieceAndroid: false,
+  staysActiveInBackground: true,
+});
+
 function startPlayback(mediaSource, initialStatus = {}, shouldPlay = true) {
   return Observable.create((subscriber) => {
     if (!_.isEmpty(initialStatus)) {
