@@ -183,7 +183,7 @@ PODS:
     - UMConstantsInterface
     - UMCore
     - UMTaskManagerInterface
-  - EXWebBrowser (5.0.2):
+  - EXWebBrowser (5.0.3):
     - UMCore
   - Fabric (1.10.1)
   - FBAudienceNetwork (5.1.1)
@@ -304,6 +304,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNCAsyncStorage (1.4.2):
+    - React
   - UMBarCodeScannerInterface (2.0.1)
   - UMCameraInterface (2.0.1)
   - UMConstantsInterface (2.0.1)
@@ -384,6 +386,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
   - UMCameraInterface (from `../node_modules/unimodules-camera-interface/ios`)
   - UMConstantsInterface (from `../node_modules/unimodules-constants-interface/ios`)
@@ -573,6 +576,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   UMBarCodeScannerInterface:
     :path: !ruby/object:Pathname
     path: "../node_modules/unimodules-barcode-scanner-interface/ios"
@@ -672,7 +677,7 @@ SPEC CHECKSUMS:
   EXSpeech: 94fe58cac4e79d3defe11589a7cd3b000686ee0d
   EXSQLite: 89472a581b34dde9a433dbab25b56e9fe7265368
   EXTaskManager: adb41d8a4687c6ff44ace1d095a8fa9323007fcf
-  EXWebBrowser: 1ad84a752d6c830720c4955fc4cc4d1a98cc03a7
+  EXWebBrowser: e03894b4583bb726e5ea05d01b341ba00134c2b5
   Fabric: f6f21452846788bb44595d73e9909d79d328e617
   FBAudienceNetwork: 56c2dc9b5f075f4a9757d7dc8a83d3972270f645
   FBSDKCoreKit: ae214474b25033399c131dc81d258e412582a2ba
@@ -693,6 +698,7 @@ SPEC CHECKSUMS:
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
+  RNCAsyncStorage: 0d2b0cf659d2def90d8ed7de76f502d335268156
   UMBarCodeScannerInterface: d5602e23de37f95bb4ee49ee3b2711e128058ae9
   UMCameraInterface: dde8491778ed062348e569bad33a890e60c32c9d
   UMConstantsInterface: de48a63a5af572fc4dcc0e68051b00503b83e301
@@ -707,6 +713,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 9d101f86b256a1a7b2f4d8a6f0e24e95fb84efa2
+PODFILE CHECKSUM: b311cbf13be0f9ed2b156634285c470c481830be
 
 COCOAPODS: 1.7.1
