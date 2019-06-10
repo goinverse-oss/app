@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.1",
+    "@react-native-community/async-storage": "^1.4.2",
     "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "axios": "^0.18.0",
     "axios-retry": "^3.1.2",
@@ -107,7 +108,7 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@unimodules))"
+      "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@unimodules|@react-native-community/async-storage))"
     ]
   },
   "comment": "flow is disabled in pre-commit because react-navigation breaks it",
