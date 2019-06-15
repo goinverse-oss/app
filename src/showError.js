@@ -17,6 +17,7 @@ export default function showError(error) {
     [
       _.get(error, 'config.url', ''),
       _.get(error, 'request._response', ''),
+      _.get(error, 'description'),
     ].join('\n'),
   );
 }

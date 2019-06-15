@@ -38,14 +38,15 @@ export const storeDownload = createAction(types.STORE_DOWNLOAD);
 
 /**
  * Remove the specified media item from the file map.
+ * Does not actually remove the file from storage!
  *
  * @param {object} item media item
  */
-export const removeDownload = createAction(types.REMOVE_DOWNLOAD);
+export const removeDownloadMapping = createAction(types.REMOVE_DOWNLOAD_MAPPING);
 
 /**
  * Remove the specified media item, including the file.
  *
  * @param {object} item media item
  */
-export const removeDownloadAsync = createAction(types.REMOVE_DOWNLOAD_ASYNC);
+export const removeDownload = createAction(types.REMOVE_DOWNLOAD);

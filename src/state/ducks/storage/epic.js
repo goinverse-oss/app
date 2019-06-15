@@ -2,11 +2,12 @@ import { ofType, combineEpics } from 'redux-observable';
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import * as FileSystem from 'expo-file-system';
+import path from 'path-browserify';
 
-import { START_DOWNLOAD, REMOVE_DOWNLOAD_ASYNC } from './types';
-import { storeResumableDownload, storeDownload, removeDownload, storeProgress } from './actions';
+import { START_DOWNLOAD, REMOVE_DOWNLOAD } from './types';
+import { storeResumableDownload, storeDownload, removeDownloadMapping, storeProgress } from './actions';
 import { getResumableDownload } from './selectors';
-import { getItemBasePath, getItemDownloadPath } from './utils';
+import { getItemDownloadPath } from './utils';
 import { getMediaSource } from '../orm/utils';
 
 
@@ -27,8 +28,8 @@ const startDownloadEpic = (action$, state$) =>
           }
         };
 
-        const basePath = getItemBasePath(item);
         const itemPath = getItemDownloadPath(item);
+        const basePath = path.dirname(itemPath);
         const mediaSource = getMediaSource(item);
         if (!mediaSource.uri) {
           subscriber.complete();
@@ -54,13 +55,13 @@ const startDownloadEpic = (action$, state$) =>
 
 const removeDownloadEpic = action$ =>
   action$.pipe(
-    ofType(REMOVE_DOWNLOAD_ASYNC),
+    ofType(REMOVE_DOWNLOAD),
     mergeMap(action => (
       Observable.create((subscriber) => {
         const item = action.payload;
         const itemPath = getItemDownloadPath(item);
-        FileSystem.removeAsync(itemPath)
-          .then(() => subscriber.next(removeDownload(item)));
+        FileSystem.deleteAsync(itemPath)
+          .then(() => subscriber.next(removeDownloadMapping(item)));
       })
     )),
   );

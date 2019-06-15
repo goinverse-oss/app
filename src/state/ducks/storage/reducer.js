@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
 
-import { STORE_PROGRESS, STORE_DOWNLOAD, REMOVE_DOWNLOAD } from './types';
-import { getItemDownloadPath } from './utils';
+import { STORE_PROGRESS, STORE_DOWNLOAD, REMOVE_DOWNLOAD_MAPPING } from './types';
+import { getItemDownloadRelativePath } from './utils';
 
 /* storage reducer state shape:
 {
@@ -45,12 +45,12 @@ export default handleActions({
   [STORE_DOWNLOAD]: (state, action) => ({
     items: {
       ...state.items,
-      [action.payload.id]: getItemDownloadPath(action.payload),
+      [action.payload.id]: getItemDownloadRelativePath(action.payload),
     },
     resumableDownloads: _.omit(state.resumableDownloads, action.payload.id),
     progress: _.omit(state.progress, action.payload.id),
   }),
-  [REMOVE_DOWNLOAD]: (state, action) => ({
+  [REMOVE_DOWNLOAD_MAPPING]: (state, action) => ({
     items: _.omit(state.items, action.payload.id),
     resumableDownloads: _.omit(state.resumableDownloads, action.payload.id),
     progress: _.omit(state.progress, action.payload.id),

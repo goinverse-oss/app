@@ -334,3 +334,7 @@ typings/
 
 # Fetch Cocoapods sources on fresh checkout
 Pods
+
+/ios/the-liturgists/Supporting/EXBuildConstants.plist.bak
+/ios/the-liturgists/Supporting/EXBuildConstants.json
+/ios/the-liturgists/Supporting/EXBuildConstants.plist

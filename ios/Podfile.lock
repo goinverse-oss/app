@@ -250,6 +250,8 @@ PODS:
   - lottie-ios (2.5.3)
   - React (0.59.8):
     - React/Core (= 0.59.8)
+  - react-native-music-control (0.10.4):
+    - React
   - React/ART (0.59.8):
     - React/Core
   - React/Core (0.59.8):
@@ -373,6 +375,7 @@ DEPENDENCIES:
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - react-native-music-control (from `../node_modules/react-native-music-control`)
   - React/ART (from `../node_modules/react-native`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
@@ -576,6 +579,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-music-control:
+    :path: "../node_modules/react-native-music-control"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   UMBarCodeScannerInterface:
@@ -698,6 +703,7 @@ SPEC CHECKSUMS:
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
   React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
+  react-native-music-control: e6f63ac3e49865105342d2e689f9bcce8c0bff13
   RNCAsyncStorage: 0d2b0cf659d2def90d8ed7de76f502d335268156
   UMBarCodeScannerInterface: d5602e23de37f95bb4ee49ee3b2711e128058ae9
   UMCameraInterface: dde8491778ed062348e569bad33a890e60c32c9d
@@ -713,6 +719,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 296793ab2a7e181fe5ebe2ba9b40ae208ab4b8fa
   yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: b311cbf13be0f9ed2b156634285c470c481830be
+PODFILE CHECKSUM: d21b52034008972aa35bd5d2bbab3c71202e68e3
 
 COCOAPODS: 1.7.1

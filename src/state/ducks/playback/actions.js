@@ -15,6 +15,11 @@ export const setPlaying = createAction(
 );
 
 /**
+ * Clear the item that's currently playing.
+ */
+export const clearPlayback = createAction(types.CLEAR_PLAYBACK);
+
+/**
  * Store the created Sound for later reference.
  *
  * @param {Expo.Audio.Sound} sound sound returned from Sound.createAsync
