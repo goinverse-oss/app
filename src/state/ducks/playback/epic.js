@@ -1,17 +1,21 @@
 import _ from 'lodash';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
+import moment from 'moment';
+import Sentry from 'sentry-expo';
+import * as FileSystem from 'expo-file-system';
 
-import { Observable, of, from, merge } from 'rxjs';
-import { switchMap, mergeMap } from 'rxjs/operators';
+import { Observable, of, from } from 'rxjs';
+import { switchMap, mergeMap, takeWhile } from 'rxjs/operators';
 import { Audio } from 'expo-av';
+import MusicControl from 'react-native-music-control';
 
-import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK } from './types';
-import { setStatus, setSound, setPlaying, setPendingSeek } from './actions';
+import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK, SET_STATUS } from './types';
+import { setStatus, setSound, setPlaying, clearPlayback, setPendingSeek } from './actions';
 import * as selectors from './selectors';
-import { startDownload } from '../storage/actions';
+import { startDownload, removeDownload, removeDownloadMapping } from '../storage/actions';
 import { instanceSelector } from '../orm/selectors';
-import { getMediaSource } from '../orm/utils';
+import { getMediaSource, getImageSource, getCollection } from '../orm/utils';
 import { getDownloadPath } from '../storage/selectors';
 import showError from '../../../showError';
 
@@ -25,21 +29,120 @@ Audio.setAudioModeAsync({
   staysActiveInBackground: true,
 });
 
-function startPlayback(mediaSource, initialStatus = {}, shouldPlay = true) {
-  return Observable.create((subscriber) => {
+_.forEach({
+  play: true,
+  pause: true,
+  stop: false,
+  nextTrack: false,
+  previousTrack: false,
+  volume: true,
+  remoteVolume: true,
+  changePlaybackPosition: true, // iOS
+  seek: true, // Android
+}, (value, key) => MusicControl.enableControl(key, value));
+
+MusicControl.enableControl('skipForward', true, { interval: 30 });
+MusicControl.enableControl('skipBackward', true, { interval: 30 });
+
+function getPlaybackState(status) {
+  const {
+    error, isBuffering, didJustFinish, isPlaying,
+  } = status;
+
+  if (error) {
+    return MusicControl.STATE_ERROR;
+  }
+  if (isBuffering) {
+    return MusicControl.STATE_BUFFERING;
+  }
+  if (didJustFinish) {
+    return MusicControl.STATE_STOPPED;
+  }
+  return isPlaying ? MusicControl.STATE_PLAYING : MusicControl.STATE_PAUSED;
+}
+
+function setBackgroundPlayerControls(item) {
+  MusicControl.setNowPlaying({
+    title: item.title,
+    artwork: getImageSource(item).uri,
+    artist: 'The Liturgists',
+    album: getCollection(item).title,
+    duration: moment.duration(item.duration).asSeconds(),
+    description: item.description,
+    date: item.publishedAt,
+  });
+}
+
+function syncAudioStatus(item, status) {
+  if (item) {
+    const { positionMillis, durationMillis, playableDurationMillis } = status;
+    setBackgroundPlayerControls(item);
+    MusicControl.updatePlayback({
+      state: getPlaybackState(status),
+      elapsedTime: positionMillis ? positionMillis / 1000 : undefined,
+      duration: durationMillis ? durationMillis / 1000 : undefined,
+      bufferedTime: playableDurationMillis ? playableDurationMillis / 1000 : undefined,
+    });
+  } else {
+    MusicControl.resetNowPlaying();
+  }
+}
+
+function startPlayback(state, item, shouldPlay = true) {
+  const status$ = Observable.create((subscriber) => {
+    const initialStatus = selectors.getLastStatusForItem(state, item.id);
     if (!_.isEmpty(initialStatus)) {
       subscriber.next(setStatus(initialStatus));
     }
 
-    Audio.Sound.createAsync(
-      mediaSource,
-      { ...initialStatus, shouldPlay },
-      (status) => {
-        subscriber.next(setStatus(status));
-      },
-    )
-      .then(({ sound }) => subscriber.next(setSound(sound)));
+    const offlinePath = getDownloadPath(state, item);
+    let mediaSource = offlinePath ? { uri: offlinePath } : getMediaSource(item);
+    if (!mediaSource) {
+      showError('No audio URL for this item');
+      subscriber.complete();
+      return;
+    }
+
+    const infoPromise = (
+      offlinePath
+        ? FileSystem.getInfoAsync(offlinePath)
+        : Promise.resolve({ exists: false })
+    );
+
+    infoPromise
+      .catch((err) => {
+        console.log('Getting offline file info:', err);
+        Sentry.captureException(err);
+        return { exists: false };
+      })
+      .then(({ exists }) => {
+        if (!exists) {
+          if (offlinePath) {
+            // For some reason we've stored a path to a non-existent file.
+            // Clear it out before downloading the item again.
+            subscriber.next(removeDownloadMapping(item));
+            mediaSource = getMediaSource(item);
+          }
+          subscriber.next(startDownload(item));
+        }
+
+        return Audio.Sound.createAsync(
+          mediaSource,
+          { ...initialStatus, shouldPlay },
+          (status) => {
+            subscriber.next(setStatus(status));
+          },
+        );
+      })
+      .then(({ sound }) => subscriber.next(setSound(sound)))
+      .catch((err) => {
+        console.log('error loading audio', mediaSource);
+        Sentry.captureException(err);
+        showError(new Error(`Failed to load URL: ${mediaSource.uri}`));
+      });
   });
+
+  return status$.pipe(takeWhile(value => !value.didJustFinish, true));
 }
 
 const startPlayingEpic = (action$, state$) =>
@@ -54,24 +157,26 @@ const startPlayingEpic = (action$, state$) =>
         prevSound.stopAsync();
       }
 
-      const initialStatus = selectors.getLastStatusForItem(state, id);
+      return startPlayback(state, item, shouldPlay);
+    }),
+  );
 
-      const offlinePath = getDownloadPath(state, item);
-      if (offlinePath) {
-        const mediaSource = { uri: offlinePath };
-        return startPlayback(mediaSource, initialStatus, shouldPlay);
+const setStatusEpic = (action$, state$) =>
+  action$.pipe(
+    ofType(SET_STATUS),
+    switchMap((action) => {
+      const status = action.payload;
+      const item = selectors.item(state$.value);
+      syncAudioStatus(item, status);
+
+      if (status.didJustFinish) {
+        MusicControl.resetNowPlaying();
+        return of(
+          removeDownload(item),
+          clearPlayback(),
+        );
       }
-
-      const mediaSource = getMediaSource(item);
-      if (!mediaSource) {
-        showError('No audio URL for this item');
-        return Observable.never();
-      }
-
-      return merge(
-        of(startDownload(item)),
-        startPlayback(mediaSource, initialStatus, shouldPlay),
-      );
+      return Observable.never();
     }),
   );
 
@@ -79,7 +184,10 @@ const playEpic = (action$, state$) =>
   action$.pipe(
     ofType(PLAY),
     mergeMap(() => {
-      selectors.getSound(state$.value).playAsync();
+      const sound = selectors.getSound(state$.value);
+      const item = selectors.item(state$.value);
+      setBackgroundPlayerControls(item);
+      sound.playAsync();
       return Observable.never();
     }),
   );
@@ -88,7 +196,8 @@ const pauseEpic = (action$, state$) =>
   action$.pipe(
     ofType(PAUSE),
     mergeMap(() => {
-      selectors.getSound(state$.value).pauseAsync();
+      const sound = selectors.getSound(state$.value);
+      sound.pauseAsync();
       return Observable.never();
     }),
   );
@@ -118,12 +227,14 @@ const seekEpic = (action$, state$) =>
     switchMap((action) => {
       const state = state$.value;
       const sound = selectors.getSound(state);
+      const item = selectors.item(state);
       return from(
         sound.setStatusAsync({
           positionMillis: action.payload.asMilliseconds(),
-        }).then(() => (
-          setPendingSeek(undefined)
-        )),
+        }).then((status) => {
+          syncAudioStatus(item, status);
+          return setPendingSeek(undefined);
+        }),
       );
     }),
   );
@@ -147,6 +258,7 @@ const resumePlaybackOnRehydrateEpic = (action$, state$) =>
 
 export default combineEpics(
   startPlayingEpic,
+  setStatusEpic,
   playEpic,
   pauseEpic,
   jumpEpic,

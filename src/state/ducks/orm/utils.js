@@ -66,6 +66,17 @@ function imageSource(uri) {
   return { uri };
 }
 
+export function getCollection(item) {
+  if (item.type === 'meditation') {
+    return item.category;
+  } else if (item.type === 'podcastEpisode') {
+    return item.podcast;
+  } else if (item.type === 'liturgyItem') {
+    return item.liturgy;
+  }
+  return null;
+}
+
 export function getImageSource(item, large = false) {
   const imageKey = large ? 'largeImage' : 'image';
   const imageUrlKey = `${imageKey}Url`;
@@ -74,14 +85,7 @@ export function getImageSource(item, large = false) {
     return imageSource(itemImageUrl);
   }
 
-  let collection;
-  if (item.type === 'meditation') {
-    collection = item.category;
-  } else if (item.type === 'podcastEpisode') {
-    collection = item.podcast;
-  } else if (item.type === 'liturgyItem') {
-    collection = item.liturgy;
-  }
+  const collection = getCollection(item);
 
   if (!collection) {
     return placeholderImage;

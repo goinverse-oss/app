@@ -6,6 +6,7 @@ import { handleActions } from '../../utils/reduxActions';
 
 import {
   SET_PLAYING,
+  CLEAR_PLAYBACK,
   SET_SOUND,
   PLAY,
   PAUSE,
@@ -60,6 +61,10 @@ function storePodcastEpisodePlaybackStatus(playbackStatusPerItem, item, status) 
     return playbackStatusPerItem;
   }
 
+  if (status.didJustFinish || status.positionMillis === status.durationMillis) {
+    return _.omit(playbackStatusPerItem, item.id);
+  }
+
   return {
     ...playbackStatusPerItem,
     [item.id]: {
@@ -100,8 +105,8 @@ export default persistReducer(
         state.item,
         action.payload,
       ),
-      item: action.payload.didJustFinish ? null : state.item,
     }),
+    [CLEAR_PLAYBACK]: state => _.omit(state, 'item'),
     [SET_PENDING_SEEK]: (state, action) => ({
       ...state,
       pendingSeekDestination: action.payload,

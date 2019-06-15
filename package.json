@@ -7,6 +7,8 @@
     "test": "jest",
     "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
     "flow": "flow",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android --no-packager",
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
     "validateci": "./scripts/validate-ci-config",
     "ci:deploy": "./ci/deploy-to-expo.sh",
@@ -44,6 +46,7 @@
     "moment-duration-format": "^2.2.2",
     "moment-timezone": "^0.5.14",
     "numeral": "^2.0.6",
+    "path-browserify": "^1.0.0",
     "prop-types": "^15.6.0",
     "qs": "^6.6.0",
     "react": "16.8.3",
@@ -54,6 +57,7 @@
     "react-native-elements": "^0.19.0",
     "react-native-gesture-handler": "~1.2.1",
     "react-native-markdown-renderer": "^3.2.8",
+    "react-native-music-control": "^0.10.4",
     "react-native-progress": "^3.6.0",
     "react-native-render-html": "^4.1.1",
     "react-native-screens": "1.0.0-alpha.17",
@@ -107,6 +111,9 @@
   },
   "jest": {
     "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "./testSetup.js"
+    ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@unimodules|@react-native-community/async-storage))"
     ]
