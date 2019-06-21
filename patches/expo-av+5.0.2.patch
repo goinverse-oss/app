@@ -1,0 +1,18 @@
+diff --git a/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m b/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m
+index 443b35b..f81f84a 100644
+--- a/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m
++++ b/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m
+@@ -811,7 +811,12 @@ - (void)pauseImmediately
+ 
+ - (EXAVAudioSessionMode)getAudioSessionModeRequired
+ {
+-  if (_player && ([self _isPlayerPlaying] || [self _shouldPlayerPlay])) {
++  // Patch from https://github.com/redpandatronicsuk/expoavtest/blob/1c5441b24e2eadf4086ba63740b3751436252c82/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m#L823
++  // Workaround 2: I think there is an actual bug here.
++  //               Maybe we could add somehting like EXAVAudioSessionModeActivePaused
++  //               because when paused the session is still active, but paused
++  //               I think there is a confusion here between active and playing??
++  if (_player) { // removed: && ([self _isPlayerPlaying] || [self _shouldPlayerPlay])
+     return _isMuted ? EXAVAudioSessionModeActiveMuted : EXAVAudioSessionModeActive;
+   }
+   return EXAVAudioSessionModeInactive;

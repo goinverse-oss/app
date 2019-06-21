@@ -15,5 +15,5 @@ export function getItemDownloadRelativePath(item) {
 }
 
 export function getItemDownloadPath(item) {
-  return path.join(basePath, getItemDownloadRelativePath(item));
+  return `${basePath}${getItemDownloadRelativePath(item)}`;
 }

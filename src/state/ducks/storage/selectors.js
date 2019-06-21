@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import path from 'path-browserify';
 import * as FileSystem from 'expo-file-system';
 
 export function getDownloadPathMap(state) {
@@ -8,7 +7,7 @@ export function getDownloadPathMap(state) {
 
 export function getDownloadPath(state, item) {
   const relPath = _.get(state.storage.items, item.id);
-  return relPath ? path.join(FileSystem.documentDirectory, relPath) : undefined;
+  return relPath ? `${FileSystem.documentDirectory}${relPath}` : undefined;
 }
 
 export function getDownloadProgress(state, item) {

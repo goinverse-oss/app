@@ -61,6 +61,7 @@ const removeDownloadEpic = action$ =>
         const item = action.payload;
         const itemPath = getItemDownloadPath(item);
         FileSystem.deleteAsync(itemPath)
+          .catch(() => {}) // ignore errors; remove mapping no matter what
           .then(() => subscriber.next(removeDownloadMapping(item)));
       })
     )),

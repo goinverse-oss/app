@@ -19,7 +19,7 @@
     "pretest": "yarn generate-default-config",
     "preci:deploy": "yarn generate-default-config",
     "prestorybook": "rnstl",
-    "postinstall": "rndebugger-open --expo"
+    "postinstall": "rndebugger-open --expo; patch-package"
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.1",
@@ -99,7 +99,9 @@
     "jest-expo": "^33.0.0",
     "jest-junit": "^3.4.1",
     "json": "^9.0.6",
+    "patch-package": "^6.1.2",
     "pluralize": "^7.0.0",
+    "postinstall-postinstall": "^2.0.0",
     "pre-commit": "^1.2.2",
     "react-dom": "16.0.0-beta.5",
     "react-native-debugger-open": "^0.3.19",
@@ -107,6 +109,7 @@
     "react-test-renderer": "16.0.0-beta.5",
     "reactotron-react-native": "^3",
     "reactotron-redux": "^3",
+    "rxjs-marbles": "^5.0.2",
     "source-map-support": "^0.5.6"
   },
   "jest": {
