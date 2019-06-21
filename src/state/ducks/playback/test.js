@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { share, take } from 'rxjs/operators';
+import { marbles } from 'rxjs-marbles/jest';
 import { REHYDRATE } from 'redux-persist';
 
 import configureStore from '../../store';
@@ -8,7 +9,7 @@ import configureStore from '../../store';
 import { SET_SOUND } from './types';
 import { setPlaying, setStatus } from './actions';
 import { getStatus, getLastStatusForItem } from './selectors';
-import epic from './epic';
+import epic, { shallowDiff } from './epic';
 import { receiveData } from '../orm/actions';
 import { START_DOWNLOAD } from '../storage/types';
 import { getStateObservable } from '../testUtils';
@@ -88,6 +89,20 @@ describe('playback epic', () => {
       },
       fields: {
         mediaUrl: 'https://example.com/url',
+        title: `Foo${item.id}`,
+        podcast: {
+          sys: {
+            id: 1,
+            contentType: {
+              sys: {
+                id: 'podcast',
+              },
+            },
+          },
+          fields: {
+            title: 'FooPod',
+          },
+        },
       },
     }),
   );
@@ -205,3 +220,25 @@ describe('playback epic', () => {
     expect(action).toEqual(setPlaying(items[0], false));
   });
 });
+
+/* eslint-disable no-multi-spaces */
+describe('shallowDiff operator', () => {
+  test('emits the first item immediately', marbles((m) => {
+    const inputObjs = {
+      a: { foo: 1, bar: 2 },
+      b: { foo: 1, bar: 4 },
+      c: { foo: 2, bar: 4 },
+      d: { foo: 3, bar: 4 },
+    };
+    const expectedObjs = {
+      a: { foo: 1, bar: 2 },
+      d: { bar: 4 },
+      e: { foo: 2 },
+      f: { foo: 3 },
+    };
+    const input = m.cold('abccd|', inputObjs);
+    const expected =     'ade-f|';
+    m.expect(input.pipe(shallowDiff())).toBeObservable(expected, expectedObjs);
+  }));
+});
+/* eslint-enable no-multi-spaces */

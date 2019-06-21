@@ -162,7 +162,7 @@ JumpButton.defaultProps = {
 
 JumpButton = connect(null, actions)(JumpButton);
 
-const jumpSeconds = 30;
+export const jumpSeconds = 30;
 
 
 const Controls = ({

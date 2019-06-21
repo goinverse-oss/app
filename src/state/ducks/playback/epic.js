@@ -6,18 +6,29 @@ import Sentry from 'sentry-expo';
 import * as FileSystem from 'expo-file-system';
 
 import { Observable, of, from } from 'rxjs';
-import { switchMap, mergeMap, takeWhile } from 'rxjs/operators';
+import { switchMap, mergeMap, takeWhile, map } from 'rxjs/operators';
 import { Audio } from 'expo-av';
 import MusicControl from 'react-native-music-control';
 
 import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK, SET_STATUS } from './types';
-import { setStatus, setSound, setPlaying, clearPlayback, setPendingSeek } from './actions';
+import {
+  play,
+  pause,
+  jump,
+  seek,
+  setStatus,
+  setSound,
+  setPlaying,
+  clearPlayback,
+  setPendingSeek,
+} from './actions';
 import * as selectors from './selectors';
 import { startDownload, removeDownload, removeDownloadMapping } from '../storage/actions';
 import { instanceSelector } from '../orm/selectors';
 import { getMediaSource, getImageSource, getCollection } from '../orm/utils';
 import { getDownloadPath } from '../storage/selectors';
 import showError from '../../../showError';
+import { jumpSeconds } from '../../../screens/PlayerScreen/Controls';
 
 Audio.setAudioModeAsync({
   allowsRecordingIOS: false,
@@ -44,9 +55,12 @@ _.forEach({
 MusicControl.enableControl('skipForward', true, { interval: 30 });
 MusicControl.enableControl('skipBackward', true, { interval: 30 });
 
+MusicControl.enableBackgroundMode(true);
+MusicControl.handleAudioInterruptions(true);
+
 function getPlaybackState(status) {
   const {
-    error, isBuffering, didJustFinish, isPlaying,
+    error, isBuffering, didJustFinish, shouldPlay,
   } = status;
 
   if (error) {
@@ -58,11 +72,11 @@ function getPlaybackState(status) {
   if (didJustFinish) {
     return MusicControl.STATE_STOPPED;
   }
-  return isPlaying ? MusicControl.STATE_PLAYING : MusicControl.STATE_PAUSED;
+  return shouldPlay ? MusicControl.STATE_PLAYING : MusicControl.STATE_PAUSED;
 }
 
 function setBackgroundPlayerControls(item) {
-  MusicControl.setNowPlaying({
+  const status = {
     title: item.title,
     artwork: getImageSource(item).uri,
     artist: 'The Liturgists',
@@ -70,22 +84,37 @@ function setBackgroundPlayerControls(item) {
     duration: moment.duration(item.duration).asSeconds(),
     description: item.description,
     date: item.publishedAt,
-  });
+  };
+  MusicControl.setNowPlaying(status);
 }
 
-function syncAudioStatus(item, status) {
-  if (item) {
-    const { positionMillis, durationMillis, playableDurationMillis } = status;
-    setBackgroundPlayerControls(item);
-    MusicControl.updatePlayback({
-      state: getPlaybackState(status),
-      elapsedTime: positionMillis ? positionMillis / 1000 : undefined,
-      duration: durationMillis ? durationMillis / 1000 : undefined,
-      bufferedTime: playableDurationMillis ? playableDurationMillis / 1000 : undefined,
-    });
-  } else {
-    MusicControl.resetNowPlaying();
-  }
+function getLockScreenStatus(playbackStatus) {
+  const { positionMillis, durationMillis, playableDurationMillis } = playbackStatus;
+  const lockScreenStatus = {
+    state: getPlaybackState(playbackStatus),
+    elapsedTime: positionMillis ? positionMillis / 1000 : undefined,
+    duration: durationMillis ? durationMillis / 1000 : undefined,
+    bufferedTime: playableDurationMillis ? playableDurationMillis / 1000 : undefined,
+  };
+  return _.omitBy(lockScreenStatus, v => _.isUndefined(v));
+}
+
+function syncAudioStatus(state, lockScreenStatus) {
+  const item = selectors.item(state);
+  const status = selectors.getStatus(state);
+
+  const newStatus = {
+    ...lockScreenStatus,
+
+    // Always update the artwork to work around a recurrent bug:
+    // https://github.com/tanguyantoine/react-native-music-control/issues/98
+    // https://github.com/tanguyantoine/react-native-music-control/issues/208
+    artwork: getImageSource(item).uri,
+
+    // calculate this from the actual status rather than a diff
+    state: getPlaybackState(status),
+  };
+  MusicControl.updatePlayback(newStatus);
 }
 
 function startPlayback(state, item, shouldPlay = true) {
@@ -136,7 +165,7 @@ function startPlayback(state, item, shouldPlay = true) {
       })
       .then(({ sound }) => subscriber.next(setSound(sound)))
       .catch((err) => {
-        console.log('error loading audio', mediaSource);
+        console.log('error loading audio', mediaSource, err);
         Sentry.captureException(err);
         showError(new Error(`Failed to load URL: ${mediaSource.uri}`));
       });
@@ -157,19 +186,55 @@ const startPlayingEpic = (action$, state$) =>
         prevSound.stopAsync();
       }
 
+      setBackgroundPlayerControls(item);
       return startPlayback(state, item, shouldPlay);
     }),
   );
 
+/**
+ * RxJS operator that emits a shallow diff between items in
+ * the source Observable. Emits the first source object,
+ * then only emits fields that have changed. If two objects
+ * in the source are shallow-identical, does not emit.
+ * Keys in the optional whitelist are always included,
+ * even if their values did not change.
+ */
+export function shallowDiff(whitelist = []) {
+  return function shallowDiffOperator(source) {
+    let prev = null;
+    return Observable.create(subscriber => (
+      source.subscribe(
+        (value) => {
+          if (_.isNull(prev)) {
+            subscriber.next(value);
+          } else if (!_.isEqual(value, prev)) {
+            subscriber.next(
+              _.omitBy(value, (v, k) => (
+                whitelist.indexOf(k) < 0 &&
+                v === prev[k]
+              )),
+            );
+          }
+          prev = value;
+        },
+        err => subscriber.error(err),
+        () => subscriber.complete(),
+      )
+    ));
+  };
+}
+
 const setStatusEpic = (action$, state$) =>
   action$.pipe(
     ofType(SET_STATUS),
-    switchMap((action) => {
-      const status = action.payload;
+    map(action => getLockScreenStatus(action.payload)),
+    shallowDiff(['duration', 'elapsedTime']),
+    switchMap((statusDiff) => {
+      const state = state$.value;
       const item = selectors.item(state$.value);
-      syncAudioStatus(item, status);
+      syncAudioStatus(state, statusDiff);
 
-      if (status.didJustFinish) {
+      if (statusDiff.didJustFinish) {
         MusicControl.resetNowPlaying();
         return of(
           removeDownload(item),
@@ -185,9 +250,7 @@ const playEpic = (action$, state$) =>
     ofType(PLAY),
     mergeMap(() => {
       const sound = selectors.getSound(state$.value);
-      const item = selectors.item(state$.value);
-      setBackgroundPlayerControls(item);
-      sound.playAsync();
+      sound.playAsync().catch(console.error);
       return Observable.never();
     }),
   );
@@ -208,13 +271,13 @@ const jumpEpic = (action$, state$) =>
     switchMap((action) => {
       const jumpMillis = action.payload * 1000;
       const state = state$.value;
-      const status = selectors.getStatus(state);
-      const positionMillis = status.positionMillis + jumpMillis;
+      const { positionMillis } = selectors.getStatus(state);
+      const newPositionMillis = positionMillis + jumpMillis;
 
       const sound = selectors.getSound(state);
       if (sound) {
         sound.setStatusAsync({
-          positionMillis,
+          positionMillis: newPositionMillis,
         });
       }
       return Observable.never();
@@ -227,14 +290,10 @@ const seekEpic = (action$, state$) =>
     switchMap((action) => {
       const state = state$.value;
       const sound = selectors.getSound(state);
-      const item = selectors.item(state);
       return from(
         sound.setStatusAsync({
           positionMillis: action.payload.asMilliseconds(),
-        }).then((status) => {
-          syncAudioStatus(item, status);
-          return setPendingSeek(undefined);
-        }),
+        }).then(() => setPendingSeek(undefined)),
       );
     }),
   );
@@ -256,6 +315,22 @@ const resumePlaybackOnRehydrateEpic = (action$, state$) =>
     }),
   );
 
+const lockScreenControlsEpic = () =>
+  Observable.create(
+    (subscriber) => {
+      MusicControl.on('play', () => subscriber.next(play()));
+      MusicControl.on('pause', () => subscriber.next(pause()));
+      MusicControl.on('skipBackward', () => subscriber.next(jump(-jumpSeconds)));
+      MusicControl.on('skipForward', () => subscriber.next(jump(jumpSeconds)));
+
+      MusicControl.on('changePlaybackPosition', (posStr) => {
+        const pos = Number.parseFloat(posStr);
+        subscriber.next(seek(moment.duration(pos, 'seconds')));
+      });
+      MusicControl.on('seek', pos => subscriber.next(seek(moment.duration(pos, 'seconds'))));
+    },
+  );
+
 export default combineEpics(
   startPlayingEpic,
   setStatusEpic,
@@ -264,4 +339,5 @@ export default combineEpics(
   jumpEpic,
   seekEpic,
   resumePlaybackOnRehydrateEpic,
+  lockScreenControlsEpic,
 );

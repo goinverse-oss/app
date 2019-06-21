@@ -1,6 +1,6 @@
 jest.mock('expo-file-system', () => {
   const FileSystem = {
-    documentDirectory: 'file:///path/to/app/sandbox',
+    documentDirectory: 'file:///path/to/app/sandbox/',
 
     makeDirectoryAsync() {
       return Promise.resolve();
