@@ -36,13 +36,13 @@ export function elapsed(state) {
     return state.playback.pendingSeekDestination;
   }
 
-  const millis = getStatus(state).positionMillis || 0;
+  const millis = _.get(getStatus(state), 'positionMillis', 0);
   const seconds = Math.floor(millis / 1000);
   return moment.duration(seconds, 'seconds');
 }
 
 export function duration(state) {
-  const millis = getStatus(state).durationMillis;
+  const millis = _.get(getStatus(state), 'durationMillis', 0);
   if (millis) {
     const seconds = Math.floor(millis / 1000);
     return moment.duration(seconds, 'seconds');

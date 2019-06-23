@@ -85,6 +85,7 @@ function setBackgroundPlayerControls(item) {
     description: item.description,
     date: item.publishedAt,
   };
+  console.log('setNowPlaying', status);
   MusicControl.setNowPlaying(status);
 }
 
@@ -163,7 +164,12 @@ function startPlayback(state, item, shouldPlay = true) {
           },
         );
       })
-      .then(({ sound }) => subscriber.next(setSound(sound)))
+      .then(({ sound }) => {
+        if (shouldPlay) {
+          setBackgroundPlayerControls(item);
+        }
+        subscriber.next(setSound(sound));
+      })
       .catch((err) => {
         console.log('error loading audio', mediaSource, err);
         Sentry.captureException(err);
@@ -186,7 +192,6 @@ const startPlayingEpic = (action$, state$) =>
         prevSound.stopAsync();
       }
 
-      setBackgroundPlayerControls(item);
       return startPlayback(state, item, shouldPlay);
     }),
   );
@@ -249,7 +254,11 @@ const playEpic = (action$, state$) =>
   action$.pipe(
     ofType(PLAY),
     mergeMap(() => {
-      const sound = selectors.getSound(state$.value);
+      const state = state$.value;
+      const item = selectors.item(state);
+      setBackgroundPlayerControls(item);
+
+      const sound = selectors.getSound(state);
       sound.playAsync().catch(console.error);
       return Observable.never();
     }),
