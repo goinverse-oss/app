@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { AppState } from 'react-native';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
 import moment from 'moment';
@@ -85,7 +86,6 @@ function setBackgroundPlayerControls(item) {
     description: item.description,
     date: item.publishedAt,
   };
-  console.log('setNowPlaying', status);
   MusicControl.setNowPlaying(status);
 }
 
@@ -269,7 +269,7 @@ const pauseEpic = (action$, state$) =>
     ofType(PAUSE),
     mergeMap(() => {
       const sound = selectors.getSound(state$.value);
-      sound.pauseAsync();
+      sound.pauseAsync().catch(console.error);
       return Observable.never();
     }),
   );
@@ -327,16 +327,38 @@ const resumePlaybackOnRehydrateEpic = (action$, state$) =>
 const lockScreenControlsEpic = () =>
   Observable.create(
     (subscriber) => {
-      MusicControl.on('play', () => subscriber.next(play()));
-      MusicControl.on('pause', () => subscriber.next(pause()));
-      MusicControl.on('skipBackward', () => subscriber.next(jump(-jumpSeconds)));
-      MusicControl.on('skipForward', () => subscriber.next(jump(jumpSeconds)));
+      // XXX: for some reason, this event gets fired on Android
+      // when I press the pause button (in the app, not in
+      // the notification). Additionally, for some reason, after pause,
+      // the 'play' event is immediately emitted. So, to work around
+      // these apparent bugs, we will ignore MusicControl play events
+      // if the app is not in the background, or if it has not been
+      // at least 500ms since the last event.
+      let lastEmit = moment().subtract(10, 'seconds');
+      function emit(action) {
+        const now = moment();
+        const diff = now.diff(lastEmit);
+        const delayMs = 500;
+        if (
+          action.type !== PLAY || (
+            AppState.currentState === 'background' && diff > delayMs
+          )
+        ) {
+          lastEmit = now;
+          subscriber.next(action);
+        }
+      }
+
+      MusicControl.on('play', () => emit(play()));
+      MusicControl.on('pause', () => emit(pause()));
+      MusicControl.on('skipBackward', () => emit(jump(-jumpSeconds)));
+      MusicControl.on('skipForward', () => emit(jump(jumpSeconds)));
 
       MusicControl.on('changePlaybackPosition', (posStr) => {
         const pos = Number.parseFloat(posStr);
-        subscriber.next(seek(moment.duration(pos, 'seconds')));
+        emit(seek(moment.duration(pos, 'seconds')));
       });
-      MusicControl.on('seek', pos => subscriber.next(seek(moment.duration(pos, 'seconds'))));
+      MusicControl.on('seek', pos => emit(seek(moment.duration(pos, 'seconds'))));
     },
   );
 
