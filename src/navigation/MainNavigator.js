@@ -4,7 +4,8 @@ import { Animated, StyleSheet, Dimensions, Platform, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import DropdownAlert from 'react-native-dropdownalert';
-import { GestureHandler, LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as GestureHandler from 'react-native-gesture-handler';
 
 import HomeScreen from '../screens/HomeScreen';
 import PatreonScreen from '../screens/PatreonScreen';

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Platform, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import appPropTypes from '../propTypes';
 

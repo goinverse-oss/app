@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import { persistReducer, createTransform } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { handleActions } from '../../utils/reduxActions';
 
 import {
   SET_PLAYING,
+  CLEAR_PLAYBACK,
   SET_SOUND,
   PLAY,
   PAUSE,
@@ -51,13 +52,17 @@ export const playbackTransforms = [
 
 const persistConfig = {
   key: 'playback',
-  storage,
+  storage: AsyncStorage,
   transforms: playbackTransforms,
 };
 
 function storePodcastEpisodePlaybackStatus(playbackStatusPerItem, item, status) {
   if (!item || item.type !== 'podcastEpisode') {
     return playbackStatusPerItem;
+  }
+
+  if (status.didJustFinish || status.positionMillis === status.durationMillis) {
+    return _.omit(playbackStatusPerItem, item.id);
   }
 
   return {
@@ -100,8 +105,8 @@ export default persistReducer(
         state.item,
         action.payload,
       ),
-      item: action.payload.didJustFinish ? null : state.item,
     }),
+    [CLEAR_PLAYBACK]: state => _.omit(state, 'item'),
     [SET_PENDING_SEEK]: (state, action) => ({
       ...state,
       pendingSeekDestination: action.payload,

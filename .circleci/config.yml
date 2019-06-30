@@ -64,16 +64,6 @@ jobs:
           key: js-deps-{{ checksum "yarn.lock" }}
       - run: yarn ci:deploy storybook
 
-  report-deploy-to-pr:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          key: js-deps-{{ checksum "yarn.lock" }}
-      - run:
-          name: Comment on PR with Expo QR code
-          command: yarn ci:post-expo-comment
-
 workflows:
   version: 2
   main:
@@ -95,11 +85,3 @@ workflows:
           requires:
             - install_dependencies
             - unit_tests
-      - report-deploy-to-pr:
-          context: global
-          requires:
-            - deploy-app
-            - deploy-storybook
-          filters:
-            branches:
-              ignore: master

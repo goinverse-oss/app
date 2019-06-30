@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import { persistReducer, createMigrate } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // AsyncStorage for react-native
+import AsyncStorage from '@react-native-community/async-storage';
 
 import orm from '../../orm';
 
@@ -43,7 +43,7 @@ const migrations = {
 const reduxOrmReducer = persistReducer(
   {
     key: 'reduxOrm',
-    storage,
+    storage: AsyncStorage,
     version: 0,
     migrate: createMigrate(migrations),
   },
@@ -120,7 +120,7 @@ const reduxOrmReducer = persistReducer(
 export default persistReducer(
   {
     key: 'orm',
-    storage,
+    storage: AsyncStorage,
     blacklist: ['reduxOrm'],
   },
   combineReducers({

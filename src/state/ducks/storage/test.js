@@ -9,35 +9,6 @@ import epic from './epic';
 import { getItemDownloadPath } from './utils';
 import { getStateObservable } from '../testUtils';
 
-jest.mock('expo', () => {
-  class FileSystem {
-    static documentDirectory = 'file:///path/to/app/sandbox';
-
-    static makeDirectoryAsync() {
-      return Promise.resolve();
-    }
-
-    static createDownloadResumable(url, fileUrl /* other args ignored */) {
-      return {
-        downloadAsync() {
-          return Promise.resolve();
-        },
-        savable() {
-          return { url, fileUrl };
-        },
-      };
-    }
-
-    static removeAsync = jest.fn().mockImplementation(() => Promise.resolve());
-  }
-
-  return {
-    ...jest.requireActual('expo'),
-    FileSystem,
-  };
-});
-
-
 describe('storage reducer', () => {
   const item = { type: 'blah', id: 'foo', mediaUrl: 'https://example.com/foo.mp3' };
   const path = getItemDownloadPath(item);
@@ -58,12 +29,12 @@ describe('storage reducer', () => {
     expect(actualPath).toEqual(path);
   });
 
-  test('removeDownload() removes a path', () => {
+  test('removeDownloadMapping() removes a path', () => {
     store.dispatch(actions.storeDownload(item));
     let actualPath = selectors.getDownloadPath(store.getState(), item);
     expect(actualPath).toEqual(path);
 
-    store.dispatch(actions.removeDownload(item));
+    store.dispatch(actions.removeDownloadMapping(item));
     actualPath = selectors.getDownloadPath(store.getState(), item);
     expect(actualPath).toBeUndefined();
   });
@@ -113,14 +84,14 @@ describe('storage epic', () => {
 
   test('removeDownload removes a download', async () => {
     // eslint-disable-next-line
-    const { FileSystem } = require('expo');
+    const FileSystem = require('expo-file-system');
 
-    const inputAction$ = of(actions.removeDownloadAsync(item));
+    const inputAction$ = of(actions.removeDownload(item));
     const action$ = epic(inputAction$, getStateObservable(store));
     const action = await action$.pipe(take(1)).toPromise();
-    expect(action).toEqual(actions.removeDownload(item));
+    expect(action).toEqual(actions.removeDownloadMapping(item));
 
     const path = getItemDownloadPath(item);
-    expect(FileSystem.removeAsync).toHaveBeenCalledWith(path);
+    expect(FileSystem.deleteAsync).toHaveBeenCalledWith(path);
   });
 });

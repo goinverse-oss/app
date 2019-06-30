@@ -75,6 +75,10 @@ function renderBufferProgress({ playableDurationMillis, durationMillis }) {
 }
 
 function renderStatus(status) {
+  if (!status) {
+    return '';
+  }
+
   const loadStatus = renderLoadStatus(status);
   const bufferStatus = renderBufferProgress(status);
   if (loadStatus.length > 0) {

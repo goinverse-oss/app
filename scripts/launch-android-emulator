@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# For simplicity, launches the first AVD in the -list-avds output.
+
+EMULATOR=${ANDROID_HOME}/emulator/emulator
+AVD=$(${EMULATOR} -list-avds | head -n1)
+
+${EMULATOR} -avd ${AVD} "$@"

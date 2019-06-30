@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Image,
+  NativeModules,
   StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import DrawerItem from './DrawerItem';
 import PatreonStatus from './PatreonStatus';
@@ -44,6 +45,11 @@ const DrawerContent = ({
       image={<Image source={patreonIcon} style={styles.patreonImage} />}
       title="Manage Patreon"
       onPress={navigateToPatreon}
+    />
+    <DrawerItem
+      drawer={drawer}
+      title="Open dev menu"
+      onPress={() => NativeModules.DevMenu.show()}
     />
   </LinearGradient>
 );

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { connect } from 'react-redux';
-import { Audio } from 'expo';
+import { Audio } from 'expo-av';
 
 import headphones from '../../assets/welcome/headphones.png';
 import sun from '../../assets/welcome/sun.png';
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff',
   },
   slideTop: {
     justifyContent: 'flex-end',
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#333333',
-    fontSize: 35,
+    fontSize: 32,
     marginTop: 35,
     marginBottom: 14,
   },

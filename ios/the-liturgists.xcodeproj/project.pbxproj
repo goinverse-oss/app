@@ -1,0 +1,1511 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B501732B1DC01252003445D9 /* EXShell.plist in Resources */ = {isa = PBXBuildFile; fileRef = B501732A1DC01252003445D9 /* EXShell.plist */; };
+		B56386491DB9693800A0598C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B56386481DB9693800A0598C /* AppDelegate.m */; };
+		B56386511DB9693800A0598C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56386501DB9693800A0598C /* Assets.xcassets */; };
+		B56386611DB96A5E00A0598C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B563865E1DB96A5E00A0598C /* main.m */; };
+		B56386671DB9994300A0598C /* EXSDKVersions.plist in Resources */ = {isa = PBXBuildFile; fileRef = B56386661DB9994300A0598C /* EXSDKVersions.plist */; };
+		B5693E8E1FABD16A00307FA4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5693E8D1FABD16A00307FA4 /* LaunchScreen.xib */; };
+		B5693E911FABD46800307FA4 /* launch_background_image.png in Resources */ = {isa = PBXBuildFile; fileRef = B5693E8F1FABD46800307FA4 /* launch_background_image.png */; };
+		B5693E921FABD46800307FA4 /* launch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B5693E901FABD46800307FA4 /* launch_icon.png */; };
+		B5CFBF4F1EDE419400B4BE24 /* EXBuildConstants.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */; };
+		B5DB04801F3A684600E91581 /* shell-app-manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = B5DB047E1F3A684600E91581 /* shell-app-manifest.json */; };
+		B5DB04811F3A684600E91581 /* shell-app.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B5DB047F1F3A684600E91581 /* shell-app.bundle */; };
+		EBB8117C1BFA0514F79CAF74 /* libPods-the-liturgists.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A88D15726AD99E8A257BC7 /* libPods-the-liturgists.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2FE711ED22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 79466250C0AB8216B905D3321D56C526;
+			remoteInfo = "Amplitude-iOS";
+		};
+		2FE711EF22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2CE4B6165F426953A26419DF02AF0D93;
+			remoteInfo = Analytics;
+		};
+		2FE711F122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3FD1B4C1246D643E9476438C28048FA8;
+			remoteInfo = AppAuth;
+		};
+		2FE711F322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F84B331B5D6AAF1548DD1BB004AE5C2A;
+			remoteInfo = Bolts;
+		};
+		2FE711F522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 50466679031AFFDEC718950031906D26;
+			remoteInfo = Branch;
+		};
+		2FE711F722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C261436D14052AE3C35F240BCD155CAC;
+			remoteInfo = CocoaLumberjack;
+		};
+		2FE711F922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6FFB7B2992BB53405E6B771A5BA1E97D;
+			remoteInfo = DoubleConversion;
+		};
+		2FE711FB22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF683DCD297ED3D1853385EBAD3A8D86;
+			remoteInfo = EXAdsAdMob;
+		};
+		2FE711FD22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C7B7934541729AC2FC04D9826A30A7E1;
+			remoteInfo = EXAdsFacebook;
+		};
+		2FE711FF22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AFD62E17E73E08D9846226F421DB9F25;
+			remoteInfo = EXAmplitude;
+		};
+		2FE7120122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 60250EE63AD30C78C4157EF3C06B34EF;
+			remoteInfo = EXAppAuth;
+		};
+		2FE7120322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A225ED83E33DC48D25B9FF35BA50CCD0;
+			remoteInfo = EXAppLoaderProvider;
+		};
+		2FE7120522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AD40A94AE1ADFA1CDF9602BA3B04C90E;
+			remoteInfo = EXAV;
+		};
+		2FE7120722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 67B815C1F48F3EFB1AB2E5967E1DB4E9;
+			remoteInfo = EXBackgroundFetch;
+		};
+		2FE7120922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 981DE5816F289093469CC450A22DC1F7;
+			remoteInfo = EXBarCodeScanner;
+		};
+		2FE7120B22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F3B8852F2ADC31EB382BFB72E81178B;
+			remoteInfo = EXBlur;
+		};
+		2FE7120D22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5FCA131CBE12E7730C166689063E0AB8;
+			remoteInfo = EXBrightness;
+		};
+		2FE7120F22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5A81B6D5010B557C71FC4A57D4959513;
+			remoteInfo = EXCalendar;
+		};
+		2FE7121122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3616ADC35D520F64895EB19FCD3E1682;
+			remoteInfo = EXCamera;
+		};
+		2FE7121322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 220361FF3B2778F8F38C2C4DCC5B49FD;
+			remoteInfo = EXConstants;
+		};
+		2FE7121522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BAEE05DD3D25A62C53B0B5402780CA82;
+			remoteInfo = EXContacts;
+		};
+		2FE7121722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2977E9701263E98C1ECC4C2E42517632;
+			remoteInfo = EXCrypto;
+		};
+		2FE7121922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A7FDE03084E6AE5E2FA86BD3E70183F8;
+			remoteInfo = EXDocumentPicker;
+		};
+		2FE7121B22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9865472B4E1E4CA5BDE2C2DECFC0F852;
+			remoteInfo = EXFacebook;
+		};
+		2FE7121D22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3FFC473AED8E03E4276A975196FF79E3;
+			remoteInfo = EXFaceDetector;
+		};
+		2FE7121F22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ED1E3FC0DC90F4A787472917BFB6B235;
+			remoteInfo = EXFileSystem;
+		};
+		2FE7122122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B9A8343068CE43CDCE59118C59FBBAF3;
+			remoteInfo = EXFont;
+		};
+		2FE7122322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2CB2A2680C91D256561ADCD1A519437;
+			remoteInfo = EXGL;
+		};
+		2FE7122522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EF0DAFB22773E1690246DA6AC134C4A2;
+			remoteInfo = "EXGL-CPP";
+		};
+		2FE7122722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A13F13BFE351F751A064AD168BF0260E;
+			remoteInfo = EXGoogleSignIn;
+		};
+		2FE7122922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 80A51B61FECFED8D1A0D95AAD32A2938;
+			remoteInfo = EXHaptics;
+		};
+		2FE7122B22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1FFB534971916741FA5961F0615FAC42;
+			remoteInfo = EXImageManipulator;
+		};
+		2FE7122D22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 48C548AE685198B631BA20B90C7B9238;
+			remoteInfo = EXImagePicker;
+		};
+		2FE7122F22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 09B5856105EF7C6447B9EC57E7E36B34;
+			remoteInfo = EXKeepAwake;
+		};
+		2FE7123122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3747AE14E346E991874D53D8D9FC4BA5;
+			remoteInfo = EXLinearGradient;
+		};
+		2FE7123322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 72558F571738704549E1838E845D2770;
+			remoteInfo = EXLocalAuthentication;
+		};
+		2FE7123522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BD09B219BEBDD13DD08582027340E208;
+			remoteInfo = EXLocalization;
+		};
+		2FE7123722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A37C597C68757F22BB31CFF6F920A258;
+			remoteInfo = EXLocation;
+		};
+		2FE7123922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 49079EF17A8A872F4C71400D4B3D4041;
+			remoteInfo = EXMailComposer;
+		};
+		2FE7123B22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3447A433A0BDC94867537AF5FA0B244F;
+			remoteInfo = EXMediaLibrary;
+		};
+		2FE7123D22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 72E494917AC5EC2582197F07061A28B0;
+			remoteInfo = EXPermissions;
+		};
+		2FE7123F22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 244B3AC3FDE7926F4F50656B6A99AB24;
+			remoteInfo = ExpoKit;
+		};
+		2FE7124122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FAED167B3827DD8866C67FA05B6A7D7B;
+			remoteInfo = EXPrint;
+		};
+		2FE7124322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31D292C80C179E48D11C0A202046E2D;
+			remoteInfo = EXRandom;
+		};
+		2FE7124522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2FE1238D5A785BA9C5EDB95D809DF948;
+			remoteInfo = EXSecureStore;
+		};
+		2FE7124722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5FE95C31613AE7D315D99EFA194118EC;
+			remoteInfo = EXSegment;
+		};
+		2FE7124922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A9E420116321ECB4E817BAEE88F4B916;
+			remoteInfo = EXSensors;
+		};
+		2FE7124B22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 48FA8D6EE4E2C8BE10B7728B2C06F526;
+			remoteInfo = EXSharing;
+		};
+		2FE7124D22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 476D96EF438C6DA20DF84DFAF47CFF98;
+			remoteInfo = EXSMS;
+		};
+		2FE7124F22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D6A164174EB23A7058C9F31E897BBA6A;
+			remoteInfo = EXSpeech;
+		};
+		2FE7125122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1108DC122877B2541D4AFF30154347CA;
+			remoteInfo = EXSQLite;
+		};
+		2FE7125322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4646F154B230BC710F0954279600A1AE;
+			remoteInfo = EXTaskManager;
+		};
+		2FE7125522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 574E8A849B86DCF8EE5726418D974721;
+			remoteInfo = EXWebBrowser;
+		};
+		2FE7125722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EC8F4D0BE3B0C192EBA4A93F8887D89F;
+			remoteInfo = FBSDKCoreKit;
+		};
+		2FE7125922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5DE0FEFC3995E740EC1AE2611D0AEFB0;
+			remoteInfo = FBSDKLoginKit;
+		};
+		2FE7125B22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06489499588BFA8FD5E63DD6375CD533;
+			remoteInfo = Folly;
+		};
+		2FE7125D22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3CA7A9404CCDD6BA22C97F8348CE3209;
+			remoteInfo = glog;
+		};
+		2FE7125F22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5CA9E6FE438CE79CD76FA3B34CC95836;
+			remoteInfo = "Google-Maps-iOS-Utils";
+		};
+		2FE7126122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 251C6319AD50CB50F18D50CBF727F8B2;
+			remoteInfo = GoogleToolboxForMac;
+		};
+		2FE7126322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C1998E0D8085221AD87F89B614C10E52;
+			remoteInfo = GTMSessionFetcher;
+		};
+		2FE7126522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 570CCB03A0E85F186DDBBACE420066C6;
+			remoteInfo = JKBigInteger2;
+		};
+		2FE7126722C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 51BA97E8B5085EFFB47BC9C0B785CEA7;
+			remoteInfo = "lottie-ios";
+		};
+		2FE7126922C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D69C0A8F86A8542E738A07E7170673F9;
+			remoteInfo = "Pods-the-liturgists";
+		};
+		2FE7126B22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E7C341FA544E64E23E052A68E4A0A5E;
+			remoteInfo = React;
+		};
+		2FE7126D22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B957FA50938DC942809EC58CB737302;
+			remoteInfo = "react-native-music-control";
+		};
+		2FE7126F22C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5737DDB4BC95AD399B3206838AB97095;
+			remoteInfo = RNCAsyncStorage;
+		};
+		2FE7127122C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AF72FD600DE7E2D330BA50F877993E05;
+			remoteInfo = UMCore;
+		};
+		2FE7127322C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3B640835BAA914DD267B5E780D8CFEC7;
+			remoteInfo = UMReactNativeAdapter;
+		};
+		2FE7127522C10159002825A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1FA65622A09E4E5504F80B3610AB78F1;
+			remoteInfo = yoga;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2C1548D9E4CB1AEFA5CCAE6D /* Pods-the-liturgists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-liturgists/Pods-the-liturgists.debug.xcconfig"; sourceTree = "<group>"; };
+		2FE7118F22C10158002825A1 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
+		A47FE4D7F70906B7DC8CE39B /* Pods-the-liturgists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.release.xcconfig"; path = "Pods/Target Support Files/Pods-the-liturgists/Pods-the-liturgists.release.xcconfig"; sourceTree = "<group>"; };
+		B501732A1DC01252003445D9 /* EXShell.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXShell.plist; sourceTree = "<group>"; };
+		B56386411DB9693800A0598C /* the-liturgists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-liturgists.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B56386471DB9693800A0598C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B56386481DB9693800A0598C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B56386501DB9693800A0598C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B563865C1DB96A5E00A0598C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B563865E1DB96A5E00A0598C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B56386661DB9994300A0598C /* EXSDKVersions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXSDKVersions.plist; sourceTree = "<group>"; };
+		B5693E8D1FABD16A00307FA4 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		B5693E8F1FABD46800307FA4 /* launch_background_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_background_image.png; sourceTree = "<group>"; };
+		B5693E901FABD46800307FA4 /* launch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_icon.png; sourceTree = "<group>"; };
+		B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXBuildConstants.plist; sourceTree = "<group>"; };
+		B5DB047E1F3A684600E91581 /* shell-app-manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "shell-app-manifest.json"; sourceTree = "<group>"; };
+		B5DB047F1F3A684600E91581 /* shell-app.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "shell-app.bundle"; sourceTree = "<group>"; };
+		C4A88D15726AD99E8A257BC7 /* libPods-the-liturgists.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-the-liturgists.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B563863E1DB9693800A0598C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBB8117C1BFA0514F79CAF74 /* libPods-the-liturgists.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A42804E64B7E9E0AB8B6799 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2FE7118F22C10158002825A1 /* Pods.xcodeproj */,
+				C4A88D15726AD99E8A257BC7 /* libPods-the-liturgists.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2FE7119022C10158002825A1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2FE711EE22C10159002825A1 /* libAmplitude-iOS.a */,
+				2FE711F022C10159002825A1 /* libAnalytics.a */,
+				2FE711F222C10159002825A1 /* libAppAuth.a */,
+				2FE711F422C10159002825A1 /* libBolts.a */,
+				2FE711F622C10159002825A1 /* libBranch.a */,
+				2FE711F822C10159002825A1 /* libCocoaLumberjack.a */,
+				2FE711FA22C10159002825A1 /* libDoubleConversion.a */,
+				2FE711FC22C10159002825A1 /* libEXAdsAdMob.a */,
+				2FE711FE22C10159002825A1 /* libEXAdsFacebook.a */,
+				2FE7120022C10159002825A1 /* libEXAmplitude.a */,
+				2FE7120222C10159002825A1 /* libEXAppAuth.a */,
+				2FE7120422C10159002825A1 /* libEXAppLoaderProvider.a */,
+				2FE7120622C10159002825A1 /* libEXAV.a */,
+				2FE7120822C10159002825A1 /* libEXBackgroundFetch.a */,
+				2FE7120A22C10159002825A1 /* libEXBarCodeScanner.a */,
+				2FE7120C22C10159002825A1 /* libEXBlur.a */,
+				2FE7120E22C10159002825A1 /* libEXBrightness.a */,
+				2FE7121022C10159002825A1 /* libEXCalendar.a */,
+				2FE7121222C10159002825A1 /* libEXCamera.a */,
+				2FE7121422C10159002825A1 /* libEXConstants.a */,
+				2FE7121622C10159002825A1 /* libEXContacts.a */,
+				2FE7121822C10159002825A1 /* libEXCrypto.a */,
+				2FE7121A22C10159002825A1 /* libEXDocumentPicker.a */,
+				2FE7121C22C10159002825A1 /* libEXFacebook.a */,
+				2FE7121E22C10159002825A1 /* libEXFaceDetector.a */,
+				2FE7122022C10159002825A1 /* libEXFileSystem.a */,
+				2FE7122222C10159002825A1 /* libEXFont.a */,
+				2FE7122422C10159002825A1 /* libEXGL.a */,
+				2FE7122622C10159002825A1 /* libEXGL-CPP.a */,
+				2FE7122822C10159002825A1 /* libEXGoogleSignIn.a */,
+				2FE7122A22C10159002825A1 /* libEXHaptics.a */,
+				2FE7122C22C10159002825A1 /* libEXImageManipulator.a */,
+				2FE7122E22C10159002825A1 /* libEXImagePicker.a */,
+				2FE7123022C10159002825A1 /* libEXKeepAwake.a */,
+				2FE7123222C10159002825A1 /* libEXLinearGradient.a */,
+				2FE7123422C10159002825A1 /* libEXLocalAuthentication.a */,
+				2FE7123622C10159002825A1 /* libEXLocalization.a */,
+				2FE7123822C10159002825A1 /* libEXLocation.a */,
+				2FE7123A22C10159002825A1 /* libEXMailComposer.a */,
+				2FE7123C22C10159002825A1 /* libEXMediaLibrary.a */,
+				2FE7123E22C10159002825A1 /* libEXPermissions.a */,
+				2FE7124022C10159002825A1 /* libExpoKit.a */,
+				2FE7124222C10159002825A1 /* libEXPrint.a */,
+				2FE7124422C10159002825A1 /* libEXRandom.a */,
+				2FE7124622C10159002825A1 /* libEXSecureStore.a */,
+				2FE7124822C10159002825A1 /* libEXSegment.a */,
+				2FE7124A22C10159002825A1 /* libEXSensors.a */,
+				2FE7124C22C10159002825A1 /* libEXSharing.a */,
+				2FE7124E22C10159002825A1 /* libEXSMS.a */,
+				2FE7125022C10159002825A1 /* libEXSpeech.a */,
+				2FE7125222C10159002825A1 /* libEXSQLite.a */,
+				2FE7125422C10159002825A1 /* libEXTaskManager.a */,
+				2FE7125622C10159002825A1 /* libEXWebBrowser.a */,
+				2FE7125822C10159002825A1 /* libFBSDKCoreKit.a */,
+				2FE7125A22C10159002825A1 /* libFBSDKLoginKit.a */,
+				2FE7125C22C10159002825A1 /* libFolly.a */,
+				2FE7125E22C10159002825A1 /* libglog.a */,
+				2FE7126022C10159002825A1 /* libGoogle-Maps-iOS-Utils.a */,
+				2FE7126222C10159002825A1 /* libGoogleToolboxForMac.a */,
+				2FE7126422C10159002825A1 /* libGTMSessionFetcher.a */,
+				2FE7126622C10159002825A1 /* libJKBigInteger2.a */,
+				2FE7126822C10159002825A1 /* liblottie-ios.a */,
+				2FE7126A22C10159002825A1 /* libPods-the-liturgists.a */,
+				2FE7126C22C10159002825A1 /* libReact.a */,
+				2FE7126E22C10159002825A1 /* libreact-native-music-control.a */,
+				2FE7127022C10159002825A1 /* libRNCAsyncStorage.a */,
+				2FE7127222C10159002825A1 /* libUMCore.a */,
+				2FE7127422C10159002825A1 /* libUMReactNativeAdapter.a */,
+				2FE7127622C10159002825A1 /* libyoga.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5B29BC350A332C58878A9F13 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2C1548D9E4CB1AEFA5CCAE6D /* Pods-the-liturgists.debug.xcconfig */,
+				A47FE4D7F70906B7DC8CE39B /* Pods-the-liturgists.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B56386381DB9693800A0598C = {
+			isa = PBXGroup;
+			children = (
+				B56386431DB9693800A0598C /* the-liturgists */,
+				B56386421DB9693800A0598C /* Products */,
+				5B29BC350A332C58878A9F13 /* Pods */,
+				1A42804E64B7E9E0AB8B6799 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B56386421DB9693800A0598C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B56386411DB9693800A0598C /* the-liturgists.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B56386431DB9693800A0598C /* the-liturgists */ = {
+			isa = PBXGroup;
+			children = (
+				B56386471DB9693800A0598C /* AppDelegate.h */,
+				B56386481DB9693800A0598C /* AppDelegate.m */,
+				B56386501DB9693800A0598C /* Assets.xcassets */,
+				B563865B1DB96A5E00A0598C /* Supporting */,
+			);
+			path = "the-liturgists";
+			sourceTree = "<group>";
+		};
+		B563865B1DB96A5E00A0598C /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				B5693E8F1FABD46800307FA4 /* launch_background_image.png */,
+				B5693E901FABD46800307FA4 /* launch_icon.png */,
+				B5693E8D1FABD16A00307FA4 /* LaunchScreen.xib */,
+				B5DB047E1F3A684600E91581 /* shell-app-manifest.json */,
+				B5DB047F1F3A684600E91581 /* shell-app.bundle */,
+				B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */,
+				B501732A1DC01252003445D9 /* EXShell.plist */,
+				B56386661DB9994300A0598C /* EXSDKVersions.plist */,
+				B563865C1DB96A5E00A0598C /* Info.plist */,
+				B563865E1DB96A5E00A0598C /* main.m */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B56386401DB9693800A0598C /* the-liturgists */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56386581DB9693800A0598C /* Build configuration list for PBXNativeTarget "the-liturgists" */;
+			buildPhases = (
+				23539343DCC44EF8449429EE /* [CP] Check Pods Manifest.lock */,
+				B5722AD01DFB7E3F0084848F /* Prepare Expo */,
+				B563863D1DB9693800A0598C /* Sources */,
+				B563863E1DB9693800A0598C /* Frameworks */,
+				B563863F1DB9693800A0598C /* Resources */,
+				AA38385B7D8D0854176B72FC /* [CP] Copy Pods Resources */,
+				19D233B7204FDD7D0087ED51 /* Bundle Expo Assets */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "the-liturgists";
+			productName = "the-liturgists";
+			productReference = B56386411DB9693800A0598C /* the-liturgists.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B56386391DB9693800A0598C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = "650 Industries, Inc.";
+				TargetAttributes = {
+					B56386401DB9693800A0598C = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = RY59SG5RVW;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B563863C1DB9693800A0598C /* Build configuration list for PBXProject "the-liturgists" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+				Base,
+			);
+			mainGroup = B56386381DB9693800A0598C;
+			productRefGroup = B56386421DB9693800A0598C /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2FE7119022C10158002825A1 /* Products */;
+					ProjectRef = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				B56386401DB9693800A0598C /* the-liturgists */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		2FE711EE22C10159002825A1 /* libAmplitude-iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAmplitude-iOS.a";
+			remoteRef = 2FE711ED22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711F022C10159002825A1 /* libAnalytics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAnalytics.a;
+			remoteRef = 2FE711EF22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711F222C10159002825A1 /* libAppAuth.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAppAuth.a;
+			remoteRef = 2FE711F122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711F422C10159002825A1 /* libBolts.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBolts.a;
+			remoteRef = 2FE711F322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711F622C10159002825A1 /* libBranch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBranch.a;
+			remoteRef = 2FE711F522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711F822C10159002825A1 /* libCocoaLumberjack.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCocoaLumberjack.a;
+			remoteRef = 2FE711F722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711FA22C10159002825A1 /* libDoubleConversion.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libDoubleConversion.a;
+			remoteRef = 2FE711F922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711FC22C10159002825A1 /* libEXAdsAdMob.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXAdsAdMob.a;
+			remoteRef = 2FE711FB22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE711FE22C10159002825A1 /* libEXAdsFacebook.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXAdsFacebook.a;
+			remoteRef = 2FE711FD22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120022C10159002825A1 /* libEXAmplitude.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXAmplitude.a;
+			remoteRef = 2FE711FF22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120222C10159002825A1 /* libEXAppAuth.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXAppAuth.a;
+			remoteRef = 2FE7120122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120422C10159002825A1 /* libEXAppLoaderProvider.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXAppLoaderProvider.a;
+			remoteRef = 2FE7120322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120622C10159002825A1 /* libEXAV.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXAV.a;
+			remoteRef = 2FE7120522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120822C10159002825A1 /* libEXBackgroundFetch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXBackgroundFetch.a;
+			remoteRef = 2FE7120722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120A22C10159002825A1 /* libEXBarCodeScanner.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXBarCodeScanner.a;
+			remoteRef = 2FE7120922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120C22C10159002825A1 /* libEXBlur.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXBlur.a;
+			remoteRef = 2FE7120B22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7120E22C10159002825A1 /* libEXBrightness.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXBrightness.a;
+			remoteRef = 2FE7120D22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121022C10159002825A1 /* libEXCalendar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXCalendar.a;
+			remoteRef = 2FE7120F22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121222C10159002825A1 /* libEXCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXCamera.a;
+			remoteRef = 2FE7121122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121422C10159002825A1 /* libEXConstants.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXConstants.a;
+			remoteRef = 2FE7121322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121622C10159002825A1 /* libEXContacts.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXContacts.a;
+			remoteRef = 2FE7121522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121822C10159002825A1 /* libEXCrypto.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXCrypto.a;
+			remoteRef = 2FE7121722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121A22C10159002825A1 /* libEXDocumentPicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXDocumentPicker.a;
+			remoteRef = 2FE7121922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121C22C10159002825A1 /* libEXFacebook.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXFacebook.a;
+			remoteRef = 2FE7121B22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7121E22C10159002825A1 /* libEXFaceDetector.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXFaceDetector.a;
+			remoteRef = 2FE7121D22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122022C10159002825A1 /* libEXFileSystem.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXFileSystem.a;
+			remoteRef = 2FE7121F22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122222C10159002825A1 /* libEXFont.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXFont.a;
+			remoteRef = 2FE7122122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122422C10159002825A1 /* libEXGL.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXGL.a;
+			remoteRef = 2FE7122322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122622C10159002825A1 /* libEXGL-CPP.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libEXGL-CPP.a";
+			remoteRef = 2FE7122522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122822C10159002825A1 /* libEXGoogleSignIn.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXGoogleSignIn.a;
+			remoteRef = 2FE7122722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122A22C10159002825A1 /* libEXHaptics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXHaptics.a;
+			remoteRef = 2FE7122922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122C22C10159002825A1 /* libEXImageManipulator.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXImageManipulator.a;
+			remoteRef = 2FE7122B22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7122E22C10159002825A1 /* libEXImagePicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXImagePicker.a;
+			remoteRef = 2FE7122D22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123022C10159002825A1 /* libEXKeepAwake.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXKeepAwake.a;
+			remoteRef = 2FE7122F22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123222C10159002825A1 /* libEXLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXLinearGradient.a;
+			remoteRef = 2FE7123122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123422C10159002825A1 /* libEXLocalAuthentication.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXLocalAuthentication.a;
+			remoteRef = 2FE7123322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123622C10159002825A1 /* libEXLocalization.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXLocalization.a;
+			remoteRef = 2FE7123522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123822C10159002825A1 /* libEXLocation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXLocation.a;
+			remoteRef = 2FE7123722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123A22C10159002825A1 /* libEXMailComposer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXMailComposer.a;
+			remoteRef = 2FE7123922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123C22C10159002825A1 /* libEXMediaLibrary.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXMediaLibrary.a;
+			remoteRef = 2FE7123B22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7123E22C10159002825A1 /* libEXPermissions.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXPermissions.a;
+			remoteRef = 2FE7123D22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124022C10159002825A1 /* libExpoKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpoKit.a;
+			remoteRef = 2FE7123F22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124222C10159002825A1 /* libEXPrint.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXPrint.a;
+			remoteRef = 2FE7124122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124422C10159002825A1 /* libEXRandom.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXRandom.a;
+			remoteRef = 2FE7124322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124622C10159002825A1 /* libEXSecureStore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXSecureStore.a;
+			remoteRef = 2FE7124522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124822C10159002825A1 /* libEXSegment.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXSegment.a;
+			remoteRef = 2FE7124722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124A22C10159002825A1 /* libEXSensors.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXSensors.a;
+			remoteRef = 2FE7124922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124C22C10159002825A1 /* libEXSharing.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXSharing.a;
+			remoteRef = 2FE7124B22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7124E22C10159002825A1 /* libEXSMS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXSMS.a;
+			remoteRef = 2FE7124D22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125022C10159002825A1 /* libEXSpeech.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXSpeech.a;
+			remoteRef = 2FE7124F22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125222C10159002825A1 /* libEXSQLite.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXSQLite.a;
+			remoteRef = 2FE7125122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125422C10159002825A1 /* libEXTaskManager.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXTaskManager.a;
+			remoteRef = 2FE7125322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125622C10159002825A1 /* libEXWebBrowser.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEXWebBrowser.a;
+			remoteRef = 2FE7125522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125822C10159002825A1 /* libFBSDKCoreKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKCoreKit.a;
+			remoteRef = 2FE7125722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125A22C10159002825A1 /* libFBSDKLoginKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKLoginKit.a;
+			remoteRef = 2FE7125922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125C22C10159002825A1 /* libFolly.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFolly.a;
+			remoteRef = 2FE7125B22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7125E22C10159002825A1 /* libglog.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libglog.a;
+			remoteRef = 2FE7125D22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126022C10159002825A1 /* libGoogle-Maps-iOS-Utils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libGoogle-Maps-iOS-Utils.a";
+			remoteRef = 2FE7125F22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126222C10159002825A1 /* libGoogleToolboxForMac.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGoogleToolboxForMac.a;
+			remoteRef = 2FE7126122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126422C10159002825A1 /* libGTMSessionFetcher.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGTMSessionFetcher.a;
+			remoteRef = 2FE7126322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126622C10159002825A1 /* libJKBigInteger2.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libJKBigInteger2.a;
+			remoteRef = 2FE7126522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126822C10159002825A1 /* liblottie-ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "liblottie-ios.a";
+			remoteRef = 2FE7126722C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126A22C10159002825A1 /* libPods-the-liturgists.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libPods-the-liturgists.a";
+			remoteRef = 2FE7126922C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126C22C10159002825A1 /* libReact.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReact.a;
+			remoteRef = 2FE7126B22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7126E22C10159002825A1 /* libreact-native-music-control.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-music-control.a";
+			remoteRef = 2FE7126D22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7127022C10159002825A1 /* libRNCAsyncStorage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCAsyncStorage.a;
+			remoteRef = 2FE7126F22C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7127222C10159002825A1 /* libUMCore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libUMCore.a;
+			remoteRef = 2FE7127122C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7127422C10159002825A1 /* libUMReactNativeAdapter.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libUMReactNativeAdapter.a;
+			remoteRef = 2FE7127322C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FE7127622C10159002825A1 /* libyoga.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libyoga.a;
+			remoteRef = 2FE7127522C10159002825A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B563863F1DB9693800A0598C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5693E911FABD46800307FA4 /* launch_background_image.png in Resources */,
+				B501732B1DC01252003445D9 /* EXShell.plist in Resources */,
+				B5CFBF4F1EDE419400B4BE24 /* EXBuildConstants.plist in Resources */,
+				B56386671DB9994300A0598C /* EXSDKVersions.plist in Resources */,
+				B5693E921FABD46800307FA4 /* launch_icon.png in Resources */,
+				B5693E8E1FABD16A00307FA4 /* LaunchScreen.xib in Resources */,
+				B5DB04801F3A684600E91581 /* shell-app-manifest.json in Resources */,
+				B5DB04811F3A684600E91581 /* shell-app.bundle in Resources */,
+				B56386511DB9693800A0598C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		19D233B7204FDD7D0087ED51 /* Bundle Expo Assets */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle Expo Assets";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -eo pipefail\n\nif [ \"$CONFIGURATION\" == \"Debug\" ]; then\n  echo \"Skipping asset bundling in debug mode.\"\n  exit 0\nfi\n\npushd \"${SRCROOT}/..\"\nexport PATH=\"$(if [ -f ~/.expo/PATH ]; then echo $PATH:$(cat ~/.expo/PATH); else echo $PATH; fi)\"\ndest=\"$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\nexpo bundle-assets --platform ios --dest \"$dest\"\npopd\n";
+		};
+		23539343DCC44EF8449429EE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-the-liturgists-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AA38385B7D8D0854176B72FC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-the-liturgists/Pods-the-liturgists-resources.sh",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/api.amplitude.com.der",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoCaLimitedRsaCertificationAuthority.der",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoRsaCA.der",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoRsaDomainValidationCA.der",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/BCLjoy_100.emd",
+				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/BCLlefteyeclosed_200.emd",
+				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/BCLrighteyeclosed_200.emd",
+				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/LMprec_600.emd",
+				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/MFTprec_202.emd",
+				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/PFFprec_702.emd",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/api.amplitude.com.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoCaLimitedRsaCertificationAuthority.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaCA.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaDomainValidationCA.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCLjoy_100.emd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCLlefteyeclosed_200.emd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCLrighteyeclosed_200.emd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LMprec_600.emd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MFTprec_202.emd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PFFprec_702.emd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-the-liturgists/Pods-the-liturgists-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B5722AD01DFB7E3F0084848F /* Prepare Expo */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Prepare Expo";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -eo pipefail\n\nexport PATH=\"$(if [ -f ~/.expo/PATH ]; then echo $PATH:$(cat ~/.expo/PATH); else echo $PATH; fi)\"\nexpo prepare-detached-build --platform ios \"${SRCROOT}/..\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B563863D1DB9693800A0598C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56386611DB96A5E00A0598C /* main.m in Sources */,
+				B56386491DB9693800A0598C /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B56386561DB9693800A0598C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B56386571DB9693800A0598C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B56386591DB9693800A0598C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2C1548D9E4CB1AEFA5CCAE6D /* Pods-the-liturgists.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RY59SG5RVW;
+				INFOPLIST_FILE = "$(SRCROOT)/the-liturgists/Supporting/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = theliturgists.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B563865A1DB9693800A0598C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A47FE4D7F70906B7DC8CE39B /* Pods-the-liturgists.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RY59SG5RVW;
+				INFOPLIST_FILE = "$(SRCROOT)/the-liturgists/Supporting/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = theliturgists.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B563863C1DB9693800A0598C /* Build configuration list for PBXProject "the-liturgists" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56386561DB9693800A0598C /* Debug */,
+				B56386571DB9693800A0598C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56386581DB9693800A0598C /* Build configuration list for PBXNativeTarget "the-liturgists" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56386591DB9693800A0598C /* Debug */,
+				B563865A1DB9693800A0598C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B56386391DB9693800A0598C /* Project object */;
+}
