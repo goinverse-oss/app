@@ -8,7 +8,7 @@
     "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
     "flow": "flow",
     "ios": "react-native run-ios",
-    "android": "react-native run-android --no-packager",
+    "android": "(cd android; ./gradlew installDebug)",
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
     "validateci": "./scripts/validate-ci-config",
     "ci:deploy": "./ci/deploy-to-expo.sh",
@@ -22,7 +22,7 @@
     "postinstall": "rndebugger-open --expo; patch-package"
   },
   "dependencies": {
-    "@expo/vector-icons": "^10.0.1",
+    "@expo/vector-icons": "^9.0.0",
     "@react-native-community/async-storage": "^1.4.2",
     "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "axios": "^0.18.0",
@@ -60,7 +60,7 @@
     "react-native-music-control": "^0.10.4",
     "react-native-progress": "^3.6.0",
     "react-native-render-html": "^4.1.1",
-    "react-native-screens": "1.0.0-alpha.17",
+    "react-native-screens": "1.0.0-alpha.22",
     "react-native-slider": "^0.11.0",
     "react-native-unimodules": "^0.4.0",
     "react-navigation": "^3.11.0",
