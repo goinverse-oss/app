@@ -103,9 +103,16 @@ apply from: 'expo.gradle'
 apply from: "../../node_modules/react-native-unimodules/gradle.groovy"
 
 dependencies {
+    implementation project(':react-native-firebase')
     implementation project(':react-native-music-control')
     implementation project(':@react-native-community_async-storage')
   implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+  // Firebase dependencies
+  implementation "com.google.android.gms:play-services-base:16.1.0"
+  implementation "com.google.firebase:firebase-core:16.0.9"
+
+  implementation "com.google.firebase:firebase-messaging:18.0.0"
 
   implementation 'com.android.support:multidex:1.0.1'
 

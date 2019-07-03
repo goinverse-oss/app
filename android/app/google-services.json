@@ -1,50 +1,47 @@
 {
   "project_info": {
-    "project_id": "exponent-5dd6d",
-    "project_number": "367315174693",
-    "name": "Exponent Play Services"
+    "project_number": "942926252431",
+    "firebase_url": "https://the-liturgists-app.firebaseio.com",
+    "project_id": "the-liturgists-app",
+    "storage_bucket": "the-liturgists-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:367315174693:android:f968efbb41d1fa7a",
-        "client_id": "android:host.exp.exponent",
-        "client_type": 1,
+        "mobilesdk_app_id": "1:942926252431:android:366edc686ef504e3",
         "android_client_info": {
-          "package_name": "theliturgists.app",
-          "certificate_hash": ""
+          "package_name": "com.theliturgists.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "942926252431-abacgr8bkatvvksoa7jh9qsel1bvvo6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": ""
+          "current_key": "AIzaSyApcNr8enkR4JACR80TvZlSRWBJeJAFLlo"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 2,
-          "analytics_property": {
-            "tracking_id": "UA-76673608-1"
-          }
-        },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 1
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942926252431-abacgr8bkatvvksoa7jh9qsel1bvvo6d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "942926252431-j2l5onjjp2ksn1o4obbnrutjp7bhhkd1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.theliturgists.app"
+              }
+            }
+          ]
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

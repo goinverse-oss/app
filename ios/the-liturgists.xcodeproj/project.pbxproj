@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FAE770F22CA42AC00B55D81 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE76AA22CA42AC00B55D81 /* GoogleService-Info.plist */; };
 		B501732B1DC01252003445D9 /* EXShell.plist in Resources */ = {isa = PBXBuildFile; fileRef = B501732A1DC01252003445D9 /* EXShell.plist */; };
 		B56386491DB9693800A0598C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B56386481DB9693800A0598C /* AppDelegate.m */; };
 		B56386511DB9693800A0598C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56386501DB9693800A0598C /* Assets.xcassets */; };
@@ -18,10 +19,60 @@
 		B5CFBF4F1EDE419400B4BE24 /* EXBuildConstants.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */; };
 		B5DB04801F3A684600E91581 /* shell-app-manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = B5DB047E1F3A684600E91581 /* shell-app-manifest.json */; };
 		B5DB04811F3A684600E91581 /* shell-app.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B5DB047F1F3A684600E91581 /* shell-app.bundle */; };
+		BA8DBC371EAA4288B7E71F64 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A4569C8F2E48A7918A8A52 /* libRNFirebase.a */; };
 		EBB8117C1BFA0514F79CAF74 /* libPods-the-liturgists.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A88D15726AD99E8A257BC7 /* libPods-the-liturgists.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2FAE770722CA42AC00B55D81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2B63D462DB7F827C4B11FD51E4F8E2D;
+			remoteInfo = FirebaseCore;
+		};
+		2FAE770922CA42AC00B55D81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2DA0D814DFCB860D31D7BCD63D795858;
+			remoteInfo = FirebaseInstanceID;
+		};
+		2FAE770B22CA42AC00B55D81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B43874C6CBB50E7134FBEC24BABFE14F;
+			remoteInfo = GoogleUtilities;
+		};
+		2FAE770D22CA42AC00B55D81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06FC5C9CF96D60C50FCD47D339C91951;
+			remoteInfo = nanopb;
+		};
+		2FAE777122CA430700B55D81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4D0037C0AB9440AA764F23F /* RNFirebase.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNFirebase;
+		};
+		2FAE77D422CA4DC400B55D81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5B654B4B042BA7DC93766943A643E42B;
+			remoteInfo = FirebaseMessaging;
+		};
+		2FAE77D622CA4DC400B55D81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C2105C94812B6214B154F54DCEDB72AC;
+			remoteInfo = Protobuf;
+		};
 		2FE711ED22C10159002825A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
@@ -189,13 +240,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9865472B4E1E4CA5BDE2C2DECFC0F852;
 			remoteInfo = EXFacebook;
-		};
-		2FE7121D22C10159002825A1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3FFC473AED8E03E4276A975196FF79E3;
-			remoteInfo = EXFaceDetector;
 		};
 		2FE7121F22C10159002825A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -509,6 +553,8 @@
 
 /* Begin PBXFileReference section */
 		2C1548D9E4CB1AEFA5CCAE6D /* Pods-the-liturgists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.debug.xcconfig"; path = "Pods/Target Support Files/Pods-the-liturgists/Pods-the-liturgists.debug.xcconfig"; sourceTree = "<group>"; };
+		2FAE76AA22CA42AC00B55D81 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "the-liturgists/Supporting/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2FAE77D922CA4DCA00B55D81 /* the-liturgists.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "the-liturgists.entitlements"; sourceTree = "<group>"; };
 		2FE7118F22C10158002825A1 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		A47FE4D7F70906B7DC8CE39B /* Pods-the-liturgists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.release.xcconfig"; path = "Pods/Target Support Files/Pods-the-liturgists/Pods-the-liturgists.release.xcconfig"; sourceTree = "<group>"; };
 		B501732A1DC01252003445D9 /* EXShell.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXShell.plist; sourceTree = "<group>"; };
@@ -526,6 +572,8 @@
 		B5DB047E1F3A684600E91581 /* shell-app-manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "shell-app-manifest.json"; sourceTree = "<group>"; };
 		B5DB047F1F3A684600E91581 /* shell-app.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "shell-app.bundle"; sourceTree = "<group>"; };
 		C4A88D15726AD99E8A257BC7 /* libPods-the-liturgists.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-the-liturgists.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4D0037C0AB9440AA764F23F /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
+		E7A4569C8F2E48A7918A8A52 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -534,6 +582,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBB8117C1BFA0514F79CAF74 /* libPods-the-liturgists.a in Frameworks */,
+				BA8DBC371EAA4288B7E71F64 /* libRNFirebase.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +596,22 @@
 				C4A88D15726AD99E8A257BC7 /* libPods-the-liturgists.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2FAE771122CA430600B55D81 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E7A4569C8F2E48A7918A8A52 /* libRNFirebase.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		2FAE776E22CA430700B55D81 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2FAE777222CA430700B55D81 /* libRNFirebase.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		2FE7119022C10158002825A1 /* Products */ = {
@@ -576,7 +641,6 @@
 				2FE7121822C10159002825A1 /* libEXCrypto.a */,
 				2FE7121A22C10159002825A1 /* libEXDocumentPicker.a */,
 				2FE7121C22C10159002825A1 /* libEXFacebook.a */,
-				2FE7121E22C10159002825A1 /* libEXFaceDetector.a */,
 				2FE7122022C10159002825A1 /* libEXFileSystem.a */,
 				2FE7122222C10159002825A1 /* libEXFont.a */,
 				2FE7122422C10159002825A1 /* libEXGL.a */,
@@ -607,14 +671,20 @@
 				2FE7125622C10159002825A1 /* libEXWebBrowser.a */,
 				2FE7125822C10159002825A1 /* libFBSDKCoreKit.a */,
 				2FE7125A22C10159002825A1 /* libFBSDKLoginKit.a */,
+				2FAE770822CA42AC00B55D81 /* libFirebaseCore.a */,
+				2FAE770A22CA42AC00B55D81 /* libFirebaseInstanceID.a */,
+				2FAE77D522CA4DC400B55D81 /* libFirebaseMessaging.a */,
 				2FE7125C22C10159002825A1 /* libFolly.a */,
 				2FE7125E22C10159002825A1 /* libglog.a */,
 				2FE7126022C10159002825A1 /* libGoogle-Maps-iOS-Utils.a */,
 				2FE7126222C10159002825A1 /* libGoogleToolboxForMac.a */,
+				2FAE770C22CA42AC00B55D81 /* libGoogleUtilities.a */,
 				2FE7126422C10159002825A1 /* libGTMSessionFetcher.a */,
 				2FE7126622C10159002825A1 /* libJKBigInteger2.a */,
 				2FE7126822C10159002825A1 /* liblottie-ios.a */,
+				2FAE770E22CA42AC00B55D81 /* libnanopb.a */,
 				2FE7126A22C10159002825A1 /* libPods-the-liturgists.a */,
+				2FAE77D722CA4DC400B55D81 /* libProtobuf.a */,
 				2FE7126C22C10159002825A1 /* libReact.a */,
 				2FE7126E22C10159002825A1 /* libreact-native-music-control.a */,
 				2FE7127022C10159002825A1 /* libRNCAsyncStorage.a */,
@@ -634,13 +704,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		855E701C82C54610B1E3624A /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				D4D0037C0AB9440AA764F23F /* RNFirebase.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		B56386381DB9693800A0598C = {
 			isa = PBXGroup;
 			children = (
+				2FAE76AA22CA42AC00B55D81 /* GoogleService-Info.plist */,
 				B56386431DB9693800A0598C /* the-liturgists */,
 				B56386421DB9693800A0598C /* Products */,
 				5B29BC350A332C58878A9F13 /* Pods */,
 				1A42804E64B7E9E0AB8B6799 /* Frameworks */,
+				855E701C82C54610B1E3624A /* Libraries */,
+				2FAE771122CA430600B55D81 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -655,6 +736,7 @@
 		B56386431DB9693800A0598C /* the-liturgists */ = {
 			isa = PBXGroup;
 			children = (
+				2FAE77D922CA4DCA00B55D81 /* the-liturgists.entitlements */,
 				B56386471DB9693800A0598C /* AppDelegate.h */,
 				B56386481DB9693800A0598C /* AppDelegate.m */,
 				B56386501DB9693800A0598C /* Assets.xcassets */,
@@ -710,13 +792,18 @@
 		B56386391DB9693800A0598C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 900;
 				ORGANIZATIONNAME = "650 Industries, Inc.";
 				TargetAttributes = {
 					B56386401DB9693800A0598C = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = RY59SG5RVW;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -737,6 +824,10 @@
 					ProductGroup = 2FE7119022C10158002825A1 /* Products */;
 					ProjectRef = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
 				},
+				{
+					ProductGroup = 2FAE776E22CA430700B55D81 /* Products */;
+					ProjectRef = D4D0037C0AB9440AA764F23F /* RNFirebase.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -746,6 +837,55 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		2FAE770822CA42AC00B55D81 /* libFirebaseCore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseCore.a;
+			remoteRef = 2FAE770722CA42AC00B55D81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FAE770A22CA42AC00B55D81 /* libFirebaseInstanceID.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseInstanceID.a;
+			remoteRef = 2FAE770922CA42AC00B55D81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FAE770C22CA42AC00B55D81 /* libGoogleUtilities.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGoogleUtilities.a;
+			remoteRef = 2FAE770B22CA42AC00B55D81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FAE770E22CA42AC00B55D81 /* libnanopb.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libnanopb.a;
+			remoteRef = 2FAE770D22CA42AC00B55D81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FAE777222CA430700B55D81 /* libRNFirebase.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFirebase.a;
+			remoteRef = 2FAE777122CA430700B55D81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FAE77D522CA4DC400B55D81 /* libFirebaseMessaging.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseMessaging.a;
+			remoteRef = 2FAE77D422CA4DC400B55D81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2FAE77D722CA4DC400B55D81 /* libProtobuf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProtobuf.a;
+			remoteRef = 2FAE77D622CA4DC400B55D81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		2FE711EE22C10159002825A1 /* libAmplitude-iOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -912,13 +1052,6 @@
 			fileType = archive.ar;
 			path = libEXFacebook.a;
 			remoteRef = 2FE7121B22C10159002825A1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		2FE7121E22C10159002825A1 /* libEXFaceDetector.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libEXFaceDetector.a;
-			remoteRef = 2FE7121D22C10159002825A1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2FE7122022C10159002825A1 /* libEXFileSystem.a */ = {
@@ -1243,6 +1376,7 @@
 				B5693E921FABD46800307FA4 /* launch_icon.png in Resources */,
 				B5693E8E1FABD16A00307FA4 /* LaunchScreen.xib in Resources */,
 				B5DB04801F3A684600E91581 /* shell-app-manifest.json in Resources */,
+				2FAE770F22CA42AC00B55D81 /* GoogleService-Info.plist in Resources */,
 				B5DB04811F3A684600E91581 /* shell-app.bundle in Resources */,
 				B56386511DB9693800A0598C /* Assets.xcassets in Resources */,
 			);
@@ -1296,12 +1430,6 @@
 				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoRsaDomainValidationCA.der",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/BCLjoy_100.emd",
-				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/BCLlefteyeclosed_200.emd",
-				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/BCLrighteyeclosed_200.emd",
-				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/LMprec_600.emd",
-				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/MFTprec_202.emd",
-				"${PODS_ROOT}/GoogleMobileVision/FaceDetector/Resources/PFFprec_702.emd",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -1312,12 +1440,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaDomainValidationCA.der",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCLjoy_100.emd",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCLlefteyeclosed_200.emd",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCLrighteyeclosed_200.emd",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LMprec_600.emd",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MFTprec_202.emd",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PFFprec_702.emd",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1461,10 +1583,106 @@
 			baseConfigurationReference = 2C1548D9E4CB1AEFA5CCAE6D /* Pods-the-liturgists.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
 				DEVELOPMENT_TEAM = RY59SG5RVW;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Amplitude-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/Analytics\"",
+					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/Bolts\"",
+					"\"${PODS_ROOT}/Headers/Public/Branch\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAV\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAdsAdMob\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAdsFacebook\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAmplitude\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAppLoaderProvider\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBackgroundFetch\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBarCodeScanner\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBlur\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBrightness\"",
+					"\"${PODS_ROOT}/Headers/Public/EXCalendar\"",
+					"\"${PODS_ROOT}/Headers/Public/EXCamera\"",
+					"\"${PODS_ROOT}/Headers/Public/EXConstants\"",
+					"\"${PODS_ROOT}/Headers/Public/EXContacts\"",
+					"\"${PODS_ROOT}/Headers/Public/EXCrypto\"",
+					"\"${PODS_ROOT}/Headers/Public/EXDocumentPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/EXFacebook\"",
+					"\"${PODS_ROOT}/Headers/Public/EXFileSystem\"",
+					"\"${PODS_ROOT}/Headers/Public/EXFont\"",
+					"\"${PODS_ROOT}/Headers/Public/EXGL\"",
+					"\"${PODS_ROOT}/Headers/Public/EXGL-CPP\"",
+					"\"${PODS_ROOT}/Headers/Public/EXGoogleSignIn\"",
+					"\"${PODS_ROOT}/Headers/Public/EXHaptics\"",
+					"\"${PODS_ROOT}/Headers/Public/EXImageManipulator\"",
+					"\"${PODS_ROOT}/Headers/Public/EXImagePicker\"",
+					"\"${PODS_ROOT}/Headers/Public/EXKeepAwake\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLinearGradient\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLocalAuthentication\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLocalization\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLocation\"",
+					"\"${PODS_ROOT}/Headers/Public/EXMailComposer\"",
+					"\"${PODS_ROOT}/Headers/Public/EXMediaLibrary\"",
+					"\"${PODS_ROOT}/Headers/Public/EXPermissions\"",
+					"\"${PODS_ROOT}/Headers/Public/EXPrint\"",
+					"\"${PODS_ROOT}/Headers/Public/EXRandom\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSMS\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSQLite\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSecureStore\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSegment\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSensors\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSharing\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSpeech\"",
+					"\"${PODS_ROOT}/Headers/Public/EXTaskManager\"",
+					"\"${PODS_ROOT}/Headers/Public/EXWebBrowser\"",
+					"\"${PODS_ROOT}/Headers/Public/ExpoKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKCoreKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKLoginKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalyticsInterop\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMSessionFetcher\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Maps-iOS-Utils\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleToolboxForMac\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/JKBigInteger2\"",
+					"\"${PODS_ROOT}/Headers/Public/Protobuf\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/React\"",
+					"\"${PODS_ROOT}/Headers/Public/UMBarCodeScannerInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMCameraInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMConstantsInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMCore\"",
+					"\"${PODS_ROOT}/Headers/Public/UMFaceDetectorInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMFileSystemInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMFontInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMImageLoaderInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMPermissionsInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMReactNativeAdapter\"",
+					"\"${PODS_ROOT}/Headers/Public/UMSensorsInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMTaskManagerInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-ios\"",
+					"\"${PODS_ROOT}/Headers/Public/nanopb\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-music-control\"",
+					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"${SRCROOT}/../node_modules/react-native-firebase/ios/RNFirebase/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/the-liturgists/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = theliturgists.app;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.theliturgists.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1475,10 +1693,106 @@
 			baseConfigurationReference = A47FE4D7F70906B7DC8CE39B /* Pods-the-liturgists.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
 				DEVELOPMENT_TEAM = RY59SG5RVW;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Amplitude-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/Analytics\"",
+					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/Bolts\"",
+					"\"${PODS_ROOT}/Headers/Public/Branch\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAV\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAdsAdMob\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAdsFacebook\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAmplitude\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/EXAppLoaderProvider\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBackgroundFetch\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBarCodeScanner\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBlur\"",
+					"\"${PODS_ROOT}/Headers/Public/EXBrightness\"",
+					"\"${PODS_ROOT}/Headers/Public/EXCalendar\"",
+					"\"${PODS_ROOT}/Headers/Public/EXCamera\"",
+					"\"${PODS_ROOT}/Headers/Public/EXConstants\"",
+					"\"${PODS_ROOT}/Headers/Public/EXContacts\"",
+					"\"${PODS_ROOT}/Headers/Public/EXCrypto\"",
+					"\"${PODS_ROOT}/Headers/Public/EXDocumentPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/EXFacebook\"",
+					"\"${PODS_ROOT}/Headers/Public/EXFileSystem\"",
+					"\"${PODS_ROOT}/Headers/Public/EXFont\"",
+					"\"${PODS_ROOT}/Headers/Public/EXGL\"",
+					"\"${PODS_ROOT}/Headers/Public/EXGL-CPP\"",
+					"\"${PODS_ROOT}/Headers/Public/EXGoogleSignIn\"",
+					"\"${PODS_ROOT}/Headers/Public/EXHaptics\"",
+					"\"${PODS_ROOT}/Headers/Public/EXImageManipulator\"",
+					"\"${PODS_ROOT}/Headers/Public/EXImagePicker\"",
+					"\"${PODS_ROOT}/Headers/Public/EXKeepAwake\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLinearGradient\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLocalAuthentication\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLocalization\"",
+					"\"${PODS_ROOT}/Headers/Public/EXLocation\"",
+					"\"${PODS_ROOT}/Headers/Public/EXMailComposer\"",
+					"\"${PODS_ROOT}/Headers/Public/EXMediaLibrary\"",
+					"\"${PODS_ROOT}/Headers/Public/EXPermissions\"",
+					"\"${PODS_ROOT}/Headers/Public/EXPrint\"",
+					"\"${PODS_ROOT}/Headers/Public/EXRandom\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSMS\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSQLite\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSecureStore\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSegment\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSensors\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSharing\"",
+					"\"${PODS_ROOT}/Headers/Public/EXSpeech\"",
+					"\"${PODS_ROOT}/Headers/Public/EXTaskManager\"",
+					"\"${PODS_ROOT}/Headers/Public/EXWebBrowser\"",
+					"\"${PODS_ROOT}/Headers/Public/ExpoKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKCoreKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FBSDKLoginKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalyticsInterop\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMSessionFetcher\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Maps-iOS-Utils\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleToolboxForMac\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/JKBigInteger2\"",
+					"\"${PODS_ROOT}/Headers/Public/Protobuf\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/React\"",
+					"\"${PODS_ROOT}/Headers/Public/UMBarCodeScannerInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMCameraInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMConstantsInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMCore\"",
+					"\"${PODS_ROOT}/Headers/Public/UMFaceDetectorInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMFileSystemInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMFontInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMImageLoaderInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMPermissionsInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMReactNativeAdapter\"",
+					"\"${PODS_ROOT}/Headers/Public/UMSensorsInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/UMTaskManagerInterface\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-ios\"",
+					"\"${PODS_ROOT}/Headers/Public/nanopb\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-music-control\"",
+					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"${SRCROOT}/../node_modules/react-native-firebase/ios/RNFirebase/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/the-liturgists/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = theliturgists.app;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.theliturgists.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
