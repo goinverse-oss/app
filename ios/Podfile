@@ -12,7 +12,10 @@ target 'the-liturgists' do
 
   # Install unimodules
   require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
-  use_unimodules!
+
+  # Excluding expo-face-detector is a workaround for
+  # https://github.com/expo/expo/issues/4493
+  use_unimodules!(exclude: ['expo-face-detector'])
 
   pod 'React',
     :path => "../node_modules/react-native",
@@ -49,6 +52,9 @@ target 'the-liturgists' do
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
   pod 'react-native-music-control', :path => '../node_modules/react-native-music-control'
+
+  pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/Messaging', '~> 6.3.0'
 
   post_install do |installer|
     installer.pods_project.main_group.tab_width = '2';

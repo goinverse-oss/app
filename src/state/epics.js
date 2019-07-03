@@ -1,4 +1,5 @@
 import patreonEpic from './ducks/patreon/epic';
+import notificationsEpic from './ducks/notifications/epic';
 import ormEpic from './ducks/orm/epic';
 import playbackEpic from './ducks/playback/epic';
 import storageEpic from './ducks/storage/epic';
@@ -12,6 +13,7 @@ import storageEpic from './ducks/storage/epic';
 export default [
   patreonEpic,
   ormEpic,
+  notificationsEpic,
   playbackEpic,
   storageEpic,
 ];
