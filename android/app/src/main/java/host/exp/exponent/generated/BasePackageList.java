@@ -7,22 +7,17 @@ import org.unimodules.core.interfaces.Package;
 public class BasePackageList {
   public List<Package> getPackageList() {
     return Arrays.<Package>asList(
-        new expo.modules.ads.admob.AdMobPackage(),
         new expo.modules.ads.facebook.AdsFacebookPackage(),
         new expo.modules.analytics.amplitude.AmplitudePackage(),
-        new expo.modules.analytics.segment.SegmentPackage(),
         new expo.modules.appauth.AppAuthPackage(),
         new expo.modules.av.AVPackage(),
         new expo.modules.backgroundfetch.BackgroundFetchPackage(),
-        new expo.modules.barcodescanner.BarCodeScannerPackage(),
         new expo.modules.brightness.BrightnessPackage(),
         new expo.modules.calendar.CalendarPackage(),
-        new expo.modules.camera.CameraPackage(),
         new expo.modules.constants.ConstantsPackage(),
         new expo.modules.contacts.ContactsPackage(),
         new expo.modules.crypto.CryptoPackage(),
         new expo.modules.documentpicker.DocumentPickerPackage(),
-        new expo.modules.facedetector.FaceDetectorPackage(),
         new expo.modules.facebook.FacebookPackage(),
         new expo.modules.filesystem.FileSystemPackage(),
         new expo.modules.font.FontLoaderPackage(),
