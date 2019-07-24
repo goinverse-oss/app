@@ -5,16 +5,27 @@ import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
 import { AppLoading } from 'expo';
+import firebase from 'react-native-firebase';
 // import { useScreens } from 'react-native-screens';
 
 import MainNavigator from './navigation/MainNavigator';
-import { setTopLevelNavigator } from './navigation/NavigationService';
+import { navigate, setTopLevelNavigator } from './navigation/NavigationService';
+import * as navActions from './navigation/actions';
 import configureStore from './state/store';
 import Reactotron from '../reactotron-config';
 
 import config from '../config.json';
 import WelcomeScreen from './screens/WelcomeScreen';
 import { shouldShowWelcome } from './state/ducks/welcome/selectors';
+
+class Deferred {
+  constructor() {
+    this.promise = new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+  }
+}
 
 // eslint-disable-next-line
 console.tron = Reactotron;
@@ -29,8 +40,57 @@ if (config.sentryPublicDSN) {
 // useScreens();
 
 const AppContainer = createAppContainer(MainNavigator);
+const navigationDeferred = new Deferred();
+
+function getItem(notification) {
+  const { data } = notification;
+  const { contentType, entryId } = data;
+  if (contentType && entryId) {
+    return { type: contentType, id: entryId };
+  }
+  return null;
+}
+
+function navigateFromNotification(notification) {
+  const item = getItem(notification);
+  if (item) {
+    const action = navActions.openItem(item);
+    navigate(action.routeName, action.params);
+  }
+}
 
 class App extends React.Component {
+  componentDidMount() {
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen) => {
+        if (notificationOpen) {
+          // App was opened by a notification
+          const { notification } = notificationOpen;
+          navigationDeferred.promise.then(() => {
+            navigateFromNotification(notification);
+          });
+        }
+      });
+
+    this.removeListenerCallbacks = [
+      firebase.notifications().onNotificationDisplayed((notification) => {
+        navigateFromNotification(notification);
+      }),
+      firebase.notifications().onNotificationOpened(({ notification }) => {
+        navigateFromNotification(notification);
+      }),
+    ];
+
+    // Clear any badge set by a not-yet-opened notification
+    const notification = new firebase.notifications.Notification();
+    notification.ios.setBadge(0);
+    firebase.notifications().displayNotification(notification);
+  }
+
+  componentWillUnmount() {
+    this.removeListenerCallbacks.forEach(removeListener => removeListener());
+  }
+
   render() {
     if (this.props.showWelcome) {
       return <WelcomeScreen />;
@@ -38,7 +98,10 @@ class App extends React.Component {
 
     return (
       <AppContainer
-        ref={navigator => setTopLevelNavigator(navigator)}
+        ref={(navigator) => {
+          setTopLevelNavigator(navigator);
+          navigationDeferred.resolve(navigator);
+        }}
       />
     );
   }

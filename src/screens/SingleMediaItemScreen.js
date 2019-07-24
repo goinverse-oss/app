@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import momentPropTypes from 'react-moment-proptypes';
@@ -34,31 +34,44 @@ const styles = StyleSheet.create({
     backgroundColor: '#EDEDED',
     marginVertical: 15,
   },
+  loadingContainer: {
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+  },
 });
 
 const SingleMediaItemScreen = ({
   item, elapsed, play, navigation,
 }) => (
-  <ScrollView style={styles.container}>
-    <View style={styles.subContainer}>
-      <PlayableItemHeader item={item} elapsed={elapsed} onPlay={() => play()} />
-      <View style={styles.divider} />
-      <ItemDescription item={item} />
+  item ? (
+    <ScrollView style={styles.container}>
+      <View style={styles.subContainer}>
+        <PlayableItemHeader item={item} elapsed={elapsed} onPlay={() => play()} />
+        <View style={styles.divider} />
+        <ItemDescription item={item} />
+      </View>
+      <View style={styles.peopleContainer}>
+        <PersonList
+          people={item.contributors}
+          onPressPerson={(person) => {
+            const params = { contributor: person };
+            navigation.navigate({ routeName: 'Contributor', params });
+          }}
+        />
+      </View>
+      <View style={styles.subContainer}>
+        <TagList tags={item.tags} />
+        <SocialLinksSection />
+      </View>
+    </ScrollView>
+  ) : (
+    <View style={styles.container}>
+      <Text style={styles.loadingText}>Loading...</Text>
     </View>
-    <View style={styles.peopleContainer}>
-      <PersonList
-        people={item.contributors}
-        onPressPerson={(person) => {
-          const params = { contributor: person };
-          navigation.navigate({ routeName: 'Contributor', params });
-        }}
-      />
-    </View>
-    <View style={styles.subContainer}>
-      <TagList tags={item.tags} />
-      <SocialLinksSection />
-    </View>
-  </ScrollView>
+  )
 );
 
 SingleMediaItemScreen.propTypes = {

@@ -147,7 +147,7 @@ function mapDispatchToProps(dispatch, { navigation }) {
       dispatch(fetchData({ resource: 'liturgies' }));
       dispatch(fetchData({ resource: 'liturgyItems' }));
     },
-    openItem: item => navActions.openItem(navigation, item),
+    openItem: item => navigation.navigate(navActions.openItem(item)),
     openPatreon: () => navigation.navigate('Patreon'),
   };
 }
