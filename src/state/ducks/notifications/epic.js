@@ -11,10 +11,10 @@ const topicName = 'new-public-media';
 const registerEpic = action$ =>
   action$.pipe(
     ofType(REHYDRATE),
-    mergeMap((action) => {
+    mergeMap(({ key }) => {
       // delay key registration until after the previous key
       // has been rehydrated from redux-persist.
-      if (action.key !== 'notifications') {
+      if (key !== 'notifications') {
         return Observable.never();
       }
 
@@ -39,9 +39,14 @@ const registerEpic = action$ =>
               }
             });
 
-          firebase.notifications().onNotification((notification) => {
-            console.log(notification);
-          });
+          const channel = new firebase.notifications.Android.Channel(
+            'main',
+            'Main',
+            firebase.notifications.Android.Importance.Default,
+          ).setDescription('The Liturgists App Notifications');
+
+          // Create the channel
+          firebase.notifications().android.createChannel(channel);
         },
       );
     }),
