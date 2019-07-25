@@ -38,15 +38,6 @@ const registerEpic = action$ =>
                 messaging.requestPermission();
               }
             });
-
-          const channel = new firebase.notifications.Android.Channel(
-            'main',
-            'Main',
-            firebase.notifications.Android.Importance.Default,
-          ).setDescription('The Liturgists App Notifications');
-
-          // Create the channel
-          firebase.notifications().android.createChannel(channel);
         },
       );
     }),

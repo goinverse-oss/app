@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Sentry from 'sentry-expo';
+import { Platform } from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
@@ -52,6 +53,7 @@ function getItem(notification) {
 }
 
 function navigateFromNotification(notification) {
+  console.log('Opened with notification: ', notification);
   const item = getItem(notification);
   if (item) {
     const action = navActions.openItem(item);
@@ -81,10 +83,23 @@ class App extends React.Component {
       }),
     ];
 
-    // Clear any badge set by a not-yet-opened notification
-    const notification = new firebase.notifications.Notification();
-    notification.ios.setBadge(0);
-    firebase.notifications().displayNotification(notification);
+    if (Platform.OS === 'ios') {
+      // Clear any badge set by a not-yet-opened notification
+      const notification = new firebase.notifications.Notification();
+      notification.ios.setBadge(0);
+      firebase.notifications().displayNotification(notification);
+    }
+
+    if (Platform.OS === 'android') {
+      const channel = new firebase.notifications.Android.Channel(
+        'main',
+        'Main',
+        firebase.notifications.Android.Importance.Max,
+      ).setDescription('The Liturgists App Notifications');
+
+      // Create the channel
+      firebase.notifications().android.createChannel(channel);
+    }
   }
 
   componentWillUnmount() {
