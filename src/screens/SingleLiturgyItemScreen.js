@@ -13,7 +13,11 @@ const SingleLiturgyItemScreen = ({ item }) => (
 );
 
 SingleLiturgyItemScreen.propTypes = {
-  item: PropTypes.shape(LiturgyItem.propTypes).isRequired,
+  item: PropTypes.shape(LiturgyItem.propTypes),
+};
+
+SingleLiturgyItemScreen.defaultProps = {
+  item: null,
 };
 
 function mapStateToProps(state, { navigation }) {

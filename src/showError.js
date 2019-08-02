@@ -7,6 +7,8 @@ export function setDropdown(d) {
 }
 
 export default function showError(error) {
+  console.log(error);
+
   if (!dropdown) {
     return;
   }

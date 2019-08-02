@@ -13,7 +13,11 @@ const SinglePodcastEpisodeScreen = ({ episode }) => (
 );
 
 SinglePodcastEpisodeScreen.propTypes = {
-  episode: PropTypes.shape(PodcastEpisode.propTypes).isRequired,
+  episode: PropTypes.shape(PodcastEpisode.propTypes),
+};
+
+SinglePodcastEpisodeScreen.defaultProps = {
+  episode: null,
 };
 
 function mapStateToProps(state, { navigation }) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { ScrollView, Text, View, StyleSheet } from 'react-native';
@@ -15,6 +15,7 @@ import TagList from '../components/TagList';
 
 import * as playbackActions from '../state/ducks/playback/actions';
 import * as playbackSelectors from '../state/ducks/playback/selectors';
+import { fetchData } from '../state/ducks/orm/actions';
 
 const padding = 15;
 
@@ -44,9 +45,29 @@ const styles = StyleSheet.create({
 });
 
 const SingleMediaItemScreen = ({
-  item, elapsed, play, navigation,
-}) => (
-  item ? (
+  mediaType, item, elapsed, play, navigation, refresh,
+}) => {
+  useEffect(() => {
+    if (!item) {
+      refresh(mediaType);
+      const itemType = {
+        podcasts: 'podcastEpisodes',
+        meditationCategories: 'meditations',
+        liturgies: 'liturgyItems',
+      }[mediaType];
+      refresh(itemType);
+    }
+  }, [item]);
+
+  if (!item) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
+
+  return (
     <ScrollView style={styles.container}>
       <View style={styles.subContainer}>
         <PlayableItemHeader item={item} elapsed={elapsed} onPlay={() => play()} />
@@ -67,22 +88,24 @@ const SingleMediaItemScreen = ({
         <SocialLinksSection />
       </View>
     </ScrollView>
-  ) : (
-    <View style={styles.container}>
-      <Text style={styles.loadingText}>Loading...</Text>
-    </View>
-  )
-);
+  );
+};
 
 SingleMediaItemScreen.propTypes = {
-  item: appPropTypes.mediaItem.isRequired,
+  mediaType: PropTypes.string.isRequired,
+  item: appPropTypes.mediaItem,
   elapsed: momentPropTypes.momentDurationObj.isRequired,
   play: PropTypes.func.isRequired,
+  refresh: PropTypes.func.isRequired,
   navigation: appPropTypes.navigation.isRequired,
 };
 
+SingleMediaItemScreen.defaultProps = {
+  item: null,
+};
+
 function mapStateToProps(state, { item }) {
-  const status = playbackSelectors.getLastStatusForItem(state, item.id);
+  const status = item ? playbackSelectors.getLastStatusForItem(state, item.id) : null;
   const elapsed = status ? moment.duration(status.positionMillis, 'ms') : moment.duration();
   return { elapsed };
 }
@@ -94,6 +117,9 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
         playbackActions.setPlaying(item),
       );
       navigation.navigate('Player');
+    },
+    refresh: (mediaType) => {
+      dispatch(fetchData({ resource: mediaType }));
     },
   };
 }
