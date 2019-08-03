@@ -1,12 +1,18 @@
 import firebase from 'react-native-firebase';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
-import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { mergeMap, switchMap } from 'rxjs/operators';
 
-import { saveToken } from './actions';
+import { saveToken, updatePatronNotificationSubscriptions } from './actions';
+import { UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS } from './types';
+import { STORE_DETAILS } from '../patreon/types';
+import { canAccessMeditations, canAccessPatronPodcasts } from '../patreon/selectors';
 
-const topicName = 'new-public-media';
+const publicTopicName = 'new-public-media';
+const patronPodcastsTopicName = 'new-patron-podcast';
+const patronMeditationsTopicName = 'new-patron-meditation';
+const patronLiturgiesTopicName = 'new-patron-liturgy';
 
 const registerEpic = action$ =>
   action$.pipe(
@@ -25,11 +31,13 @@ const registerEpic = action$ =>
           messaging.getToken()
             .then((token) => {
               subscriber.next(saveToken(token));
+              subscriber.next(updatePatronNotificationSubscriptions());
               messaging.onTokenRefresh(
                 newToken => subscriber.next(saveToken(newToken)),
               );
 
-              messaging.subscribeToTopic(topicName);
+              console.log(`Subscribing to topic: "${publicTopicName}"`);
+              messaging.subscribeToTopic(publicTopicName);
             });
 
           messaging.hasPermission()
@@ -43,6 +51,43 @@ const registerEpic = action$ =>
     }),
   );
 
-// TODO: private media notifications, but only if patreon pledge gives access
+const onPatreonStoreDetailsEpic = action$ =>
+  action$.pipe(
+    ofType(STORE_DETAILS),
+    switchMap(() => of(updatePatronNotificationSubscriptions())),
+  );
 
-export default combineEpics(registerEpic);
+const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
+  action$.pipe(
+    ofType(UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS),
+    switchMap(() => {
+      const messaging = firebase.messaging();
+      if (canAccessPatronPodcasts(state$.value)) {
+        console.log(`Subscribing to topic: "${patronPodcastsTopicName}"`);
+        messaging.subscribeToTopic(patronPodcastsTopicName);
+      } else {
+        console.log(`Unsubscribing from topic: "${patronPodcastsTopicName}"`);
+        messaging.unsubscribeFromTopic(patronPodcastsTopicName);
+      }
+
+      if (canAccessMeditations(state$.value)) {
+        console.log(`Subscribing to topic: "${patronMeditationsTopicName}"`);
+        messaging.subscribeToTopic(patronMeditationsTopicName);
+        console.log(`Subscribing to topic: "${patronLiturgiesTopicName}"`);
+        messaging.subscribeToTopic(patronLiturgiesTopicName);
+      } else {
+        console.log(`Unsubscribing from topic: "${patronMeditationsTopicName}"`);
+        messaging.unsubscribeFromTopic(patronMeditationsTopicName);
+        console.log(`Unsubscribing from topic: "${patronLiturgiesTopicName}"`);
+        messaging.unsubscribeFromTopic(patronLiturgiesTopicName);
+      }
+
+      return Observable.never();
+    }),
+  );
+
+export default combineEpics(
+  registerEpic,
+  onPatreonStoreDetailsEpic,
+  updatePatronNotificationSubscriptionsEpic,
+);
