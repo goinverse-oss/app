@@ -20,6 +20,7 @@ import { CONNECT, DISCONNECT, GET_DETAILS } from './types';
 import * as actions from './actions';
 import * as authSelectors from '../auth/selectors';
 import * as ormActions from '../orm/actions';
+import * as notificationActions from '../notifications/actions';
 import showError from '../../../showError';
 
 axiosRetry(axios, {
@@ -142,6 +143,9 @@ const disconnectPatreonEpic = action$ =>
       ...['podcastEpisode', 'meditation', 'liturgyItem'].map(
         resource => ormActions.fetchData({ resource }),
       ),
+
+      // update notification topic subscriptions
+      notificationActions.updatePatronNotificationSubscriptions(),
     )),
   );
 
