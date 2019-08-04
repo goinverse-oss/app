@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   loadingContainer: {
+    flex: 1,
     backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
@@ -61,7 +62,7 @@ const SingleMediaItemScreen = ({
 
   if (!item) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
