@@ -37,7 +37,8 @@ export function canAccessMeditations(state) {
   if (!pledge) {
     return false;
   }
-  return /Meditations/i.test(pledge.reward.title);
+  const minMeditationsPledge = 500;
+  return pledge.amount_cents >= minMeditationsPledge;
 }
 
 export function imageUrl(state) {

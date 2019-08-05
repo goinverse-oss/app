@@ -12,11 +12,15 @@ import { meditationSelector } from '../state/ducks/orm/selectors';
  * List of meditations in category, sorted by publish date.
  */
 const SingleMeditationScreen = ({ meditation }) => (
-  <SingleMediaItemScreen item={meditation} mediaType="meditations" />
+  <SingleMediaItemScreen item={meditation} mediaType="meditationCategories" />
 );
 
 SingleMeditationScreen.propTypes = {
-  meditation: PropTypes.shape(Meditation.propTypes).isRequired,
+  meditation: PropTypes.shape(Meditation.propTypes),
+};
+
+SingleMeditationScreen.defaultProps = {
+  meditation: null,
 };
 
 function mapStateToProps(state, { navigation }) {

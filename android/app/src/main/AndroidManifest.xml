@@ -276,7 +276,7 @@
     <!-- GCM -->
     <receiver
       android:name="com.google.android.gms.gcm.GcmReceiver"
-      android:exported="true"
+      android:exported="false"
       android:permission="com.google.android.c2dm.permission.SEND">
       <intent-filter>
         <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
@@ -329,6 +329,12 @@
       android:theme="@style/Base.Theme.AppCompat">
     </activity>
 
+    <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+    <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
 
     <!-- ADD FABRIC CONFIG HERE -->
     <!-- BEGIN FABRIC CONFIG -->

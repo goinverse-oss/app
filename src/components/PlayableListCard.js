@@ -254,7 +254,7 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
       );
       navigation.navigate('Player');
     },
-    openItem: () => navActions.openItem(navigation, item),
+    openItem: () => navigation.navigate(navActions.openItem(item)),
     openPatreon: () => navigation.navigate('Patreon'),
   };
 }
