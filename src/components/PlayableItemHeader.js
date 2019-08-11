@@ -96,7 +96,13 @@ const DownloadButton = ({ isDownloaded, downloadProgress, onPress }) => {
     />
   ) : null;
   return (
-    <TouchableWithoutFeedback onPress={onPress} disabled={disabled}>
+    <TouchableWithoutFeedback
+      onPress={onPress}
+      disabled={disabled}
+      accessible
+      accessibilityLabel={isDownloaded ? 'Delete download' : 'Download'}
+      accessibilityRole="button"
+    >
       <View style={styles.downloadButton}>
         {icon}
         {progress}

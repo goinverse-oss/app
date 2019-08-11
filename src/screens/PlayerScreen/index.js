@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { Platform, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -10,7 +9,7 @@ import { screenRelativeWidth, screenRelativeHeight } from '../../components/util
 import appPropTypes from '../../propTypes';
 import * as actions from '../../state/ducks/playback/actions';
 import * as selectors from '../../state/ducks/playback/selectors';
-import { getImageSource } from '../../state/ducks/orm/utils';
+import { getImageSource, getSeriesTitle } from '../../state/ducks/orm/utils';
 import appStyles from '../../styles';
 
 import AudioTimeline from './AudioTimeline';
@@ -68,11 +67,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
-
-function getSeriesTitle(item) {
-  const group = ['category', 'podcast', 'liturgy'].find(g => _.has(item, g));
-  return _.get(item, [group, 'title']);
-}
 
 class PlayerScreen extends React.Component {
   componentDidUpdate(prevProps) {

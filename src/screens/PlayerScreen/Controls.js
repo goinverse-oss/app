@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderColor: '#7B7B7B',
     borderWidth: 4,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 20,
+    marginRight: 20,
   },
   playIcon: {
     paddingTop: 4,
@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
     }),
   },
   jumpIconContainer: {
+    width: 64,
+    height: 64,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
   jumpIconText: {
     position: 'absolute',
     fontSize: 10,
-    bottom: 13,
+    bottom: 23,
     backgroundColor: '#fff',
     color: '#7B7B7B',
   },
@@ -76,8 +78,9 @@ export const PlaybackButton = ({
   playButtonIconStyle,
   pauseButtonIconStyle,
   disabled,
+  ...props
 }) => (
-  <TouchableWithoutFeedback onPress={onPress} disabled={disabled}>
+  <TouchableWithoutFeedback onPress={onPress} disabled={disabled} {...props}>
     <View style={[styles.playbackButton, style]}>
       {
         isPaused
@@ -137,10 +140,12 @@ let JumpButton = ({
   jump,
   iconStyle,
   disabled,
+  ...props
 }) => (
   <TouchableWithoutFeedback
     onPress={() => { jump(jumpSeconds); }}
     disabled={disabled}
+    {...props}
   >
     <View>
       <JumpIcon style={iconStyle} jumpSeconds={jumpSeconds} />
@@ -184,6 +189,7 @@ const Controls = ({
       iconStyle={jumpButtonIconStyle}
       jumpSeconds={-jumpSeconds}
       disabled={disabled}
+      accessibilityLabel={`Skip back ${jumpSeconds} seconds`}
     />
     <PlaybackButton
       style={playbackButtonStyle}
@@ -192,12 +198,14 @@ const Controls = ({
       isPaused={isPaused}
       onPress={() => (isPaused ? play(item) : pause(item))}
       disabled={disabled}
+      accessibilityLabel={isPaused ? 'Play' : 'Pause'}
     />
     <JumpButton
       style={jumpButtonStyle}
       iconStyle={jumpButtonIconStyle}
       jumpSeconds={jumpSeconds}
       disabled={disabled}
+      accessibilityLabel={`Skip forward ${jumpSeconds} seconds`}
     />
   </View>
 );

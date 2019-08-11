@@ -11,7 +11,7 @@ import PlayableItemHeader from '../components/PlayableItemHeader';
 import ItemDescription from '../components/ItemDescription';
 import PersonList from '../components/PersonList';
 import SocialLinksSection from '../components/SocialLinksSection';
-import TagList from '../components/TagList';
+// import TagList from '../components/TagList';
 
 import * as playbackActions from '../state/ducks/playback/actions';
 import * as playbackSelectors from '../state/ducks/playback/selectors';
@@ -85,7 +85,8 @@ const SingleMediaItemScreen = ({
         />
       </View>
       <View style={styles.subContainer}>
-        <TagList tags={item.tags} />
+        {/* Disable tags until we can make them tappable */}
+        {/* <TagList tags={item.tags} /> */}
         <SocialLinksSection />
       </View>
     </ScrollView>

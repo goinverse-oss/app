@@ -25,9 +25,13 @@ function copyFeed(url) {
   );
 }
 
-const FeedButton = ({ url }) => (
+const FeedButton = ({ collection, url }) => (
   url ? (
-    <TouchableOpacity onPress={() => copyFeed(url)}>
+    <TouchableOpacity
+      onPress={() => copyFeed(url)}
+      accessible
+      accessibilityLabel={`Copy feed URL for ${collection.title}`}
+    >
       <Icon
         name="rss"
         style={styles.icon}
@@ -40,6 +44,7 @@ FeedButton.propTypes = {
   collection: PropTypes.shape({
     id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     feedUrl: PropTypes.string,
   }).isRequired,
   url: PropTypes.string,

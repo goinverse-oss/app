@@ -20,7 +20,12 @@ const styles = StyleSheet.create({
 const getIconName = service => (service === 'website' ? 'globe' : service);
 
 const SocialButton = ({ contributor, service }) => (
-  <TouchableWithoutFeedback onPress={() => Linking.openURL(contributor[service])}>
+  <TouchableWithoutFeedback
+    accessible
+    accessibilityLabel={service}
+    accessibilityHint="Opens a web browser"
+    onPress={() => Linking.openURL(contributor[service])}
+  >
     <Entypo name={getIconName(service)} style={styles.socialButton} />
   </TouchableWithoutFeedback>
 );

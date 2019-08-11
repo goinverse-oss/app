@@ -51,7 +51,12 @@ const styles = StyleSheet.create({
 });
 
 const PersonCard = ({ person, onPress, style }) => (
-  <TouchableWithoutFeedback onPress={onPress}>
+  <TouchableWithoutFeedback
+    onPress={onPress}
+    accessible
+    accessibilityLabel={person.name}
+    accessibilityHint="Open this person's contributor screen"
+  >
     <View style={[styles.card, style]}>
       <CircleImage
         source={getImageSource(person)}
