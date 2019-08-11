@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
 const MenuButton = ({ drawer }) => (
   <Icon
     name="menu"
+    accessibilityLabel="Menu button"
+    accessibilityHint="Opens the sidebar menu"
     style={styles.menuIcon}
     onPress={() => drawer && drawer.openDrawer()}
   />

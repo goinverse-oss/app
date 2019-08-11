@@ -53,7 +53,6 @@ function getItem(notification) {
 }
 
 function navigateFromNotification(notification) {
-  console.log('Opened with notification: ', notification);
   const item = getItem(notification);
   if (item) {
     const action = navActions.openItem(item);

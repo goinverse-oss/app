@@ -19,6 +19,14 @@ export function getCollectionName(type) {
   return uncapitalize(pluralize(type));
 }
 
+export function getGroupField(item) {
+  return ['category', 'podcast', 'liturgy'].find(g => _.has(item, g));
+}
+
+export function getSeriesTitle(item) {
+  const group = getGroupField(item);
+  return _.get(item, [group, 'title']);
+}
 
 // contentful-specific utility functions follow
 
