@@ -19,7 +19,7 @@ import appPropTypes from '../propTypes';
 import { getCommonNavigationOptions } from '../navigation/common';
 import * as navActions from '../navigation/actions';
 import { recentMediaItemsSelector } from '../state/ducks/orm/selectors';
-import { getImageSource } from '../state/ducks/orm/utils';
+import { getImageSource, getSeriesTitle } from '../state/ducks/orm/utils';
 import { fetchData } from '../state/ducks/orm/actions';
 import * as playbackSelectors from '../state/ducks/playback/selectors';
 import { screenRelativeWidth, screenRelativeHeight, formatFooter } from '../components/utils';
@@ -42,10 +42,23 @@ const styles = StyleSheet.create({
   mediaTypeContainer: {
     flexDirection: 'row',
     marginBottom: screenRelativeHeight(0.01),
+    width: screenRelativeWidth(0.85),
   },
   title: {
     fontSize: 24,
     fontWeight: '600',
+  },
+  itemTypePill: {
+    zIndex: 3,
+  },
+  seriesTitlePill: {
+    marginLeft: -10,
+    backgroundColor: '#ccc',
+  },
+  seriesTitle: {
+    flex: 1,
+    marginLeft: 9,
+    color: '#000',
   },
   details: {
     color: '#9B9B9B',
@@ -85,6 +98,7 @@ class HomeScreen extends React.Component {
           items.map(item => (
             <TouchableWithoutFeedback
               key={item.id}
+              accessible
               onPress={() => onItemPress(item)}
             >
               <View style={styles.itemContainer}>
@@ -93,8 +107,15 @@ class HomeScreen extends React.Component {
                   source={getImageSource(item, true)}
                 />
                 <View style={styles.mediaTypeContainer}>
-                  <TextPill>
+                  <TextPill style={styles.itemTypePill}>
                     {item.type.replace('Episode', '')}
+                  </TextPill>
+                  <TextPill
+                    style={styles.seriesTitlePill}
+                    textStyle={styles.seriesTitle}
+                    numberOfLines={1}
+                  >
+                    {getSeriesTitle(item)}
                   </TextPill>
                 </View>
                 <Text style={styles.title} numberOfLines={1}>

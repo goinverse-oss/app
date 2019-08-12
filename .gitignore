@@ -338,3 +338,4 @@ Pods
 /ios/the-liturgists/Supporting/EXBuildConstants.plist.bak
 /ios/the-liturgists/Supporting/EXBuildConstants.json
 /ios/the-liturgists/Supporting/EXBuildConstants.plist
+/android/app/src/main/java/host/exp/exponent/generated/DetachBuildConstants.java

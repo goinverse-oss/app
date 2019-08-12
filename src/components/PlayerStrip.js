@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Platform, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import appPropTypes from '../propTypes';
@@ -10,7 +9,7 @@ import SquareImage from '../components/SquareImage';
 import Controls from '../screens/PlayerScreen/Controls';
 import * as actions from '../state/ducks/playback/actions';
 import * as selectors from '../state/ducks/playback/selectors';
-import { getImageSource } from '../state/ducks/orm/utils';
+import { getImageSource, getGroupField, getSeriesTitle } from '../state/ducks/orm/utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -103,11 +102,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function getSeriesTitle(item) {
-  const group = ['category', 'podcast', 'liturgy'].find(g => _.has(item, g));
-  return _.get(item, [group, 'title']);
-}
-
 const PlayerStripContainer = ({ children, ...props }) => (
   Platform.select({
     ios: <View style={styles.container} {...props}>{children}</View>,
@@ -123,9 +117,21 @@ const PlayerStripContainer = ({ children, ...props }) => (
   })
 );
 
+function getAccessibilityLabel(item) {
+  const group = getGroupField(item);
+  if (!group) {
+    return item.title;
+  }
+
+  const seriesTitle = getSeriesTitle(item);
+  return `${item.title}, from the ${group}: ${seriesTitle}`;
+}
+
 const PlayerStrip = ({ item, navigation: { navigate } }) => (
   item ? (
     <TouchableWithoutFeedback
+      accessibilityLabel={`Now Playing: ${getAccessibilityLabel(item)}`}
+      accessibilityHint="Tap to open Now Playing screen"
       onPress={() => navigate('PlayerWithHeader')}
     >
       <PlayerStripContainer>

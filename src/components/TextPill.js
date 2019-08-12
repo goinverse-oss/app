@@ -24,10 +24,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const TextPill = ({ style, children, onPress }) => (
+const TextPill = ({
+  style, textStyle, children, onPress, ...props
+}) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={[styles.container, style]}>
-      <Text style={styles.text}>
+      <Text style={[styles.text, textStyle]} {...props}>
         {children.toUpperCase()}
       </Text>
     </View>
@@ -40,11 +42,15 @@ TextPill.propTypes = {
   // eslint-disable-next-line react/no-typos
   style: ViewPropTypes.style,
 
+  // eslint-disable-next-line react/no-typos
+  textStyle: Text.propTypes.style,
+
   onPress: PropTypes.func,
 };
 
 TextPill.defaultProps = {
   style: {},
+  textStyle: {},
   onPress: () => {},
 };
 

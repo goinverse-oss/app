@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Image,
-  NativeModules,
-  StyleSheet,
-} from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -48,8 +44,8 @@ const DrawerContent = ({
     />
     <DrawerItem
       drawer={drawer}
-      title="Open dev menu"
-      onPress={() => NativeModules.DevMenu.show()}
+      title="Close menu"
+      onPress={() => drawer.closeDrawer()}
     />
   </LinearGradient>
 );

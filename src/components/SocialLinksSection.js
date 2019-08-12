@@ -55,11 +55,13 @@ const links = [
     imageSource: mastodonIcon,
     url: 'https://social.theliturgists.com',
     style: styles.mastodonIconContainer,
+    label: 'Talk on Mastodon',
   },
   {
     imageSource: slackIcon,
     url: 'http://bit.ly/JoinLiturgistsSlack',
     style: styles.slackIconContainer,
+    label: 'Discuss in Slack',
   },
 ];
 
@@ -71,9 +73,14 @@ const SocialLinksSection = () => (
       </View>
     </View>
     <View style={styles.linkContainer}>
-      {links.map(({ imageSource, url, style }) => (
+      {links.map(({
+        imageSource, url, style, label,
+      }) => (
         <TouchableWithoutFeedback
           key={url}
+          accessible
+          accessibilityLabel={label}
+          accessibilityHint="Opens a web browser"
           onPress={() => Linking.openURL(url)}
         >
           <View style={[styles.linkImageContainer, style]}>
