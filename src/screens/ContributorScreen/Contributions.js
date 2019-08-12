@@ -98,7 +98,7 @@ const Contributions = ({
         onPress={() => viewAll()}
       >
         <Text style={styles.buttonText}>
-          {`View All ${getTitle({ type, contributor })}`}
+          {`View All ${getTitle({ type, filterField: 'contributor', filterValue: contributor })}`}
         </Text>
       </Button>
     </View>
@@ -140,7 +140,7 @@ function mapDispatchToProps(dispatch, { contributor, type, navigation }) {
   return {
     viewAll: () => navigation.navigate({
       routeName: 'SearchResults',
-      params: { contributor, type },
+      params: { filterField: 'contributor', filterValue: contributor, type },
     }),
   };
 }

@@ -241,6 +241,20 @@ export function filteredCollectionSelector(state, type, filterFunc = () => true)
   return selector;
 }
 
+export function filteredAllMediaSelector(state, filterFunc = () => true) {
+  const selectors = ['podcastEpisode', 'meditation', 'liturgyItem'].map(
+    type => filteredCollectionSelector(state, type, filterFunc),
+  );
+  return (outerState) => {
+    const items = _.flatMap(
+      selectors, selector => selector(outerState),
+    );
+    return items.sort((a, b) => (
+      moment(b.publishedAt) - moment(a.publishedAt)
+    ));
+  };
+}
+
 export function instanceSelector(state, type, id) {
   return instanceSelectors[type](state, id);
 }
