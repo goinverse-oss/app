@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     color: '#797979',
-    minHeight: '45%',
-    marginVertical: '2%',
+    minHeight: 40,
+    marginVertical: 5,
     flexWrap: 'wrap',
     flexDirection: 'column',
   },
@@ -99,9 +99,10 @@ const styles = StyleSheet.create({
   searchHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 3,
   },
   mediaType: {
-    marginRight: '3%',
+    marginRight: 5,
   },
 });
 
@@ -163,7 +164,7 @@ const PlayableListCard = ({
     <View style={styles.metadataContainer}>
       {isSearchResult ? (
         <View style={styles.searchHeader}>
-          <TextPill style={styles.mediaType}>{pluralize.singular(item.type)}</TextPill>
+          <TextPill style={styles.mediaType}>{pluralize.singular(item.type.replace('Episode', ''))}</TextPill>
           <Text style={styles.times}>
             {formatFooter({
               duration: item.duration,

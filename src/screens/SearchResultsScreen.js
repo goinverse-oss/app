@@ -34,6 +34,11 @@ const listCardTypes = {
   liturgyItem: LiturgyItemListCard,
 };
 
+function getParams(navigation) {
+  const { state: { params } } = navigation;
+  return params;
+}
+
 /**
  * List of items matching a search - e.g. matches contributor.
  */
@@ -41,21 +46,32 @@ const SearchResultsScreen = ({
   items,
   refreshing,
   refresh,
-}) => (
-  <FlatList
-    style={styles.container}
-    refreshing={refreshing}
-    onRefresh={() => refresh()}
-    data={items}
-    keyExtractor={item => item.id}
-    renderItem={
-      ({ item }) => {
-        const ItemListCard = listCardTypes[item.type];
-        return <ItemListCard key={item.id} style={styles.card} item={item} />;
+  navigation,
+}) => {
+  const { type } = getParams(navigation);
+  return (
+    <FlatList
+      style={styles.container}
+      refreshing={refreshing}
+      onRefresh={() => refresh()}
+      data={items}
+      keyExtractor={item => item.id}
+      renderItem={
+        ({ item }) => {
+          const ItemListCard = listCardTypes[item.type];
+          return (
+            <ItemListCard
+              key={item.id}
+              style={styles.card}
+              item={item}
+              isSearchResult={!type}
+            />
+          );
+        }
       }
-    }
-  />
-);
+    />
+  );
+};
 
 SearchResultsScreen.propTypes = {
   items: PropTypes.arrayOf(
@@ -63,12 +79,8 @@ SearchResultsScreen.propTypes = {
   ).isRequired,
   refreshing: PropTypes.bool.isRequired,
   refresh: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
-
-function getParams(navigation) {
-  const { state: { params } } = navigation;
-  return params;
-}
 
 function makeMapStateToProps(factoryState, { navigation }) {
   const { type, filterField, filterValue } = getParams(navigation);
