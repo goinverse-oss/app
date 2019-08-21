@@ -6,7 +6,12 @@ import pluralize from 'pluralize';
 
 import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
-import { filteredCollectionSelector, apiLoadingSelector } from '../state/ducks/orm/selectors';
+import {
+  filteredAllMediaSelector,
+  filteredCollectionSelector,
+  apiLoadingSelector,
+} from '../state/ducks/orm/selectors';
+import { capitalize } from '../state/ducks/orm/utils';
 import { fetchData } from '../state/ducks/orm';
 import appPropTypes from '../propTypes';
 import PodcastEpisodeListCard from '../components/PodcastEpisodeListCard';
@@ -29,6 +34,11 @@ const listCardTypes = {
   liturgyItem: LiturgyItemListCard,
 };
 
+function getParams(navigation) {
+  const { state: { params } } = navigation;
+  return params;
+}
+
 /**
  * List of items matching a search - e.g. matches contributor.
  */
@@ -36,21 +46,32 @@ const SearchResultsScreen = ({
   items,
   refreshing,
   refresh,
-}) => (
-  <FlatList
-    style={styles.container}
-    refreshing={refreshing}
-    onRefresh={() => refresh()}
-    data={items}
-    keyExtractor={item => item.id}
-    renderItem={
-      ({ item }) => {
-        const ItemListCard = listCardTypes[item.type];
-        return <ItemListCard key={item.id} style={styles.card} item={item} />;
+  navigation,
+}) => {
+  const { type } = getParams(navigation);
+  return (
+    <FlatList
+      style={styles.container}
+      refreshing={refreshing}
+      onRefresh={() => refresh()}
+      data={items}
+      keyExtractor={item => item.id}
+      renderItem={
+        ({ item }) => {
+          const ItemListCard = listCardTypes[item.type];
+          return (
+            <ItemListCard
+              key={item.id}
+              style={styles.card}
+              item={item}
+              isSearchResult={!type}
+            />
+          );
+        }
       }
-    }
-  />
-);
+    />
+  );
+};
 
 SearchResultsScreen.propTypes = {
   items: PropTypes.arrayOf(
@@ -58,26 +79,24 @@ SearchResultsScreen.propTypes = {
   ).isRequired,
   refreshing: PropTypes.bool.isRequired,
   refresh: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
-function getParams(navigation) {
-  const { state: { params } } = navigation;
-  return params;
-}
-
 function makeMapStateToProps(factoryState, { navigation }) {
-  const { type, contributor } = getParams(navigation);
-  const selector = filteredCollectionSelector(
-    factoryState,
-    type,
-    item => item.contributors.filter(contributor).count() > 0,
+  const { type, filterField, filterValue } = getParams(navigation);
+  const filterFunc = item => item[`${filterField}s`].filter(filterValue).count() > 0;
+  const selector = (
+    type
+      ? filteredCollectionSelector(factoryState, type, filterFunc)
+      : filteredAllMediaSelector(factoryState, filterFunc)
   );
 
   return function mapStateToProps(state) {
+    const resources = type ? [type] : ['podcastEpisode', 'meditation', 'liturgyItem'];
     return {
       items: selector(state),
       refreshing: (
-        apiLoadingSelector(state, pluralize(type))
+        resources.some(resource => apiLoadingSelector(state, pluralize(resource)))
       ),
     };
   };
@@ -85,29 +104,51 @@ function makeMapStateToProps(factoryState, { navigation }) {
 
 function mapDispatchToProps(dispatch, { navigation }) {
   const { type } = getParams(navigation);
+  const resources = type ? [type] : ['podcastEpisode', 'meditation', 'liturgyItem'];
   return {
     refresh: () => {
-      dispatch(
-        fetchData({
-          resource: type,
-        }),
+      resources.forEach(
+        resource => dispatch(fetchData({ resource })),
       );
     },
   };
 }
 
-export function getTitle({ type, contributor }) {
+export function getTitle({ type, filterField, filterValue }) {
   // for now, search results are limited to links from contributor screens,
   // so we're keeping the title simple and informative based on that.
-  const title = {
-    podcastEpisode: 'Podcasts',
-    meditation: 'Meditations',
-    liturgyItem: 'Liturgies',
-  }[type];
-  const firstName = contributor.name.split(' ')[0];
-  return `${title} with ${firstName}`;
+  let name;
+  switch (filterField) {
+    case 'contributor':
+      name = filterValue.name.split(' ')[0];
+      break;
+    case 'tag':
+      name = filterValue.name;
+      break;
+    default:
+      throw new Error(`Unknown filterField ${filterField}`);
+  }
+
+  if (type) {
+    const title = {
+      podcastEpisode: 'Podcasts',
+      meditation: 'Meditations',
+      liturgyItem: 'Liturgies',
+    }[type];
+
+    return `${title} with ${name}`;
+  }
+
+  return `${capitalize(filterField)}: ${filterValue.name}`;
 }
 
+/*
+ * Navigation props:
+ *   type: 'podcastEpisode', 'meditation', 'liturgyItem', or null
+ *     limits results to that type, if not null
+ *   filterField: 'contributor' or 'tag'
+ *   filterValue: value of the field to filter by
+ */
 SearchResultsScreen.navigationOptions = ({ screenProps, navigation }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
   headerLeft: <BackButton />,

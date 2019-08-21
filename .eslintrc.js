@@ -21,6 +21,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'no-underscore-dangle': 'off',
     'function-paren-newline': ['error', 'consistent'],
+    'prefer-destructuring': 'off',
   },
   // https://github.com/benmosher/eslint-plugin-import/issues/279#issuecomment-215052176
   settings: {
