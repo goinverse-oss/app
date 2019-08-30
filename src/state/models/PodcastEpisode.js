@@ -23,6 +23,7 @@ PodcastEpisode.fields = {
   contributors: many('Contributor', 'podcastEpisodes'),
   patronsOnly: attr(),
   isFreePreview: attr(),
+  discourseTopicUrl: attr(),
   createdAt: attr(),
   updatedAt: attr(),
 };
@@ -38,6 +39,7 @@ PodcastEpisode.propTypes = {
   publishedAt: PropTypes.string,
   patronsOnly: PropTypes.bool,
   isFreePreview: PropTypes.bool,
+  discourseTopicUrl: PropTypes.string,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
 };

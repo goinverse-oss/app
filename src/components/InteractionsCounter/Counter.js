@@ -13,6 +13,10 @@ function getLabelNode(label) {
   return label;
 }
 
+function formatCount(count) {
+  return count === null ? '-' : numeral(count).format('0,0');
+}
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -27,7 +31,7 @@ const Counter = ({ label, count, style }) => {
   return (
     <View style={[styles.container, style]}>
       {labelNode}
-      <Text style={{ paddingLeft: 4 }}>{numeral(count).format('0,0')}</Text>
+      <Text style={{ paddingLeft: 4 }}>{formatCount(count)}</Text>
     </View>
   );
 };
@@ -41,7 +45,7 @@ Counter.propTypes = {
 
 Counter.defaultProps = {
   label: 'Count',
-  count: 0,
+  count: null,
   style: {},
 };
 
