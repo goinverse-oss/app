@@ -83,7 +83,7 @@ const vars = _.mapValues(requiredEnvVars, (name) => {
   return process.env[name];
 });
 
-vars.channel = vars.branch === 'master' ? 'default' : vars.branch;
+vars.channel = vars.branch === 'master' ? 'default' : vars.branch.replace(/[^A-Za-z0-9_-]+/g, '-');
 
 // CircleCI docs say that CIRCLE_PR_NUMBER should be defined,
 // but it's not. Work around it by pulling the number

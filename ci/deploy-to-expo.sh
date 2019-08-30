@@ -26,7 +26,7 @@ prefix=
 if [[ "$1" == "storybook" ]]; then
   prefix="storybook-"
 fi
-channel=${CIRCLE_BRANCH}
+channel=$(echo ${CIRCLE_BRANCH} | sed -E 's/[^A-Za-z0-9_-]+/-/g')
 if [[ "${channel}" == "master" ]]; then
   channel="default"
 fi
