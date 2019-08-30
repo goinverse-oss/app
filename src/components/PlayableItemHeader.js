@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import moment from 'moment';
-import { ViewPropTypes, View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Easing, ViewPropTypes, View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import momentPropTypes from 'react-moment-proptypes';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Progress from 'react-native-progress';
+import TextTicker from 'react-native-text-ticker';
+import axios from 'axios';
+import { Linking } from 'expo';
 
 import PlayButton from './PlayButton';
 import SquareImage from './SquareImage';
+import InteractionsCounter from './InteractionsCounter';
 import {
   formatFooter,
   formatMinutesString,
@@ -16,6 +21,7 @@ import {
   screenRelativeWidth,
 } from './utils';
 
+import config from '../../config.json';
 import AppPropTypes from '../propTypes';
 import { getImageSource } from '../state/ducks/orm/utils';
 import * as storageActions from '../state/ducks/storage/actions';
@@ -32,6 +38,7 @@ const styles = StyleSheet.create({
   },
   metadataContainer: {
     flex: 1,
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 18,
@@ -40,8 +47,11 @@ const styles = StyleSheet.create({
   times: {
     fontSize: 12,
     color: '#797979',
-    marginTop: 5,
-    flex: 2,
+  },
+  interactionsCounterContainer: {
+    minHeight: 25,
+  },
+  interactionsCounter: {
   },
   actionsContainer: {
     flexDirection: 'row',
@@ -124,6 +134,12 @@ DownloadButton.defaultProps = {
   downloadProgress: null,
 };
 
+function fetchDiscourseInfo(item) {
+  const topicId = item.discourseTopicUrl.split('/').slice(-1)[0];
+  const url = `${config.apiBaseUrl}/discourse/counts/${topicId}`;
+  return axios.get(url).then(r => _.pick(r.data, ['like_count', 'posts_count']));
+}
+
 const PlayableItemHeader = ({
   item,
   style,
@@ -136,36 +152,74 @@ const PlayableItemHeader = ({
   formatDuration,
   formatPublishedAt,
   ...props
-}) => (
-  <View style={[styles.container, style]} {...props}>
-    <View style={styles.imageContainer}>
-      <SquareImage
-        source={getImageSource(item)}
-        width={screenRelativeWidth(0.3)}
-      />
-    </View>
-    <View style={styles.metadataContainer}>
-      <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
-      <Text style={styles.times}>
-        {formatFooter({
-          duration: item.duration,
-          elapsed,
-          publishedAt: item.publishedAt,
-          formatDuration,
-          formatPublishedAt,
-        })}
-      </Text>
-      <View style={styles.actionsContainer}>
-        <PlayButton onPress={onPlay} text="Listen" />
-        <DownloadButton
-          isDownloaded={isDownloaded}
-          downloadProgress={downloadProgress}
-          onPress={isDownloaded ? removeDownload : startDownload}
+}) => {
+  const pendingDiscourseInfo = {
+    likes: null,
+    comments: null,
+  };
+  const [discourseInfo, setDiscourseInfo] = useState(pendingDiscourseInfo);
+
+  useEffect(() => {
+    if (item.discourseTopicUrl) {
+      setDiscourseInfo(pendingDiscourseInfo);
+      fetchDiscourseInfo(item).then(info => setDiscourseInfo(info));
+    }
+  }, [item.discourseTopicUrl]);
+
+  const { like_count: likes, posts_count: comments } = discourseInfo;
+
+  return (
+    <View style={[styles.container, style]} {...props}>
+      <View style={styles.imageContainer}>
+        <SquareImage
+          source={getImageSource(item)}
+          width={screenRelativeWidth(0.3)}
         />
       </View>
+      <View style={styles.metadataContainer}>
+        <TextTicker
+          style={styles.title}
+          scrollSpeed={25}
+          marqueeDelay={2000}
+          easing={Easing.linear}
+        >
+          {item.title}
+        </TextTicker>
+        <Text style={styles.times}>
+          {formatFooter({
+            duration: item.duration,
+            elapsed,
+            publishedAt: item.publishedAt,
+            formatDuration,
+            formatPublishedAt,
+          })}
+        </Text>
+        <View style={styles.interactionsCounterContainer}>
+          {
+            item.discourseTopicUrl ? (
+              <InteractionsCounter
+                style={styles.interactionsCounter}
+                likes={likes}
+                comments={comments}
+                onPress={() => {
+                  Linking.openURL(item.discourseTopicUrl);
+                }}
+              />
+            ) : null
+          }
+        </View>
+        <View style={styles.actionsContainer}>
+          <PlayButton onPress={onPlay} text="Listen" />
+          <DownloadButton
+            isDownloaded={isDownloaded}
+            downloadProgress={downloadProgress}
+            onPress={isDownloaded ? removeDownload : startDownload}
+          />
+        </View>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 PlayableItemHeader.propTypes = {
   item: AppPropTypes.mediaItem.isRequired,

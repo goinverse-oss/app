@@ -21,6 +21,7 @@ Meditation.fields = {
   category: fk('MeditationCategory', 'meditations'),
   tags: many('Tag'),
   contributors: many('Contributor', 'meditations'),
+  discourseTopicUrl: attr(),
   createdAt: attr(),
   updatedAt: attr(),
 };
@@ -35,6 +36,7 @@ Meditation.propTypes = {
   publishedAt: PropTypes.string,
   patronsOnly: PropTypes.bool,
   isFreePreview: PropTypes.bool,
+  discourseTopicUrl: PropTypes.string,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
 };
