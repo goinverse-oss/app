@@ -1,6 +1,7 @@
 import React from 'react';
-import { Platform, Text, View, StyleSheet } from 'react-native';
+import { Easing, Platform, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import TextTicker from 'react-native-text-ticker';
 
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -94,7 +95,14 @@ class PlayerScreen extends React.Component {
           }
         </View>
         <View style={styles.mediaContainer}>
-          <Text style={styles.title}>{item ? item.title : ''}</Text>
+          <TextTicker
+            style={styles.title}
+            scrollSpeed={25}
+            marqueeDelay={2000}
+            easing={Easing.linear}
+          >
+            {item ? item.title : ''}
+          </TextTicker>
           <Text style={styles.seriesTitle}>{getSeriesTitle(item)}</Text>
           <AudioTimeline style={styles.timeline} />
           <Controls style={styles.controls} />

@@ -42,12 +42,14 @@ const styles = StyleSheet.create({
 });
 
 const InteractionsCounter = ({
-  style, likes, comments, ...props
+  style, likes, comments, onPress, ...props
 }) => (
-  <View style={[styles.container, style]}>
-    <Counter label={<LikeIcon {...props} />} count={likes} />
-    <Counter style={styles.commentsCounter} label={<CommentIcon />} count={comments} />
-  </View>
+  <TouchableWithoutFeedback onPress={onPress}>
+    <View style={[styles.container, style]}>
+      <Counter label={<LikeIcon {...props} />} count={likes} />
+      <Counter style={styles.commentsCounter} label={<CommentIcon />} count={comments} />
+    </View>
+  </TouchableWithoutFeedback>
 );
 
 InteractionsCounter.propTypes = {
@@ -62,6 +64,10 @@ InteractionsCounter.propTypes = {
   // number of comments for the thing
   comments: PropTypes.number,
 
+  // callback invoked when the entire control is pressed.
+  // If present, overrides other onPress* callbacks.
+  onPress: PropTypes.func,
+
   // callback invoked when the 'like' icon is pressed for the thing.
   // arguments TBD
   onPressLike: PropTypes.func,
@@ -74,8 +80,9 @@ InteractionsCounter.propTypes = {
 InteractionsCounter.defaultProps = {
   style: {},
   liked: false,
-  likes: 0,
-  comments: 0,
+  likes: null,
+  comments: null,
+  onPress: () => {},
   onPressLike: () => {},
   onPressComment: () => {},
 };
