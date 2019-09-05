@@ -30,7 +30,7 @@ const TextPill = ({
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={[styles.container, style]}>
       <Text style={[styles.text, textStyle]} {...props}>
-        {children.toUpperCase()}
+        {children ? children.toUpperCase() : ''}
       </Text>
     </View>
   </TouchableWithoutFeedback>
