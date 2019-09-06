@@ -259,7 +259,9 @@ const playEpic = (action$, state$) =>
       setBackgroundPlayerControls(item);
 
       const sound = selectors.getSound(state);
-      sound.playAsync().catch(console.error);
+      if (sound) {
+        sound.playAsync().catch(console.error);
+      }
       return Observable.never();
     }),
   );
@@ -269,7 +271,9 @@ const pauseEpic = (action$, state$) =>
     ofType(PAUSE),
     mergeMap(() => {
       const sound = selectors.getSound(state$.value);
-      sound.pauseAsync().catch(console.error);
+      if (sound) {
+        sound.pauseAsync().catch(console.error);
+      }
       return Observable.never();
     }),
   );
@@ -299,6 +303,10 @@ const seekEpic = (action$, state$) =>
     switchMap((action) => {
       const state = state$.value;
       const sound = selectors.getSound(state);
+      if (!sound) {
+        return Observable.never();
+      }
+
       return from(
         sound.setStatusAsync({
           positionMillis: action.payload.asMilliseconds(),
