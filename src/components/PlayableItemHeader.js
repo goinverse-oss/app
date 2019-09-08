@@ -9,7 +9,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Progress from 'react-native-progress';
 import TextTicker from 'react-native-text-ticker';
 import axios from 'axios';
-import { Linking } from 'expo';
+import * as WebBrowser from 'expo-web-browser';
 
 import PlayButton from './PlayButton';
 import SquareImage from './SquareImage';
@@ -202,7 +202,7 @@ const PlayableItemHeader = ({
                 likes={likes}
                 comments={comments}
                 onPress={() => {
-                  Linking.openURL(item.discourseTopicUrl);
+                  WebBrowser.openBrowserAsync(item.discourseTopicUrl);
                 }}
               />
             ) : null
