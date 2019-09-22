@@ -16,7 +16,7 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Push a new beta build to TestFlight"
+  desc "Bump the build number and tag it"
   lane :beta_bump do
     # Ensure that your git status is not dirty
     ensure_git_status_clean
@@ -36,6 +36,7 @@ platform :ios do
     push_to_git_remote
   end
 
+  desc "Push a new beta build to TestFlight"
   lane :beta do
     build_app(
       workspace: "the-liturgists.xcworkspace",
