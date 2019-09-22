@@ -1584,7 +1584,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1696,7 +1696,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
