@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 
 import Remarkable from 'remarkable';
-import HTML from '@javanhuang/react-native-render-html';
+import HTML from 'react-native-render-html';
 import { AllHtmlEntities } from 'html-entities';
 import isHtml from 'is-html';
 
