@@ -20,6 +20,7 @@ import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
 import * as ormActions from '../state/ducks/orm/actions';
 import appStyles from '../styles';
+import appPropTypes from '../propTypes';
 
 const styles = StyleSheet.create({
   bg: {
@@ -185,8 +186,8 @@ PatreonButton.defaultProps = {
 
 const PatreonConnectButton = ({
   isConnected,
-  connect: connectPatreon,
   disconnect,
+  navigation,
 }) => {
   const title = isConnected ? 'DISCONNECT PATREON' : 'CONNECT WITH PATREON';
   const onPress = (
@@ -205,7 +206,7 @@ const PatreonConnectButton = ({
           },
         ],
       )
-      : () => connectPatreon()
+      : () => navigation.navigate('PatreonAuth')
   );
   const opacity = isConnected ? 0.5 : 1.0;
 
@@ -220,8 +221,8 @@ const PatreonConnectButton = ({
 
 PatreonConnectButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
-  connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 const PatreonRefreshButton = ({
@@ -266,7 +267,7 @@ const PatreonScreen = props => (
 PatreonScreen.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
-  connect: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 PatreonScreen.navigationOptions = ({ navigation }) => ({

@@ -6,7 +6,7 @@ import { mergeMap, switchMap } from 'rxjs/operators';
 
 import { saveToken, updatePatronNotificationSubscriptions } from './actions';
 import { UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS } from './types';
-import { STORE_DETAILS } from '../patreon/types';
+import { STORE_DETAILS, DISCONNECT } from '../patreon/types';
 import { canAccessMeditations, canAccessPatronPodcasts } from '../patreon/selectors';
 
 const publicTopicName = 'new-public-media';
@@ -57,6 +57,12 @@ const onPatreonStoreDetailsEpic = action$ =>
     switchMap(() => of(updatePatronNotificationSubscriptions())),
   );
 
+const onPatreonDisconnectEpic = action$ =>
+  action$.pipe(
+    ofType(DISCONNECT),
+    switchMap(() => of(updatePatronNotificationSubscriptions())),
+  );
+
 const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
   action$.pipe(
     ofType(UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS),
@@ -89,5 +95,6 @@ const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
 export default combineEpics(
   registerEpic,
   onPatreonStoreDetailsEpic,
+  onPatreonDisconnectEpic,
   updatePatronNotificationSubscriptionsEpic,
 );

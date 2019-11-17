@@ -9,6 +9,7 @@ import * as GestureHandler from 'react-native-gesture-handler';
 
 import HomeScreen from '../screens/HomeScreen';
 import PatreonScreen from '../screens/PatreonScreen';
+import PatreonAuthScreen from '../screens/PatreonAuthScreen';
 import PlayerScreen from '../screens/PlayerScreen';
 import PlayerStrip from '../components/PlayerStrip';
 import PodcastsScreen from '../screens/PodcastsScreen';
@@ -124,11 +125,17 @@ const Tabs = createBottomTabNavigator({
   },
 });
 
-// hack to get the header to appear (it doesn't with a TabNavigator)
-const PatreonWithHeader = createStackNavigator({
-  PatreonWithHeader: { screen: PatreonScreen },
-});
+const Patreon = createStackNavigator(
+  {
+    PatreonInfo: { screen: PatreonScreen },
+    PatreonAuth: { screen: PatreonAuthScreen },
+  },
+  {
+    mode: 'modal',
+  },
+);
 
+// hack to get the header to appear (it doesn't with a TabNavigator)
 const PlayerWithHeader = createStackNavigator({
   PlayerWithHeader: { screen: PlayerScreen },
 });
@@ -136,7 +143,7 @@ const PlayerWithHeader = createStackNavigator({
 const Modals = createStackNavigator(
   {
     Main: { screen: Tabs },
-    Patreon: { screen: PatreonWithHeader },
+    Patreon: { screen: Patreon },
     Player: { screen: PlayerWithHeader },
   },
   {
