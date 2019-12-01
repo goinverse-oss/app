@@ -15,6 +15,14 @@
 
 default_platform(:ios)
 
+def run_build
+  build_app(
+    workspace: "the-liturgists.xcworkspace",
+    scheme: "the-liturgists",
+    export_xcargs: "-allowProvisioningUpdates"
+  )
+end
+
 platform :ios do
   desc "Bump the build number and tag it"
   lane :beta_bump do
@@ -36,13 +44,14 @@ platform :ios do
     push_to_git_remote
   end
 
+  desc "Run a new beta build (but don't upload it)"
+  lane :beta_build do
+    run_build
+  end
+
   desc "Push a new beta build to TestFlight"
   lane :beta do
-    build_app(
-      workspace: "the-liturgists.xcworkspace",
-      scheme: "the-liturgists",
-      export_xcargs: "-allowProvisioningUpdates"
-    )
+    run_build
     upload_to_testflight
   end
 end
