@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { persistReducer, createTransform } from 'redux-persist';
-import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 
 import { handleActions } from '../../utils/reduxActions';
 

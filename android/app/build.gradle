@@ -90,7 +90,7 @@ devicefarm {
 
 configurations.all {
   resolutionStrategy {
-    force 'org.webkit:android-jsc:r241213'
+    force 'org.webkit:android-jsc:r245459'
   }
 }
 
@@ -103,9 +103,6 @@ apply from: 'expo.gradle'
 apply from: "../../node_modules/react-native-unimodules/gradle.groovy"
 
 dependencies {
-    implementation project(':react-native-firebase')
-    implementation project(':react-native-music-control')
-    implementation project(':@react-native-community_async-storage')
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   // Firebase dependencies
@@ -138,9 +135,9 @@ dependencies {
   implementation 'com.google.android.gms:play-services-auth:16.0.1'
   implementation 'com.google.android.gms:play-services-location:16.0.0'
   // implementation 'com.google.android.gms:play-services-ads:17.1.1'
-  annotationProcessor 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
-  implementation "com.raizlabs.android:DBFlow-Core:2.2.1"
-  implementation "com.raizlabs.android:DBFlow:2.2.1"
+  // annotationProcessor 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
+  // implementation "com.raizlabs.android:DBFlow-Core:2.2.1"
+  // implementation "com.raizlabs.android:DBFlow:2.2.1"
   implementation "com.madgag.spongycastle:core:1.53.0.0"
   implementation "com.madgag.spongycastle:prov:1.53.0.0"
   debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
@@ -184,7 +181,7 @@ dependencies {
   testImplementation 'com.android.support.test:rules:1.0.2-alpha1'
 
   
-  implementation('host.exp.exponent:expoview:33.0.0@aar') {
+  implementation('host.exp.exponent:expoview:36.0.0@aar') {
     transitive = true
     exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     exclude group: 'com.squareup.okhttp3', module: 'okhttp-urlconnection'
@@ -193,8 +190,8 @@ dependencies {
 
 
   
-  api 'org.webkit:android-jsc:r241213' // needs to be before react-native
-  api 'com.facebook.react:react-native:33.0.0'
+  api 'org.webkit:android-jsc:r245459' // needs to be before react-native
+  api 'com.facebook.react:react-native:36.0.0'
   
 
 

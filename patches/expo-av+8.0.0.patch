@@ -1,8 +1,8 @@
 diff --git a/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m b/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m
-index 443b35b..f81f84a 100644
+index 7f4d4d5..7f36f7e 100644
 --- a/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m
 +++ b/node_modules/expo-av/ios/EXAV/EXAVPlayerData.m
-@@ -811,7 +811,12 @@ - (void)pauseImmediately
+@@ -810,7 +810,12 @@ - (void)pauseImmediately
  
  - (EXAVAudioSessionMode)getAudioSessionModeRequired
  {
