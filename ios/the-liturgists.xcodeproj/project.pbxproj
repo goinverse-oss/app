@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2FAE770F22CA42AC00B55D81 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE76AA22CA42AC00B55D81 /* GoogleService-Info.plist */; };
-		38917D653676D3C42E88F38D /* libPods-the-liturgists.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F6B012FCC38431D2983F0C /* libPods-the-liturgists.a */; };
 		B501732B1DC01252003445D9 /* EXShell.plist in Resources */ = {isa = PBXBuildFile; fileRef = B501732A1DC01252003445D9 /* EXShell.plist */; };
 		B56386491DB9693800A0598C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B56386481DB9693800A0598C /* AppDelegate.m */; };
 		B56386511DB9693800A0598C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56386501DB9693800A0598C /* Assets.xcassets */; };
@@ -20,6 +19,7 @@
 		B5CFBF4F1EDE419400B4BE24 /* EXBuildConstants.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */; };
 		B5DB04801F3A684600E91581 /* shell-app-manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = B5DB047E1F3A684600E91581 /* shell-app-manifest.json */; };
 		B5DB04811F3A684600E91581 /* shell-app.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B5DB047F1F3A684600E91581 /* shell-app.bundle */; };
+		BB63897D6D78CDB576EF33BC /* libPods-the-liturgists.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE2E9D241F5F139C7669E21E /* libPods-the-liturgists.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -404,10 +404,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0971F829E760D934DD7366FD /* Pods-the-liturgists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.release.xcconfig"; path = "Target Support Files/Pods-the-liturgists/Pods-the-liturgists.release.xcconfig"; sourceTree = "<group>"; };
 		2FAE76AA22CA42AC00B55D81 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "the-liturgists/Supporting/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2FAE77D922CA4DCA00B55D81 /* the-liturgists.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "the-liturgists.entitlements"; sourceTree = "<group>"; };
 		2FE7118F22C10158002825A1 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
-		B3F6B012FCC38431D2983F0C /* libPods-the-liturgists.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-the-liturgists.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B501732A1DC01252003445D9 /* EXShell.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXShell.plist; sourceTree = "<group>"; };
 		B56386411DB9693800A0598C /* the-liturgists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-liturgists.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56386471DB9693800A0598C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -422,8 +422,8 @@
 		B5CFBF4E1EDE419400B4BE24 /* EXBuildConstants.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EXBuildConstants.plist; sourceTree = "<group>"; };
 		B5DB047E1F3A684600E91581 /* shell-app-manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "shell-app-manifest.json"; sourceTree = "<group>"; };
 		B5DB047F1F3A684600E91581 /* shell-app.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "shell-app.bundle"; sourceTree = "<group>"; };
-		C5FD797860F22AC6A3B71B34 /* Pods-the-liturgists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.release.xcconfig"; path = "Target Support Files/Pods-the-liturgists/Pods-the-liturgists.release.xcconfig"; sourceTree = "<group>"; };
-		D0DCF166FB680132E1B50BB6 /* Pods-the-liturgists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.debug.xcconfig"; path = "Target Support Files/Pods-the-liturgists/Pods-the-liturgists.debug.xcconfig"; sourceTree = "<group>"; };
+		E190BCB58A65E0436B841F64 /* Pods-the-liturgists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.debug.xcconfig"; path = "Target Support Files/Pods-the-liturgists/Pods-the-liturgists.debug.xcconfig"; sourceTree = "<group>"; };
+		FE2E9D241F5F139C7669E21E /* libPods-the-liturgists.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-the-liturgists.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -431,7 +431,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38917D653676D3C42E88F38D /* libPods-the-liturgists.a in Frameworks */,
+				BB63897D6D78CDB576EF33BC /* libPods-the-liturgists.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,7 +442,7 @@
 			isa = PBXGroup;
 			children = (
 				2FE7118F22C10158002825A1 /* Pods.xcodeproj */,
-				B3F6B012FCC38431D2983F0C /* libPods-the-liturgists.a */,
+				FE2E9D241F5F139C7669E21E /* libPods-the-liturgists.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -515,16 +515,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		763547AD243312163F00F68E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D0DCF166FB680132E1B50BB6 /* Pods-the-liturgists.debug.xcconfig */,
-				C5FD797860F22AC6A3B71B34 /* Pods-the-liturgists.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		855E701C82C54610B1E3624A /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -541,7 +531,7 @@
 				1A42804E64B7E9E0AB8B6799 /* Frameworks */,
 				855E701C82C54610B1E3624A /* Libraries */,
 				2FAE771122CA430600B55D81 /* Recovered References */,
-				763547AD243312163F00F68E /* Pods */,
+				FDD3E2B093142696E62C1004 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -582,6 +572,16 @@
 			path = Supporting;
 			sourceTree = "<group>";
 		};
+		FDD3E2B093142696E62C1004 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E190BCB58A65E0436B841F64 /* Pods-the-liturgists.debug.xcconfig */,
+				0971F829E760D934DD7366FD /* Pods-the-liturgists.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -589,13 +589,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B56386581DB9693800A0598C /* Build configuration list for PBXNativeTarget "the-liturgists" */;
 			buildPhases = (
-				7EEFF4C14BA46D927B17DF90 /* [CP] Check Pods Manifest.lock */,
+				1E979F22BB862B982B450E57 /* [CP] Check Pods Manifest.lock */,
 				B5722AD01DFB7E3F0084848F /* Prepare Expo */,
 				B563863D1DB9693800A0598C /* Sources */,
 				B563863E1DB9693800A0598C /* Frameworks */,
 				B563863F1DB9693800A0598C /* Resources */,
 				19D233B7204FDD7D0087ED51 /* Bundle Expo Assets */,
-				6E5504D607C59EFE901EEEF7 /* [CP] Copy Pods Resources */,
+				F46F6B69CFE2010C8157AA43 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1068,33 +1068,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -eo pipefail\n\nif [ \"$CONFIGURATION\" == \"Debug\" ]; then\n  echo \"Skipping asset bundling in debug mode.\"\n  exit 0\nfi\n\npushd \"${SRCROOT}/..\"\nexport PATH=\"$(if [ -f ~/.expo/PATH ]; then echo $PATH:$(cat ~/.expo/PATH); else echo $PATH; fi)\"\ndest=\"$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\nexpo bundle-assets --platform ios --dest \"$dest\"\npopd\n";
 		};
-		6E5504D607C59EFE901EEEF7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-the-liturgists/Pods-the-liturgists-resources.sh",
-				"${PODS_ROOT}/Amplitude-iOS/Amplitude/api.amplitude.com.der",
-				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoCaLimitedRsaCertificationAuthority.der",
-				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoRsaCA.der",
-				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoRsaDomainValidationCA.der",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/api.amplitude.com.der",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoCaLimitedRsaCertificationAuthority.der",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaCA.der",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaDomainValidationCA.der",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-the-liturgists/Pods-the-liturgists-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7EEFF4C14BA46D927B17DF90 /* [CP] Check Pods Manifest.lock */ = {
+		1E979F22BB862B982B450E57 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1129,6 +1103,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "set -eo pipefail\n\nexport PATH=\"$(if [ -f ~/.expo/PATH ]; then echo $PATH:$(cat ~/.expo/PATH); else echo $PATH; fi)\"\nexpo prepare-detached-build --platform ios \"${SRCROOT}/..\"\n";
+		};
+		F46F6B69CFE2010C8157AA43 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-the-liturgists/Pods-the-liturgists-resources.sh",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/api.amplitude.com.der",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoCaLimitedRsaCertificationAuthority.der",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoRsaCA.der",
+				"${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoRsaDomainValidationCA.der",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/api.amplitude.com.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoCaLimitedRsaCertificationAuthority.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaCA.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaDomainValidationCA.der",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-the-liturgists/Pods-the-liturgists-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1255,7 +1255,7 @@
 		};
 		B56386591DB9693800A0598C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0DCF166FB680132E1B50BB6 /* Pods-the-liturgists.debug.xcconfig */;
+			baseConfigurationReference = E190BCB58A65E0436B841F64 /* Pods-the-liturgists.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
@@ -1365,7 +1365,7 @@
 		};
 		B563865A1DB9693800A0598C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C5FD797860F22AC6A3B71B34 /* Pods-the-liturgists.release.xcconfig */;
+			baseConfigurationReference = 0971F829E760D934DD7366FD /* Pods-the-liturgists.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
