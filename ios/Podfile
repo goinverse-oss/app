@@ -30,6 +30,11 @@ target 'the-liturgists' do
   pod 'Firebase/Core', '~> 6.13.0'
   pod 'Firebase/Messaging', '~> 6.13.0'
 
+  # we don't use this, but RNFirebase won't build without it.
+  # anything newer than this version crashes on startup, lacking
+  # a valid application ID.
+  pod 'Google-Mobile-Ads-SDK', '~> 7.41.0'
+
   use_native_modules!
 
   post_install do |installer|
