@@ -72,14 +72,10 @@ const styles = StyleSheet.create({
   },
 });
 
-function formatPledge(pledge) {
-  const pledgeAmount = Math.floor(pledge.amount_cents / 100);
-  return `$${pledgeAmount}`;
-}
-
 const newPatronText = `
-By supporting The Liturgists via Patreon, you
-enable us to create even more content.
+Log in and connect your account
+to access meditations, liturgies, and
+other bonus content.
 `.trim();
 
 function patronRewards(canAccessMeditations) {
@@ -94,12 +90,6 @@ function patronRewards(canAccessMeditations) {
   `.trim();
 }
 
-const newPatronPitch = `
-Pledge $5 per month and receive access to:
-
-${patronRewards(true)}
-`.trim();
-
 const currentPatreonText = `
 Thank you for supporting The Liturgists via
 Patreon! You enable us to create even more
@@ -107,30 +97,18 @@ great content.
 `.trim();
 
 
-const patronUpsell = newPatronPitch
-  .replace('Pledge', 'Increase your pledge to')
-  .replace('month', 'month\n')
-  .replace('- Bonus podcast\n', '');
-
-
 const PatreonStatus = ({
   isPatron,
   patronFirstName,
-  pledge,
   canAccessMeditations,
 }) => (
   <View style={styles.status}>
     <Text style={styles.heading}>
-      {isPatron ? `Hello ${patronFirstName}!` : 'Become a Patron'}
+      {isPatron ? `Hello ${patronFirstName}!` : 'Connect Patreon'}
     </Text>
     <Text style={styles.text}>
       {isPatron ? currentPatreonText : newPatronText}
     </Text>
-    { pledge && (
-      <Text style={[styles.text, styles.buffer]}>
-        {`Pledge Level: ${pledge.reward.title} (${formatPledge(pledge)})`}
-      </Text>
-    )}
     {
       isPatron ? (
         <React.Fragment>
@@ -141,18 +119,7 @@ const PatreonStatus = ({
             {patronRewards(canAccessMeditations)}
           </Text>
         </React.Fragment>
-      ) : (
-        <Text style={styles.text}>
-          {newPatronPitch}
-        </Text>
-      )
-    }
-    {
-      (!isPatron || canAccessMeditations) || (
-        <Text style={[styles.text, styles.buffer]}>
-          {patronUpsell}
-        </Text>
-      )
+      ) : null
     }
   </View>
 );
@@ -160,14 +127,7 @@ const PatreonStatus = ({
 PatreonStatus.propTypes = {
   isPatron: PropTypes.bool.isRequired,
   patronFirstName: PropTypes.string.isRequired,
-  pledge: PropTypes.shape({
-    amount_cents: PropTypes.number.isRequired,
-  }),
   canAccessMeditations: PropTypes.bool.isRequired,
-};
-
-PatreonStatus.defaultProps = {
-  pledge: null,
 };
 
 const patreonStyles = {
@@ -325,7 +285,6 @@ function mapStateToProps(state) {
     isConnected: selectors.isConnected(state),
     isPatron: selectors.isPatron(state),
     patronFirstName: selectors.firstName(state),
-    pledge: selectors.getPledge(state),
     canAccessPatronPodcasts: selectors.canAccessPatronPodcasts(state),
     canAccessMeditations: selectors.canAccessMeditations(state),
     loading: selectors.loading(state),
