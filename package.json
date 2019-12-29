@@ -28,6 +28,7 @@
     "@expo/vector-icons": "^10.0.0",
     "@javanhuang/react-native-render-html": "^4.1.2",
     "@react-native-community/art": "^1.1.2",
+    "@react-native-community/async-storage": "^1.7.1",
     "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "app-icon": "^0.13.0",
     "axios": "^0.18.0",
