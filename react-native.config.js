@@ -5,11 +5,13 @@ module.exports = {
     'react-native-gesture-handler': {
       platforms: {
         ios: null,
+        android: null,
       },
     },
     'react-native-webview': {
       platforms: {
         ios: null,
+        android: null,
       },
     },
   },
