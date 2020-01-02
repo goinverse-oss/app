@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+# Workaround for https://github.com/expo/expo/issues/2333
+constants_file="android/app/src/main/java/host/exp/exponent/generated/DetachBuildConstants.java"
+[[ -f ${constants_file} ]] || cp "${constants_file}.dummy" "${constants_file}"
+
+npx jetify
