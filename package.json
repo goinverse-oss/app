@@ -8,7 +8,7 @@
     "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
     "flow": "flow",
     "ios": "react-native run-ios",
-    "android": "(npx jetify; cd android; ./gradlew installDebug)",
+    "android": "(cd android; ./gradlew installDebug)",
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
     "generate-icons": "app-icon generate -i ./assets/icon.png",
     "validateci": "./scripts/validate-ci-config",
@@ -20,6 +20,7 @@
     "pretest": "yarn generate-default-config",
     "preci:deploy": "yarn generate-default-config",
     "prestorybook": "rnstl",
+    "preandroid": "./scripts/pre-android-build",
     "postinstall": "rndebugger-open --expo; patch-package; yarn pod",
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')"
   },
