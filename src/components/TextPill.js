@@ -37,7 +37,7 @@ const TextPill = ({
 );
 
 TextPill.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.string,
 
   // eslint-disable-next-line react/no-typos
   style: ViewPropTypes.style,
@@ -49,6 +49,7 @@ TextPill.propTypes = {
 };
 
 TextPill.defaultProps = {
+  children: null,
   style: {},
   textStyle: {},
   onPress: () => {},

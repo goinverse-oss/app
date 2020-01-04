@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ViewPropTypes, StyleSheet } from 'react-native';
-import Slider from 'react-native-slider';
+import Slider from '@brlja/react-native-slider';
 import { connect } from 'react-redux';
 
 import moment from 'moment';

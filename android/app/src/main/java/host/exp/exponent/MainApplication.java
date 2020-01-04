@@ -1,11 +1,14 @@
 package host.exp.exponent;
 
 import com.facebook.react.ReactPackage;
+import com.facebook.react.PackageList;
+import com.facebook.react.shell.MainReactPackage;
 
 import org.unimodules.core.interfaces.Package;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 import expo.loaders.provider.interfaces.AppLoaderPackagesProviderInterface;
 import host.exp.exponent.generated.BasePackageList;
@@ -13,11 +16,8 @@ import okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
-import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
-import com.tanguyantoine.react.MusicControl;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 
 public class MainApplication extends ExpoApplication implements AppLoaderPackagesProviderInterface<ReactPackage> {
 
@@ -26,20 +26,17 @@ public class MainApplication extends ExpoApplication implements AppLoaderPackage
     return BuildConfig.DEBUG;
   }
 
-  // Needed for `react-native link`
   public List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-        // Add your own packages here!
-        // TODO: add native modules!
-
-        // Needed for `react-native link`
-        // new MainReactPackage(),
-            new RNFirebasePackage(),
-            new RNFirebaseMessagingPackage(),
-            new RNFirebaseNotificationsPackage(),
-            new MusicControl(),
-            new AsyncStoragePackage()
-    );
+    ArrayList<ReactPackage> packages = new PackageList(this).getPackages();
+    if (packages.get(0).getClass() == MainReactPackage.class) {
+      // hack to get around strange error:
+      // "Native module TimePickerAndroid tried to override 
+      // com.facebook.react.modules.timepicker.TimePickerDialogModule"
+      packages.remove(0);
+    }
+    packages.add(new RNFirebaseMessagingPackage());
+    packages.add(new RNFirebaseNotificationsPackage());
+    return packages;
   }
 
   public List<Package> getExpoPackages() {
