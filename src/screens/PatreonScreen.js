@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
   },
+  disclaimer: {
+    color: 'white',
+    fontSize: 12,
+    textAlign: 'center',
+  },
   buffer: {
     marginTop: 15,
   },
@@ -77,6 +82,11 @@ const newPatronText = `
 Log in and connect your account
 to access meditations, liturgies, and
 other bonus content.
+`.trim();
+
+const disclaimer = `
+This app does not store, read, or even
+think about your Patreon credentials.
 `.trim();
 
 function patronRewards(canAccessMeditations) {
@@ -260,6 +270,11 @@ const PatreonScreen = props => (
       <PatreonStatus {...props} />
       <PatreonRefreshButton {...props} />
       <PatreonConnectButton {...props} />
+      {props.isPatron || (
+        <Text style={styles.disclaimer}>
+          {disclaimer}
+        </Text>
+      )}
     </ImageBackground>
   </View>
 );
