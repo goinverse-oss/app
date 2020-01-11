@@ -61,12 +61,10 @@ const PatreonAuthScreen = ({ navigation }) => {
     }
     const handleLink = (event) => {
       const { url } = event;
-      console.log('event:', event);
       const validateUrl = `${config.apiBaseUrl}/patreon/validate`;
 
       const queryString = url.replace(/.*\?/, '');
       const params = qs.parse(queryString);
-      console.log('params:', params);
 
       if (csrfToken === params.state) {
         return axios.post(
@@ -93,9 +91,50 @@ const PatreonAuthScreen = ({ navigation }) => {
     return () => { Linking.removeEventListener('url', handleLink); };
   });
 
+  const injectedJS = `
+    (() => {
+      function log(msg) {
+        window.ReactNativeWebView.postMessage(msg);
+      }
+
+      try {
+        let buttons = Array.from(document.querySelectorAll('button'));
+        buttons.forEach(button => {
+          [/Google/, /Facebook/].forEach(rx => {
+            if (rx.test(button.textContent)) {
+              button.remove();
+            }
+          });
+          if (button.textContent === 'Sign up' && button.parentNode) {
+            button.parentNode.remove();
+          }
+        });
+        let paragraphs = Array.from(document.querySelectorAll('p'));
+        paragraphs.forEach(p => {
+          if (p.textContent == 'or' && p.parentNode) {
+            p.parentNode.remove();
+          }
+        });
+        let menuButton = document.querySelector(
+          'div[title="Mobile navigation menu button"]'
+        );
+        if (menuButton && menuButton.parentNode) {
+          menuButton.parentNode.remove();
+        }
+
+        let links = Array.from(document.querySelectorAll('a'));
+        links.forEach(link => { link.onclick = () => false });
+      } catch (e) {
+        log('ERROR: ' + e.message);
+      }
+    })();
+  `;
+
   return csrfToken && (
     <WebView
       source={{ uri: getAuthUrl(csrfToken) }}
+      injectedJavaScript={injectedJS}
+      onMessage={event => console.log(event.nativeEvent.data)}
     />
   );
 };
