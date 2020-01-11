@@ -20,6 +20,7 @@ import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
 import * as ormActions from '../state/ducks/orm/actions';
 import appStyles from '../styles';
+import appPropTypes from '../propTypes';
 
 const styles = StyleSheet.create({
   bg: {
@@ -41,6 +42,11 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 17,
+    textAlign: 'center',
+  },
+  disclaimer: {
+    color: 'white',
+    fontSize: 12,
     textAlign: 'center',
   },
   buffer: {
@@ -76,6 +82,11 @@ const newPatronText = `
 Log in and connect your account
 to access meditations, liturgies, and
 other bonus content.
+`.trim();
+
+const disclaimer = `
+This app does not store, read, or even
+think about your Patreon credentials.
 `.trim();
 
 function patronRewards(canAccessMeditations) {
@@ -185,8 +196,8 @@ PatreonButton.defaultProps = {
 
 const PatreonConnectButton = ({
   isConnected,
-  connect: connectPatreon,
   disconnect,
+  navigation,
 }) => {
   const title = isConnected ? 'DISCONNECT PATREON' : 'CONNECT WITH PATREON';
   const onPress = (
@@ -205,7 +216,7 @@ const PatreonConnectButton = ({
           },
         ],
       )
-      : () => connectPatreon()
+      : () => navigation.navigate('PatreonAuth')
   );
   const opacity = isConnected ? 0.5 : 1.0;
 
@@ -220,8 +231,8 @@ const PatreonConnectButton = ({
 
 PatreonConnectButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
-  connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 const PatreonRefreshButton = ({
@@ -259,6 +270,11 @@ const PatreonScreen = props => (
       <PatreonStatus {...props} />
       <PatreonRefreshButton {...props} />
       <PatreonConnectButton {...props} />
+      {props.isPatron || (
+        <Text style={styles.disclaimer}>
+          {disclaimer}
+        </Text>
+      )}
     </ImageBackground>
   </View>
 );
@@ -266,7 +282,7 @@ const PatreonScreen = props => (
 PatreonScreen.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
-  connect: PropTypes.func.isRequired,
+  navigation: appPropTypes.navigation.isRequired,
 };
 
 PatreonScreen.navigationOptions = ({ navigation }) => ({
