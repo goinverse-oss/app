@@ -254,6 +254,34 @@
 			remoteGlobalIDString = 6942351307BC1F54575D9853307EAE0E;
 			remoteInfo = GoogleDataTransportCCTSupport;
 		};
+		4C8B1CD623CA7FE100C8CD68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B957FA50938DC942809EC58CB737302;
+			remoteInfo = "react-native-music-control";
+		};
+		4C8B1CD823CA7FE100C8CD68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 51B50F20C76CF72E2BEF8D4764235306;
+			remoteInfo = ReactNativeART;
+		};
+		4C8B1CDA23CA7FE100C8CD68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5737DDB4BC95AD399B3206838AB97095;
+			remoteInfo = RNCAsyncStorage;
+		};
+		4C8B1CDC23CA7FE100C8CD68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4EAF7225D8D498E7D232AE1520E6CBD3;
+			remoteInfo = RNFirebase;
+		};
 		4CFD8B7823AC757000D1A665 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2FE7118F22C10158002825A1 /* Pods.xcodeproj */;
@@ -497,6 +525,7 @@
 				4CFD8B8523AC757000D1A665 /* libReact-jsi.a */,
 				4CFD8B8723AC757000D1A665 /* libReact-jsiexecutor.a */,
 				4CFD8B8923AC757000D1A665 /* libReact-jsinspector.a */,
+				4C8B1CD723CA7FE100C8CD68 /* libreact-native-music-control.a */,
 				4CFD8B8D23AC757000D1A665 /* libReact-RCTActionSheet.a */,
 				4CFD8B8F23AC757000D1A665 /* libReact-RCTAnimation.a */,
 				4CFD8B9123AC757000D1A665 /* libReact-RCTBlob.a */,
@@ -507,6 +536,9 @@
 				4CFD8B9B23AC757000D1A665 /* libReact-RCTText.a */,
 				4CFD8B9D23AC757000D1A665 /* libReact-RCTVibration.a */,
 				4CFD8B9F23AC757000D1A665 /* libReactCommon.a */,
+				4C8B1CD923CA7FE100C8CD68 /* libReactNativeART.a */,
+				4C8B1CDB23CA7FE100C8CD68 /* libRNCAsyncStorage.a */,
+				4C8B1CDD23CA7FE100C8CD68 /* libRNFirebase.a */,
 				2FE7127222C10159002825A1 /* libUMCore.a */,
 				4CFD8BA123AC757000D1A665 /* libUMPermissionsInterface.a */,
 				2FE7127422C10159002825A1 /* libUMReactNativeAdapter.a */,
@@ -578,7 +610,6 @@
 				E190BCB58A65E0436B841F64 /* Pods-the-liturgists.debug.xcconfig */,
 				0971F829E760D934DD7366FD /* Pods-the-liturgists.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -618,7 +649,7 @@
 					B56386401DB9693800A0598C = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = RY59SG5RVW;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -882,6 +913,34 @@
 			fileType = archive.ar;
 			path = libGoogleDataTransportCCTSupport.a;
 			remoteRef = 4C0618EF23AF2D65000E1854 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C8B1CD723CA7FE100C8CD68 /* libreact-native-music-control.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-music-control.a";
+			remoteRef = 4C8B1CD623CA7FE100C8CD68 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C8B1CD923CA7FE100C8CD68 /* libReactNativeART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeART.a;
+			remoteRef = 4C8B1CD823CA7FE100C8CD68 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C8B1CDB23CA7FE100C8CD68 /* libRNCAsyncStorage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCAsyncStorage.a;
+			remoteRef = 4C8B1CDA23CA7FE100C8CD68 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4C8B1CDD23CA7FE100C8CD68 /* libRNFirebase.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFirebase.a;
+			remoteRef = 4C8B1CDC23CA7FE100C8CD68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4CFD8B7923AC757000D1A665 /* libEXErrorRecovery.a */ = {
@@ -1259,7 +1318,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
-				CURRENT_PROJECT_VERSION = 4;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1358,6 +1419,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.theliturgists.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.theliturgists.app";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1369,7 +1431,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "the-liturgists/the-liturgists.entitlements";
-				CURRENT_PROJECT_VERSION = 4;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1468,6 +1532,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.theliturgists.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.theliturgists.app";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
