@@ -19,7 +19,6 @@ def run_build
   build_app(
     workspace: "the-liturgists.xcworkspace",
     scheme: "the-liturgists",
-    export_xcargs: "-allowProvisioningUpdates"
   )
 end
 
