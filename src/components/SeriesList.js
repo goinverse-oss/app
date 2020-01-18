@@ -12,9 +12,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     padding: cardMargin,
   },
-  cardSpacing: {
-    margin: cardMargin,
-  },
 });
 
 const SeriesList = ({ children }) => (
