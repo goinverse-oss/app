@@ -32,10 +32,10 @@ android {
     applicationId 'com.theliturgists.app'
     minSdkVersion safeExtGet("minSdkVersion", 21)
     targetSdkVersion safeExtGet("targetSdkVersion", 28)
-    versionCode 1
-    versionName '0.0.1'
+    versionCode 5
+    versionName '1.0'
     ndk {
-      abiFilters 'armeabi-v7a', 'x86'
+      abiFilters 'armeabi-v7a', 'x86', "arm64-v8a", "x86_64"
     }
     multiDexEnabled true
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -53,10 +53,12 @@ android {
       storeFile file('../debug.keystore')
     }
     release {
-      storeFile file(System.getenv("ANDROID_KEYSTORE_PATH") ?: "release-key.jks")
-      storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-      keyAlias System.getenv("ANDROID_KEY_ALIAS")
-      keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+      storeFile file(MYAPP_RELEASE_STORE_FILE)
+      keyAlias MYAPP_RELEASE_KEY_ALIAS
+
+      // Set ANDROID_RELEASE_PASSWORD on the command line with `./gradlew assembleRelease`
+      storePassword System.getenv("ANDROID_RELEASE_PASSWORD")
+      keyPassword System.getenv("ANDROID_RELEASE_PASSWORD")
     }
   }
   buildTypes {
