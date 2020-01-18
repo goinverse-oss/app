@@ -195,10 +195,12 @@ class Sample extends React.Component {
 
   componentWillUnmount() {
     const { sound } = this.state;
-    sound.setOnPlaybackStatusUpdate(null);
-    sound.stopAsync().then(
-      () => sound.unloadAsync(),
-    );
+    if (sound) {
+      sound.setOnPlaybackStatusUpdate(null);
+      sound.stopAsync().then(
+        () => sound.unloadAsync(),
+      );
+    }
   }
 
   togglePlayback() {
