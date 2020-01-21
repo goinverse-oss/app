@@ -10,10 +10,19 @@ import appPropTypes from '../propTypes';
 import { screenRelativeWidth } from './utils';
 
 
-// using the width of the container, adjusted for padding, margin, and border radius
-const imageWidth = screenRelativeWidth(0.46) - 9 - 6 - 4;
+const cardWidthFraction = 0.45;
+const padding = 9;
+const imageMargin = 6;
+const borderRadius = 4;
 
-const cardWidthFraction = 0.46;
+// using the width of the container, adjusted for padding, margin, and border radius
+const imageWidth = (
+  screenRelativeWidth(cardWidthFraction)
+  - padding
+  - imageMargin
+  - borderRadius
+);
+
 const cardSpaceWidthFraction = (1.0 - (cardWidthFraction * 2)) / 3;
 
 // export so that SeriesList can use it too
@@ -21,10 +30,10 @@ export const cardMargin = screenRelativeWidth(cardSpaceWidthFraction / 2);
 
 const styles = StyleSheet.create({
   container: {
-    padding: 9,
-    width: screenRelativeWidth(0.46),
+    padding,
+    width: screenRelativeWidth(cardWidthFraction),
     margin: cardMargin,
-    borderRadius: 4,
+    borderRadius,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
