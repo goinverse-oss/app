@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const newPatronText = `
+const notConnectedText = `
 Log in and connect your account
 to access meditations, liturgies, and
 other bonus content.
@@ -107,18 +107,44 @@ Patreon! You enable us to create even more
 great content.
 `.trim();
 
+const nonPatronText = `
+You are not currently a patron
+of The Liturgists.
+`.trim();
+
+const waitingForDeviceVerificationText = `
+Please check your email to verify your
+device with Patreon.
+`.trim();
+
+function getPatronStatus(
+  isConnected,
+  isPatron,
+  waitingForDeviceVerification,
+) {
+  if (isConnected) {
+    return isPatron ? currentPatreonText : nonPatronText;
+  }
+
+  if (waitingForDeviceVerification) {
+    return waitingForDeviceVerificationText;
+  }
+  return notConnectedText;
+}
 
 const PatreonStatus = ({
+  isConnected,
   isPatron,
+  waitingForDeviceVerification,
   patronFirstName,
   canAccessMeditations,
 }) => (
   <View style={styles.status}>
     <Text style={styles.heading}>
-      {isPatron ? `Hello ${patronFirstName}!` : 'Connect Patreon'}
+      {isConnected ? `Hello ${patronFirstName}!` : 'Connect Patreon'}
     </Text>
     <Text style={styles.text}>
-      {isPatron ? currentPatreonText : newPatronText}
+      {getPatronStatus(isConnected, isPatron, waitingForDeviceVerification)}
     </Text>
     {
       isPatron ? (
@@ -136,7 +162,9 @@ const PatreonStatus = ({
 );
 
 PatreonStatus.propTypes = {
+  isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
+  waitingForDeviceVerification: PropTypes.bool.isRequired,
   patronFirstName: PropTypes.string.isRequired,
   canAccessMeditations: PropTypes.bool.isRequired,
 };
@@ -282,6 +310,7 @@ const PatreonScreen = props => (
 PatreonScreen.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
+  waitingForDeviceVerification: PropTypes.bool.isRequired,
   navigation: appPropTypes.navigation.isRequired,
 };
 
@@ -300,6 +329,7 @@ function mapStateToProps(state) {
   return {
     isConnected: selectors.isConnected(state),
     isPatron: selectors.isPatron(state),
+    waitingForDeviceVerification: selectors.waitingForDeviceVerification(state),
     patronFirstName: selectors.firstName(state),
     canAccessPatronPodcasts: selectors.canAccessPatronPodcasts(state),
     canAccessMeditations: selectors.canAccessMeditations(state),

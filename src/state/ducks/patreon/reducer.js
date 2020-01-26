@@ -7,6 +7,7 @@ import {
   GET_DETAILS,
   STORE_DETAILS,
   ERROR,
+  SET_WAITING_FOR_DEVICE_VERIFICATION,
 } from './types';
 
 /* patreon reducer state shape:
@@ -25,6 +26,7 @@ import {
 const defaultState = {
   token: null,
   loading: false,
+  waitingForDeviceVerification: false,
 };
 
 export default handleActions({
@@ -32,6 +34,7 @@ export default handleActions({
     ...state,
     error: null,
     loading: true,
+    waitingForDeviceVerification: false,
   }),
   [DISCONNECT]: () => ({
     token: null,
@@ -54,5 +57,10 @@ export default handleActions({
     ...state,
     error: action.payload,
     loading: false,
+  }),
+  [SET_WAITING_FOR_DEVICE_VERIFICATION]: state => ({
+    ...state,
+    loading: false,
+    waitingForDeviceVerification: true,
   }),
 }, defaultState);

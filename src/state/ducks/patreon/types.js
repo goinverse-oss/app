@@ -8,3 +8,6 @@ export const REFRESH_ACCESS_TOKEN = scopedType('patreon/REFRESH_ACCESS_TOKEN');
 export const STORE_TOKEN = scopedType('patreon/STORE_TOKEN');
 export const STORE_DETAILS = scopedType('patreon/STORE_DETAILS');
 export const ERROR = scopedType('patreon/ERROR');
+export const SET_WAITING_FOR_DEVICE_VERIFICATION = scopedType(
+  'patreon/SET_WAITING_FOR_DEVICE_VERIFICATION',
+);
