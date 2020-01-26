@@ -47,3 +47,11 @@ export const storeDetails = createAction(types.STORE_DETAILS);
  * @param payload {Error}: the error object from the API request
  */
 export const storeError = createAction(types.ERROR);
+
+/**
+ * Set a flag indicating that we are waiting for the user to complete
+ * Patreon device verification (check their email) and connect again.
+ */
+export const setWaitingForDeviceVerification = createAction(
+  types.SET_WAITING_FOR_DEVICE_VERIFICATION,
+);

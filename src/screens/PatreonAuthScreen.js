@@ -11,10 +11,12 @@ import { WebView } from 'react-native-webview';
 import config from '../../config.json';
 
 import appPropTypes from '../propTypes';
-import { storeToken } from '../state/ducks/patreon/actions';
+import {
+  storeToken,
+  setWaitingForDeviceVerification,
+} from '../state/ducks/patreon/actions';
 
 /*
- * TODO:
  * - WebView that opens the Patreon auth URL
  * - Injected javascript to remove the "sign up" links
  * - On successful auth, store the token via dispatch
@@ -94,8 +96,35 @@ const PatreonAuthScreen = ({ navigation }) => {
   const injectedJS = `
     (() => {
       function log(msg) {
-        window.ReactNativeWebView.postMessage(msg);
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'log',
+            data: msg,
+          })
+        );
       }
+
+      function postNav() {
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'nav',
+            data: window.location.href,
+          })
+        );
+      }
+
+      // workaround for onNavigationStateChange bugs:
+      // https://github.com/react-native-community/react-native-webview/issues/24#issuecomment-540130141
+      function wrapNav(fn) {
+        return function wrapper() {
+          let res = fn.apply(this, arguments);
+          postNav();
+          return res;
+        };
+      }
+      history.pushState = wrapNav(history.pushState);
+      history.replaceState = wrapNav(history.replaceState);
+      window.addEventListener('popstate', () => postNav());
 
       try {
         let buttons = Array.from(document.querySelectorAll('button'));
@@ -130,11 +159,36 @@ const PatreonAuthScreen = ({ navigation }) => {
     })();
   `;
 
+  /* Expected URLs during auth flow:
+   * - https://auth.expo.io/@theliturgists/app?...
+   * - https://www.patreon.com/oauth2/authorize?...
+   * - https://www.patreon.com/login?...
+   *
+   * When Patreon requires device verification, it redirects to this URL:
+   *   https://www.patreon.com/auth/verify-device
+   */
+
   return csrfToken && (
     <WebView
+      incognito
       source={{ uri: getAuthUrl(csrfToken) }}
       injectedJavaScript={injectedJS}
-      onMessage={event => console.log(event.nativeEvent.data)}
+      onMessage={(event) => {
+        const { type, data } = JSON.parse(event.nativeEvent.data);
+        if (type === 'log') {
+          console.log(`[webview] ${data}`);
+        } else if (type === 'nav') {
+          if (data === 'https://www.patreon.com/auth/verify-device') {
+            // navigate back if we're stuck
+            setTimeout(() => {
+              dispatch(setWaitingForDeviceVerification());
+              navigation.goBack();
+            }, 3000);
+          }
+        } else {
+          throw new Error(`Unknown event type '${type}'`);
+        }
+      }}
     />
   );
 };
