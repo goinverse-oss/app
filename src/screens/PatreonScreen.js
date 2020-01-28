@@ -44,6 +44,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
   },
+  verification: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 17,
+    textAlign: 'center',
+    marginTop: 10,
+  },
   disclaimer: {
     color: 'white',
     fontSize: 12,
@@ -78,7 +85,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const newPatronText = `
+const notConnectedText = `
 Log in and connect your account
 to access meditations, liturgies, and
 other bonus content.
@@ -107,19 +114,48 @@ Patreon! You enable us to create even more
 great content.
 `.trim();
 
+const nonPatronText = `
+You are not currently a patron
+of The Liturgists.
+`.trim();
+
+const waitingForDeviceVerificationText = `
+Please check your email to verify your
+device with Patreon.
+`.trim();
+
+function getPatronStatus(
+  isConnected,
+  isPatron,
+) {
+  if (isConnected) {
+    return isPatron ? currentPatreonText : nonPatronText;
+  }
+
+  return notConnectedText;
+}
 
 const PatreonStatus = ({
+  isConnected,
   isPatron,
+  waitingForDeviceVerification,
   patronFirstName,
   canAccessMeditations,
 }) => (
   <View style={styles.status}>
     <Text style={styles.heading}>
-      {isPatron ? `Hello ${patronFirstName}!` : 'Connect Patreon'}
+      {isConnected ? `Hello ${patronFirstName}!` : 'Connect Patreon'}
     </Text>
     <Text style={styles.text}>
-      {isPatron ? currentPatreonText : newPatronText}
+      {getPatronStatus(isConnected, isPatron)}
     </Text>
+    {
+      waitingForDeviceVerification ? (
+        <Text style={styles.verification}>
+          {waitingForDeviceVerificationText}
+        </Text>
+      ) : null
+    }
     {
       isPatron ? (
         <React.Fragment>
@@ -136,7 +172,9 @@ const PatreonStatus = ({
 );
 
 PatreonStatus.propTypes = {
+  isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
+  waitingForDeviceVerification: PropTypes.bool.isRequired,
   patronFirstName: PropTypes.string.isRequired,
   canAccessMeditations: PropTypes.bool.isRequired,
 };
@@ -196,6 +234,7 @@ PatreonButton.defaultProps = {
 
 const PatreonConnectButton = ({
   isConnected,
+  connect: connectPatreon,
   disconnect,
   navigation,
 }) => {
@@ -216,7 +255,10 @@ const PatreonConnectButton = ({
           },
         ],
       )
-      : () => navigation.navigate('PatreonAuth')
+      : () => {
+        connectPatreon();
+        navigation.navigate('PatreonAuth');
+      }
   );
   const opacity = isConnected ? 0.5 : 1.0;
 
@@ -231,6 +273,7 @@ const PatreonConnectButton = ({
 
 PatreonConnectButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
+  connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
   navigation: appPropTypes.navigation.isRequired,
 };
@@ -282,6 +325,7 @@ const PatreonScreen = props => (
 PatreonScreen.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   isPatron: PropTypes.bool.isRequired,
+  waitingForDeviceVerification: PropTypes.bool.isRequired,
   navigation: appPropTypes.navigation.isRequired,
 };
 
@@ -300,6 +344,7 @@ function mapStateToProps(state) {
   return {
     isConnected: selectors.isConnected(state),
     isPatron: selectors.isPatron(state),
+    waitingForDeviceVerification: selectors.waitingForDeviceVerification(state),
     patronFirstName: selectors.firstName(state),
     canAccessPatronPodcasts: selectors.canAccessPatronPodcasts(state),
     canAccessMeditations: selectors.canAccessMeditations(state),

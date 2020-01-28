@@ -64,3 +64,7 @@ export function loading(state) {
 export function error(state) {
   return state.patreon.error;
 }
+
+export function waitingForDeviceVerification(state) {
+  return !!state.patreon.waitingForDeviceVerification;
+}
