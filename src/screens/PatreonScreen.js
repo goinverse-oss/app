@@ -234,6 +234,7 @@ PatreonButton.defaultProps = {
 
 const PatreonConnectButton = ({
   isConnected,
+  connect: connectPatreon,
   disconnect,
   navigation,
 }) => {
@@ -254,7 +255,10 @@ const PatreonConnectButton = ({
           },
         ],
       )
-      : () => navigation.navigate('PatreonAuth')
+      : () => {
+        connectPatreon();
+        navigation.navigate('PatreonAuth');
+      }
   );
   const opacity = isConnected ? 0.5 : 1.0;
 
@@ -269,6 +273,7 @@ const PatreonConnectButton = ({
 
 PatreonConnectButton.propTypes = {
   isConnected: PropTypes.bool.isRequired,
+  connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
   navigation: appPropTypes.navigation.isRequired,
 };
