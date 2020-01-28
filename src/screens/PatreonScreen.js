@@ -44,6 +44,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
   },
+  verification: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 17,
+    textAlign: 'center',
+    marginTop: 10,
+  },
   disclaimer: {
     color: 'white',
     fontSize: 12,
@@ -120,15 +127,11 @@ device with Patreon.
 function getPatronStatus(
   isConnected,
   isPatron,
-  waitingForDeviceVerification,
 ) {
   if (isConnected) {
     return isPatron ? currentPatreonText : nonPatronText;
   }
 
-  if (waitingForDeviceVerification) {
-    return waitingForDeviceVerificationText;
-  }
   return notConnectedText;
 }
 
@@ -144,8 +147,15 @@ const PatreonStatus = ({
       {isConnected ? `Hello ${patronFirstName}!` : 'Connect Patreon'}
     </Text>
     <Text style={styles.text}>
-      {getPatronStatus(isConnected, isPatron, waitingForDeviceVerification)}
+      {getPatronStatus(isConnected, isPatron)}
     </Text>
+    {
+      waitingForDeviceVerification ? (
+        <Text style={styles.verification}>
+          {waitingForDeviceVerificationText}
+        </Text>
+      ) : null
+    }
     {
       isPatron ? (
         <React.Fragment>
