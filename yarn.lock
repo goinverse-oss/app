@@ -2180,6 +2180,11 @@
     react-split-pane "^0.1.77"
     react-treebeard "^2.1.0"
 
+"@theliturgists/jsonapi-datastore@^0.4.0-beta-2":
+  version "0.4.0-beta-3"
+  resolved "https://registry.yarnpkg.com/@theliturgists/jsonapi-datastore/-/jsonapi-datastore-0.4.0-beta-3.tgz#9c884b5d86a00d02bb648a24f557df1cad36a7d0"
+  integrity sha512-E/JQ7W/sYsV+XDWYlXxAizxUedILYOMdfdEY/fyMsC1rvs1TjOuDoxemkQNjbg+2tq/gFx7fihvJZ9MU6Ca7mw==
+
 "@theliturgists/redux-orm-proptypes@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@theliturgists/redux-orm-proptypes/-/redux-orm-proptypes-0.1.1.tgz#db645baacc2c190f12a806e8bddc8e5871ac48d8"
@@ -8633,11 +8638,6 @@ json@^9.0.6:
   version "9.0.6"
   resolved "https://registry.yarnpkg.com/json/-/json-9.0.6.tgz#7972c2a5a48a42678db2730c7c2c4ee6e4e24585"
   integrity sha1-eXLCpaSKQmeNsnMMfCxO5uTiRYU=
-
-jsonapi-datastore@^0.4.0-beta:
-  version "0.4.0-beta"
-  resolved "https://registry.yarnpkg.com/jsonapi-datastore/-/jsonapi-datastore-0.4.0-beta.tgz#b499fce924d45e2bc3c6178681520063e2361f10"
-  integrity sha1-tJn86STUXivDxheGgVIAY+I2HxA=
 
 jsonfile@^2.1.0:
   version "2.4.0"
