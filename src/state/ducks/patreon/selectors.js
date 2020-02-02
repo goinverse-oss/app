@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { JsonApiDataStore } from 'jsonapi-datastore';
+import { JsonApiDataStore } from '@theliturgists/jsonapi-datastore';
 
 import { CAMPAIGN_URL } from './constants';
 import * as authSelectors from '../auth/selectors';
