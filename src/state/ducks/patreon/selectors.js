@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { JsonApiDataStore } from '@theliturgists/jsonapi-datastore';
 
 import { CAMPAIGN_URL, NEW_TIER_REWARD_IDS, OLD_TIER_REWARD_IDS } from './constants';
 import * as authSelectors from '../auth/selectors';
@@ -9,15 +8,11 @@ export function isConnected(state) {
 }
 
 export function getPledge(state) {
-  if (!state.patreon.details) {
+  if (!state.patreon.user) {
     return null;
   }
 
-  const data = new JsonApiDataStore();
-  data.sync(state.patreon.details);
-
-  const userId = state.patreon.details.data.id;
-  const user = data.find('user', userId);
+  const user = state.patreon.user;
   const pledges = user.pledges.filter(
     p => p.reward.campaign.url === CAMPAIGN_URL,
   );
@@ -72,17 +67,17 @@ export function canAccessMeditations(state) {
 export function imageUrl(state) {
   return _.get(
     state.patreon,
-    'details.data.attributes.image_url',
+    'rawPayload.data.attributes.image_url',
     'https://loremflickr.com/81/81?random',
   );
 }
 
 export function firstName(state) {
-  return _.get(state.patreon, 'details.data.attributes.first_name', '');
+  return _.get(state.patreon, 'rawPayload.data.attributes.first_name', '');
 }
 
 export function fullName(state) {
-  return _.get(state.patreon, 'details.data.attributes.full_name', 'Patreon');
+  return _.get(state.patreon, 'rawPayload.data.attributes.full_name', 'Patreon');
 }
 
 export function loading(state) {
