@@ -4,6 +4,7 @@ const reactotron = {
   use: () => reactotron,
   connect: () => reactotron,
   createEnhancer: () => noop => noop,
+  networking: () => reactotron,
 };
 
 module.exports = reactotron;
