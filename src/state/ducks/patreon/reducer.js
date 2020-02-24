@@ -1,4 +1,3 @@
-import { JsonApiDataStore } from '@theliturgists/jsonapi-datastore';
 import { handleActions } from '../../utils/reduxActions';
 
 import {
@@ -27,7 +26,6 @@ import {
 const defaultState = {
   token: null,
   loading: false,
-  user: null,
   waitingForDeviceVerification: false,
 };
 
@@ -50,24 +48,11 @@ export default handleActions({
     ...state,
     loading: true,
   }),
-  [STORE_DETAILS]: (state, action) => {
-    let user = null;
-    const details = new JsonApiDataStore();
-    details.sync(action.payload);
-
-    const userId = action.payload?.data?.id;
-    const userModel = userId ? details.find('user', userId) : null;
-    if (userModel) {
-      user = userModel.serialize();
-    }
-
-    return {
-      ...state,
-      user,
-      rawPayload: action.payload,
-      loading: false,
-    };
-  },
+  [STORE_DETAILS]: (state, action) => ({
+    ...state,
+    details: action.payload,
+    loading: false,
+  }),
   [ERROR]: (state, action) => ({
     ...state,
     error: action.payload,
