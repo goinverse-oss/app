@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { JsonApiDataStore } from '@theliturgists/jsonapi-datastore';
 
-import { CAMPAIGN_URL } from './constants';
+import { CAMPAIGN_URL, NEW_TIER_REWARD_IDS, OLD_TIER_REWARD_IDS } from './constants';
 import * as authSelectors from '../auth/selectors';
 
 export function isConnected(state) {
@@ -25,20 +25,48 @@ export function getPledge(state) {
 }
 
 export function isPatron(state) {
-  return getPledge(state) !== null;
+  const pledge = getPledge(state);
+  return pledge !== null && pledge?.reward?.id !== OLD_TIER_REWARD_IDS.NON_MEMBER;
+}
+
+export function isOldTierPledge(pledge) {
+  return pledge?.reward?.id === OLD_TIER_REWARD_IDS.MEMBER;
+}
+
+export function isNewTierPledge(pledge) {
+  const rewardId = pledge?.reward?.id;
+  return rewardId && Object.values(NEW_TIER_REWARD_IDS).find(newTierId => newTierId === rewardId);
 }
 
 export function canAccessPatronPodcasts(state) {
-  return isPatron(state);
+  const pledge = getPledge(state);
+  if (isOldTierPledge(pledge)) {
+    const minOldPatronPodcastsPledge = 100;
+    return pledge.amount_cents >= minOldPatronPodcastsPledge;
+  }
+
+  if (isNewTierPledge(pledge)) {
+    const minNewPatronPodcastsPledge = 300;
+    return pledge.amount_cents >= minNewPatronPodcastsPledge;
+  }
+
+  return false;
 }
 
 export function canAccessMeditations(state) {
   const pledge = getPledge(state);
-  if (!pledge) {
-    return false;
+
+  if (isOldTierPledge(pledge)) {
+    const minOldMeditationsPledge = 500;
+    return pledge.amount_cents >= minOldMeditationsPledge;
   }
-  const minMeditationsPledge = 500;
-  return pledge.amount_cents >= minMeditationsPledge;
+
+  if (isNewTierPledge(pledge)) {
+    const minNewMeditationsPledge = 1000;
+    return pledge.amount_cents >= minNewMeditationsPledge;
+  }
+
+  return false;
 }
 
 export function imageUrl(state) {
