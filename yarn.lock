@@ -1300,6 +1300,14 @@
     "@babel/helper-create-regexp-features-plugin" "^7.7.4"
     "@babel/helper-plugin-utils" "^7.0.0"
 
+"@babel/polyfill@^7.8.3":
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.8.3.tgz#2333fc2144a542a7c07da39502ceeeb3abe4debd"
+  integrity sha512-0QEgn2zkCzqGIkSWWAEmvxD7e00Nm9asTtQvi7HdlYvMhjy/J38V/1Y9ode0zEJeIuxAI0uftiAzqc7nVeWUGg==
+  dependencies:
+    core-js "^2.6.5"
+    regenerator-runtime "^0.13.2"
+
 "@babel/preset-env@^7.3.1":
   version "7.4.5"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.4.5.tgz#2fad7f62983d5af563b5f3139242755884998a58"
@@ -2180,10 +2188,18 @@
     react-split-pane "^0.1.77"
     react-treebeard "^2.1.0"
 
-"@theliturgists/jsonapi-datastore@^0.4.0-beta-2":
+"@theliturgists/jsonapi-datastore@^0.4.0-beta-3":
   version "0.4.0-beta-3"
   resolved "https://registry.yarnpkg.com/@theliturgists/jsonapi-datastore/-/jsonapi-datastore-0.4.0-beta-3.tgz#9c884b5d86a00d02bb648a24f557df1cad36a7d0"
   integrity sha512-E/JQ7W/sYsV+XDWYlXxAizxUedILYOMdfdEY/fyMsC1rvs1TjOuDoxemkQNjbg+2tq/gFx7fihvJZ9MU6Ca7mw==
+
+"@theliturgists/patreon-pledge@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@theliturgists/patreon-pledge/-/patreon-pledge-0.1.0.tgz#217eb0c8442e238e2717115e55deeb5d8d2c016b"
+  integrity sha512-YIaU91YfF4sneY8HtI8gH/sQA/zBLH+j0B/OydyhqOS6rTqJQJLpUrxFO+GBvIqbRFcsSUseut+gdOYi5qUr1g==
+  dependencies:
+    "@babel/polyfill" "^7.8.3"
+    "@theliturgists/jsonapi-datastore" "^0.4.0-beta-3"
 
 "@theliturgists/redux-orm-proptypes@^0.1.1":
   version "0.1.1"
@@ -4917,6 +4933,11 @@ core-js@^2.2.2, core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.7:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
   integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
+
+core-js@^2.6.5:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
+  integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
