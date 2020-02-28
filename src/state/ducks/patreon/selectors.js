@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { JsonApiDataStore } from '@theliturgists/jsonapi-datastore';
 
-import { CAMPAIGN_URL, NEW_TIER_REWARD_IDS, OLD_TIER_REWARD_IDS } from './constants';
+import Pledge from '@theliturgists/patreon-pledge';
+
 import * as authSelectors from '../auth/selectors';
 
 export function isConnected(state) {
@@ -9,64 +9,22 @@ export function isConnected(state) {
 }
 
 export function getPledge(state) {
-  if (!state.patreon.details) {
-    return null;
-  }
-
-  const data = new JsonApiDataStore();
-  data.sync(state.patreon.details);
-
-  const userId = state.patreon.details.data.id;
-  const user = data.find('user', userId);
-  const pledges = user.pledges.filter(
-    p => p.reward.campaign.url === CAMPAIGN_URL,
-  );
-  return pledges.length > 0 ? pledges[0] : null;
+  return new Pledge(state?.patreon?.details);
 }
 
 export function isPatron(state) {
   const pledge = getPledge(state);
-  return pledge !== null && pledge?.reward?.id !== OLD_TIER_REWARD_IDS.NON_MEMBER;
-}
-
-export function isOldTierPledge(pledge) {
-  return pledge?.reward?.id === OLD_TIER_REWARD_IDS.MEMBER;
-}
-
-export function isNewTierPledge(pledge) {
-  const rewardId = pledge?.reward?.id;
-  return rewardId && Object.values(NEW_TIER_REWARD_IDS).find(newTierId => newTierId === rewardId);
+  return pledge.isPatron();
 }
 
 export function canAccessPatronPodcasts(state) {
   const pledge = getPledge(state);
-  if (isOldTierPledge(pledge)) {
-    const minOldPatronPodcastsPledge = 100;
-    return pledge.amount_cents >= minOldPatronPodcastsPledge;
-  }
-
-  if (isNewTierPledge(pledge)) {
-    const minNewPatronPodcastsPledge = 300;
-    return pledge.amount_cents >= minNewPatronPodcastsPledge;
-  }
-
-  return false;
+  return pledge.canAccessPatronPodcasts();
 }
 
 export function canAccessMeditations(state) {
   const pledge = getPledge(state);
-
-  if (isOldTierPledge(pledge)) {
-    const minOldMeditationsPledge = 500;
-    return pledge.amount_cents >= minOldMeditationsPledge;
-  }
-
-  if (isNewTierPledge(pledge)) {
-    const minNewMeditationsPledge = 1000;
-    return pledge.amount_cents >= minNewMeditationsPledge;
-  }
-
-  return false;
+  return pledge.canAccessMeditations();
 }
 
 export function imageUrl(state) {
