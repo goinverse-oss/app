@@ -2194,9 +2194,9 @@
   integrity sha512-E/JQ7W/sYsV+XDWYlXxAizxUedILYOMdfdEY/fyMsC1rvs1TjOuDoxemkQNjbg+2tq/gFx7fihvJZ9MU6Ca7mw==
 
 "@theliturgists/patreon-pledge@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@theliturgists/patreon-pledge/-/patreon-pledge-0.1.0.tgz#217eb0c8442e238e2717115e55deeb5d8d2c016b"
-  integrity sha512-YIaU91YfF4sneY8HtI8gH/sQA/zBLH+j0B/OydyhqOS6rTqJQJLpUrxFO+GBvIqbRFcsSUseut+gdOYi5qUr1g==
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@theliturgists/patreon-pledge/-/patreon-pledge-0.1.1.tgz#00745fc8a7136cbb34be5516129d277c93c0c274"
+  integrity sha512-5U9czyK4/Uq89e9ukMacUUTz7MoiT65ZDJ2w1oWX6vjhqbueT5mkvtC6wzSiueVo6kg/+p+2qS6y23QOi7llsA==
   dependencies:
     "@babel/polyfill" "^7.8.3"
     "@theliturgists/jsonapi-datastore" "^0.4.0-beta-3"
@@ -11961,9 +11961,9 @@ regenerator-runtime@^0.11.0:
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
 regenerator-runtime@^0.13.2:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.2.tgz#32e59c9a6fb9b1a4aff09b4930ca2d4477343447"
-  integrity sha512-S/TQAZJO+D3m9xeN1WTI8dLKBBiRgXBlTJvbWjCThHWZj9EvHK70Ff50/tYj2J/fvBY6JtFVwRuazHN2E7M9BA==
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.3.tgz#7cf6a77d8f5c6f60eb73c5fc1955b2ceb01e6bf5"
+  integrity sha512-naKIZz2GQ8JWh///G7L3X6LaQUAMp2lvb1rvwwsURe/VXwD6VMfr+/1NuNw3ag8v2kY1aQ/go5SNn79O9JU7yw==
 
 regenerator-transform@^0.10.0:
   version "0.10.1"
