@@ -10,6 +10,10 @@ export function formatMinutesString(durationStr, elapsed = moment.duration()) {
 }
 
 export function formatHumanizeFromNow(publishedAt) {
+  const _publishedAt = moment(publishedAt);
+  if (_publishedAt.isBefore(moment().subtract(6, 'days'))) {
+    return _publishedAt.format('MMMM Do, YYYY');
+  }
   return `${moment(publishedAt).fromNow()}`;
 }
 
