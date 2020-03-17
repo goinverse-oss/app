@@ -1,3 +1,4 @@
 {
-    "apiBaseUrl": "https://staging.api.theliturgists.com"
+    "apiBaseUrl": "https://staging.api.theliturgists.com",
+    "notificationScope": "staging"
 }
