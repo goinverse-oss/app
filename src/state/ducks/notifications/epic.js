@@ -19,7 +19,7 @@ const patronMeditationsTopicName = 'new-patron-meditation';
 function subscribe(messaging, topic) {
   const scope = config.notificationScope;
   const scopedTopic = `${topic}-${scope}`;
-  console.log(`Subscribing to topic: "${topic}"`);
+  console.log(`Subscribing to topic: "${scopedTopic}"`);
   messaging.subscribeToTopic(scopedTopic);
 
   // Keep subscribing to unscoped topic for a while to allow
@@ -31,7 +31,7 @@ function subscribe(messaging, topic) {
 function unsubscribe(messaging, topic) {
   const scope = config.notificationScope;
   const scopedTopic = `${topic}-${scope}`;
-  console.log(`Unsubscribing from topic: "${topic}"`);
+  console.log(`Unsubscribing from topic: "${scopedTopic}"`);
   messaging.unsubscribeFromTopic(scopedTopic);
 
   // Keep unsubscribing from unscoped topic for a while to allow
