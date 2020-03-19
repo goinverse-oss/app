@@ -22,10 +22,8 @@ function subscribe(messaging, topic) {
   console.log(`Subscribing to topic: "${scopedTopic}"`);
   messaging.subscribeToTopic(scopedTopic);
 
-  // Keep subscribing to unscoped topic for a while to allow
-  // all clients to upgrade. Can switch to unsubscribe later,
-  // and remove entirely before launch.
-  messaging.subscribeToTopic(topic);
+  // Unsubscribe old clients from the unscoped topic after upgrade
+  messaging.unsubscribeFromTopic(topic);
 }
 
 function unsubscribe(messaging, topic) {
