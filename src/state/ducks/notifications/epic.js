@@ -9,10 +9,33 @@ import { UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS } from './types';
 import { STORE_DETAILS, DISCONNECT } from '../patreon/types';
 import { canAccessMeditations, canAccessPatronPodcasts } from '../patreon/selectors';
 
+import config from '../../../../config.json';
+
 const publicTopicName = 'new-public-media';
 const patronPodcastsTopicName = 'new-patron-podcast';
 const patronMeditationsTopicName = 'new-patron-meditation';
-const patronLiturgiesTopicName = 'new-patron-liturgy';
+// const patronLiturgiesTopicName = 'new-patron-liturgy';
+
+function subscribe(messaging, topic) {
+  const scope = config.notificationScope;
+  const scopedTopic = `${topic}-${scope}`;
+  console.log(`Subscribing to topic: "${scopedTopic}"`);
+  messaging.subscribeToTopic(scopedTopic);
+
+  // Unsubscribe old clients from the unscoped topic after upgrade
+  messaging.unsubscribeFromTopic(topic);
+}
+
+function unsubscribe(messaging, topic) {
+  const scope = config.notificationScope;
+  const scopedTopic = `${topic}-${scope}`;
+  console.log(`Unsubscribing from topic: "${scopedTopic}"`);
+  messaging.unsubscribeFromTopic(scopedTopic);
+
+  // Keep unsubscribing from unscoped topic for a while to allow
+  // all clients to upgrade. Can remove before launch.
+  messaging.unsubscribeFromTopic(topic);
+}
 
 const registerEpic = action$ =>
   action$.pipe(
@@ -36,8 +59,7 @@ const registerEpic = action$ =>
                 newToken => subscriber.next(saveToken(newToken)),
               );
 
-              console.log(`Subscribing to topic: "${publicTopicName}"`);
-              messaging.subscribeToTopic(publicTopicName);
+              subscribe(messaging, publicTopicName);
             });
 
           messaging.hasPermission()
@@ -68,25 +90,29 @@ const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
     ofType(UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS),
     switchMap(() => {
       const messaging = firebase.messaging();
+      const subscribeTopics = [];
+      const unsubscribeTopics = [];
+
       if (canAccessPatronPodcasts(state$.value)) {
-        console.log(`Subscribing to topic: "${patronPodcastsTopicName}"`);
-        messaging.subscribeToTopic(patronPodcastsTopicName);
+        subscribeTopics.push(patronPodcastsTopicName);
       } else {
-        console.log(`Unsubscribing from topic: "${patronPodcastsTopicName}"`);
-        messaging.unsubscribeFromTopic(patronPodcastsTopicName);
+        unsubscribeTopics.push(patronPodcastsTopicName);
       }
 
       if (canAccessMeditations(state$.value)) {
-        console.log(`Subscribing to topic: "${patronMeditationsTopicName}"`);
-        messaging.subscribeToTopic(patronMeditationsTopicName);
-        console.log(`Subscribing to topic: "${patronLiturgiesTopicName}"`);
-        messaging.subscribeToTopic(patronLiturgiesTopicName);
+        subscribeTopics.push(patronMeditationsTopicName);
       } else {
-        console.log(`Unsubscribing from topic: "${patronMeditationsTopicName}"`);
-        messaging.unsubscribeFromTopic(patronMeditationsTopicName);
-        console.log(`Unsubscribing from topic: "${patronLiturgiesTopicName}"`);
-        messaging.unsubscribeFromTopic(patronLiturgiesTopicName);
+        unsubscribeTopics.push(patronMeditationsTopicName);
       }
+
+
+      subscribeTopics.forEach((topic) => {
+        subscribe(messaging, topic);
+      });
+
+      unsubscribeTopics.forEach((topic) => {
+        unsubscribe(messaging, topic);
+      });
 
       return Observable.never();
     }),

@@ -18,6 +18,7 @@ fi
 api_url="https://staging.api.theliturgists.com"
 json -I -f config.json \
   -e "this.apiBaseUrl='${api_url}'" \
+  -e "this.notificationScope='staging'" \
   -e "this.sentryPublicDSN='${SENTRY_DSN}'"
 
 expo login -u "${EXPO_USERNAME}" -p "${EXPO_PASSWORD}"
