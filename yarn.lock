@@ -2193,10 +2193,10 @@
   resolved "https://registry.yarnpkg.com/@theliturgists/jsonapi-datastore/-/jsonapi-datastore-0.4.0-beta-3.tgz#9c884b5d86a00d02bb648a24f557df1cad36a7d0"
   integrity sha512-E/JQ7W/sYsV+XDWYlXxAizxUedILYOMdfdEY/fyMsC1rvs1TjOuDoxemkQNjbg+2tq/gFx7fihvJZ9MU6Ca7mw==
 
-"@theliturgists/patreon-pledge@^0.1.0":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@theliturgists/patreon-pledge/-/patreon-pledge-0.1.1.tgz#00745fc8a7136cbb34be5516129d277c93c0c274"
-  integrity sha512-5U9czyK4/Uq89e9ukMacUUTz7MoiT65ZDJ2w1oWX6vjhqbueT5mkvtC6wzSiueVo6kg/+p+2qS6y23QOi7llsA==
+"@theliturgists/patreon-pledge@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@theliturgists/patreon-pledge/-/patreon-pledge-0.2.0.tgz#ad7f6354bad342e6318cf582e2c2592ee1a76a4c"
+  integrity sha512-mkj5t7GBG13qmIHuHPuByUbc16gwAJqGpWKODBAJSqnvMtM2SfM/hTDRgyl5CC7Hz7YqvoxyCBihXwLzQARKkA==
   dependencies:
     "@babel/polyfill" "^7.8.3"
     "@theliturgists/jsonapi-datastore" "^0.4.0-beta-3"
