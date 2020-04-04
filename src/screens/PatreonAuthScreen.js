@@ -5,7 +5,7 @@ import qs from 'qs';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
-import { Linking } from 'expo';
+import { Linking } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import config from '../../config.json';
@@ -32,7 +32,7 @@ function generateCsrfToken() {
 }
 
 const redirectPath = 'patreon/resolve';
-const redirectUrl = Linking.makeUrl(redirectPath);
+const redirectUrl = `theliturgists.app://${redirectPath}`;
 
 // Piggyback on AuthSession's implementation to avoid whitelisting
 // multiple redirect URLs with Patreon.
