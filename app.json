@@ -26,9 +26,11 @@
           "audio"
         ]
       },
-      "bundleIdentifier": "com.theliturgists.app",
-      "publishBundlePath": "ios/the-liturgists/Supporting/shell-app.bundle",
-      "publishManifestPath": "ios/the-liturgists/Supporting/shell-app-manifest.json"
+      "bundleIdentifier": "com.theliturgists.app"
+    },
+    "android": {
+      "package": "com.theliturgists.app",
+      "googleServicesFile": "./google-services.json"
     },
     "hooks": {
       "postPublish": [
@@ -40,17 +42,6 @@
           }
         }
       ]
-    },
-    "isDetached": true,
-    "detach": {
-      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.11.0-sdk33.0.0-4b05019b-b5d6-454b-8350-09c2187b9f91.tar.gz",
-      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.11.2-sdk33.0.0-14eac386-52d3-401f-9daa-8f93307457f9.tar.gz"
-    },
-    "android": {
-      "package": "com.theliturgists.app",
-      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
-      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json",
-      "googleServicesFile": "./google-services.json"
     }
   }
 }
