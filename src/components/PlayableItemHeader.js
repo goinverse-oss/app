@@ -98,7 +98,8 @@ const DownloadButton = ({ isDownloaded, downloadProgress, onPress }) => {
   const disabled = (downloadProgress !== null);
   const progressValue = progressFraction(downloadProgress);
   const progress = downloadProgress ? (
-    <Progress.Pie
+    <Progress.Bar
+    // <Progress.Pie
       style={styles.progressIndicator}
       progress={progressValue}
       size={15}

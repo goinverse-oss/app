@@ -6,7 +6,7 @@ import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
 import { AppLoading } from 'expo';
-import firebase from 'react-native-firebase';
+// import firebase from 'react-native-firebase';
 // import { useScreens } from 'react-native-screens';
 
 import MainNavigator from './navigation/MainNavigator';
@@ -62,47 +62,47 @@ function navigateFromNotification(notification) {
 
 class App extends React.Component {
   componentDidMount() {
-    firebase.notifications().getInitialNotification()
-      .then((notificationOpen) => {
-        if (notificationOpen) {
-          // App was opened by a notification
-          const { notification } = notificationOpen;
-          navigationDeferred.promise.then(() => {
-            navigateFromNotification(notification);
-          });
-        }
-      });
+    // firebase.notifications().getInitialNotification()
+    //   .then((notificationOpen) => {
+    //     if (notificationOpen) {
+    //       // App was opened by a notification
+    //       const { notification } = notificationOpen;
+    //       navigationDeferred.promise.then(() => {
+    //         navigateFromNotification(notification);
+    //       });
+    //     }
+    //   });
 
-    this.removeListenerCallbacks = [
-      firebase.notifications().onNotificationDisplayed((notification) => {
-        navigateFromNotification(notification);
-      }),
-      firebase.notifications().onNotificationOpened(({ notification }) => {
-        navigateFromNotification(notification);
-      }),
-    ];
+    // this.removeListenerCallbacks = [
+    //   firebase.notifications().onNotificationDisplayed((notification) => {
+    //     navigateFromNotification(notification);
+    //   }),
+    //   firebase.notifications().onNotificationOpened(({ notification }) => {
+    //     navigateFromNotification(notification);
+    //   }),
+    // ];
 
-    if (Platform.OS === 'ios') {
-      // Clear any badge set by a not-yet-opened notification
-      const notification = new firebase.notifications.Notification();
-      notification.ios.setBadge(0);
-      firebase.notifications().displayNotification(notification);
-    }
+    // if (Platform.OS === 'ios') {
+    //   // Clear any badge set by a not-yet-opened notification
+    //   const notification = new firebase.notifications.Notification();
+    //   notification.ios.setBadge(0);
+    //   firebase.notifications().displayNotification(notification);
+    // }
 
-    if (Platform.OS === 'android') {
-      const channel = new firebase.notifications.Android.Channel(
-        'main',
-        'Main',
-        firebase.notifications.Android.Importance.Max,
-      ).setDescription('The Liturgists App Notifications');
+    // if (Platform.OS === 'android') {
+    //   const channel = new firebase.notifications.Android.Channel(
+    //     'main',
+    //     'Main',
+    //     firebase.notifications.Android.Importance.Max,
+    //   ).setDescription('The Liturgists App Notifications');
 
-      // Create the channel
-      firebase.notifications().android.createChannel(channel);
-    }
+    //   // Create the channel
+    //   firebase.notifications().android.createChannel(channel);
+    // }
   }
 
   componentWillUnmount() {
-    this.removeListenerCallbacks.forEach(removeListener => removeListener());
+    // this.removeListenerCallbacks.forEach(removeListener => removeListener());
   }
 
   render() {
