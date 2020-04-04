@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Sentry from 'sentry-expo';
+import * as SplashScreen from 'expo-splash-screen';
 import { Platform } from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
-import { AppLoading } from 'expo';
 // import firebase from 'react-native-firebase';
 // import { useScreens } from 'react-native-screens';
 
@@ -134,6 +134,16 @@ function mapStateToProps(state) {
 const ReduxApp = connect(mapStateToProps)(App);
 
 const { store, persistor } = configureStore();
+
+const AppLoading = () => {
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync().catch(() => {});
+    return () => {
+      SplashScreen.hideAsync().catch(() => {});
+    };
+  });
+  return null;
+};
 
 /**
  * App entry point. Wraps everything else so that

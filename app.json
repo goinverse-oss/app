@@ -43,5 +43,7 @@
         }
       ]
     }
-  }
+  },
+  "displayName": "The Liturgists",
+  "name": "app"
 }
