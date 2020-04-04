@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { persistReducer, persistStore, createMigrate } from 'redux-persist';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/never';
@@ -23,9 +23,17 @@ const migrations = {
   }),
 };
 
+const noop = async () => {};
+const noopStorage = {
+  getItem: noop,
+  setItem: noop,
+  removeItem: noop,
+};
+
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  // storage: AsyncStorage,
+  storage: noopStorage,
   blacklist: ['orm', 'auth', 'playback'],
   version: 0,
   migrate: createMigrate(migrations),
