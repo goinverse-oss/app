@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import { persistReducer, createMigrate } from 'redux-persist';
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import orm from '../../orm';
 
@@ -36,13 +36,6 @@ const migrations = {
   }),
 };
 
-const noop = async () => {};
-const noopStorage = {
-  getItem: noop,
-  setItem: noop,
-  removeItem: noop,
-};
-
 // Use a separate persisted reducer here so that
 // merges happen at this level, allowing us to add new fields
 // without the empty-table state getting blown away by
@@ -50,8 +43,7 @@ const noopStorage = {
 const reduxOrmReducer = persistReducer(
   {
     key: 'reduxOrm',
-    // storage: AsyncStorage,
-    storage: noopStorage,
+    storage: AsyncStorage,
     version: 0,
     migrate: createMigrate(migrations),
   },
@@ -128,8 +120,7 @@ const reduxOrmReducer = persistReducer(
 export default persistReducer(
   {
     key: 'orm',
-    // storage: AsyncStorage,
-    storage: noopStorage,
+    storage: AsyncStorage,
     blacklist: ['reduxOrm'],
   },
   combineReducers({

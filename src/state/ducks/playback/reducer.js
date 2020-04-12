@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { persistReducer, createTransform } from 'redux-persist';
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { handleActions } from '../../utils/reduxActions';
 
@@ -50,17 +50,9 @@ export const playbackTransforms = [
   ),
 ];
 
-const noop = async () => {};
-const noopStorage = {
-  getItem: noop,
-  setItem: noop,
-  removeItem: noop,
-};
-
 const persistConfig = {
   key: 'playback',
-  // storage: AsyncStorage,
-  storage: noopStorage,
+  storage: AsyncStorage,
   transforms: playbackTransforms,
 };
 
