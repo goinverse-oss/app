@@ -9,8 +9,7 @@ import * as FileSystem from 'expo-file-system';
 import { Observable, of, from } from 'rxjs';
 import { switchMap, mergeMap, takeWhile, map } from 'rxjs/operators';
 import { Audio } from 'expo-av';
-// import MusicControl from 'react-native-music-control';
-MusicControl = {};
+import MusicControl from 'react-native-music-control';
 
 import { SET_PLAYING, PLAY, PAUSE, JUMP, SEEK, SET_STATUS } from './types';
 import {
@@ -42,23 +41,23 @@ Audio.setAudioModeAsync({
   staysActiveInBackground: true,
 });
 
-// _.forEach({
-//   play: true,
-//   pause: true,
-//   stop: false,
-//   nextTrack: false,
-//   previousTrack: false,
-//   volume: true,
-//   remoteVolume: true,
-//   changePlaybackPosition: true, // iOS
-//   seek: true, // Android
-// }, (value, key) => MusicControl.enableControl(key, value));
+_.forEach({
+  play: true,
+  pause: true,
+  stop: false,
+  nextTrack: false,
+  previousTrack: false,
+  volume: true,
+  remoteVolume: true,
+  changePlaybackPosition: true, // iOS
+  seek: true, // Android
+}, (value, key) => MusicControl.enableControl(key, value));
 
-// MusicControl.enableControl('skipForward', true, { interval: 30 });
-// MusicControl.enableControl('skipBackward', true, { interval: 30 });
+MusicControl.enableControl('skipForward', true, { interval: 30 });
+MusicControl.enableControl('skipBackward', true, { interval: 30 });
 
-// MusicControl.enableBackgroundMode(true);
-// MusicControl.handleAudioInterruptions(true);
+MusicControl.enableBackgroundMode(true);
+MusicControl.handleAudioInterruptions(true);
 
 function getPlaybackState(status) {
   const {
@@ -93,8 +92,7 @@ function setBackgroundPlayerControls(item) {
 function getLockScreenStatus(playbackStatus) {
   const { positionMillis, durationMillis, playableDurationMillis } = playbackStatus;
   const lockScreenStatus = {
-    // state: getPlaybackState(playbackStatus),
-    state: {},
+    state: getPlaybackState(playbackStatus),
     elapsedTime: positionMillis ? positionMillis / 1000 : undefined,
     duration: durationMillis ? durationMillis / 1000 : undefined,
     bufferedTime: playableDurationMillis ? playableDurationMillis / 1000 : undefined,
@@ -168,7 +166,7 @@ function startPlayback(state, item, shouldPlay = true) {
       })
       .then(({ sound }) => {
         if (shouldPlay) {
-          // setBackgroundPlayerControls(item);
+          setBackgroundPlayerControls(item);
         }
         subscriber.next(setSound(sound));
       })
@@ -239,10 +237,10 @@ const setStatusEpic = (action$, state$) =>
     switchMap((statusDiff) => {
       const state = state$.value;
       const item = selectors.item(state$.value);
-      // syncAudioStatus(state, statusDiff);
+      syncAudioStatus(state, statusDiff);
 
       if (statusDiff.didJustFinish) {
-        // MusicControl.resetNowPlaying();
+        MusicControl.resetNowPlaying();
         return of(
           removeDownload(item),
           clearPlayback(),
@@ -258,7 +256,7 @@ const playEpic = (action$, state$) =>
     mergeMap(() => {
       const state = state$.value;
       const item = selectors.item(state);
-      // setBackgroundPlayerControls(item);
+      setBackgroundPlayerControls(item);
 
       const sound = selectors.getSound(state);
       if (sound) {
@@ -380,5 +378,5 @@ export default combineEpics(
   jumpEpic,
   seekEpic,
   resumePlaybackOnRehydrateEpic,
-  // lockScreenControlsEpic,
+  lockScreenControlsEpic,
 );

@@ -1,4 +1,4 @@
-// import firebase from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
 import { Observable, of } from 'rxjs';
@@ -49,25 +49,25 @@ const registerEpic = action$ =>
 
       return Observable.create(
         (subscriber) => {
-          // const messaging = firebase.messaging();
+          const messaging = firebase.messaging();
 
-          // messaging.getToken()
-          //   .then((token) => {
-          //     subscriber.next(saveToken(token));
-          //     subscriber.next(updatePatronNotificationSubscriptions());
-          //     messaging.onTokenRefresh(
-          //       newToken => subscriber.next(saveToken(newToken)),
-          //     );
+          messaging.getToken()
+            .then((token) => {
+              subscriber.next(saveToken(token));
+              subscriber.next(updatePatronNotificationSubscriptions());
+              messaging.onTokenRefresh(
+                newToken => subscriber.next(saveToken(newToken)),
+              );
 
-          //     subscribe(messaging, publicTopicName);
-          //   });
+              subscribe(messaging, publicTopicName);
+            });
 
-          // messaging.hasPermission()
-          //   .then((enabled) => {
-          //     if (!enabled) {
-          //       messaging.requestPermission();
-          //     }
-          //   });
+          messaging.hasPermission()
+            .then((enabled) => {
+              if (!enabled) {
+                messaging.requestPermission();
+              }
+            });
         },
       );
     }),
@@ -89,30 +89,30 @@ const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
   action$.pipe(
     ofType(UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS),
     switchMap(() => {
-      // const messaging = firebase.messaging();
-      // const subscribeTopics = [];
-      // const unsubscribeTopics = [];
+      const messaging = firebase.messaging();
+      const subscribeTopics = [];
+      const unsubscribeTopics = [];
 
-      // if (canAccessPatronPodcasts(state$.value)) {
-      //   subscribeTopics.push(patronPodcastsTopicName);
-      // } else {
-      //   unsubscribeTopics.push(patronPodcastsTopicName);
-      // }
+      if (canAccessPatronPodcasts(state$.value)) {
+        subscribeTopics.push(patronPodcastsTopicName);
+      } else {
+        unsubscribeTopics.push(patronPodcastsTopicName);
+      }
 
-      // if (canAccessMeditations(state$.value)) {
-      //   subscribeTopics.push(patronMeditationsTopicName);
-      // } else {
-      //   unsubscribeTopics.push(patronMeditationsTopicName);
-      // }
+      if (canAccessMeditations(state$.value)) {
+        subscribeTopics.push(patronMeditationsTopicName);
+      } else {
+        unsubscribeTopics.push(patronMeditationsTopicName);
+      }
 
 
-      // subscribeTopics.forEach((topic) => {
-      //   subscribe(messaging, topic);
-      // });
+      subscribeTopics.forEach((topic) => {
+        subscribe(messaging, topic);
+      });
 
-      // unsubscribeTopics.forEach((topic) => {
-      //   unsubscribe(messaging, topic);
-      // });
+      unsubscribeTopics.forEach((topic) => {
+        unsubscribe(messaging, topic);
+      });
 
       return Observable.never();
     }),
