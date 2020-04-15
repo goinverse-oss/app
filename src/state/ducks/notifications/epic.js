@@ -1,4 +1,4 @@
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 import { ofType, combineEpics } from 'redux-observable';
 import { REHYDRATE } from 'redux-persist';
 import { Observable, of } from 'rxjs';
@@ -16,25 +16,25 @@ const patronPodcastsTopicName = 'new-patron-podcast';
 const patronMeditationsTopicName = 'new-patron-meditation';
 // const patronLiturgiesTopicName = 'new-patron-liturgy';
 
-function subscribe(messaging, topic) {
+function subscribe(topic) {
   const scope = config.notificationScope;
   const scopedTopic = `${topic}-${scope}`;
   console.log(`Subscribing to topic: "${scopedTopic}"`);
-  messaging.subscribeToTopic(scopedTopic);
+  messaging().subscribeToTopic(scopedTopic);
 
   // Unsubscribe old clients from the unscoped topic after upgrade
-  messaging.unsubscribeFromTopic(topic);
+  messaging().unsubscribeFromTopic(topic);
 }
 
-function unsubscribe(messaging, topic) {
+function unsubscribe(topic) {
   const scope = config.notificationScope;
   const scopedTopic = `${topic}-${scope}`;
   console.log(`Unsubscribing from topic: "${scopedTopic}"`);
-  messaging.unsubscribeFromTopic(scopedTopic);
+  messaging().unsubscribeFromTopic(scopedTopic);
 
   // Keep unsubscribing from unscoped topic for a while to allow
   // all clients to upgrade. Can remove before launch.
-  messaging.unsubscribeFromTopic(topic);
+  messaging().unsubscribeFromTopic(topic);
 }
 
 const registerEpic = action$ =>
@@ -49,25 +49,18 @@ const registerEpic = action$ =>
 
       return Observable.create(
         (subscriber) => {
-          const messaging = firebase.messaging();
-
-          messaging.getToken()
+          messaging().registerDeviceForRemoteMessages()
+            .then(() => messaging().getToken())
             .then((token) => {
               subscriber.next(saveToken(token));
               subscriber.next(updatePatronNotificationSubscriptions());
-              messaging.onTokenRefresh(
+              messaging().onTokenRefresh(
                 newToken => subscriber.next(saveToken(newToken)),
               );
 
-              subscribe(messaging, publicTopicName);
-            });
-
-          messaging.hasPermission()
-            .then((enabled) => {
-              if (!enabled) {
-                messaging.requestPermission();
-              }
-            });
+              subscribe(publicTopicName);
+            })
+            .then(() => messaging().requestPermission());
         },
       );
     }),
@@ -89,7 +82,6 @@ const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
   action$.pipe(
     ofType(UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS),
     switchMap(() => {
-      const messaging = firebase.messaging();
       const subscribeTopics = [];
       const unsubscribeTopics = [];
 
@@ -107,11 +99,11 @@ const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
 
 
       subscribeTopics.forEach((topic) => {
-        subscribe(messaging, topic);
+        subscribe(topic);
       });
 
       unsubscribeTopics.forEach((topic) => {
-        unsubscribe(messaging, topic);
+        unsubscribe(topic);
       });
 
       return Observable.never();

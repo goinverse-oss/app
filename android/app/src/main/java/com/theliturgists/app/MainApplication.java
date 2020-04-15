@@ -1,4 +1,4 @@
-package com.app;
+package com.theliturgists.app;
 
 import android.app.Application;
 import android.net.Uri;
@@ -9,7 +9,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.app.generated.BasePackageList;
+import com.theliturgists.app.generated.BasePackageList;
 
 import org.unimodules.adapters.react.ReactAdapterPackage;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;

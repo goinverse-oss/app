@@ -1,4 +1,4 @@
-package com.app;
+package com.theliturgists.app;
 
 import android.os.Bundle;
 
