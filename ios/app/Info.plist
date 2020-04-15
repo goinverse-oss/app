@@ -59,6 +59,12 @@
 	<string>Give The Liturgists periences permission to access your photos</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow The Liturgists to access your reminders</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

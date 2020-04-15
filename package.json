@@ -29,6 +29,8 @@
     "@expo/vector-icons": "^10.0.0",
     "@react-native-community/art": "^1.1.2",
     "@react-native-community/async-storage": "^1.7.1",
+    "@react-native-firebase/app": "^6.4.0",
+    "@react-native-firebase/messaging": "^6.4.0",
     "@theliturgists/patreon-pledge": "^0.2.0",
     "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "app-icon": "^0.13.0",
@@ -63,7 +65,6 @@
     "react-native-app-intro-slider": "^2.0.1",
     "react-native-dropdownalert": "^3.7.0",
     "react-native-elements": "^0.19.0",
-    "react-native-firebase": "~5",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-markdown-renderer": "^3.2.8",
     "react-native-music-control": "^0.10.4",
@@ -134,7 +135,7 @@
       "./testSetup.js"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|unimodules-permissions-interface|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@unimodules|@react-native-community/async-storage))"
+      "node_modules/(?!((jest-)?react-native|unimodules-permissions-interface|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@unimodules|@react-native-community/async-storage|@react-native-firebase))"
     ]
   },
   "comment": "flow is disabled in pre-commit because react-navigation breaks it",

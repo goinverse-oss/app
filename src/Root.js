@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Sentry from 'sentry-expo';
 import * as SplashScreen from 'expo-splash-screen';
-import { Platform } from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createAppContainer } from 'react-navigation';
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 // import { useScreens } from 'react-native-screens';
 
 import MainNavigator from './navigation/MainNavigator';
@@ -18,6 +17,10 @@ import Reactotron from '../reactotron-config';
 import config from '../config.json';
 import WelcomeScreen from './screens/WelcomeScreen';
 import { shouldShowWelcome } from './state/ducks/welcome/selectors';
+
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  console.log('Background message: ', remoteMessage);
+});
 
 class Deferred {
   constructor() {
@@ -62,7 +65,7 @@ function navigateFromNotification(notification) {
 
 class App extends React.Component {
   componentDidMount() {
-    firebase.notifications().getInitialNotification()
+    messaging().getInitialNotification()
       .then((notificationOpen) => {
         if (notificationOpen) {
           // App was opened by a notification
@@ -74,31 +77,10 @@ class App extends React.Component {
       });
 
     this.removeListenerCallbacks = [
-      firebase.notifications().onNotificationDisplayed((notification) => {
-        navigateFromNotification(notification);
-      }),
-      firebase.notifications().onNotificationOpened(({ notification }) => {
+      messaging().onNotificationOpenedApp(({ notification }) => {
         navigateFromNotification(notification);
       }),
     ];
-
-    if (Platform.OS === 'ios') {
-      // Clear any badge set by a not-yet-opened notification
-      const notification = new firebase.notifications.Notification();
-      notification.ios.setBadge(0);
-      firebase.notifications().displayNotification(notification);
-    }
-
-    if (Platform.OS === 'android') {
-      const channel = new firebase.notifications.Android.Channel(
-        'main',
-        'Main',
-        firebase.notifications.Android.Importance.Max,
-      ).setDescription('The Liturgists App Notifications');
-
-      // Create the channel
-      firebase.notifications().android.createChannel(channel);
-    }
   }
 
   componentWillUnmount() {
