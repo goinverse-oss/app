@@ -7,8 +7,10 @@
     "test": "jest",
     "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
     "flow": "flow",
-    "ios": "react-native run-ios",
-    "android": "react-native run-android",
+    "build:ios": "scripts/build.js ios",
+    "build:android": "scripts/build.js android",
+    "dev:ios": "react-native run-ios",
+    "dev:android": "react-native run-android",
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
     "generate-icons": "app-icon generate -i ./assets/icon.png",
     "validateci": "./scripts/validate-ci-config",
@@ -117,6 +119,7 @@
     "json": "^9.0.6",
     "metro-react-native-babel-preset": "~0.56.4",
     "patch-package": "^6.1.2",
+    "plist": "^3.0.1",
     "pluralize": "^7.0.0",
     "postinstall-postinstall": "^2.0.0",
     "pre-commit": "^1.2.2",
@@ -127,7 +130,9 @@
     "reactotron-react-native": "^3",
     "reactotron-redux": "^3",
     "rxjs-marbles": "^5.0.2",
-    "source-map-support": "^0.5.6"
+    "source-map-support": "^0.5.6",
+    "xml2js": "^0.4.23",
+    "yargs": "^15.3.1"
   },
   "jest": {
     "preset": "jest-expo",
