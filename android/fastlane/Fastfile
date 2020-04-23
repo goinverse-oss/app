@@ -15,6 +15,10 @@
 
 default_platform(:android)
 
+def run_build
+  gradle(task: "clean bundleRelease")
+end
+
 platform :android do
   desc "Bump the Android version code (build number)"
   lane :bump_version_code do
@@ -30,15 +34,19 @@ platform :android do
     f.close
   end
 
+  lane :build do
+    run_build
+  end
+
   desc "Submit a new Beta Build to Google Play"
   lane :beta do
-    gradle(task: "clean bundleRelease")
+    run_build
     upload_to_play_store(skip_upload_apk: true, track: 'beta')
   end
 
   desc "Deploy a new version to the Google Play Store"
   lane :deploy do
-    gradle(task: "clean bundleRelease")
+    run_build
     upload_to_play_store(skip_upload_apk: true)
   end
 end

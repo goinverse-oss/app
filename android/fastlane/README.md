@@ -21,6 +21,11 @@ or alternatively using `brew cask install fastlane`
 fastlane android bump_version_code
 ```
 Bump the Android version code (build number)
+### android build
+```
+fastlane android build
+```
+
 ### android beta
 ```
 fastlane android beta

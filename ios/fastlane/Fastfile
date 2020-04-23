@@ -44,7 +44,7 @@ platform :ios do
   end
 
   desc "Run a new beta build (but don't upload it)"
-  lane :beta_build do
+  lane :build do
     run_build
   end
 
