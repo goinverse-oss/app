@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "the-liturgists.app"
-               BlueprintName = "the-liturgists"
-               ReferencedContainer = "container:the-liturgists.xcodeproj">
+               BuildableName = "TheLiturgists.app"
+               BlueprintName = "TheLiturgists"
+               ReferencedContainer = "container:TheLiturgists.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -45,7 +45,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "appTests.xctest"
                BlueprintName = "appTests"
-               ReferencedContainer = "container:the-liturgists.xcodeproj">
+               ReferencedContainer = "container:TheLiturgists.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -59,9 +59,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "the-liturgists.app"
-            BlueprintName = "the-liturgists"
-            ReferencedContainer = "container:the-liturgists.xcodeproj">
+            BuildableName = "TheLiturgists.app"
+            BlueprintName = "TheLiturgists"
+            ReferencedContainer = "container:TheLiturgists.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -72,7 +72,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "appTests.xctest"
                BlueprintName = "appTests"
-               ReferencedContainer = "container:the-liturgists.xcodeproj">
+               ReferencedContainer = "container:TheLiturgists.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -92,9 +92,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "the-liturgists.app"
-            BlueprintName = "the-liturgists"
-            ReferencedContainer = "container:the-liturgists.xcodeproj">
+            BuildableName = "TheLiturgists.app"
+            BlueprintName = "TheLiturgists"
+            ReferencedContainer = "container:TheLiturgists.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -109,9 +109,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "the-liturgists.app"
-            BlueprintName = "the-liturgists"
-            ReferencedContainer = "container:the-liturgists.xcodeproj">
+            BuildableName = "TheLiturgists.app"
+            BlueprintName = "TheLiturgists"
+            ReferencedContainer = "container:TheLiturgists.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -17,8 +17,8 @@ default_platform(:ios)
 
 def run_build
   build_app(
-    workspace: "the-liturgists.xcworkspace",
-    scheme: "the-liturgists",
+    workspace: "TheLiturgists.xcworkspace",
+    scheme: "TheLiturgists",
   )
 end
 
@@ -30,10 +30,10 @@ platform :ios do
 
     # Increment the build number (not the version number)
     # Providing the xcodeproj is optional
-    increment_build_number(xcodeproj: "the-liturgists.xcodeproj")
+    increment_build_number(xcodeproj: "TheLiturgists.xcodeproj")
 
     # Commit the version bump
-    commit_version_bump(xcodeproj: "the-liturgists.xcodeproj")
+    commit_version_bump(xcodeproj: "TheLiturgists.xcodeproj")
   end
 
   desc "Run a new beta build (but don't upload it)"
