@@ -27,8 +27,6 @@
         ]
       },
       "bundleIdentifier": "com.theliturgists.app",
-      "publishBundlePath": "ios/the-liturgists/Supporting/app.bundle",
-      "publishManifestPath": "ios/the-liturgists/Supporting/app.manifest"
     },
     "android": {
       "package": "com.theliturgists.app",

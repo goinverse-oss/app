@@ -24,7 +24,7 @@
 		0731D3B524204D62009CAE85 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Expo.plist; path = Supporting/Expo.plist; sourceTree = "<group>"; };
 		07C2E6E3243282B30028AF0A /* app.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = app.manifest; path = Supporting/app.manifest; sourceTree = "<group>"; };
 		07C2E6E4243282B30028AF0A /* app.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = app.bundle; path = Supporting/app.bundle; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* the-liturgists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-liturgists.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* TheLiturgists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheLiturgists.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -56,7 +56,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* the-liturgists */ = {
+		13B07FAE1A68108700A75B9A /* TheLiturgists */ = {
 			isa = PBXGroup;
 			children = (
 				4C55FF062442CB17008269AD /* app.entitlements */,
@@ -72,7 +72,7 @@
 				07C2E6E3243282B30028AF0A /* app.manifest */,
 				930B6AB0587249D5A822C9B0 /* SplashScreen.storyboard */,
 			);
-			path = "the-liturgists";
+			path = TheLiturgists;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -108,7 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				4CF80D4E2442C25D006F5100 /* GoogleService-Info.plist */,
-				13B07FAE1A68108700A75B9A /* the-liturgists */,
+				13B07FAE1A68108700A75B9A /* TheLiturgists */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -122,7 +122,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* the-liturgists.app */,
+				13B07F961A680F5B00A75B9A /* TheLiturgists.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,9 +130,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* the-liturgists */ = {
+		13B07F861A680F5B00A75B9A /* TheLiturgists */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "the-liturgists" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TheLiturgists" */;
 			buildPhases = (
 				F8BC737F2AD7A05944D9E2A1 /* [CP] Check Pods Manifest.lock */,
 				FD4C38642228810C00325AF5 /* Start Packager */,
@@ -146,9 +146,9 @@
 			);
 			dependencies = (
 			);
-			name = "the-liturgists";
+			name = TheLiturgists;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* the-liturgists.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* TheLiturgists.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -166,7 +166,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "the-liturgists" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TheLiturgists" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -180,7 +180,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* the-liturgists */,
+				13B07F861A680F5B00A75B9A /* TheLiturgists */,
 			);
 		};
 /* End PBXProject section */
@@ -299,13 +299,13 @@
 			baseConfigurationReference = 8A7C790F95F1A11F2D9A06DA /* Pods-the-liturgists.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "the-liturgists/app.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "TheLiturgists/app.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 9;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
-				INFOPLIST_FILE = "the-liturgists/Info.plist";
+				INFOPLIST_FILE = TheLiturgists/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -313,7 +313,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.theliturgists.app;
-				PRODUCT_NAME = "the-liturgists";
+				PRODUCT_NAME = TheLiturgists;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.theliturgists.app";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -324,12 +324,12 @@
 			baseConfigurationReference = D10FFC086A1319FBD0351853 /* Pods-the-liturgists.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "the-liturgists/app.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "TheLiturgists/app.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
-				INFOPLIST_FILE = "the-liturgists/Info.plist";
+				INFOPLIST_FILE = TheLiturgists/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -337,7 +337,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.theliturgists.app;
-				PRODUCT_NAME = "the-liturgists";
+				PRODUCT_NAME = TheLiturgists;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.theliturgists.app";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -445,7 +445,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "the-liturgists" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TheLiturgists" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -454,7 +454,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "the-liturgists" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TheLiturgists" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
