@@ -152,7 +152,11 @@ const PatreonAuthScreen = ({ navigation }) => {
         }
 
         let links = Array.from(document.querySelectorAll('a'));
-        links.forEach(link => { link.onclick = () => false });
+        links.forEach(link => {
+          if (link.href.indexOf('https://www.patreon.com') === 0) {
+            link.onclick = () => false;
+          }
+        });
       } catch (e) {
         log('ERROR: ' + e.message);
       }
