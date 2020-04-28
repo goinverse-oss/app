@@ -21,7 +21,10 @@ end
 
 platform :android do
   desc "Bump the Android version code (build number)"
-  lane :bump_version_code do
+  lane :beta_bump do
+    # Ensure that your git status is not dirty
+    ensure_git_status_clean
+
     path = '../app/build.gradle'
     re = /versionCode\s+(\d+)/
 
