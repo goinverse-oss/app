@@ -51,7 +51,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Allow The Liturgists to use the camera</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Allow The Liturgists experiences to access your contacts</string>
+	<string>Allow The Liturgists to access your contacts</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Allow The Liturgists to use your location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -63,9 +63,9 @@
 	<key>NSMotionUsageDescription</key>
 	<string>Allow The Liturgists to access your device's accelerometer</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Give The Liturgists periences permission to save photos</string>
+	<string>Give The Liturgists permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Give The Liturgists periences permission to access your photos</string>
+	<string>Give The Liturgists permission to access your photos</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow The Liturgists to access your reminders</string>
 	<key>UIBackgroundModes</key>

@@ -3,6 +3,15 @@
 /*
  * Generate splash screen configuration for use with
  * the expo-splash-screen module.
+ *
+ * Note that this issue still persists, and requires manually
+ * generating various splash screen sizes:
+ *
+ *     https://github.com/expo/expo/issues/4020#issuecomment-619712950
+ *
+ * We probably don't need a full-screen splash anyway, just the icon
+ * with a solid-color background, so this script can go away after we
+ * move to that setup.
  */
 
 const { execFile } = require('child_process');
