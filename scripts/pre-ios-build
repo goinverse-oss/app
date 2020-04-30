@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+# Workaround for https://github.com/expo/expo/issues/7899#issuecomment-618766326
+plist_file="ios/TheLiturgists/Supporting/Expo.plist"
+[[ -f ${plist_file} ]] || cp "${plist_file}.dummy" "${plist_file}"
