@@ -19,6 +19,7 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import { shouldShowWelcome } from './state/ducks/welcome/selectors';
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  // this is only defined because firebase yells if it's missing.
   console.log('Background message: ', remoteMessage);
 });
 

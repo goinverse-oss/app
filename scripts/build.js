@@ -3,14 +3,16 @@
 /*
  * Run a release build with fastlane, setting the release channel
  * from the command line arguments and perhaps also publishing to Expo.
+ *
+ * This probably doesn't need nodejs anymore; a simple shell script would do.
+ * Originally it was going to do some things with setting the release channel
+ * in Expo.plist and AndroidManifest.xml, but `expo publish --release-channel <foo>`
+ * handles that just fine.
  */
 
-const fs = require('fs');
 const { spawn } = require('child_process');
 
 const yargs = require('yargs');
-const plist = require('plist');
-const xml2js = require('xml2js');
 
 
 function build(platform, { uploadBeta }) {
