@@ -14,7 +14,6 @@ import * as navActions from './navigation/actions';
 import configureStore from './state/store';
 import Reactotron from '../reactotron-config';
 
-import config from '../config.json';
 import WelcomeScreen from './screens/WelcomeScreen';
 import { shouldShowWelcome } from './state/ducks/welcome/selectors';
 
@@ -36,9 +35,8 @@ class Deferred {
 console.tron = Reactotron;
 
 
-if (config.sentryPublicDSN) {
-  Sentry.config(config.sentryPublicDSN).install();
-}
+const sentryPublicDSN = 'https://798a3f14b3df4af39a83fbb770197e10@o233194.ingest.sentry.io/1395784';
+Sentry.config(sentryPublicDSN).install();
 
 // disable react-native-screens until this critical issue is resolved:
 // https://github.com/kmagiera/react-native-screens/issues/61
