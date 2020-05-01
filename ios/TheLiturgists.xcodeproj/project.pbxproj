@@ -16,7 +16,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4CF80D4F2442C25D006F5100 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CF80D4E2442C25D006F5100 /* GoogleService-Info.plist */; };
 		6599647584194541BAC6F366 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 930B6AB0587249D5A822C9B0 /* SplashScreen.storyboard */; };
-		E3DE187A7382714904FEF933 /* libPods-the-liturgists.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5061D61893A41F22D4B0A02 /* libPods-the-liturgists.a */; };
+		8F1AD448376FD0975DEDBF62 /* libPods-TheLiturgists.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 423AEC2ADDE66ED0B604EA5A /* libPods-TheLiturgists.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,13 +33,15 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B47C5AFCB8BDE514B7D1AC6 /* Pods-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app.debug.xcconfig"; path = "Target Support Files/Pods-app/Pods-app.debug.xcconfig"; sourceTree = "<group>"; };
+		423AEC2ADDE66ED0B604EA5A /* libPods-TheLiturgists.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TheLiturgists.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4868C2E80A2E29BE1FA353CC /* Pods-TheLiturgists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheLiturgists.debug.xcconfig"; path = "Target Support Files/Pods-TheLiturgists/Pods-TheLiturgists.debug.xcconfig"; sourceTree = "<group>"; };
 		4C55FF062442CB17008269AD /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = app.entitlements; sourceTree = "<group>"; };
 		4CF80D4E2442C25D006F5100 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5A42DFF53DE441014CA22267 /* Pods-TheLiturgists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheLiturgists.release.xcconfig"; path = "Target Support Files/Pods-TheLiturgists/Pods-TheLiturgists.release.xcconfig"; sourceTree = "<group>"; };
 		8A7C790F95F1A11F2D9A06DA /* Pods-the-liturgists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.debug.xcconfig"; path = "Target Support Files/Pods-the-liturgists/Pods-the-liturgists.debug.xcconfig"; sourceTree = "<group>"; };
 		8AC623DBF3A3E2CB072F81F2 /* Pods-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app.release.xcconfig"; path = "Target Support Files/Pods-app/Pods-app.release.xcconfig"; sourceTree = "<group>"; };
 		930B6AB0587249D5A822C9B0 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		D10FFC086A1319FBD0351853 /* Pods-the-liturgists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-the-liturgists.release.xcconfig"; path = "Target Support Files/Pods-the-liturgists/Pods-the-liturgists.release.xcconfig"; sourceTree = "<group>"; };
-		D5061D61893A41F22D4B0A02 /* libPods-the-liturgists.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-the-liturgists.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -49,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3DE187A7382714904FEF933 /* libPods-the-liturgists.a in Frameworks */,
+				8F1AD448376FD0975DEDBF62 /* libPods-TheLiturgists.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,7 +83,7 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				D5061D61893A41F22D4B0A02 /* libPods-the-liturgists.a */,
+				423AEC2ADDE66ED0B604EA5A /* libPods-TheLiturgists.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -93,6 +95,8 @@
 				8AC623DBF3A3E2CB072F81F2 /* Pods-app.release.xcconfig */,
 				8A7C790F95F1A11F2D9A06DA /* Pods-the-liturgists.debug.xcconfig */,
 				D10FFC086A1319FBD0351853 /* Pods-the-liturgists.release.xcconfig */,
+				4868C2E80A2E29BE1FA353CC /* Pods-TheLiturgists.debug.xcconfig */,
+				5A42DFF53DE441014CA22267 /* Pods-TheLiturgists.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -242,7 +246,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-the-liturgists-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TheLiturgists-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -296,7 +300,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A7C790F95F1A11F2D9A06DA /* Pods-the-liturgists.debug.xcconfig */;
+			baseConfigurationReference = 4868C2E80A2E29BE1FA353CC /* Pods-TheLiturgists.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TheLiturgists/app.entitlements;
@@ -321,7 +325,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D10FFC086A1319FBD0351853 /* Pods-the-liturgists.release.xcconfig */;
+			baseConfigurationReference = 5A42DFF53DE441014CA22267 /* Pods-TheLiturgists.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TheLiturgists/app.entitlements;

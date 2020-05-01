@@ -92,7 +92,7 @@
     "remarkable": "^1.7.1",
     "rxjs": "^6",
     "rxjs-compat": "^6",
-    "sentry-expo": "^1.13.0",
+    "sentry-expo": "^2",
     "url-parse": "^1.4.4"
   },
   "devDependencies": {
@@ -142,7 +142,7 @@
       "./testSetup.js"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|unimodules-permissions-interface|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@unimodules|@react-native-community/async-storage|@react-native-firebase))"
+      "node_modules/(?!((jest-)?react-native|unimodules-permissions-interface|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@sentry|sentry-expo|native-base|@unimodules|@react-native-community/async-storage|@react-native-firebase))"
     ]
   },
   "comment": "flow is disabled in pre-commit because react-navigation breaks it",

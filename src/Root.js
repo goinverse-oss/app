@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Sentry from 'sentry-expo';
+import * as Sentry from 'sentry-expo';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -36,7 +36,10 @@ console.tron = Reactotron;
 
 
 const sentryPublicDSN = 'https://798a3f14b3df4af39a83fbb770197e10@o233194.ingest.sentry.io/1395784';
-Sentry.config(sentryPublicDSN).install();
+Sentry.init({
+  dsn: sentryPublicDSN,
+  debug: true,
+});
 
 // disable react-native-screens until this critical issue is resolved:
 // https://github.com/kmagiera/react-native-screens/issues/61
