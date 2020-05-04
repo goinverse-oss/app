@@ -48,22 +48,6 @@ jobs:
       - store_test_results:
           path: ~/reports
 
-  deploy-app:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          key: js-deps-{{ checksum "yarn.lock" }}
-      - run: yarn ci:deploy
-
-  deploy-storybook:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          key: js-deps-{{ checksum "yarn.lock" }}
-      - run: yarn ci:deploy storybook
-
 workflows:
   version: 2
   main:
@@ -75,13 +59,3 @@ workflows:
       - unit_tests:
           requires:
             - install_dependencies
-      - deploy-app:
-          context: global
-          requires:
-            - install_dependencies
-            - unit_tests
-      - deploy-storybook:
-          context: global
-          requires:
-            - install_dependencies
-            - unit_tests
