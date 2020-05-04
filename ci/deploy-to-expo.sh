@@ -3,7 +3,7 @@
 yarn global add expo-cli
 
 fail=
-for name in EXPO_USERNAME EXPO_PASSWORD CIRCLE_BRANCH SENTRY_AUTH_TOKEN ; do
+for name in EXPO_USERNAME EXPO_PASSWORD BITRISE_GIT_BRANCH SENTRY_AUTH_TOKEN ; do
   eval value=\$$name
   if [[ -z ${value} ]]; then
     echo >&2 "Missing required env variable: ${name}"
@@ -22,12 +22,8 @@ json -I -f config.json \
 
 expo login -u "${EXPO_USERNAME}" -p "${EXPO_PASSWORD}"
 
-prefix=
-if [[ "$1" == "storybook" ]]; then
-  prefix="storybook-"
-fi
-channel=$(echo ${CIRCLE_BRANCH} | sed -E 's/[^A-Za-z0-9_-]+/-/g')
+channel=$(echo ${BITRISE_GIT_BRANCH} | sed -E 's/[^A-Za-z0-9_-]+/-/g')
 if [[ "${channel}" == "master" ]]; then
   channel="default"
 fi
-expo publish --release-channel "${prefix}${channel}"
+expo publish --release-channel "${channel}"
