@@ -61,9 +61,9 @@ buck-out/
 *.code-workspace
 
 # Local configuration
-config.json
-config.json.*
-!config.json.example
+/config.json
+/config.json.*
+!/config.json.example
 
 ## The following is imported from gitignore.io.
 # Created by https://www.gitignore.io/api/reactnative

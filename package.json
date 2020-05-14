@@ -9,6 +9,10 @@
     "flow": "flow",
     "build:ios": "scripts/build.js ios",
     "build:android": "scripts/build.js android",
+    "detox:build:ios": "detox build -c ios.sim.debug",
+    "detox:test:ios": "detox test -c ios.sim.debug",
+    "detox:build:android": "detox build -c android.emu.debug",
+    "detox:test:android": "detox test -c android.emu.debug",
     "dev:ios": "react-native run-ios",
     "dev:android": "react-native run-android",
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
@@ -16,6 +20,9 @@
     "validateci": "./scripts/validate-ci-config",
     "ci:deploy": "./ci/deploy-to-expo.sh",
     "ci:post-expo-comment": "./ci/post-expo-comment.js",
+    "ci:detox:test:ios": "detox test -c ios.sim.debug --take-screenshots failing --record-videos failing --record-logs failing",
+    "ci:detox:build:android": "detox build -c android.emu.ci",
+    "ci:detox:test:android": "detox test -c android.emu.ci --take-screenshots failing --record-videos failing --record-logs failing",
     "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 yarn start'",
     "prestart": "yarn generate-default-config",
     "prelint": "yarn generate-default-config",
@@ -23,6 +30,7 @@
     "preci:deploy": "yarn generate-default-config",
     "prebuild:ios": "./scripts/pre-ios-build",
     "predev:ios": "./scripts/pre-ios-build",
+    "predetox:build:ios": "./scripts/pre-ios-build",
     "prestorybook": "rnstl",
     "postinstall": "jetify && rndebugger-open --expo; patch-package; yarn pod",
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')",
@@ -42,7 +50,7 @@
     "axios-retry": "^3.1.2",
     "contentful": "^7.1.0",
     "cycle": "^1.0.3",
-    "expo": "^37.0.0",
+    "expo": "^37.0.10",
     "expo-av": "~8.1.0",
     "expo-constants": "^9.0.0",
     "expo-file-system": "~8.1.0",
@@ -50,7 +58,7 @@
     "expo-linear-gradient": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "expo-splash-screen": "^0.2.0",
-    "expo-updates": "~0.1.0",
+    "expo-updates": "^0.2.0",
     "expo-web-browser": "~8.1.0",
     "html-entities": "^1.2.1",
     "is-html": "^1.1.0",
@@ -108,6 +116,7 @@
     "babel-plugin-functional-hmr": "^1.0.24",
     "babel-preset-expo": "^8.1.0",
     "concurrently": "^3.5.1",
+    "detox": "^16.4.1",
     "eslint": "^4.17.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -129,7 +138,7 @@
     "react-native-debugger-open": "^0.3.19",
     "react-native-storybook-loader": "^1.7.0",
     "react-test-renderer": "16.0.0-beta.5",
-    "reactotron-react-native": "^3",
+    "reactotron-react-native": "^5",
     "reactotron-redux": "^3",
     "rxjs-marbles": "^5.0.2",
     "source-map-support": "^0.5.6",
@@ -143,6 +152,10 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|unimodules-permissions-interface|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@sentry|sentry-expo|native-base|@unimodules|@react-native-community/async-storage|@react-native-firebase))"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "e2e"
     ]
   },
   "comment": "flow is disabled in pre-commit because react-navigation breaks it",
@@ -159,5 +172,54 @@
       "pattern": "**/*.stories.js",
       "outputFile": "./storybook/storyLoader.js"
     }
+  },
+  "detox": {
+    "artifacts": {
+      "plugins": {
+        "screenshot": {
+          "shouldTakeAutomaticSnapshots": true,
+          "keepOnlyFailedTestsArtifacts": true,
+          "takeWhen": {
+            "testStart": false,
+            "testDone": true
+          }
+        }
+      }
+    },
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TheLiturgists.app",
+        "build": "xcodebuild -workspace ios/TheLiturgists.xcworkspace -scheme TheLiturgists -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 8"
+        }
+      },
+      "android.emu.debug": {
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Nexus_6_API_28"
+        }
+      },
+      "android.emu.ci": {
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Pixel_API_29_AOSP"
+        }
+      },
+      "android.emu.release": {
+        "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Nexus_6_API_28"
+        }
+      }
+    },
+    "test-runner": "jest"
   }
 }

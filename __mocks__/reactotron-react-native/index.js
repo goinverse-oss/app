@@ -1,4 +1,5 @@
 const reactotron = {
+  setAsyncStorageHandler: () => reactotron,
   configure: () => reactotron,
   useReactNative: () => reactotron,
   use: () => reactotron,
