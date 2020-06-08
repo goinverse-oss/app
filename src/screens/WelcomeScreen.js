@@ -11,7 +11,7 @@ import group from '../../assets/welcome/group.png';
 import mountains from '../../assets/welcome/mountains.png';
 import samplePodcast from '../../assets/welcome/samples/podcast.mp3';
 import sampleMeditation from '../../assets/welcome/samples/meditation.mp3';
-import { screenRelativeWidth, screenRelativeHeight } from '../components/utils';
+import { screenRelativeWidth } from '../components/utils';
 import CircleImage from '../components/CircleImage';
 import { PlaybackButton } from './PlayerScreen/Controls';
 import { setShowWelcome } from '../state/ducks/welcome/actions';
@@ -23,16 +23,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    paddingBottom: 35,
   },
   slideTop: {
     justifyContent: 'flex-end',
     alignItems: 'center',
-    height: screenRelativeHeight(0.4),
   },
   slideBottom: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    height: screenRelativeHeight(0.4),
   },
   image: {
     resizeMode: 'contain',
@@ -71,6 +70,7 @@ const styles = StyleSheet.create({
     color: '#D2D2D2',
     fontSize: 17,
     fontWeight: '500',
+    padding: 12,
   },
   welcomeButton: {
     justifyContent: 'center',
@@ -94,6 +94,7 @@ const slides = [
     key: 'podcasts',
     title: 'Thoughtful and Evocative',
     text: 'The Liturgists host honest, fearless conversations through multiple podcasts exploring the most important topics of our day through science, art, and faith.',
+    textTestID: 'welcomeText1',
     image: headphones,
     imageStyle: {
       height: 143,
@@ -114,6 +115,7 @@ const slides = [
     key: 'meditations',
     title: 'Rejuvenation',
     text: 'Guided meditations and liturgical art offer grounding and growth, no matter where you are in your spiritual journey.',
+    textTestID: 'welcomeText2',
     image: sun,
     imageStyle: {
       height: 143,
@@ -134,6 +136,7 @@ const slides = [
     key: 'community',
     title: "It's Not Just You",
     text: 'Online communities and live events offer refuge to folks at the margins of organized religious and spiritual communities.',
+    textTestID: 'welcomeText3',
     image: group,
     imageStyle: {
       width: screenRelativeWidth(1.0),
@@ -152,6 +155,7 @@ const slides = [
     key: 'welcome',
     title: 'Take the Next Step',
     text: 'Welcome to The Liturgists.\nTap below to get started.',
+    textTestID: 'welcomeText4',
     image: mountains,
     imageStyle: {
       height: 93,
@@ -170,11 +174,21 @@ class Sample extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
+    const { sound } = this.state;
+    if (sound) {
+      sound.setOnPlaybackStatusUpdate(null);
+      sound.stopAsync().then(
+        () => sound.unloadAsync(),
+      );
+    }
+  }
+
+  loadSample() {
     const { sample } = this.props;
 
     const initialStatus = { positionMillis: 0 };
-    Audio.Sound.createAsync(
+    return Audio.Sound.createAsync(
       sample.source,
       initialStatus,
       (status) => {
@@ -187,39 +201,32 @@ class Sample extends React.Component {
         }
       },
     ).then(
-      ({ sound, status }) => (
-        this.setState(() => ({ sound, status }))
-      ),
+      ({ sound, status }) => {
+        this.setState(() => ({ sound, status }));
+        return sound;
+      },
     );
-  }
-
-  componentWillUnmount() {
-    const { sound } = this.state;
-    if (sound) {
-      sound.setOnPlaybackStatusUpdate(null);
-      sound.stopAsync().then(
-        () => sound.unloadAsync(),
-      );
-    }
   }
 
   togglePlayback() {
     const { isPaused, sound } = this.state;
-    const promise = isPaused ? sound.playAsync() : sound.pauseAsync();
-    promise.then(
-      () => this.setState(state => ({ isPaused: !state.isPaused })),
-    );
+    const soundPromise = sound ? Promise.resolve(sound) : this.loadSample();
+    soundPromise.then((resolvedSound) => {
+      const promise = isPaused ? resolvedSound.playAsync() : resolvedSound.pauseAsync();
+      promise.then(
+        () => this.setState(state => ({ isPaused: !state.isPaused })),
+      );
+    });
   }
 
   render() {
     const { sample } = this.props;
-    const { isPaused, sound } = this.state;
+    const { isPaused } = this.state;
     return (
       <View style={styles.sample}>
         <PlaybackButton
           style={styles.playbackButton}
           isPaused={isPaused}
-          disabled={!sound}
           onPress={() => this.togglePlayback()}
         />
         <Text style={styles.sampleText}>{sample.label}</Text>
@@ -299,8 +306,8 @@ Testimonial.propTypes = {
   text: PropTypes.string.isRequired,
 };
 
-const WelcomeButton = ({ title, onPress }) => (
-  <TouchableOpacity onPress={onPress}>
+const WelcomeButton = ({ title, onPress, ...props }) => (
+  <TouchableOpacity onPress={onPress} {...props}>
     <View style={styles.welcomeButton}>
       <Text style={styles.welcomeButtonText}>{title}</Text>
     </View>
@@ -319,7 +326,7 @@ const Slide = ({ item, closeWelcome }) => (
       <Text style={styles.title}>{item.title}</Text>
     </View>
     <View style={styles.slideBottom}>
-      <Text style={styles.text}>{item.text}</Text>
+      <Text testID={item.textTestID} style={styles.text}>{item.text}</Text>
       <View style={styles.sampleContainer}>
         {
           item.sample && <Sample sample={item.sample} />
@@ -334,6 +341,7 @@ const Slide = ({ item, closeWelcome }) => (
         item.showContinueButton && (
           <WelcomeButton
             title="Continue"
+            testID="continueButton"
             onPress={() => closeWelcome()}
           />
         )
@@ -347,6 +355,17 @@ Slide.propTypes = {
   closeWelcome: PropTypes.func.isRequired,
 };
 
+const navButton = label => () => (
+  <Text
+    style={styles.buttonText}
+    accessibilityLabel={label}
+    contentDescription={label}
+    testID={`nav${label}`}
+  >
+    {label}
+  </Text>
+);
+
 const WelcomeScreen = ({ closeWelcome }) => (
   <AppIntroSlider
     slides={slides}
@@ -356,6 +375,9 @@ const WelcomeScreen = ({ closeWelcome }) => (
     showSkipButton
     showPrevButton
     showDoneButton={false}
+    renderSkipButton={navButton('Skip')}
+    renderPrevButton={navButton('Back')}
+    renderNextButton={navButton('Next')}
     renderItem={item => <Slide item={item} closeWelcome={closeWelcome} />}
     onSkip={closeWelcome}
   />

@@ -88,6 +88,7 @@ class HomeScreen extends React.Component {
     );
     return (
       <ScrollView
+        testID="homeScreenScrollView"
         horizontal
         showsHorizontalScrollIndicator={false}
         snapToOffsets={snapOffsets}
