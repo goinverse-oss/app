@@ -96,15 +96,20 @@ This app does not store, read, or even
 think about your Patreon credentials.
 `.trim();
 
-function patronRewards(canAccessMeditations) {
-  const extras = canAccessMeditations ? `
-    - Meditations
-    - Liturgies
-  ` : '';
+function patronRewards(patronPodcasts, canAccessMeditations, canAccessLiturgies) {
+  const extras = [];
+  if (canAccessMeditations) {
+    extras.push('- Meditations');
+  }
+  if (canAccessLiturgies) {
+    extras.push('- Liturgies');
+  }
+
+  const podcasts = patronPodcasts.map(pod => `- ${pod.title}`).join('\n');
 
   return `
-    - Bonus podcast
-    ${extras.trim()}
+    ${podcasts}
+    ${extras.join('\n')}
   `.trim();
 }
 
@@ -140,7 +145,9 @@ const PatreonStatus = ({
   isPatron,
   waitingForDeviceVerification,
   patronFirstName,
+  patronPodcasts,
   canAccessMeditations,
+  canAccessLiturgies,
 }) => (
   <View style={styles.status}>
     <Text style={styles.heading}>
@@ -163,7 +170,7 @@ const PatreonStatus = ({
             {'You currently have access to:\n'}
           </Text>
           <Text style={styles.text}>
-            {patronRewards(canAccessMeditations)}
+            {patronRewards(patronPodcasts, canAccessMeditations, canAccessLiturgies)}
           </Text>
         </React.Fragment>
       ) : null
@@ -176,7 +183,9 @@ PatreonStatus.propTypes = {
   isPatron: PropTypes.bool.isRequired,
   waitingForDeviceVerification: PropTypes.bool.isRequired,
   patronFirstName: PropTypes.string.isRequired,
+  patronPodcasts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   canAccessMeditations: PropTypes.bool.isRequired,
+  canAccessLiturgies: PropTypes.bool.isRequired,
 };
 
 const patreonStyles = {
@@ -346,8 +355,10 @@ function mapStateToProps(state) {
     isPatron: selectors.isPatron(state),
     waitingForDeviceVerification: selectors.waitingForDeviceVerification(state),
     patronFirstName: selectors.firstName(state),
+    patronPodcasts: selectors.patronPodcasts(state),
     canAccessPatronPodcasts: selectors.canAccessPatronPodcasts(state),
     canAccessMeditations: selectors.canAccessMeditations(state),
+    canAccessLiturgies: selectors.canAccessLiturgies(state),
     loading: selectors.loading(state),
     error: selectors.error(state),
   };

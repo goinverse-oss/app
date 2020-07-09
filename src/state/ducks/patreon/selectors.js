@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-import Pledge from '@theliturgists/patreon-pledge';
-
 import * as authSelectors from '../auth/selectors';
 
 export function isConnected(state) {
@@ -9,22 +7,34 @@ export function isConnected(state) {
 }
 
 export function getPledge(state) {
-  return new Pledge(state?.patreon?.details);
+  // TODO: look up pledge API object from state
+  // TODO before that: make sure we've fetched it
+  return state?.patreon?.details;
 }
 
 export function isPatron(state) {
   const pledge = getPledge(state);
-  return pledge.isPatron();
+  return pledge?.isPatron || false;
 }
 
 export function canAccessPatronPodcasts(state) {
   const pledge = getPledge(state);
-  return pledge.canAccessPatronPodcasts();
+  return pledge?.canAccessPatronPodcasts || false;
+}
+
+export function patronPodcasts(state) {
+  const pledge = getPledge(state);
+  return pledge?.podcasts || [];
 }
 
 export function canAccessMeditations(state) {
   const pledge = getPledge(state);
-  return pledge.canAccessMeditations();
+  return pledge?.canAccessMeditations || false;
+}
+
+export function canAccessLiturgies(state) {
+  const pledge = getPledge(state);
+  return pledge?.canAccessLiturgies || false;
 }
 
 export function imageUrl(state) {
@@ -36,11 +46,11 @@ export function imageUrl(state) {
 }
 
 export function firstName(state) {
-  return _.get(state.patreon, 'details.data.attributes.first_name', '');
+  return _.get(state.patreon, 'details.userData.data.attributes.first_name', '');
 }
 
 export function fullName(state) {
-  return _.get(state.patreon, 'details.data.attributes.full_name', 'Patreon');
+  return _.get(state.patreon, 'details.userData.data.attributes.full_name', 'Patreon');
 }
 
 export function loading(state) {

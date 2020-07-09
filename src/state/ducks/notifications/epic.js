@@ -7,7 +7,7 @@ import { mergeMap, switchMap } from 'rxjs/operators';
 import { saveToken, updatePatronNotificationSubscriptions } from './actions';
 import { UPDATE_PATRON_NOTIFICATION_SUBSCRIPTIONS } from './types';
 import { STORE_DETAILS, DISCONNECT } from '../patreon/types';
-import { canAccessMeditations, canAccessPatronPodcasts } from '../patreon/selectors';
+import { canAccessMeditations, patronPodcasts } from '../patreon/selectors';
 
 import config from '../../../../config.json';
 
@@ -85,7 +85,7 @@ const updatePatronNotificationSubscriptionsEpic = (action$, state$) =>
       const subscribeTopics = [];
       const unsubscribeTopics = [];
 
-      if (canAccessPatronPodcasts(state$.value)) {
+      if (patronPodcasts(state$.value).length > 0) {
         subscribeTopics.push(patronPodcastsTopicName);
       } else {
         unsubscribeTopics.push(patronPodcastsTopicName);
