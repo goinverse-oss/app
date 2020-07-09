@@ -43,7 +43,6 @@
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-firebase/app": "^6.4.0",
     "@react-native-firebase/messaging": "^6.4.0",
-    "@theliturgists/patreon-pledge": "^0.2.0",
     "@theliturgists/redux-orm-proptypes": "^0.1.1",
     "app-icon": "^0.13.0",
     "axios": "^0.18.0",

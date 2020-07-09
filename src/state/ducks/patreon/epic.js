@@ -24,16 +24,13 @@ axiosRetry(axios, {
 });
 
 function getPatreonDetails(token) {
-  const detailsUrl = `${config.apiBaseUrl}/patreon/api/current_user`;
+  const detailsUrl = `${config.apiBaseUrl}/patron-pledge`;
   return from(
     axios.get(
       detailsUrl,
       {
         headers: {
           'x-theliturgists-token': token,
-        },
-        params: {
-          includes: 'pledges',
         },
       },
     )
