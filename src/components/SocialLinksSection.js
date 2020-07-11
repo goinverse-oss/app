@@ -59,7 +59,7 @@ const links = [
   },
   {
     imageSource: slackIcon,
-    url: 'http://bit.ly/JoinLiturgistsSlack',
+    url: 'https://join.slack.com/t/theliturgistsspace/shared_invite/enQtODY2MTA2OTI0NDIzLWZhYjIzZmQ3NTI3YTFiY2Q2M2M2NDQwODUwYmYzMTFhNmYwZmUwMWVmZWU4NmY3MzcwYzVkNDFlMWY1ZTAzMjI',
     style: styles.slackIconContainer,
     label: 'Discuss in Slack',
   },
