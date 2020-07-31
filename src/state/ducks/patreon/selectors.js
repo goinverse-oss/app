@@ -37,6 +37,11 @@ export function canAccessLiturgies(state) {
   return pledge?.canAccessLiturgies || false;
 }
 
+export function zoomRoomPasscode(state) {
+  const pledge = getPledge(state);
+  return pledge?.zoomRoomPasscode;
+}
+
 export function imageUrl(state) {
   return _.get(
     state.patreon,
