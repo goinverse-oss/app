@@ -4,6 +4,7 @@ import { Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { LinearGradient } from 'expo-linear-gradient';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
 import DrawerItem from './DrawerItem';
 import PatreonStatus from './PatreonStatus';
@@ -24,6 +25,9 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
+  communityIcon: {
+    fontSize: 25,
+  },
   logoutIcon: {
     fontSize: 20,
     color: '#ccc',
@@ -33,6 +37,7 @@ const styles = StyleSheet.create({
 const DrawerContent = ({
   drawer,
   navigateToPatreon,
+  navigateToCommunity,
 }) => (
   <LinearGradient style={styles.drawer} colors={['#FFFFFF00', '#F95A570C']}>
     <PatreonStatus />
@@ -44,8 +49,9 @@ const DrawerContent = ({
     />
     <DrawerItem
       drawer={drawer}
-      title="Close menu"
-      onPress={() => drawer.closeDrawer()}
+      title="Community"
+      image={<Icon name="people" style={styles.communityIcon} />}
+      onPress={navigateToCommunity}
     />
   </LinearGradient>
 );
@@ -53,6 +59,7 @@ const DrawerContent = ({
 DrawerContent.propTypes = {
   drawer: PropTypes.shape({}),
   navigateToPatreon: PropTypes.func.isRequired,
+  navigateToCommunity: PropTypes.func.isRequired,
 };
 
 DrawerContent.defaultProps = {
@@ -64,6 +71,9 @@ function mapDispatchToProps(dispatch, { navigation }) {
     navigateToPatreon: () => {
       dispatch(patreon.getDetails());
       navigation.navigate('Patreon');
+    },
+    navigateToCommunity: () => {
+      navigation.navigate('Community');
     },
   };
 }

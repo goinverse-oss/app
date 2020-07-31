@@ -1881,14 +1881,6 @@
     "@babel/helper-create-regexp-features-plugin" "^7.8.3"
     "@babel/helper-plugin-utils" "^7.8.3"
 
-"@babel/polyfill@^7.8.3":
-  version "7.8.3"
-  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.8.3.tgz#2333fc2144a542a7c07da39502ceeeb3abe4debd"
-  integrity sha512-0QEgn2zkCzqGIkSWWAEmvxD7e00Nm9asTtQvi7HdlYvMhjy/J38V/1Y9ode0zEJeIuxAI0uftiAzqc7nVeWUGg==
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.2"
-
 "@babel/preset-env@^7.4.4":
   version "7.9.0"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.9.0.tgz#a5fc42480e950ae8f5d9f8f2bbc03f52722df3a8"
@@ -3128,19 +3120,6 @@
     react-modal "^3.3.2"
     react-split-pane "^0.1.77"
     react-treebeard "^2.1.0"
-
-"@theliturgists/jsonapi-datastore@^0.4.0-beta-3":
-  version "0.4.0-beta-3"
-  resolved "https://registry.yarnpkg.com/@theliturgists/jsonapi-datastore/-/jsonapi-datastore-0.4.0-beta-3.tgz#9c884b5d86a00d02bb648a24f557df1cad36a7d0"
-  integrity sha512-E/JQ7W/sYsV+XDWYlXxAizxUedILYOMdfdEY/fyMsC1rvs1TjOuDoxemkQNjbg+2tq/gFx7fihvJZ9MU6Ca7mw==
-
-"@theliturgists/patreon-pledge@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@theliturgists/patreon-pledge/-/patreon-pledge-0.2.0.tgz#ad7f6354bad342e6318cf582e2c2592ee1a76a4c"
-  integrity sha512-mkj5t7GBG13qmIHuHPuByUbc16gwAJqGpWKODBAJSqnvMtM2SfM/hTDRgyl5CC7Hz7YqvoxyCBihXwLzQARKkA==
-  dependencies:
-    "@babel/polyfill" "^7.8.3"
-    "@theliturgists/jsonapi-datastore" "^0.4.0-beta-3"
 
 "@theliturgists/redux-orm-proptypes@^0.1.1":
   version "0.1.1"
@@ -6233,11 +6212,6 @@ core-js@^2.2.2, core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.7:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
   integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
-
-core-js@^2.6.5:
-  version "2.6.11"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
-  integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
 core-js@^3.6.4:
   version "3.6.4"
@@ -14003,6 +13977,13 @@ react-native-app-intro-slider@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-2.0.1.tgz#947fece38d2332d9cdc5381344b0c47ab822984b"
   integrity sha512-Bg/hQ+fU7IJDaZYXApH7xWW7dxdb0buDZ46GGhOerOmJh6GMq5WIxtimYKP8u1Pumq+hGrbSRFzT1vhYlPkDAw==
+
+react-native-collapsible@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-1.5.3.tgz#d6bc7274ae8f40f7688cca23ededa263e6c81c63"
+  integrity sha512-Ciuy3yF8wcHeLxXFtx9vxoyrq8l+9EJqLM/ADw54gVwzTQc1/e2ojhQbVFPlxhDA+Pba2qezkaKfv5ifxg8hoQ==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-native-compat@^1.0.0:
   version "1.0.0"

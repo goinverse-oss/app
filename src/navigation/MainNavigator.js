@@ -23,6 +23,8 @@ import LiturgyScreen from '../screens/LiturgyScreen';
 import SingleLiturgyItemScreen from '../screens/SingleLiturgyItemScreen';
 import ContributorScreen from '../screens/ContributorScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
+import CommunityScreen from '../screens/CommunityScreen';
+import HangoutScreen from '../screens/HangoutScreen';
 import DrawerContent from '../navigation/DrawerContent';
 import MeditationsIcon from '../screens/MeditationsIcon';
 import PodcastsIcon from '../screens/PodcastsIcon';
@@ -140,11 +142,19 @@ const PlayerWithHeader = createStackNavigator({
   PlayerWithHeader: { screen: PlayerScreen },
 });
 
+const Community = createStackNavigator(
+  {
+    Community: { screen: CommunityScreen },
+    Hangout: { screen: HangoutScreen },
+  },
+);
+
 const Modals = createStackNavigator(
   {
     Main: { screen: Tabs },
     Patreon: { screen: Patreon },
     Player: { screen: PlayerWithHeader },
+    Community: { screen: Community },
   },
   {
     mode: 'modal',
