@@ -16,7 +16,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#F95A57"
+      "backgroundColor": "#004438"
     },
     "scheme": "theliturgists.app",
     "ios": {
