@@ -1,0 +1,85 @@
+diff --git a/node_modules/react-native-collapsible/Collapsible.js b/node_modules/react-native-collapsible/Collapsible.js
+index eae5a9f..3e419ea 100644
+--- a/node_modules/react-native-collapsible/Collapsible.js
++++ b/node_modules/react-native-collapsible/Collapsible.js
+@@ -1,6 +1,6 @@
+ import React, { Component } from 'react';
+ import PropTypes from 'prop-types';
+-import { Animated, Easing } from 'react-native';
++import { Animated, Easing, View } from 'react-native';
+ import { ViewPropTypes } from './config';
+ 
+ const ANIMATED_EASING_PREFIXES = ['easeInOut', 'easeOut', 'easeIn'];
+@@ -15,6 +15,7 @@ export default class Collapsible extends Component {
+     easing: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+     style: ViewPropTypes.style,
+     onAnimationEnd: PropTypes.func,
++    fixedHeight: PropTypes.bool,
+     children: PropTypes.node,
+   };
+ 
+@@ -26,6 +27,7 @@ export default class Collapsible extends Component {
+     duration: 300,
+     easing: 'easeOutCubic',
+     onAnimationEnd: () => null,
++    fixedHeight: false,
+   };
+ 
+   constructor(props) {
+@@ -35,6 +37,7 @@ export default class Collapsible extends Component {
+       measured: false,
+       height: new Animated.Value(props.collapsedHeight),
+       contentHeight: 0,
++      savedContentHeight: null,
+       animating: false,
+     };
+   }
+@@ -97,6 +100,10 @@ export default class Collapsible extends Component {
+                   measuring: false,
+                   measured: true,
+                   contentHeight: height,
++                  savedContentHeight:
++                    this.state.savedContentHeight === null
++                      ? height
++                      : this.state.savedContentHeight,
+                 },
+                 () => callback(height)
+               );
+@@ -185,6 +192,16 @@ export default class Collapsible extends Component {
+     this.setState({ contentHeight });
+   };
+ 
++  _renderChildren = () => {
++    const { savedContentHeight } = this.state;
++    let { children, fixedHeight } = this.props;
++
++    if (fixedHeight) {
++      children = <View style={{ height: savedContentHeight }}>{children}</View>;
++    }
++    return children;
++  };
++
+   render() {
+     const { collapsed, enablePointerEvents } = this.props;
+     const { height, contentHeight, measuring, measured } = this.state;
+@@ -226,7 +243,7 @@ export default class Collapsible extends Component {
+           style={[this.props.style, contentStyle]}
+           onLayout={this.state.animating ? undefined : this._handleLayoutChange}
+         >
+-          {this.props.children}
++          {this._renderChildren()}
+         </Animated.View>
+       </Animated.View>
+     );
+diff --git a/node_modules/react-native-collapsible/README.md b/node_modules/react-native-collapsible/README.md
+index 477054f..5b7f2cb 100644
+--- a/node_modules/react-native-collapsible/README.md
++++ b/node_modules/react-native-collapsible/README.md
+@@ -34,6 +34,7 @@ import Collapsible from 'react-native-collapsible';
+ | **`easing`**              | Function or function name from [`Easing`](https://github.com/facebook/react-native/blob/master/Libraries/Animated/src/Easing.js) (or [`tween-functions`](https://github.com/chenglou/tween-functions) if < RN 0.8). Collapsible will try to combine `Easing` functions for you if you name them like `tween-functions`. | `easeOutCubic` |
+ | **`style`**               | Optional styling for the container                                                                                                                                                                                                                                                                                      |                |
+ | **`onAnimationEnd`**      | Callback when the toggle animation is done. Useful to avoid heavy layouting work during the animation                                                                                                                                                                                                                   | `() => {}`     |
++| **`fixedHeight`**         | If true, children will be wrapped in a fixed-height header. In use with `<Text/>` children, this helps avoid unpleasant re-layouts during animations. | `false` |
+ 
+ ## Accordion Usage
+ 
