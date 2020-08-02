@@ -31,6 +31,8 @@ import PodcastsIcon from '../screens/PodcastsIcon';
 import LiturgiesIcon from '../screens/LiturgiesIcon';
 import HomeIcon from '../screens/HomeIcon';
 
+import colors from '../styles/colors';
+
 import { setDropdown } from '../showError';
 
 const { DrawerLayout } = GestureHandler;
@@ -101,7 +103,7 @@ const Tabs = createBottomTabNavigator({
 }, {
   tabBarComponent: TabBar,
   tabBarOptions: {
-    activeTintColor: '#F95A57',
+    activeTintColor: colors.background,
     inactiveTintColor: '#D2D2D2',
     style: {
       borderTopWidth: 0,
