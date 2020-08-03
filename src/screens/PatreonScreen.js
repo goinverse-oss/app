@@ -11,10 +11,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import Icon from '@expo/vector-icons/MaterialIcons';
 
 import patreonButton from '../../assets/patreon_button_blank.png';
 import patreonBackground from '../../assets/patreon_bg.png';
+
+import CloseButton from '../navigation/CloseButton';
 
 import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
@@ -77,11 +78,6 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: -2.5,
     fontSize: 13,
-  },
-  closeIcon: {
-    color: '#cccccc',
-    fontSize: 24,
-    paddingHorizontal: 10,
   },
 });
 
@@ -338,14 +334,8 @@ PatreonScreen.propTypes = {
   navigation: appPropTypes.navigation.isRequired,
 };
 
-PatreonScreen.navigationOptions = ({ navigation }) => ({
-  headerLeft: (
-    <Icon
-      name="close"
-      style={styles.closeIcon}
-      onPress={() => navigation.goBack(null)}
-    />
-  ),
+PatreonScreen.navigationOptions = () => ({
+  headerLeft: <CloseButton />,
   headerTransparent: true,
 });
 
