@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 import appStyles from '../styles';
-import { screenRelativeWidth } from '../components/utils';
 
 import CollapsibleStack from './CollapsibleStack';
 import CloseButton from '../navigation/CloseButton';
@@ -110,7 +109,7 @@ const CommunityScreen = () => {
   );
 };
 
-CommunityScreen.navigationOptions = ({ navigation }) => ({
+CommunityScreen.navigationOptions = () => ({
   headerLeft: <CloseButton />,
   title: 'Community',
 });
