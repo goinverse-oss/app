@@ -298,7 +298,7 @@
 				CODE_SIGN_ENTITLEMENTS = TheLiturgists/app.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
 				INFOPLIST_FILE = TheLiturgists/Info.plist;
@@ -323,7 +323,7 @@
 				CODE_SIGN_ENTITLEMENTS = TheLiturgists/app.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = RY59SG5RVW;
 				INFOPLIST_FILE = TheLiturgists/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
