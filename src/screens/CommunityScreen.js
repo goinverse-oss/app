@@ -3,25 +3,17 @@ import {
   View,
   StyleSheet,
   Text,
-  Button,
 } from 'react-native';
 
 import appStyles from '../styles';
-import { screenRelativeWidth } from '../components/utils';
 
 import CollapsibleStack from './CollapsibleStack';
+import CloseButton from '../navigation/CloseButton';
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  section: {
-    marginVertical: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: screenRelativeWidth(0.8),
   },
   header: {
     fontSize: 18,
@@ -89,7 +81,7 @@ const unofficialSocials = [
     url: 'https://join.slack.com/t/theliturgistsspace/shared_invite/enQtODY2MTA2OTI0NDIzLWZhYjIzZmQ3NTI3YTFiY2Q2M2M2NDQwODUwYmYzMTFhNmYwZmUwMWVmZWU4NmY3MzcwYzVkNDFlMWY1ZTAzMjI',
     description: `
       Originally created by The Liturgists, but now operated by a passionate community,
-      The Liturgist Space on Slack may be the most quirky and interesting community of all.
+      The Liturgists Space on Slack may be the most quirky and interesting community of all.
     `,
   },
 ];
@@ -117,10 +109,8 @@ const CommunityScreen = () => {
   );
 };
 
-CommunityScreen.navigationOptions = ({ navigation }) => ({
-  headerLeft: (
-    <Button onPress={() => navigation.goBack(null)} title="Close" />
-  ),
+CommunityScreen.navigationOptions = () => ({
+  headerLeft: <CloseButton />,
   title: 'Community',
 });
 
