@@ -61,7 +61,7 @@
     "expo-web-browser": "~8.1.0",
     "html-entities": "^1.2.1",
     "is-html": "^1.1.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "moment": "^2.20.1",
     "moment-duration-format": "^2.2.2",
     "moment-timezone": "^0.5.14",
