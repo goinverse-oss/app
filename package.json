@@ -35,7 +35,8 @@
     "prestorybook": "rnstl",
     "postinstall": "jetify && rndebugger-open --expo; patch-package; yarn pod",
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')",
-    "splash": "./scripts/splash.js"
+    "splash": "./scripts/splash.js",
+    "release": "standard-version"
   },
   "dependencies": {
     "@brlja/react-native-slider": "^0.12.1",
@@ -146,6 +147,8 @@
     "reactotron-redux": "^3",
     "rxjs-marbles": "^5.0.2",
     "source-map-support": "^0.5.6",
+    "standard-version": "^9.0.0",
+    "standard-version-expo": "^1.0.3",
     "xml2js": "^0.4.23",
     "yargs": "^15.3.1"
   },
