@@ -7,6 +7,7 @@
     "test": "jest",
     "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
     "flow": "flow",
+    "commit": "cz",
     "build:ios": "scripts/build.js ios",
     "build:android": "scripts/build.js android",
     "detox:build:ios": "detox build -c ios.sim.debug",
@@ -105,6 +106,8 @@
   },
   "devDependencies": {
     "@babel/core": "~7.8.6",
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^9.1.2",
     "@octokit/rest": "^15.2.3",
     "@storybook/addon-actions": "^3.3.10",
     "@storybook/addon-links": "^3.3.10",
@@ -116,6 +119,7 @@
     "babel-plugin-functional-hmr": "^1.0.24",
     "babel-preset-expo": "^8.1.0",
     "concurrently": "^3.5.1",
+    "cz-conventional-changelog": "3.3.0",
     "detox": "^16.4.1",
     "eslint": "^4.17.0",
     "eslint-config-airbnb": "^16.1.0",
@@ -124,6 +128,7 @@
     "eslint-plugin-react": "^7.10.0",
     "factory-girl": "^5.0.2",
     "flow-bin": "0.53.0",
+    "husky": "^4.3.0",
     "jest": "~24.9.0",
     "jest-expo": "^37.0.0",
     "jest-junit": "^3.4.1",
@@ -133,7 +138,6 @@
     "plist": "^3.0.1",
     "pluralize": "^7.0.0",
     "postinstall-postinstall": "^2.0.0",
-    "pre-commit": "^1.2.2",
     "react-dom": "16.9.0",
     "react-native-debugger-open": "^0.3.19",
     "react-native-storybook-loader": "^1.7.0",
@@ -159,11 +163,13 @@
     ]
   },
   "comment": "flow is disabled in pre-commit because react-navigation breaks it",
-  "pre-commit": [
-    "lint",
-    "test",
-    "validateci"
-  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn test && yarn validateci"
+    }
+  },
   "config": {
     "react-native-storybook-loader": {
       "searchDir": [
@@ -171,6 +177,9 @@
       ],
       "pattern": "**/*.stories.js",
       "outputFile": "./storybook/storyLoader.js"
+    },
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "detox": {
