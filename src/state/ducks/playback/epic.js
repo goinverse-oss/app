@@ -141,7 +141,6 @@ function startPlayback(state, item, shouldPlay = true) {
 
     infoPromise
       .catch((err) => {
-        console.log('Getting offline file info:', err);
         Sentry.captureException(err);
         return { exists: false };
       })
@@ -171,7 +170,6 @@ function startPlayback(state, item, shouldPlay = true) {
         subscriber.next(setSound(sound));
       })
       .catch((err) => {
-        console.log('error loading audio', mediaSource, err);
         Sentry.captureException(err);
         showError(new Error(`Failed to load URL: ${mediaSource.uri}`));
       });
@@ -260,7 +258,7 @@ const playEpic = (action$, state$) =>
 
       const sound = selectors.getSound(state);
       if (sound) {
-        sound.playAsync().catch(console.error);
+        sound.playAsync().catch(err => Sentry.captureException(err));
       }
       return Observable.never();
     }),
@@ -272,7 +270,7 @@ const pauseEpic = (action$, state$) =>
     mergeMap(() => {
       const sound = selectors.getSound(state$.value);
       if (sound) {
-        sound.pauseAsync().catch(console.error);
+        sound.pauseAsync().catch(err => Sentry.captureException(err));
       }
       return Observable.never();
     }),

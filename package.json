@@ -1,12 +1,11 @@
 {
-  "name": "app",
-  "version": "0.0.1",
+  "name": "@theliturgists/app",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
-    "flow": "flow",
+    "lint": "./node_modules/.bin/eslint --cache index.js ./src/* ./__tests__/*",
     "commit": "cz",
     "build:ios": "scripts/build.js ios",
     "build:android": "scripts/build.js android",
@@ -165,7 +164,6 @@
       "e2e"
     ]
   },
-  "comment": "flow is disabled in pre-commit because react-navigation breaks it",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
