@@ -20,17 +20,21 @@ module.exports = {
       updater: require.resolve('standard-version-expo/ios/increment'),
     },
 
-    // TODO: enable these when it works properly; see expo-community/standard-version-expo#9
-    // TODO: NOTE: this requires two bumps per file:
-    // TODO: NOTE: 1. The semver app release version
-    // TODO: NOTE: 2. The build number / version code
-    // {
-    //   filename: 'android/app/build.gradle',
-    //   updater: require.resolve('standard-version-expo/android/increment'),
-    // },
-    // {
-    //   filename: 'ios/TheLiturgists/Info.plist',
-    //   updater: require.resolve('standard-version-expo/ios/increment'),
-    // }
+    {
+      filename: 'android/app/build.gradle',
+      updater: require.resolve('standard-version-expo/android/native/app-version'),
+    },
+    {
+      filename: 'android/app/build.gradle',
+      updater: require.resolve('standard-version-expo/android/native/buildnum/increment'),
+    },
+    {
+      filename: 'ios/TheLiturgists/Info.plist',
+      updater: require.resolve('standard-version-expo/ios/native/app-version'),
+    },
+    {
+      filename: 'ios/TheLiturgists/Info.plist',
+      updater: require.resolve('standard-version-expo/ios/native/buildnum/increment'),
+    }
   ]
 };
