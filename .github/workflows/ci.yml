@@ -1,0 +1,232 @@
+# Adapted from https://github.com/edvinasbartkus/react-native-detox-github-actions
+
+name: Full CI/CD Pipeline
+
+on: [push]
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_12.2.app
+
+jobs:
+  cancel-previous:
+    runs-on: macos-latest
+
+    name: Cancel Previous Runs
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.token }}
+
+  eslint:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - uses: ktmud/cached-dependencies@v1
+
+      - name: Run eslint
+        run: |
+          mkdir -p reports/eslint
+          yarn lint --format junit --output-file reports/eslint/eslint.xml
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v1
+        if: always()
+        with:
+          report_paths: "reports/eslint/eslint.xml"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  unit-tests:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - uses: ktmud/cached-dependencies@v1
+
+      - name: Run tests
+        run: |
+          mkdir -p reports/jest
+          yarn test --ci --testResultsProcessor="jest-junit"
+        env:
+          JEST_JUNIT_OUTPUT: "reports/jest/js-test-results.xml"
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v1
+        if: always()
+        with:
+          report_paths: "reports/jest/js-test-results.xml"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  detox-ios:
+    runs-on: macos-latest
+
+    needs:
+      - unit-tests
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - uses: ktmud/cached-dependencies@v1
+        with:
+          caches: ${{ github.workspace }}/.github/workflows/caches/ios.js
+          bashlib: ${{ github.workspace }}/.github/workflows/bashlib/ios.sh
+
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
+      - name: Rebuild detox
+        run: detox clean-framework-cache && detox build-framework-cache
+
+      - name: Install simulator utils
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Run detox build and tests
+        run: |
+          rm -rf ios/build
+          yarn start 2>&1 >metro.log &
+          yarn wait-on http-get://localhost:8081
+          echo "checking if bundler is running"
+          ps aux | grep react-native
+          yarn detox:build:ios
+          echo "checking if bundler is running"
+          ps aux | grep react-native
+          sleep 30
+          echo "checking if bundler is running"
+          ps aux | grep react-native
+          yarn ci:detox:test:ios --cleanup
+
+      - name: Archive metro logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: metro logs
+          path: metro.log
+
+      - name: Archive e2e test artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: detox artifacts
+          path: artifacts
+
+      - name: Archive e2e test screenshots
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: detox screenshots
+          path: screenshots
+
+  detox-android:
+    runs-on: macos-latest
+
+    needs:
+      - unit-tests
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - uses: ktmud/cached-dependencies@v1
+
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
+      - name: Rebuild detox
+        run: detox clean-framework-cache && detox build-framework-cache
+
+      - name: Use specific Java version for sdkmanager to work
+        uses: joschi/setup-jdk@v2
+        with:
+          java-version: 'openjdk8'
+          architecture: 'x64'
+
+      - name: Download Android Emulator Image
+        run: |
+          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;default;x86"
+          echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name emu --device pixel --package 'system-images;android-29;default;x86'
+          $ANDROID_HOME/emulator/emulator -list-avds
+
+      - name: Create debug keystore
+        run: keytool -genkey -v -keystore android/keystores/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 1 -dname 'cn=Unknown, ou=Unknown, o=Unknown, l=Unknown, st=Unknown, c=Unknown'
+
+      - run: yarn ci:detox:build:android
+      
+      - name: Android Emulator
+        timeout-minutes: 10
+        continue-on-error: true
+        run: |
+          echo "Starting emulator"
+          nohup $ANDROID_HOME/emulator/emulator -avd emu -no-audio -no-snapshot -no-window &
+          $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+          $ANDROID_HOME/platform-tools/adb devices
+          echo "Emulator started; disabling animations"
+          $ANDROID_HOME/platform-tools/adb shell settings put global window_animation_scale 0.0
+          $ANDROID_HOME/platform-tools/adb shell settings put global transition_animation_scale 0.0
+          $ANDROID_HOME/platform-tools/adb shell settings put global animator_duration_scale 0.0
+          echo "Emulator ready"
+
+      - name: Run detox tests
+        run: |
+          yarn start 2>&1 | sed 's/^/[metro] /' &
+          yarn wait-on http-get://localhost:8081
+          echo "checking if bundler is running"
+          ps aux | grep react-native
+          sleep 30
+          echo "checking if bundler is running"
+          ps aux | grep react-native
+          yarn ci:detox:test:android --cleanup
+
+      - name: Archive e2e test artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: detox artifacts
+          path: artifacts
+
+      - name: Archive e2e test screenshots
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: detox screenshots
+          path: screenshots
+
+  expo-publish: 
+    runs-on: macos-latest
+    if: |
+      contains('
+        refs/heads/master
+        refs/heads/deploy-production
+        refs/heads/deploy-beta
+      ', github.ref)
+
+    needs:
+      - unit-tests
+      - detox-ios
+      - detox-android
+    env:
+      EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+      EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - uses: ktmud/cached-dependencies@v1
+      - name: install Expo CLI
+        run: yarn global add expo-cli@4.0.17
+      - name: Publish to Expo
+        run: yarn ci:deploy

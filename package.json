@@ -17,7 +17,6 @@
     "dev:android": "react-native run-android",
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
     "generate-icons": "app-icon generate -i ./assets/icon.png",
-    "validateci": "./scripts/validate-ci-config",
     "ci:deploy": "./ci/deploy-to-expo.sh",
     "ci:post-expo-comment": "./ci/post-expo-comment.js",
     "ci:detox:test:ios": "detox test -c ios.sim.debug --take-screenshots failing --record-videos failing --record-logs failing",
@@ -32,7 +31,7 @@
     "predev:ios": "./scripts/pre-ios-build",
     "predetox:build:ios": "./scripts/pre-ios-build",
     "prestorybook": "rnstl",
-    "postinstall": "jetify && rndebugger-open --expo; patch-package; yarn pod",
+    "postinstall": "jetify && rndebugger-open --expo; patch-package",
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')",
     "splash": "./scripts/splash.js",
     "release": "standard-version"
@@ -119,8 +118,9 @@
     "babel-plugin-functional-hmr": "^1.0.24",
     "babel-preset-expo": "^8.1.0",
     "concurrently": "^3.5.1",
+    "conventional-recommended-bump": "^6.0.11",
     "cz-conventional-changelog": "3.3.0",
-    "detox": "^16.4.1",
+    "detox": "^17",
     "eslint": "^4.17.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -148,6 +148,7 @@
     "source-map-support": "^0.5.6",
     "standard-version": "^9.0.0",
     "standard-version-expo": "^1.0.3",
+    "wait-on": "^5.2.0",
     "xml2js": "^0.4.23",
     "yargs": "^15.3.1"
   },
@@ -168,7 +169,7 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "yarn lint",
-      "pre-push": "yarn test && yarn validateci"
+      "pre-push": "yarn test"
     }
   },
   "config": {
@@ -199,7 +200,7 @@
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TheLiturgists.app",
-        "build": "xcodebuild -workspace ios/TheLiturgists.xcworkspace -scheme TheLiturgists -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "build": "xcodebuild -workspace ios/TheLiturgists.xcworkspace -scheme TheLiturgists -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build | tee artifacts/xcodebuild.log | xcpretty",
         "type": "ios.simulator",
         "device": {
           "type": "iPhone 8"
@@ -218,7 +219,7 @@
         "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_API_29_AOSP"
+          "avdName": "emu"
         }
       },
       "android.emu.release": {

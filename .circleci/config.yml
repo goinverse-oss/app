@@ -22,32 +22,6 @@ jobs:
           paths:
             - node_modules
 
-  install_dependencies_macos:
-    macos:
-      xcode: "11.3.1"
-    steps:
-      - checkout
-      - restore_cache:
-          key: js-deps-macos-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}
-      - run: yarn install --frozen-lockfile
-      - run:
-          name: pod install
-          command: pod install
-          working_directory: ~/project/ios
-
-      # DEBUG: why does `pod install` modify Podfile.lock?
-      - run: git status
-      - run: git --no-pager diff
-
-      # Workaround: revert any local modifications
-      - run: git checkout -- ios/Podfile.lock
-
-      - save_cache:
-          key: js-deps-macos-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}
-          paths:
-            - node_modules
-            - ios/Pods
-
   eslint:
     <<: *defaults
     steps:
@@ -90,134 +64,17 @@ jobs:
           key: js-deps-{{ checksum "yarn.lock" }}
       - run: yarn ci:deploy storybook
 
-  ios-e2e-tests:
-    macos:
-      xcode: "11.3.1"
-    steps:
-      - checkout
-      - restore_cache:
-          key: js-deps-macos-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}
-
-      # Obnoxiously, we have to re-run `pod install` here because Podfile.lock
-      # has spurious changes, and the build fails because it's out of sync
-      - run:
-          name: pod install
-          command: pod install
-          working_directory: ~/project/ios
-
-      - run:
-          name: Install simulator utils
-          command: |
-            brew tap wix/brew
-            brew install applesimutils
-
-      - run:
-          name: Install Detox CLI
-          command: npm install -g detox-cli
-      - run:
-          name: Rebuild Detox framework
-          command: |
-            detox clean-framework-cache && detox build-framework-cache
-
-      - run:
-          name: start react-native packager
-          command: yarn start
-          background: true
-      - run:
-          name: run detox build
-          command: yarn detox:build:ios
-      - run:
-          name: run detox tests
-          command: yarn ci:detox:test:ios --cleanup
-
-      - store_artifacts:
-          path: artifacts
-
-  # From https://spin.atomicobject.com/2019/12/03/android-emulator-circlecis-macos-executor/ 
-  android-e2e-tests:
-    macos:
-      xcode: "11.3.1"
-    steps:
-      - checkout
-      - run:
-          name: set ANDROID_SDK_ROOT
-          command: |
-            echo 'export ANDROID_SDK_ROOT=$HOME/android-tools'  >> $BASH_ENV
-
-      - restore_cache:
-          key: android=tools-v1-{{ checksum "ci/install-android-tools.sh" }}-{{ arch }}
-      - run:
-          name: install android tools
-          command: |
-            sh ci/install-android-tools.sh
-            echo 'export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH'  >> $BASH_ENV
-            echo 'export PATH=$ANDROID_SDK_ROOT/tools:$PATH'  >> $BASH_ENV
-            echo 'export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH'  >> $BASH_ENV
-            echo 'export PATH=$ANDROID_SDK_ROOT/emulator:$PATH'  >> $BASH_ENV
-            source $BASH_ENV
-            sdkmanager --list
-      - save_cache:
-          key: android=tools-v1-{{ checksum "ci/install-android-tools.sh" }}-{{ arch }}
-          paths:
-            - /Users/distiller/android-tools
-
-      - run:
-          name: create AVD
-          command: avdmanager create avd -n Pixel_API_29_AOSP -d pixel --package "system-images;android-29;default;x86_64"
-      - run:
-          name: start AVD
-          command: emulator -no-window -avd Pixel_API_29_AOSP
-          background: true
-      - run:
-          name: wait for emulator
-          command: adb wait-for-device shell 'while [[ -z $(getprop dev.bootcomplete) ]]; do sleep 1; done;'
-
-      - run: mkdir -p screenshots
-      - run: adb shell screencap -p > screenshots/before.png
-
-      - restore_cache:
-          key: js-deps-macos-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}
-      - run:
-          name: create debug keystore
-          command: keytool -genkey -v -keystore android/keystores/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 1 -dname 'cn=Unknown, ou=Unknown, o=Unknown, l=Unknown, st=Unknown, c=Unknown'
-      - run:
-          name: start react-native packager
-          command: yarn start
-          background: true
-      - run:
-          name: run detox build
-          command: yarn ci:detox:build:android
-      - run:
-          name: run detox tests
-          command: yarn ci:detox:test:android --cleanup
-
-      - store_artifacts:
-          path: screenshots
-      - store_artifacts:
-          path: artifacts
-
 workflows:
   version: 2
   main:
     jobs:
       - install_dependencies
-      - install_dependencies_macos
       - eslint:
           requires:
             - install_dependencies
       - unit_tests:
           requires:
             - install_dependencies
-      - ios-e2e-tests:
-          context: global
-          requires:
-            - install_dependencies_macos
-            - unit_tests
-      - android-e2e-tests:
-          context: global
-          requires:
-            - install_dependencies_macos
-            - unit_tests
       - deploy-app:
           context: global
           requires:
