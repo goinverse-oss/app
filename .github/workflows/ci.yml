@@ -204,17 +204,10 @@ jobs:
 
   expo-publish: 
     runs-on: macos-latest
-    if: |
-      contains('
-        refs/heads/master
-        refs/heads/deploy-production
-        refs/heads/deploy-beta
-      ', github.ref)
-
-    needs:
-      - unit-tests
-      - detox-ios
-      - detox-android
+    # needs:
+    #   - unit-tests
+    #   - detox-ios
+    #   - detox-android
     env:
       EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
       EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
