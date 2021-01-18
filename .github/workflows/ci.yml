@@ -202,12 +202,67 @@ jobs:
           name: detox screenshots
           path: screenshots
 
-  expo-publish: 
+  expo-publish-production:
     runs-on: macos-latest
-    # needs:
-    #   - unit-tests
-    #   - detox-ios
-    #   - detox-android
+    needs:
+      - unit-tests
+      - detox-ios
+      - detox-android
+    if: github.ref == 'refs/heads/master' || (contains(github.ref, 'refs/tags/') && !contains(github.ref, 'beta'))
+    environment:
+      name: Expo Production
+    env:
+      EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+      EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - uses: ktmud/cached-dependencies@v1
+      - name: install Expo CLI
+        run: yarn global add expo-cli@4.0.17
+      - name: Publish to Expo
+        run: yarn ci:deploy
+
+  expo-publish-beta:
+    runs-on: macos-latest
+    needs:
+      - unit-tests
+      - detox-ios
+      - detox-android
+    if: github.ref == 'refs/heads/beta' || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'beta'))
+    environment:
+      name: Expo Beta
+    env:
+      EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+      EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - uses: ktmud/cached-dependencies@v1
+      - name: install Expo CLI
+        run: yarn global add expo-cli@4.0.17
+      - name: Publish to Expo
+        run: yarn ci:deploy
+
+  expo-publish-pr: 
+    runs-on: macos-latest
+    needs:
+      - unit-tests
+      - detox-ios
+      - detox-android
+    if: |
+      !contains('
+        refs/heads/master
+        refs/heads/beta
+      ', github.ref) && !contains(github.ref, 'refs/tags/')
     env:
       EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
       EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
