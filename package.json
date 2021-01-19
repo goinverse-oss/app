@@ -18,6 +18,8 @@
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
     "generate-icons": "app-icon generate -i ./assets/icon.png",
     "ci:deploy": "./ci/deploy-to-expo.sh",
+    "ci:save-latest-changelog": "./ci/save-latest-changelog.sh",
+    "ci:write-android-changelog": "./ci/write-android-changelog.js",
     "ci:post-expo-comment": "./ci/post-expo-comment.js",
     "ci:detox:test:ios": "detox test -c ios.sim.debug --take-screenshots failing --record-videos failing --record-logs failing",
     "ci:detox:build:android": "detox build -c android.emu.ci",
@@ -34,7 +36,7 @@
     "postinstall": "jetify && rndebugger-open --expo; patch-package",
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')",
     "splash": "./scripts/splash.js",
-    "release": "standard-version"
+    "release": "standard-version --commit-all"
   },
   "dependencies": {
     "@brlja/react-native-slider": "^0.12.1",
@@ -105,6 +107,8 @@
   },
   "devDependencies": {
     "@babel/core": "~7.8.6",
+    "@brettdh/standard-version": "^9.1.1",
+    "@brettdh/standard-version-expo": "^1.1.0",
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^9.1.2",
     "@octokit/rest": "^15.2.3",
@@ -117,7 +121,9 @@
     "babel-jest": "~24.9.0",
     "babel-plugin-functional-hmr": "^1.0.24",
     "babel-preset-expo": "^8.1.0",
+    "changelog-parser": "^2.8.0",
     "concurrently": "^3.5.1",
+    "conventional-changelog": "^3.1.24",
     "conventional-recommended-bump": "^6.0.11",
     "cz-conventional-changelog": "3.3.0",
     "detox": "^17",
@@ -144,10 +150,12 @@
     "react-test-renderer": "16.0.0-beta.5",
     "reactotron-react-native": "^5",
     "reactotron-redux": "^3",
+    "remark": "^13.0.0",
+    "remark-cli": "^9.0.0",
+    "remark-html": "^13.0.1",
+    "rexreplace": "^6.0.14",
     "rxjs-marbles": "^5.0.2",
     "source-map-support": "^0.5.6",
-    "standard-version": "^9.0.0",
-    "standard-version-expo": "^1.0.3",
     "wait-on": "^5.2.0",
     "xml2js": "^0.4.23",
     "yargs": "^15.3.1"
@@ -164,6 +172,11 @@
       "/node_modules/",
       "e2e"
     ]
+  },
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "yarn ci:write-android-changelog"
+    }
   },
   "husky": {
     "hooks": {
