@@ -20,23 +20,6 @@ def run_build
 end
 
 platform :android do
-  desc "Bump the Android version code (build number)"
-  lane :beta_bump do
-    # Ensure that your git status is not dirty
-    ensure_git_status_clean
-
-    path = '../app/build.gradle'
-    re = /versionCode\s+(\d+)/
-
-    s = File.read(path)
-    versionCode = s[re, 1].to_i
-    s[re, 1] = (versionCode + 1).to_s
-
-    f = File.new(path, 'w')
-    f.write(s)
-    f.close
-  end
-
   lane :build do
     run_build
   end

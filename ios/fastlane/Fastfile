@@ -23,19 +23,6 @@ def run_build
 end
 
 platform :ios do
-  desc "Bump the build number and tag it"
-  lane :beta_bump do
-    # Ensure that your git status is not dirty
-    ensure_git_status_clean
-
-    # Increment the build number (not the version number)
-    # Providing the xcodeproj is optional
-    increment_build_number(xcodeproj: "TheLiturgists.xcodeproj")
-
-    # Commit the version bump
-    commit_version_bump(xcodeproj: "TheLiturgists.xcodeproj")
-  end
-
   desc "Run a new beta build (but don't upload it)"
   lane :build do
     run_build
