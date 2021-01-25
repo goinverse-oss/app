@@ -23,6 +23,13 @@ def run_build
 end
 
 platform :ios do
+  before_all do
+    if ENV.key? 'CI'
+      setup_ci
+      match(type: 'appstore')
+    end
+  end
+
   desc "Run a new beta build (but don't upload it)"
   lane :build do
     run_build

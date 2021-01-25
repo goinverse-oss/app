@@ -4,11 +4,7 @@ source $(dirname $0)/common.inc
 
 validate_required_env_vars EXPO_USERNAME EXPO_PASSWORD GITHUB_REF SENTRY_AUTH_TOKEN
 
-stage="production"
-api_url="https://${stage}.api.theliturgists.com"
-json -I -f config.json \
-  -e "this.apiBaseUrl='${api_url}'" \
-  -e "this.notificationScope='${stage}'"
+generate_app_config
 
 expo login -u "${EXPO_USERNAME}" -p "${EXPO_PASSWORD}"
 

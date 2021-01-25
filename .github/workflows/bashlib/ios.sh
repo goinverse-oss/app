@@ -1,18 +1,14 @@
 # Bash commands for cached-dependencies action
 # when building the iOS app.
 
+source $(dirname ${BASH_SOURCE[0]})/_gems.sh
+
 default-setup-command() {
   yarn-install
 
   cd ${GITHUB_WORKSPACE}/ios
 
-  cache-restore rubygems
-  echo "::group::Install Ruby Gems"
-  gem install xcpretty bundler --no-document
-  bundle config path vendor/bundle
-  bundle install
-  echo "::endgroup"
-  cache-save rubygems
+  install_gems
 
   cache-restore cocoapods
   echo "::group::Install iOS CocoaPods"

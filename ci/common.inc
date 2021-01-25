@@ -90,3 +90,11 @@ get_release_channel() {
   local channel="${prefix}-${major}"
   echo ${channel}
 }
+
+generate_app_config() {
+  local stage="production"
+  local api_url="https://${stage}.api.theliturgists.com"
+  json -I -f config.json \
+    -e "this.apiBaseUrl='${api_url}'" \
+    -e "this.notificationScope='${stage}'"
+}
