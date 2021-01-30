@@ -7,9 +7,14 @@ on:
 
 jobs:
   get_version:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     name: Get release version
     steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
       - run: echo ::set_output name=version::$(node -e 'console.log(require("./package.json").version)')
         id: get_version
     outputs:
@@ -21,6 +26,11 @@ jobs:
     environment:
       name: iOS Beta
     steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
       - uses: ktmud/cached-dependencies@v1
         with:
           caches: ${{ github.workspace }}/.github/workflows/caches/ios.js
@@ -53,6 +63,11 @@ jobs:
     environment:
       name: Android Beta
     steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
       - uses: ktmud/cached-dependencies@v1
         with:
           caches: ${{ github.workspace }}/.github/workflows/caches/android.js
@@ -75,12 +90,19 @@ jobs:
           path: metro.log
 
   github-release:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs:
       - get_version
       - deploy-ios
       - deploy-android
     steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - run: npm install -g rexreplace
+
       - name: extract changelog
         run: yarn ci:save-latest-changelog > CHANGELOG_LATEST.md
       - name: create release
