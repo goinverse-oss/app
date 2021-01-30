@@ -1,0 +1,90 @@
+name: Deploy to beta testing
+
+on:
+  push:
+    tags:
+      - v*-beta
+
+jobs:
+  get-version:
+    runs-on: macos-latest
+    name: Get release version
+    id: get_version
+    steps:
+      - run: echo ::set_output name=version::$(node -e 'console.log(require("./package.json").version)')
+        id: get_version
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+
+  deploy-ios:
+    runs-on: macos-latest
+    name: Deploy iOS beta to TestFlight
+    environment:
+      name: iOS Beta
+    steps:
+      - uses: ktmud/cached-dependencies@v1
+        with:
+          caches: ${{ github.workspace }}/.github/workflows/caches/ios.js
+          bashlib: ${{ github.workspace }}/.github/workflows/bashlib/ios.sh
+
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.FASTLANE_MATCH_DEPLOY_PRIVATE_KEY }}
+        
+      - run: yarn ci:generate-app-config
+      - run: |
+          yarn start 2>&1 >metro.log &
+          yarn wait-on http-get://localhost:8081
+          yarn beta:ios
+        env:
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
+
+      - name: Archive metro logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: metro logs (fastlane build, ios)
+          path: metro.log
+
+  deploy-android:
+    runs-on: macos-latest
+    name: Deploy Android beta to Google Play
+    environment:
+      name: Android Beta
+    steps:
+      - uses: ktmud/cached-dependencies@v1
+        with:
+          caches: ${{ github.workspace }}/.github/workflows/caches/android.js
+          bashlib: ${{ github.workspace }}/.github/workflows/bashlib/android.sh
+
+      - run: yarn ci:generate-app-config
+      - run: echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
+      - run: |
+          yarn start 2>&1 >metro.log &
+          yarn wait-on http-get://localhost:8081
+          yarn beta:android
+        env:
+          ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
+
+      - name: Archive metro logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: metro logs (fastlane build, android)
+          path: metro.log
+
+  github-release:
+    steps:
+      - name: extract changelog
+        id: get_changelog
+        run: yarn ci:save-latest-changelog > CHANGELOG_LATEST.md
+      - name: create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: Release ${{ jobs.get_version.outputs.version }}
+          tag_name: ${GITHUB_REF##*/}  # trim "refs/tags/"
+          body_path: CHANGELOG_LATEST.md

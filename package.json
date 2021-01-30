@@ -7,6 +7,8 @@
     "test": "jest",
     "lint": "./node_modules/.bin/eslint --cache index.js ./src/* ./__tests__/*",
     "commit": "cz",
+    "beta:ios": "scripts/build.sh ios beta",
+    "beta:android": "scripts/build.sh android beta",
     "build:ios": "scripts/build.sh ios build",
     "build:android": "scripts/build.sh android build",
     "detox:build:ios": "detox build -c ios.sim.debug",
@@ -31,6 +33,7 @@
     "pretest": "yarn generate-default-config",
     "preci:deploy": "yarn generate-default-config",
     "preci:generate-app-config": "yarn generate-default-config",
+    "prebeta:ios": "./scripts/pre-ios-build",
     "prebuild:ios": "./scripts/pre-ios-build",
     "predev:ios": "./scripts/pre-ios-build",
     "predetox:build:ios": "./scripts/pre-ios-build",
@@ -38,7 +41,8 @@
     "postinstall": "jetify && rndebugger-open --expo; patch-package",
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')",
     "splash": "./scripts/splash.js",
-    "release": "standard-version --commit-all"
+    "release": "standard-version --commit-all",
+    "release:beta": "yarn release --prerelease=beta"
   },
   "dependencies": {
     "@brlja/react-native-slider": "^0.12.1",

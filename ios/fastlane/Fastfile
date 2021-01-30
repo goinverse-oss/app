@@ -10,6 +10,8 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
+require 'json'
+
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
@@ -38,6 +40,9 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     run_build
-    upload_to_testflight
+
+    version = JSON.parse(File.read('./package.json'))["version"]
+    changelog = read_changelog(section_identifier: version)
+    upload_to_testflight(changelog: changelog)
   end
 end
