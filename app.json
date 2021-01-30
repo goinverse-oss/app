@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1-beta.0",
     "orientation": "portrait",
     "entryPoint": "index.js",
     "icon": "./assets/icon.png",
@@ -26,11 +26,13 @@
           "audio"
         ]
       },
-      "bundleIdentifier": "com.theliturgists.app"
+      "bundleIdentifier": "com.theliturgists.app",
+      "buildNumber": "1"
     },
     "android": {
       "package": "com.theliturgists.app",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 1
     },
     "hooks": {
       "postPublish": [
