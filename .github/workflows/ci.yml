@@ -2,7 +2,10 @@
 
 name: Full CI/CD Pipeline
 
-on: [push]
+on:
+  push:
+    branches:
+      - '*'
 
 env:
   DEVELOPER_DIR: /Applications/Xcode_12.2.app
