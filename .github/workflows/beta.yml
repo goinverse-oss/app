@@ -6,10 +6,9 @@ on:
       - 'v*-beta.*'
 
 jobs:
-  get-version:
+  get_version:
     runs-on: macos-latest
     name: Get release version
-    id: get_version
     steps:
       - run: echo ::set_output name=version::$(node -e 'console.log(require("./package.json").version)')
         id: get_version
@@ -83,7 +82,6 @@ jobs:
       - deploy-android
     steps:
       - name: extract changelog
-        id: get_changelog
         run: yarn ci:save-latest-changelog > CHANGELOG_LATEST.md
       - name: create release
         uses: actions/create-release@v1
