@@ -4,7 +4,7 @@
 source $(dirname ${BASH_SOURCE[0]})/_gems.sh
 
 default-setup-command() {
-  yarn-install
+  npm-install
 
   cd ${GITHUB_WORKSPACE}/ios
 

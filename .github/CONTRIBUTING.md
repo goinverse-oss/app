@@ -113,7 +113,7 @@ function square(n: number): number {
 }
 ```
 
-We use [eslint] to automatically check style rules. You can run eslint via `yarn lint`,
+We use [eslint] to automatically check style rules. You can run eslint via `npm run lint`,
 and it will be automatically run as a pre-commit hook. It can also be extremely helpful
 to configure the eslint plugin for your editor of choice, as this helps you find issues
 as you go rather than all at once when you commit. (details left as an exercise for the reader)

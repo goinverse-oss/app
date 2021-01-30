@@ -35,7 +35,7 @@ jobs:
       - name: Run eslint
         run: |
           mkdir -p reports/eslint
-          yarn lint --format junit --output-file reports/eslint/eslint.xml
+          npm run lint -- --format junit --output-file reports/eslint/eslint.xml
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v1
@@ -58,7 +58,7 @@ jobs:
       - name: Run tests
         run: |
           mkdir -p reports/jest
-          yarn test --ci --testResultsProcessor="jest-junit"
+          npm run test -- --ci --testResultsProcessor="jest-junit"
         env:
           JEST_JUNIT_OUTPUT: "reports/jest/js-test-results.xml"
 
@@ -89,11 +89,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.FASTLANE_MATCH_DEPLOY_PRIVATE_KEY }}
 
-      - run: yarn ci:generate-app-config
+      - run: npm run ci:generate-app-config
       - run: |
-          yarn start 2>&1 >metro.log &
-          yarn wait-on http-get://localhost:8081
-          yarn build:ios
+          npm start 2>&1 >metro.log &
+          $(npm bin)/wait-on http-get://localhost:8081
+          npm run build:ios
+        name: Build the app
         env:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
@@ -122,12 +123,13 @@ jobs:
           caches: ${{ github.workspace }}/.github/workflows/caches/android.js
           bashlib: ${{ github.workspace }}/.github/workflows/bashlib/android.sh
 
-      - run: yarn ci:generate-app-config
+      - run: npm run ci:generate-app-config
       - run: echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
       - run: |
-          yarn start 2>&1 >metro.log &
-          yarn wait-on http-get://localhost:8081
-          yarn build:android
+          npm start 2>&1 >metro.log &
+          $(npm bin)/wait-on http-get://localhost:8081
+          npm run build:android
+        name: Build the app
         env:
           ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
 
@@ -167,17 +169,17 @@ jobs:
       - name: Run detox build and tests
         run: |
           rm -rf ios/build
-          yarn start 2>&1 >metro.log &
-          yarn wait-on http-get://localhost:8081
+          npm start 2>&1 >metro.log &
+          $(npm bin)/wait-on http-get://localhost:8081
           echo "checking if bundler is running"
           ps aux | grep react-native
-          yarn detox:build:ios
+          npm run detox:build:ios
           echo "checking if bundler is running"
           ps aux | grep react-native
           sleep 30
           echo "checking if bundler is running"
           ps aux | grep react-native
-          yarn ci:detox:test:ios --cleanup
+          npm run ci:detox:test:ios -- --cleanup
 
       - name: Archive metro logs
         if: always()
@@ -233,7 +235,7 @@ jobs:
       - name: Create debug keystore
         run: keytool -genkey -v -keystore android/keystores/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 1 -dname 'cn=Unknown, ou=Unknown, o=Unknown, l=Unknown, st=Unknown, c=Unknown'
 
-      - run: yarn ci:detox:build:android
+      - run: npm run ci:detox:build:android
       
       - name: Android Emulator
         timeout-minutes: 10
@@ -251,14 +253,14 @@ jobs:
 
       - name: Run detox tests
         run: |
-          yarn start 2>&1 >metro.log &
-          yarn wait-on http-get://localhost:8081
+          npm start 2>&1 >metro.log &
+          $(npm bin)/wait-on http-get://localhost:8081
           echo "checking if bundler is running"
           ps aux | grep react-native
           sleep 30
           echo "checking if bundler is running"
           ps aux | grep react-native
-          yarn ci:detox:test:android --cleanup
+          npm run ci:detox:test:android -- --cleanup
 
       - name: Archive metro logs
         if: always()
@@ -302,9 +304,9 @@ jobs:
 
       - uses: ktmud/cached-dependencies@v1
       - name: install Expo CLI
-        run: yarn global add expo-cli@4.0.17
+        run: npm install -g expo-cli@4.0.17
       - name: Publish to Expo
-        run: yarn ci:deploy
+        run: npm run ci:deploy
 
   expo-publish-beta:
     runs-on: macos-latest
@@ -327,9 +329,9 @@ jobs:
 
       - uses: ktmud/cached-dependencies@v1
       - name: install Expo CLI
-        run: yarn global add expo-cli@4.0.17
+        run: npm install -g expo-cli@4.0.17
       - name: Publish to Expo
-        run: yarn ci:deploy
+        run: npm run ci:deploy
 
   expo-publish-pr: 
     runs-on: macos-latest
@@ -354,6 +356,6 @@ jobs:
 
       - uses: ktmud/cached-dependencies@v1
       - name: install Expo CLI
-        run: yarn global add expo-cli@4.0.17
+        run: npm install -g expo-cli@4.0.17
       - name: Publish to Expo
-        run: yarn ci:deploy
+        run: npm run ci:deploy

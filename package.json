@@ -27,12 +27,12 @@
     "ci:detox:test:ios": "detox test -c ios.sim.debug --take-screenshots failing --record-videos failing --record-logs failing",
     "ci:detox:build:android": "detox build -c android.emu.ci",
     "ci:detox:test:android": "detox test -c android.emu.ci --take-screenshots failing --record-videos failing --record-logs failing",
-    "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 yarn start'",
-    "prestart": "yarn generate-default-config",
-    "prelint": "yarn generate-default-config",
-    "pretest": "yarn generate-default-config",
-    "preci:deploy": "yarn generate-default-config",
-    "preci:generate-app-config": "yarn generate-default-config",
+    "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 npm start'",
+    "prestart": "npm run generate-default-config",
+    "prelint": "npm run generate-default-config",
+    "pretest": "npm run generate-default-config",
+    "preci:deploy": "npm run generate-default-config",
+    "preci:generate-app-config": "npm run generate-default-config",
     "prebeta:ios": "./scripts/pre-ios-build",
     "prebuild:ios": "./scripts/pre-ios-build",
     "predev:ios": "./scripts/pre-ios-build",
@@ -42,7 +42,7 @@
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')",
     "splash": "./scripts/splash.js",
     "release": "standard-version --commit-all",
-    "release:beta": "yarn release --prerelease=beta"
+    "release:beta": "npm run release -- --prerelease=beta"
   },
   "dependencies": {
     "@brlja/react-native-slider": "^0.12.1",
@@ -74,6 +74,7 @@
     "moment-duration-format": "^2.2.2",
     "moment-timezone": "^0.5.14",
     "numeral": "^2.0.6",
+    "patch-package": "^6.2.2",
     "path-browserify": "^1.0.0",
     "prop-types": "^15.6.0",
     "qs": "^6.6.0",
@@ -146,7 +147,6 @@
     "jest-junit": "^3.4.1",
     "json": "^9.0.6",
     "metro-react-native-babel-preset": "~0.56.4",
-    "patch-package": "^6.1.2",
     "plist": "^3.0.1",
     "pluralize": "^7.0.0",
     "postinstall-postinstall": "^2.0.0",
@@ -181,14 +181,14 @@
   },
   "standard-version": {
     "scripts": {
-      "postchangelog": "yarn ci:write-android-changelog"
+      "postchangelog": "npm run ci:write-android-changelog"
     }
   },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn lint",
-      "pre-push": "yarn test"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
     }
   },
   "config": {

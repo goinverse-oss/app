@@ -40,11 +40,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.FASTLANE_MATCH_DEPLOY_PRIVATE_KEY }}
         
-      - run: yarn ci:generate-app-config
+      - run: npm run ci:generate-app-config
       - run: |
-          yarn start 2>&1 >metro.log &
-          yarn wait-on http-get://localhost:8081
-          yarn beta:ios
+          npm start 2>&1 >metro.log &
+          $(npm bin)/wait-on http-get://localhost:8081
+          npm run beta:ios
+        name: Build and deploy
         env:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
@@ -73,12 +74,13 @@ jobs:
           caches: ${{ github.workspace }}/.github/workflows/caches/android.js
           bashlib: ${{ github.workspace }}/.github/workflows/bashlib/android.sh
 
-      - run: yarn ci:generate-app-config
+      - run: npm run ci:generate-app-config
       - run: echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
       - run: |
-          yarn start 2>&1 >metro.log &
-          yarn wait-on http-get://localhost:8081
-          yarn beta:android
+          npm start 2>&1 >metro.log &
+          $(npm bin)/wait-on http-get://localhost:8081
+          npm run beta:android
+        name: Build and deploy
         env:
           ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
 
@@ -104,7 +106,7 @@ jobs:
       - run: npm install -g rexreplace
 
       - name: extract changelog
-        run: yarn ci:save-latest-changelog > CHANGELOG_LATEST.md
+        run: npm run ci:save-latest-changelog > CHANGELOG_LATEST.md
       - name: create release
         uses: actions/create-release@v1
         env:

@@ -44,7 +44,7 @@ function execWithChild(cmd, options) {
     const filename = `android/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt`;
 
     // Note: if we don't explicitly close stdin, this hangs
-    const child = execWithChild('yarn run -s ci:save-latest-changelog', { timeout: 5000 });
+    const child = execWithChild('npm run -s ci:save-latest-changelog', { timeout: 5000 });
     child.stdin.end();
     const { stdout } = await child.done;
 

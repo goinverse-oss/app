@@ -54,7 +54,7 @@ get_release_channel() {
       bump=$(conventional-recommended-bump)
       if [[ "${bump}" == "major" ]]; then
         echo >&2 "Error: breaking changes not yet published in a major version"
-        echo >&2 "Run 'yarn release', push the branch, and try again"
+        echo >&2 "Run 'npm run release', push the branch, and try again"
         exit 1
       fi
     else

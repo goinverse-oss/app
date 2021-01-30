@@ -29,7 +29,6 @@ for both iOS and Android, built with React Native.
 
 1. Install [Homebrew](https://brew.sh/)
 1. `brew install node`
-1. `brew install yarn`
 1. `brew install watchman`
 
 ## Update dependencies
@@ -38,7 +37,7 @@ After first clone, and when new deps are added (i.e. if something breaks
 because a package is missing):
 
 ```sh
-$ yarn install   (or just 'yarn')
+$ npm install
 ```
 
 This will also run `pod install` in the `ios` directory to ensure iOS native
@@ -51,21 +50,21 @@ libraries are up to date.
 In one terminal:
 
 ```
-$ yarn start
+$ npm start
 ```
 
 In another terminal:
 
 ```
 # To open the iOS simulator and install + start the app:
-$ yarn ios
+$ npm run ios
 
 # To open the Android emulator:
 $ export ANDROID_HOME=/path/to/android/sdk
 $ ./scripts/launch-android-emulator
 
 # To build and install the app:
-$ yarn android
+$ npm run android
 ```
 
 ## Debugging
@@ -73,7 +72,7 @@ $ yarn android
 ### Method 1: Chrome / React Native Debugger
 
 1. Install [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
-   (optional, but recommended) and run `yarn` to set it up
+   (optional, but recommended) and run `npm install` to set it up
 1. [Open the debug menu](https://facebook.github.io/react-native/docs/debugging#accessing-the-in-app-developer-menu)
     and select "Debug Remote JS".
 
@@ -99,14 +98,14 @@ It also lets us quickly iterate on styling and tweaks and see the results immedi
 To start it up:
 ```sh
 # in one terminal
-$ yarn storybook
+$ npm run storybook
 
 # in another terminal
 $ open http://localhost:7007  # opens Storybook web UI
 ```
 This runs both the Storybook server and the Expo packaging server, using
 an `index.js` that registers the Storybook UI instead of the app as the root.
-To switch back to running the app, Ctrl-C the `yarn storybook` command, run `yarn start`
+To switch back to running the app, Ctrl-C the `npm run storybook` command, run `npm start`
 again, and 'Reload JS' in the simulator. You may have to reload a few times, or
 re-scan the QR code (on device), or re-initialize the simulator (using the Expo keyboard
 shortcut; e.g. `i` for iOS, `a` for Android).
