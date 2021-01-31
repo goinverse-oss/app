@@ -65,7 +65,7 @@
     "expo-linear-gradient": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "expo-splash-screen": "^0.2.0",
-    "expo-updates": "^0.2.0",
+    "expo-updates": "^0.2.14",
     "expo-web-browser": "~8.1.0",
     "html-entities": "^1.2.1",
     "is-html": "^1.1.0",
