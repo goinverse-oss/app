@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.1-beta.8",
+    "version": "1.0.1-beta.9",
     "orientation": "portrait",
     "entryPoint": "index.js",
     "icon": "./assets/icon.png",
@@ -27,12 +27,12 @@
         ]
       },
       "bundleIdentifier": "com.theliturgists.app",
-      "buildNumber": "26"
+      "buildNumber": "27"
     },
     "android": {
       "package": "com.theliturgists.app",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 21
+      "versionCode": 22
     },
     "hooks": {
       "postPublish": [
