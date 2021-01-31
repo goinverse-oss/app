@@ -91,22 +91,12 @@ jobs:
           ssh-private-key: ${{ secrets.FASTLANE_MATCH_DEPLOY_PRIVATE_KEY }}
 
       - run: npm run ci:generate-app-config
-      - run: |
-          npm start 2>&1 >metro.log &
-          $(npm bin)/wait-on http-get://localhost:8081
-          npm run build:ios
+      - run: npm run build:ios
         name: Build the app
         env:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
-
-      - name: Archive metro logs
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: metro logs (fastlane build, ios)
-          path: metro.log
 
   build-android:
     runs-on: macos-latest
@@ -130,20 +120,10 @@ jobs:
           echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
           echo "${{ secrets.GOOGLE_PLAY_AUTH_JSON_CONTENT }}" > android/google-play.json
         name: Put deployment creds in place
-      - run: |
-          npm start 2>&1 >metro.log &
-          $(npm bin)/wait-on http-get://localhost:8081
-          npm run build:android
+      - run: npm run build:android
         name: Build the app
         env:
           ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
-
-      - name: Archive metro logs
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: metro logs (fastlane build, android)
-          path: metro.log
 
   detox-ios:
     runs-on: macos-latest

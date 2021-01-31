@@ -42,22 +42,12 @@ jobs:
           ssh-private-key: ${{ secrets.FASTLANE_MATCH_DEPLOY_PRIVATE_KEY }}
         
       - run: npm run ci:generate-app-config
-      - run: |
-          npm start 2>&1 >metro.log &
-          $(npm bin)/wait-on http-get://localhost:8081
-          npm run beta:ios
+      - run: npm run beta:ios
         name: Build and deploy
         env:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
-
-      - name: Archive metro logs
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: metro logs (fastlane build, ios)
-          path: metro.log
 
   deploy-android:
     runs-on: macos-latest
@@ -82,20 +72,10 @@ jobs:
           echo "${{ secrets.GOOGLE_PLAY_AUTH_JSON_CONTENT }}" > android/google-play.json
         name: Put deployment creds in place
 
-      - run: |
-          npm start 2>&1 >metro.log &
-          $(npm bin)/wait-on http-get://localhost:8081
-          npm run beta:android
+      - run: npm run beta:android
         name: Build and deploy
         env:
           ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
-
-      - name: Archive metro logs
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: metro logs (fastlane build, android)
-          path: metro.log
 
   github-release:
     runs-on: ubuntu-latest
