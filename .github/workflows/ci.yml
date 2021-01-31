@@ -126,7 +126,10 @@ jobs:
           parallel: true
 
       - run: npm run ci:generate-app-config
-      - run: echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
+      - run: |
+          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
+          echo "${{ secrets.GOOGLE_PLAY_AUTH_JSON_CONTENT }}" > android/google-play.json
+        name: Put deployment creds in place
       - run: |
           npm start 2>&1 >metro.log &
           $(npm bin)/wait-on http-get://localhost:8081
