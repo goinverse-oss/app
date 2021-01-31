@@ -41,7 +41,8 @@ platform :ios do
   lane :beta do
     run_build
 
-    version = JSON.parse(File.read('../package.json'))["version"]
+    # This code runs in the ios/fastlane dir
+    version = JSON.parse(File.read('../../package.json'))["version"]
     changelog = read_changelog(section_identifier: version)
     upload_to_testflight(changelog: changelog)
   end
