@@ -6,7 +6,8 @@ source $(dirname ${BASH_SOURCE[0]})/_gems.sh
 default-setup-command() {
   npm-install
 
-  cd ${GITHUB_WORKSPACE}/android
-
-  install_gems
+  (
+    cd ${GITHUB_WORKSPACE}/android
+    install_gems
+  )
 }

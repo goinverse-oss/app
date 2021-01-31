@@ -6,13 +6,17 @@ source $(dirname ${BASH_SOURCE[0]})/_gems.sh
 default-setup-command() {
   npm-install
 
-  cd ${GITHUB_WORKSPACE}/ios
+  (
+    cd ${GITHUB_WORKSPACE}/ios
+    install_gems
+  )
 
-  install_gems
-
-  cache-restore cocoapods
-  echo "::group::Install iOS CocoaPods"
-  bundle exec pod install
-  echo "::endgroup"
-  cache-save cocoapods
+  (
+    cd ${GITHUB_WORKSPACE}/ios
+    cache-restore cocoapods
+    echo "::group::Install iOS CocoaPods"
+    bundle exec pod install
+    echo "::endgroup"
+    cache-save cocoapods
+  )
 }

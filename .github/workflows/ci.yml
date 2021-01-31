@@ -84,6 +84,7 @@ jobs:
         with:
           caches: ${{ github.workspace }}/.github/workflows/caches/ios.js
           bashlib: ${{ github.workspace }}/.github/workflows/bashlib/ios.sh
+          parallel: true
 
       - uses: webfactory/ssh-agent@v0.4.1
         with:
@@ -122,6 +123,7 @@ jobs:
         with:
           caches: ${{ github.workspace }}/.github/workflows/caches/android.js
           bashlib: ${{ github.workspace }}/.github/workflows/bashlib/android.sh
+          parallel: true
 
       - run: npm run ci:generate-app-config
       - run: echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
@@ -155,6 +157,7 @@ jobs:
         with:
           caches: ${{ github.workspace }}/.github/workflows/caches/ios.js
           bashlib: ${{ github.workspace }}/.github/workflows/bashlib/ios.sh
+          parallel: true
 
       - name: Install Detox CLI
         run: npm install -g detox-cli
