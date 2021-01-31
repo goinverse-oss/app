@@ -4,6 +4,9 @@ module.exports = {
       filename: 'package.json',
     },
     {
+      filename: 'package-lock.json',
+    },
+    {
       filename: 'app.json',
       updater: require.resolve('@brettdh/standard-version-expo'),
     },
