@@ -118,7 +118,7 @@ jobs:
       - run: npm run ci:generate-app-config
       - run: |
           echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
-          echo "${{ secrets.GOOGLE_PLAY_AUTH_JSON_CONTENT }}" > android/google-play.json
+          echo "${{ secrets.GOOGLE_PLAY_JSON_BASE64 }}" | base64 --decode > android/google-play.json
         name: Put deployment creds in place
       - run: npm run build:android
         name: Build the app
