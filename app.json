@@ -27,12 +27,12 @@
         ]
       },
       "bundleIdentifier": "com.theliturgists.app",
-      "buildNumber": "6"
+      "buildNumber": "23"
     },
     "android": {
       "package": "com.theliturgists.app",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 6
+      "versionCode": 18
     },
     "hooks": {
       "postPublish": [
