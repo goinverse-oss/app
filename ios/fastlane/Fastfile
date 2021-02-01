@@ -43,7 +43,15 @@ platform :ios do
 
     # This code runs in the ios/fastlane dir
     version = JSON.parse(File.read('../../package.json'))["version"]
-    changelog = read_changelog(section_identifier: version)
+    changelog = read_changelog(
+      # This function runs in the ios dir, so look one level up
+      changelog_path: "../CHANGELOG.md",
+      section_identifier: "[#{version}]",
+      excluded_markdown_elements: [],
+    )
+    if changelog.empty?
+      changelog = "Internal improvements and fixes only; (hopefully) nothing you'll notice."
+    end
     upload_to_testflight(changelog: changelog)
   end
 end

@@ -36,11 +36,8 @@ function execWithChild(cmd, options) {
 (async () => {
   try {
     const versionFile = 'android/app/build.gradle';
-    console.log(`reading ${versionFile}`);
     const versionFileContents = await readFile(versionFile, { encoding: 'utf8' });
-    console.log('got versionFileContents');
     const versionCode = readVersion(versionFileContents);
-    console.log(`got versionCode: ${versionCode}`);
     const filename = `android/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt`;
 
     // Note: if we don't explicitly close stdin, this hangs
@@ -48,7 +45,14 @@ function execWithChild(cmd, options) {
     child.stdin.end();
     const { stdout } = await child.done;
 
-    const html = await remark().use(remarkHtml).process(stdout);
+    // Trim first line, which contains the version info and github link.
+    // It's redundant, since the release notes will also show the version number.
+    let changelog = stdout.replace(/[^\n]+\n/, '');
+    if (changelog.trim().length === 0) {
+      changelog = "Internal improvements and fixes only; (hopefully) nothing you'll notice.";
+    }
+
+    const html = await remark().use(remarkHtml).process(changelog);
     await writeFile(filename, html);
 
     await execPromise(`git add ${filename}`);
