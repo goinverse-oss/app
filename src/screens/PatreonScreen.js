@@ -13,7 +13,6 @@ import {
 import { connect } from 'react-redux';
 
 import patreonButton from '../../assets/patreon_button_blank.png';
-import patreonBackground from '../../assets/patreon_bg.png';
 
 import CloseButton from '../navigation/CloseButton';
 
@@ -24,11 +23,8 @@ import appStyles from '../styles';
 import appPropTypes from '../propTypes';
 
 const styles = StyleSheet.create({
-  bg: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+  container: {
+    backgroundColor: '#000',
   },
   status: {
     justifyContent: 'center',
@@ -311,19 +307,18 @@ PatreonRefreshButton.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
+
 const PatreonScreen = props => (
-  <View style={appStyles.container}>
+  <View style={[appStyles.container, styles.container]}>
     <StatusBar barStyle="light-content" />
-    <ImageBackground style={styles.bg} source={patreonBackground}>
-      <PatreonStatus {...props} />
-      <PatreonRefreshButton {...props} />
-      <PatreonConnectButton {...props} />
-      {props.isPatron || (
-        <Text style={styles.disclaimer}>
-          {disclaimer}
-        </Text>
-      )}
-    </ImageBackground>
+    <PatreonStatus {...props} />
+    <PatreonRefreshButton {...props} />
+    <PatreonConnectButton {...props} />
+    {props.isPatron || (
+      <Text style={styles.disclaimer}>
+        {disclaimer}
+      </Text>
+    )}
   </View>
 );
 
