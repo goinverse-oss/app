@@ -109,3 +109,44 @@ To switch back to running the app, Ctrl-C the `npm run storybook` command, run `
 again, and 'Reload JS' in the simulator. You may have to reload a few times, or
 re-scan the QR code (on device), or re-initialize the simulator (using the Expo keyboard
 shortcut; e.g. `i` for iOS, `a` for Android).
+
+## Releasing the app
+
+The app has two components that we release:
+
+- The app that we publish in Apple/Google app stores
+- The over-the-air javascript-only updates that we publish to Expo
+
+Javascript-only updates are published to Expo on every push to `master`.
+To ensure that we don't push JS changes that are incompatible with the latest
+version in the app stores, we tie the Expo release channel to the related version of
+the app. The basic strategy we use is this:
+
+- Any semver release is a new app store version
+- Only major releases require a new expo release channel
+- Beta releases are simply new versions with a -beta.N tag, where N is the build number.
+
+The app uses standard-release to create new release tags and generate changelogs.
+When a release tag is pushed, a Github Action will trigger based on the tag name,
+which will handle automated release tasks. For instance, `npm run release:beta`
+will create a tag that, when pushed, will be deployed to TestFlight and the
+Google Play beta track.
+
+If you have access to push new tags, preparing a new release goes like this:
+
+```
+# Update changelog, bump version, and tag the release
+npm run release:beta  # for beta testing; OR
+npm run release       # for a new production release
+
+# Push the new release to Github, triggering release jobs
+git push --tags
+```
+
+After the new tag is pushed, someone with permission to approve deploys to
+the protected environments for the release type will need to manually approve
+the releases in the Github UI. After this is done, the new build will appear
+in App Store Connect and Google Play Console.
+
+NOTE: production release (non-beta) is not yet implemented, but it should be a
+relatively straightforward clone of the `beta.yml` action.
