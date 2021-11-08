@@ -30,6 +30,7 @@ jobs:
       - uses: actions/setup-node@v1 
         with:
           node-version: '12'
+      - uses: ruby/setup-ruby@v1
 
       - uses: ktmud/cached-dependencies@v1
         with:
@@ -59,6 +60,7 @@ jobs:
       - uses: actions/setup-node@v1 
         with:
           node-version: '12'
+      - uses: ruby/setup-ruby@v1
 
       - uses: ktmud/cached-dependencies@v1
         with:
