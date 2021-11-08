@@ -21,7 +21,7 @@ jobs:
       version: ${{ steps.get_version.outputs.version }}
 
   deploy-ios:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     name: Deploy iOS beta to TestFlight
     environment:
       name: iOS Beta
@@ -50,7 +50,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
 
   deploy-android:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     name: Deploy Android beta to Google Play
     environment:
       name: Android Beta

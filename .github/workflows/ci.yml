@@ -12,7 +12,7 @@ env:
 
 jobs:
   cancel-previous:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     name: Cancel Previous Runs
     steps:
@@ -22,7 +22,7 @@ jobs:
           access_token: ${{ github.token }}
 
   eslint:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     steps:
       - uses: actions/checkout@v1
@@ -45,7 +45,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   unit-tests:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     steps:
       - uses: actions/checkout@v1
@@ -70,7 +70,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   build-ios:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     needs:
       - unit-tests
@@ -99,7 +99,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
 
   build-android:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     needs:
       - unit-tests
@@ -126,7 +126,7 @@ jobs:
           ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
 
   detox-ios:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     needs:
       - unit-tests
@@ -189,7 +189,7 @@ jobs:
           path: screenshots
 
   detox-android:
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     needs:
       - unit-tests
@@ -270,7 +270,7 @@ jobs:
           path: screenshots
 
   expo-publish-production:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     needs:
       - unit-tests
       - detox-ios
@@ -295,7 +295,7 @@ jobs:
         run: npm run ci:deploy
 
   expo-publish-beta:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     needs:
       - unit-tests
       - detox-ios
@@ -320,7 +320,7 @@ jobs:
         run: npm run ci:deploy
 
   expo-publish-pr: 
-    runs-on: macos-latest
+    runs-on: macos-10.15
     needs:
       - unit-tests
       - detox-ios
