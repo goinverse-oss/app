@@ -1,6 +1,7 @@
-# The Liturgists App
+# Media Catalog Mobile App
 
-This is the Liturgists App for both iOS and Android built with React Native.
+This is an app for making media available to supporters of an organization,
+for both iOS and Android, built with React Native.
 
 ## Getting Started
 
