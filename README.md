@@ -150,3 +150,46 @@ in App Store Connect and Google Play Console.
 
 NOTE: production release (non-beta) is not yet implemented, but it should be a
 relatively straightforward clone of the `beta.yml` action.
+
+### Setup required for Github Actions
+
+There are a few steps required when setting up a new fork of this app. These will
+enable Github Actions to build and publish the app to the app stores, as well as
+publishing over-the-air updates (for your Javascript code) to Expo.
+
+1. Set up an [Expo] organization and project for the app.
+1. Create your app in [App Store Connect] (iOS) and [Google Play Console] (Android).
+1. Create a dedicated CI user in App Store Connect; save the username and pasword somewhere safe.
+1. Create a [service account] in Google Play; save the JSON configuration object somewhere safe.
+1. Create a [Sentry] account for tracking errors. You'll need an [auth token] as well.
+1. Once you've cloned this repo, create a **private** repo on Github; this will be used
+   with `fastlane match` to store your iOS signing certificates, Then, run these steps:
+   ```
+   cd ios
+   bundle install
+   bundle exec fastlane match
+   ```
+   Follow the [first-time setup instructions], using the private Git repo you created.
+
+[Expo]: https://expo.dev
+[App Store Connect]: https://appstoreconnect.apple.com/
+[Google Play Console]: https://play.google.com/console
+[service account]: https://developers.google.com/android-publisher/getting_started#using_a_service_account
+[Sentry]: https://sentry.io/
+[auth token]: https://docs.sentry.io/product/integrations/integration-platform/#internal-integrations
+[first-time setup instructions]: https://docs.fastlane.tools/actions/match/#usage
+
+### Secrets required for Github Actions
+
+| Secret name | Value |
+| ---- | ---- |
+| `ANDROID_RELEASE_KEYSTORE_BASE64` | Base64-encoded keystore file to use with your release builds | 
+| `ANDROID_RELEASE_PASSWORD` | Password for decrypting the release keystore | 
+| `EXPO_USERNAME` | Expo username for `expo publish` commands | 
+| `EXPO_PASSWORD` | Password for `$EXPO_USERNAME` | 
+| `FASTLANE_MATCH_DEPLOY_PRIVATE_KEY` | Private key for a deploy keypair that can read the fastlane keys repo | 
+| `FASTLANE_MATCH_PASSWORD` | Password you used to encrypt the keys repo | 
+| `FASTLANE_USER` | App Store Connect username, for use with Fastlane uploads | 
+| `FASTLANE_PASSWORD` | Password for `$FASTLANE_USER` | 
+| `GOOGLE_PLAY_JSON_BASE64` | Base64-encoded JSON object you got when you created the service account | 
+| `SENTRY_AUTH_TOKEN` | Auth token for Sentry internal integration | 
