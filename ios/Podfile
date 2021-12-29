@@ -52,3 +52,12 @@ post_install do |pi|
     end
   end
 end
+
+# https://stackoverflow.com/questions/47035899/react-native-image-not-showing-how-do-i-fix
+pre_install do |installer|
+  puts("Image fix for ios14: remove this when upgrading to >= 0.63.3")
+  find = "_currentFrame.CGImage;"
+  replace = "_currentFrame.CGImage ;} else { [super displayLayer:layer];"
+  op = `sed -ie "s/#{find}/#{replace}/" ../node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m`
+  puts("Image fix for ios14 done")
+end
