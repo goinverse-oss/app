@@ -1,0 +1,80 @@
+name: Deploy to beta testing
+
+on:
+  push:
+    tags:
+      - 'v*-beta.*'
+
+jobs:
+  get_version:
+    runs-on: ubuntu-latest
+    name: Get release version
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+
+      - run: echo ::set_output name=version::$(node -e 'console.log(require("./package.json").version)')
+        id: get_version
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+
+  deploy-ios:
+    runs-on: macos-10.15
+    name: Deploy iOS beta to TestFlight
+    environment:
+      name: iOS Beta
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+      - uses: ruby/setup-ruby@v1
+
+      - uses: ktmud/cached-dependencies@v1
+        with:
+          caches: ${{ github.workspace }}/.github/workflows/caches/ios.js
+          bashlib: ${{ github.workspace }}/.github/workflows/bashlib/ios.sh
+          parallel: true
+
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.FASTLANE_MATCH_DEPLOY_PRIVATE_KEY }}
+        
+      - run: npm run ci:generate-app-config
+      - run: npm run beta:ios
+        name: Build and deploy
+        env:
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
+
+  deploy-android:
+    runs-on: macos-10.15
+    name: Deploy Android beta to Google Play
+    environment:
+      name: Android Beta
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 
+        with:
+          node-version: '12'
+      - uses: ruby/setup-ruby@v1
+
+      - uses: ktmud/cached-dependencies@v1
+        with:
+          caches: ${{ github.workspace }}/.github/workflows/caches/android.js
+          bashlib: ${{ github.workspace }}/.github/workflows/bashlib/android.sh
+          parallel: true
+
+      - run: npm run ci:generate-app-config
+      - run: |
+          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > android/keystores/release.keystore
+          echo "${{ secrets.GOOGLE_PLAY_JSON_BASE64 }}" | base64 --decode > android/google-play.json
+        name: Put deployment creds in place
+
+      - run: npm run beta:android
+        name: Build and deploy
+        env:
+          ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}

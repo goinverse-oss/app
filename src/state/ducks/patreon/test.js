@@ -18,7 +18,7 @@ import * as selectors from './selectors';
 
 describe('patreon reducer', () => {
   let store;
-  const token = { liturgistsToken: 'foo' };
+  const token = { patreonShimToken: 'foo' };
 
   beforeEach(() => {
     ({ store } = configureStore({ noEpic: true }));

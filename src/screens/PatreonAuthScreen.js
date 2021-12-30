@@ -85,7 +85,6 @@ const PatreonAuthScreen = ({ navigation }) => {
       }
 
       const msg = 'Got link event without expected token';
-      console.error(msg, event);
       throw new Error(msg);
     };
 
@@ -180,6 +179,7 @@ const PatreonAuthScreen = ({ navigation }) => {
       onMessage={(event) => {
         const { type, data } = JSON.parse(event.nativeEvent.data);
         if (type === 'log') {
+          // eslint-disable-next-line no-console
           console.log(`[webview] ${data}`);
         } else if (type === 'nav') {
           if (data === 'https://www.patreon.com/auth/verify-device') {

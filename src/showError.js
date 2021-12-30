@@ -7,6 +7,7 @@ export function setDropdown(d) {
 }
 
 export default function showError(error) {
+  // eslint-disable-next-line no-console
   console.log(error);
 
   if (!dropdown) {

@@ -44,3 +44,20 @@ target 'TheLiturgists' do
   # react-native-cli autolinking
   use_native_modules!
 end
+
+post_install do |pi|
+  pi.pods_project.targets.each do |t|
+    t.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+    end
+  end
+end
+
+# https://stackoverflow.com/questions/47035899/react-native-image-not-showing-how-do-i-fix
+pre_install do |installer|
+  puts("Image fix for ios14: remove this when upgrading to >= 0.63.3")
+  find = "_currentFrame.CGImage;"
+  replace = "_currentFrame.CGImage ;} else { [super displayLayer:layer];"
+  op = `sed -ie "s/#{find}/#{replace}/" ../node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m`
+  puts("Image fix for ios14 done")
+end

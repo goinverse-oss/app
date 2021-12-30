@@ -16,25 +16,31 @@ const patronPodcastsTopicName = 'new-patron-podcast';
 const patronMeditationsTopicName = 'new-patron-meditation';
 // const patronLiturgiesTopicName = 'new-patron-liturgy';
 
+function forEachScopedTopic(topic, callback) {
+  // this won't include individual dev topics, but
+  // the vast majority of installations won't notice.
+  const scopes = ['', 'staging', 'production'];
+  const topics = scopes.map(scope => `${scope}${scope === '' ? '' : '-'}${topic}`);
+  topics.forEach(callback);
+}
+
 function subscribe(topic) {
+  // Unsubscribe old clients from old topics before upgrade
+  forEachScopedTopic(topic, t => messaging().unsubscribeFromTopic(t));
+
   const scope = config.notificationScope;
   const scopedTopic = `${topic}-${scope}`;
-  console.log(`Subscribing to topic: "${scopedTopic}"`);
   messaging().subscribeToTopic(scopedTopic);
-
-  // Unsubscribe old clients from the unscoped topic after upgrade
-  messaging().unsubscribeFromTopic(topic);
 }
 
 function unsubscribe(topic) {
   const scope = config.notificationScope;
   const scopedTopic = `${topic}-${scope}`;
-  console.log(`Unsubscribing from topic: "${scopedTopic}"`);
   messaging().unsubscribeFromTopic(scopedTopic);
 
   // Keep unsubscribing from unscoped topic for a while to allow
   // all clients to upgrade. Can remove before launch.
-  messaging().unsubscribeFromTopic(topic);
+  forEachScopedTopic(topic, t => messaging().unsubscribeFromTopic(t));
 }
 
 const registerEpic = action$ =>

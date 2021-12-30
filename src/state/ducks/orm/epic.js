@@ -70,7 +70,7 @@ function getAsset(client, key) {
 function patreonAuthHeader(state) {
   const token = authSelectors.token(state);
   return token ? {
-    'x-theliturgists-token': token,
+    'x-patreonshim-token': token,
   } : {};
 }
 

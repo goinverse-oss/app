@@ -1,14 +1,16 @@
 {
-  "name": "app",
-  "version": "0.0.1",
+  "name": "@theliturgists/app",
+  "version": "1.0.1-beta.13",
   "private": true,
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "./node_modules/.bin/eslint index.js ./src/* ./__tests__/*",
-    "flow": "flow",
-    "build:ios": "scripts/build.js ios",
-    "build:android": "scripts/build.js android",
+    "lint": "./node_modules/.bin/eslint --cache index.js ./src/* ./__tests__/*",
+    "commit": "cz",
+    "beta:ios": "scripts/build.sh ios beta",
+    "beta:android": "scripts/build.sh android beta",
+    "build:ios": "scripts/build.sh ios build",
+    "build:android": "scripts/build.sh android build",
     "detox:build:ios": "detox build -c ios.sim.debug",
     "detox:test:ios": "detox test -c ios.sim.debug",
     "detox:build:android": "detox build -c android.emu.debug",
@@ -17,24 +19,30 @@
     "dev:android": "react-native run-android",
     "generate-default-config": "[ -f config.json ] || cp config.json.example config.json",
     "generate-icons": "app-icon generate -i ./assets/icon.png",
-    "validateci": "./scripts/validate-ci-config",
     "ci:deploy": "./ci/deploy-to-expo.sh",
+    "ci:generate-app-config": "./ci/generate-app-config.sh",
+    "ci:save-latest-changelog": "./ci/save-latest-changelog.sh",
+    "ci:write-android-changelog": "./ci/write-android-changelog.js",
     "ci:post-expo-comment": "./ci/post-expo-comment.js",
     "ci:detox:test:ios": "detox test -c ios.sim.debug --take-screenshots failing --record-videos failing --record-logs failing",
     "ci:detox:build:android": "detox build -c android.emu.ci",
     "ci:detox:test:android": "detox test -c android.emu.ci --take-screenshots failing --record-videos failing --record-logs failing",
-    "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 yarn start'",
-    "prestart": "yarn generate-default-config",
-    "prelint": "yarn generate-default-config",
-    "pretest": "yarn generate-default-config",
-    "preci:deploy": "yarn generate-default-config",
+    "storybook": "concurrently -k --raw 'storybook start -p 7007 --skip-packager' 'REACT_NATIVE_USE_STORYBOOK=1 npm start'",
+    "prestart": "npm run generate-default-config",
+    "prelint": "npm run generate-default-config",
+    "pretest": "npm run generate-default-config",
+    "preci:deploy": "npm run generate-default-config",
+    "preci:generate-app-config": "npm run generate-default-config",
+    "prebeta:ios": "./scripts/pre-ios-build",
     "prebuild:ios": "./scripts/pre-ios-build",
     "predev:ios": "./scripts/pre-ios-build",
     "predetox:build:ios": "./scripts/pre-ios-build",
     "prestorybook": "rnstl",
-    "postinstall": "jetify && rndebugger-open --expo; patch-package; yarn pod",
+    "postinstall": "jetify && rndebugger-open --expo; patch-package",
     "pod": "(cd ios; hash pod 2>/dev/null && pod install || echo 'Cocoapods not installed; skipping `pod install`')",
-    "splash": "./scripts/splash.js"
+    "splash": "./scripts/splash.js",
+    "release": "standard-version --commit-all",
+    "release:beta": "npm run release -- --prerelease=beta"
   },
   "dependencies": {
     "@brlja/react-native-slider": "^0.12.1",
@@ -57,7 +65,7 @@
     "expo-linear-gradient": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "expo-splash-screen": "^0.2.0",
-    "expo-updates": "^0.2.0",
+    "expo-updates": "^0.2.14",
     "expo-web-browser": "~8.1.0",
     "html-entities": "^1.2.1",
     "is-html": "^1.1.0",
@@ -66,6 +74,7 @@
     "moment-duration-format": "^2.2.2",
     "moment-timezone": "^0.5.14",
     "numeral": "^2.0.6",
+    "patch-package": "^6.2.2",
     "path-browserify": "^1.0.0",
     "prop-types": "^15.6.0",
     "qs": "^6.6.0",
@@ -105,6 +114,10 @@
   },
   "devDependencies": {
     "@babel/core": "~7.8.6",
+    "@brettdh/standard-version": "^9.1.1",
+    "@brettdh/standard-version-expo": "^1.1.1",
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^9.1.2",
     "@octokit/rest": "^15.2.3",
     "@storybook/addon-actions": "^3.3.10",
     "@storybook/addon-links": "^3.3.10",
@@ -115,8 +128,12 @@
     "babel-jest": "~24.9.0",
     "babel-plugin-functional-hmr": "^1.0.24",
     "babel-preset-expo": "^8.1.0",
+    "changelog-parser": "^2.8.0",
     "concurrently": "^3.5.1",
-    "detox": "^16.4.1",
+    "conventional-changelog": "^3.1.24",
+    "conventional-recommended-bump": "^6.0.11",
+    "cz-conventional-changelog": "3.3.0",
+    "detox": "^17",
     "eslint": "^4.17.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -124,24 +141,28 @@
     "eslint-plugin-react": "^7.10.0",
     "factory-girl": "^5.0.2",
     "flow-bin": "0.53.0",
+    "husky": "^4.3.0",
     "jest": "~24.9.0",
     "jest-expo": "^37.0.0",
     "jest-junit": "^3.4.1",
     "json": "^9.0.6",
     "metro-react-native-babel-preset": "~0.56.4",
-    "patch-package": "^6.1.2",
     "plist": "^3.0.1",
     "pluralize": "^7.0.0",
     "postinstall-postinstall": "^2.0.0",
-    "pre-commit": "^1.2.2",
     "react-dom": "16.9.0",
     "react-native-debugger-open": "^0.3.19",
     "react-native-storybook-loader": "^1.7.0",
     "react-test-renderer": "16.0.0-beta.5",
     "reactotron-react-native": "^5",
     "reactotron-redux": "^3",
+    "remark": "^13.0.0",
+    "remark-cli": "^9.0.0",
+    "remark-html": "^13.0.1",
+    "rexreplace": "^6.0.14",
     "rxjs-marbles": "^5.0.2",
     "source-map-support": "^0.5.6",
+    "wait-on": "^5.2.0",
     "xml2js": "^0.4.23",
     "yargs": "^15.3.1"
   },
@@ -158,12 +179,18 @@
       "e2e"
     ]
   },
-  "comment": "flow is disabled in pre-commit because react-navigation breaks it",
-  "pre-commit": [
-    "lint",
-    "test",
-    "validateci"
-  ],
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "npm run ci:write-android-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
+    }
+  },
   "config": {
     "react-native-storybook-loader": {
       "searchDir": [
@@ -171,6 +198,9 @@
       ],
       "pattern": "**/*.stories.js",
       "outputFile": "./storybook/storyLoader.js"
+    },
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "detox": {
@@ -189,7 +219,7 @@
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TheLiturgists.app",
-        "build": "xcodebuild -workspace ios/TheLiturgists.xcworkspace -scheme TheLiturgists -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "build": "xcodebuild -workspace ios/TheLiturgists.xcworkspace -scheme TheLiturgists -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build | tee artifacts/xcodebuild.log | xcpretty",
         "type": "ios.simulator",
         "device": {
           "type": "iPhone 8"
@@ -208,7 +238,7 @@
         "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_API_29_AOSP"
+          "avdName": "emu"
         }
       },
       "android.emu.release": {

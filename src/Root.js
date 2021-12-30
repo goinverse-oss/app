@@ -19,6 +19,7 @@ import { shouldShowWelcome } from './state/ducks/welcome/selectors';
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   // this is only defined because firebase yells if it's missing.
+  // eslint-disable-next-line no-console
   console.log('Background message: ', remoteMessage);
 });
 

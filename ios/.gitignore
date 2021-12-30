@@ -1,2 +1,3 @@
 *.app.dSYM.zip
 build/
+vendor/

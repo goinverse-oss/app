@@ -1,5 +1,5 @@
 app_identifier("com.theliturgists.app") # The bundle identifier of your app
-apple_id("brett.higgins@gmail.com") # Your Apple email address
+apple_id(ENV['FASTLANE_USER']) # Your Apple email address
 
 itc_team_id("119994817") # App Store Connect Team ID
 team_id("RY59SG5RVW") # Developer Portal Team ID

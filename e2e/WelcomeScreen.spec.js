@@ -17,26 +17,26 @@ describe('Welcome Screen', () => {
 
     await element(by.id('navNext')).tap();
 
-    await expect(element(by.id('navSkip'))).toBeNotVisible();
+    await expect(element(by.id('navSkip'))).not.toBeVisible();
     await expect(element(by.id('navBack'))).toBeVisible();
     await expect(element(by.id('navNext'))).toBeVisible();
-    await expect(element(by.id('welcomeText1'))).toBeNotVisible();
+    await expect(element(by.id('welcomeText1'))).not.toBeVisible();
     await expect(element(by.id('welcomeText2'))).toBeVisible();
 
     await element(by.id('navNext')).tap();
 
-    await expect(element(by.id('navSkip'))).toBeNotVisible();
+    await expect(element(by.id('navSkip'))).not.toBeVisible();
     await expect(element(by.id('navBack'))).toBeVisible();
     await expect(element(by.id('navNext'))).toBeVisible();
-    await expect(element(by.id('welcomeText2'))).toBeNotVisible();
+    await expect(element(by.id('welcomeText2'))).not.toBeVisible();
     await expect(element(by.id('welcomeText3'))).toBeVisible();
 
     await element(by.id('navNext')).tap();
 
-    await expect(element(by.id('navSkip'))).toBeNotVisible();
+    await expect(element(by.id('navSkip'))).not.toBeVisible();
     await expect(element(by.id('navBack'))).toBeVisible();
-    await expect(element(by.id('navNext'))).toBeNotVisible();
-    await expect(element(by.id('welcomeText3'))).toBeNotVisible();
+    await expect(element(by.id('navNext'))).not.toBeVisible();
+    await expect(element(by.id('welcomeText3'))).not.toBeVisible();
     await expect(element(by.id('welcomeText4'))).toBeVisible();
     await expect(element(by.id('continueButton'))).toBeVisible();
 

@@ -1,4 +1,4 @@
-git_url("git@github.com:brettdh/theliturgists-keys.git")
+git_url("git@github.com:theliturgists/fastlane-keys.git")
 
 storage_mode("git")
 

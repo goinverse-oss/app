@@ -38,7 +38,7 @@ PODS:
   - EXSQLite (8.1.0):
     - UMCore
     - UMFileSystemInterface
-  - EXUpdates (0.2.5):
+  - EXUpdates (0.2.14):
     - React
     - UMCore
   - EXWebBrowser (8.2.1):
@@ -445,7 +445,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - boost-for-react-native
     - Firebase
     - FirebaseAnalytics
@@ -604,7 +604,7 @@ SPEC CHECKSUMS:
   EXSecureStore: 7a03e21e80ae59bf8e86c55e7a400f60db2da639
   EXSplashScreen: 3bcc9a6fbedc1a3897428694654b3f8bc0261af6
   EXSQLite: 877ad6c8eb169353a2f94d5ad26510ffadd46a1f
-  EXUpdates: f1c36ea0745b730e09aca1744884917f8ca6bd60
+  EXUpdates: 8c4570807f9435337769850d9976d63a407cecfc
   EXWebBrowser: 5902f99ac5ac551e5c82ff46f13a337b323aa9ea
   FBLazyVector: aaeaf388755e4f29cd74acbc9e3b8da6d807c37f
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
@@ -667,6 +667,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: cb890c79c63885504ddc0efd7a7d01481760aca2
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 33bc8e133daf78e53a356aab77342afcbcb530fa
+PODFILE CHECKSUM: 76ae0432cd2286bf35cbc35ed2581b2b6a10d937
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.9.3
