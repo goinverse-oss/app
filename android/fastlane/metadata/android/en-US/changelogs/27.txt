@@ -1,0 +1,4 @@
+<h3>Bug Fixes</h3>
+<ul>
+<li>apply patch for RN bug prior to version 63 (<a href="https://github.com/theliturgists/app/commit/a1e6e2e39c620be3f79f186d72030960a5944192">a1e6e2e</a>)</li>
+</ul>

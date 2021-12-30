@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.1-beta.14 (2021-12-30)
+
+
+### Bug Fixes
+
+* apply patch for RN bug prior to version 63 ([a1e6e2e](https://github.com/theliturgists/app/commit/a1e6e2e39c620be3f79f186d72030960a5944192))
+
 ### [1.0.1-beta.13](https://github.com/theliturgists/app/compare/v1.0.1-beta.12...v1.0.1-beta.13) (2021-11-08)
 
 ### [1.0.1-beta.12](https://github.com/theliturgists/app/compare/v1.0.1-beta.11...v1.0.1-beta.12) (2021-11-08)
