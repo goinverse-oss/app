@@ -1,6 +1,6 @@
 {
   "name": "@theliturgists/app",
-  "version": "1.0.1-beta.14",
+  "version": "1.0.1-beta.15",
   "private": true,
   "scripts": {
     "start": "react-native start",
