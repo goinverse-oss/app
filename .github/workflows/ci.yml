@@ -12,7 +12,7 @@ env:
 
 jobs:
   cancel-previous:
-    runs-on: macos-10.15
+    runs-on: ubuntu-latest
 
     name: Cancel Previous Runs
     steps:
