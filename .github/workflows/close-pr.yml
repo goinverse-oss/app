@@ -12,4 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: ./ci/unpublish-expo-release-channel.sh
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: ./ci/unpublish-expo-release-channel.sh ${{ github.event.pull_request.head.ref }}
