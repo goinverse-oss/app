@@ -12,4 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: ./ci/unpublish-expo-release-channel.sh
+        with:
+          # Use the PR ref here, which exists even after the branch is deleted
+          ref: refs/pull/${{ github.event.pull_request.number }}/head
+
+      # Here, however, we need the branch name, since that's what we use
+      # to name the expo release channel
+      - run: ./ci/unpublish-expo-release-channel.sh ${{ github.event.pull_request.head.ref }}
