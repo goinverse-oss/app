@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1-beta.16](https://github.com/theliturgists/app/compare/v1.0.1-beta.15...v1.0.1-beta.16) (2022-01-04)
+
+
+### Bug Fixes
+
+* upgrade okhttp to avoid strict mode errors ([857fd71](https://github.com/theliturgists/app/commit/857fd71fdd3ffdaac13a61dc01cc681ba75ee3b6))
+
 ### [1.0.1-beta.15](https://github.com/theliturgists/app/compare/v1.0.1-beta.14...v1.0.1-beta.15) (2022-01-02)
 
 ### 1.0.1-beta.14 (2021-12-30)

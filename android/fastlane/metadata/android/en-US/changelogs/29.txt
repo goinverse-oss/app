@@ -1,0 +1,4 @@
+<h3>Bug Fixes</h3>
+<ul>
+<li>upgrade okhttp to avoid strict mode errors (<a href="https://github.com/theliturgists/app/commit/857fd71fdd3ffdaac13a61dc01cc681ba75ee3b6">857fd71</a>)</li>
+</ul>
