@@ -189,7 +189,8 @@ publishing over-the-air updates (for your Javascript code) to Expo.
 | `EXPO_PASSWORD` | Password for `$EXPO_USERNAME` | 
 | `FASTLANE_MATCH_DEPLOY_PRIVATE_KEY` | Private key for a deploy keypair that can read the fastlane keys repo | 
 | `FASTLANE_MATCH_PASSWORD` | Password you used to encrypt the keys repo | 
-| `FASTLANE_USER` | App Store Connect username, for use with Fastlane uploads | 
-| `FASTLANE_PASSWORD` | Password for `$FASTLANE_USER` | 
+| `APP_STORE_CONNECT_API_KEY_KEY_ID` | App Store Connect API key ID, for use with Fastlane uploads | 
+| `APP_STORE_CONNECT_API_KEY_ISSUER_ID` | "Issuer ID" UUID for the App Store Connect API key | 
+| `APP_STORE_CONNECT_API_KEY_KEY` | base64-encoded content of the `.p8` file (from "Download API Key") | 
 | `GOOGLE_PLAY_JSON_BASE64` | Base64-encoded JSON object you got when you created the service account | 
 | `SENTRY_AUTH_TOKEN` | Auth token for Sentry internal integration | 

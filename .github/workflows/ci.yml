@@ -95,9 +95,10 @@ jobs:
       - run: npm run build:ios
         name: Build the app
         env:
-          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
 
   build-android:
     runs-on: macos-10.15
