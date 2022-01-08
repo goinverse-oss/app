@@ -17,6 +17,8 @@ require 'json'
 
 default_platform(:ios)
 
+api_key = nil
+
 def run_build
   build_app(
     workspace: "TheLiturgists.xcworkspace",
@@ -28,7 +30,11 @@ platform :ios do
   before_all do
     if ENV.key? 'CI'
       setup_ci
-      match(type: 'appstore')
+      api_key = app_store_connect_api_key(
+        in_house: false,
+        is_key_content_base64: true
+      )
+      match(type: 'appstore', api_key: api_key)
     end
   end
 
@@ -52,6 +58,6 @@ platform :ios do
     if changelog.empty?
       changelog = "Internal improvements and fixes only; (hopefully) nothing you'll notice."
     end
-    upload_to_testflight(changelog: changelog)
+    upload_to_testflight(changelog: changelog, api_key: api_key)
   end
 end
