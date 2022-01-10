@@ -330,7 +330,7 @@ PatreonScreen.propTypes = {
 };
 
 PatreonScreen.navigationOptions = () => ({
-  headerLeft: <CloseButton />,
+  headerLeft: () => <CloseButton />,
   headerTransparent: true,
 });
 

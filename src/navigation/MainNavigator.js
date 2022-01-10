@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated, StyleSheet, Dimensions, Platform, View } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import DropdownAlert from 'react-native-dropdownalert';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -41,9 +41,9 @@ const HomeNavigator = createStackNavigator({
   Home: HomeScreen,
 }, {
   navigationOptions: {
+    headerTitleAlign: 'center',
     tabBarIcon: HomeIcon,
   },
-  headerLayoutPreset: 'center',
 });
 
 const PodcastsNavigator = createStackNavigator({
@@ -53,7 +53,9 @@ const PodcastsNavigator = createStackNavigator({
   Contributor: ContributorScreen,
   SearchResults: SearchResultsScreen,
 }, {
-  headerLayoutPreset: 'center',
+  navigationOptions: {
+    headerTitleAlign: 'center',
+  },
 });
 
 PodcastsNavigator.navigationOptions = {
@@ -67,7 +69,9 @@ const MeditationsNavigator = createStackNavigator({
   Contributor: ContributorScreen,
   SearchResults: SearchResultsScreen,
 }, {
-  headerLayoutPreset: 'center',
+  navigationOptions: {
+    headerTitleAlign: 'center',
+  },
 });
 
 MeditationsNavigator.navigationOptions = {
@@ -81,7 +85,9 @@ const LiturgiesNavigator = createStackNavigator({
   Contributor: ContributorScreen,
   SearchResults: SearchResultsScreen,
 }, {
-  headerLayoutPreset: 'center',
+  navigationOptions: {
+    headerTitleAlign: 'center',
+  },
 });
 
 LiturgiesNavigator.navigationOptions = {

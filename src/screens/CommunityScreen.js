@@ -110,7 +110,7 @@ const CommunityScreen = () => {
 };
 
 CommunityScreen.navigationOptions = () => ({
-  headerLeft: <CloseButton />,
+  headerLeft: () => <CloseButton />,
   title: 'Community',
 });
 

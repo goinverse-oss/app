@@ -173,7 +173,7 @@ ContributorScreen.navigationOptions = ({ navigation }) => {
   const animatedValue = navigation.getParam('scrollY');
 
   return {
-    headerLeft: <BackButton />,
+    headerLeft: () => <BackButton />,
     title: navigation.state.params.contributor.name,
     headerTitleStyle: {
       opacity: getHeaderOpacity(animatedValue),

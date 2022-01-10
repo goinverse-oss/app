@@ -29,7 +29,7 @@ function mapStateToProps(state, { navigation }) {
 
 SinglePodcastEpisodeScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
+  headerLeft: () => <BackButton />,
   title: 'Podcasts',
 });
 

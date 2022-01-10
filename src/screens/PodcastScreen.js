@@ -83,8 +83,8 @@ function mapDispatchToProps(dispatch) {
 
 PodcastScreen.navigationOptions = ({ screenProps, navigation }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
-  headerRight: <FeedButton collection={getPodcast(navigation)} />,
+  headerLeft: () => <BackButton />,
+  headerRight: () => <FeedButton collection={getPodcast(navigation)} />,
   title: navigation.state.params.podcast.title,
 });
 

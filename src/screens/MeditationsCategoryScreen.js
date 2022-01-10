@@ -92,8 +92,8 @@ function mapDispatchToProps(dispatch) {
 
 MeditationsCategoryScreen.navigationOptions = ({ screenProps, navigation }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
-  headerRight: <FeedButton collection={getCategory(navigation)} />,
+  headerLeft: () => <BackButton />,
+  headerRight: () => <FeedButton collection={getCategory(navigation)} />,
   title: navigation.state.params.category.title,
 });
 

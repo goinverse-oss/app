@@ -29,7 +29,7 @@ function mapStateToProps(state, { navigation }) {
 
 SingleLiturgyItemScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
+  headerLeft: () => <BackButton />,
   title: 'Liturgies',
 });
 

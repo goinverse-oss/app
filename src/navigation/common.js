@@ -15,7 +15,7 @@ import { defaultShadowStyle } from '../styles';
  */
 export function getCommonNavigationOptions(drawer) {
   return {
-    headerLeft: <MenuButton drawer={drawer} />,
+    headerLeft: () => <MenuButton drawer={drawer} />,
     headerStyle: {
       ...defaultShadowStyle,
       borderBottomWidth: 0,

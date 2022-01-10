@@ -89,7 +89,7 @@ HangoutScreen.defaultProps = {
 };
 
 HangoutScreen.navigationOptions = () => ({
-  headerLeft: <BackButton />,
+  headerLeft: () => <BackButton />,
   headerTitle: 'Hangout Rooms',
 });
 

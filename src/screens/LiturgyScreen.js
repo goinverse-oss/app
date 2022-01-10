@@ -232,8 +232,8 @@ function mapDispatchToProps(dispatch) {
 
 LiturgyScreen.navigationOptions = ({ screenProps, navigation }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
-  headerTitle: (
+  headerLeft: () => <BackButton />,
+  headerTitle: () => (
     <Title
       liturgy={navigation.state.params.liturgy}
       animatedValue={navigation.getParam('scrollY')}

@@ -32,7 +32,7 @@ function mapStateToProps(state, { navigation }) {
 
 SingleMeditationScreen.navigationOptions = ({ screenProps }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
+  headerLeft: () => <BackButton />,
   title: 'Meditations',
 });
 

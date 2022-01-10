@@ -122,7 +122,7 @@ PlayerScreen.defaultProps = {
 };
 
 PlayerScreen.navigationOptions = ({ navigation }) => ({
-  headerLeft: (
+  headerLeft: () => (
     <FontAwesome
       name="angle-down"
       style={styles.closeIcon}

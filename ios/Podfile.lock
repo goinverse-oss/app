@@ -303,6 +303,8 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-music-control (0.10.8):
     - React
+  - react-native-safe-area-context (3.3.2):
+    - React-Core
   - react-native-webview (8.1.1):
     - React
   - React-RCTActionSheet (0.61.5):
@@ -344,6 +346,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.7.1):
     - React
+  - RNCMaskedView (0.1.11):
+    - React
   - RNFBApp (6.4.0):
     - Firebase/Core (~> 6.13.0)
     - React
@@ -356,8 +360,8 @@ PODS:
     - React
   - RNReanimated (1.7.1):
     - React
-  - RNScreens (2.2.0):
-    - React
+  - RNScreens (2.18.1):
+    - React-Core
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -410,6 +414,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-music-control (from `../node_modules/react-native-music-control`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -424,6 +429,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -523,6 +529,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-music-control:
     :path: "../node_modules/react-native-music-control"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -549,6 +557,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/art"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
@@ -634,6 +644,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-music-control: 2de793e824b7849814fd4ffb9688fc7cc7cd5a71
+  react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   react-native-webview: 0a9570f62a91d7f991bf4cebff64bb97ef9bf682
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -647,11 +658,12 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeART: c496c53089b3149663215d74d6f1adb3a62e07eb
   RNCAsyncStorage: 8539fc80a0075fcc9c8e2dff84cd22dc5bf1dacf
+  RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
   RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
   RNFBMessaging: 805710731a2b616030514f6f416e8787de521f41
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
-  RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   UMAppLoader: ae5eaee9f3c8cc847c631a579fed20d217de5913
   UMBarCodeScannerInterface: aa3409ab9d108866e55c09ad0292e4a6c08a7775
   UMCameraInterface: 9d5da92c521e0af7815afbf77ea19bd0312b4928

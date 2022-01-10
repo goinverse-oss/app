@@ -151,7 +151,7 @@ export function getTitle({ type, filterField, filterValue }) {
  */
 SearchResultsScreen.navigationOptions = ({ screenProps, navigation }) => ({
   ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
+  headerLeft: () => <BackButton />,
   title: getTitle(getParams(navigation)),
 });
 
