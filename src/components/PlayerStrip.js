@@ -132,7 +132,7 @@ const PlayerStrip = ({ item, navigation: { navigate } }) => (
     <TouchableWithoutFeedback
       accessibilityLabel={`Now Playing: ${getAccessibilityLabel(item)}`}
       accessibilityHint="Tap to open Now Playing screen"
-      onPress={() => navigate('PlayerWithHeader')}
+      onPress={() => navigate('Player')}
     >
       <PlayerStripContainer>
         <View style={styles.item}>
