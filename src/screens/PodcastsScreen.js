@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
 import appPropTypes from '../propTypes';
-import { getCommonNavigationOptions } from '../navigation/common';
 import PodcastSeriesList from '../components/PodcastSeriesList';
 import Podcast from '../state/models/Podcast';
 import { fetchData } from '../state/ducks/orm';
@@ -35,10 +34,10 @@ class PodcastsScreen extends Component {
       >
         <PodcastSeriesList
           podcasts={podcasts}
-          onPressPodcast={podcast => navigation.navigate({
-            routeName: 'Podcast',
-            params: { podcast },
-          })}
+          onPressPodcast={podcast => navigation.navigate(
+            'Podcast',
+            { podcast },
+          )}
         />
       </ScrollView>
     );
@@ -74,10 +73,5 @@ function mapDispatchToProps(dispatch) {
     ),
   };
 }
-
-PodcastsScreen.navigationOptions = ({ screenProps }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
-  title: 'Podcasts',
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PodcastsScreen);

@@ -8,7 +8,6 @@ import {
 import appStyles from '../styles';
 
 import CollapsibleStack from './CollapsibleStack';
-import CloseButton from '../navigation/CloseButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,17 +40,6 @@ const officialSocials = [
       Our focus is intentionally open and supportive conversation.
 
       Think of this as a privacy focused alternative to Facebook Groups.
-    `,
-  },
-  {
-    title: 'Mastodon',
-    url: 'https://social.theliturgists.com',
-    description: `
-      Mastodon is an open-source alternative to Twitter, with an
-      architecture that helps prevent the kinds of mass harassment
-      that is so common on Twitter.
-
-      Think of it as Twitter for people who are sick of Twitter.
     `,
   },
 ];
@@ -108,10 +96,5 @@ const CommunityScreen = () => {
     </View>
   );
 };
-
-CommunityScreen.navigationOptions = () => ({
-  headerLeft: () => <CloseButton />,
-  title: 'Community',
-});
 
 export default CommunityScreen;

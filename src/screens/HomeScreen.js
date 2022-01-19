@@ -11,12 +11,11 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from '@react-navigation/compat';
 
 import TextPill from '../components/TextPill';
 
 import appPropTypes from '../propTypes';
-import { getCommonNavigationOptions } from '../navigation/common';
 import * as navActions from '../navigation/actions';
 import { recentMediaItemsSelector } from '../state/ducks/orm/selectors';
 import { getImageSource, getSeriesTitle } from '../state/ducks/orm/utils';
@@ -140,11 +139,6 @@ HomeScreen.propTypes = {
   onItemPress: PropTypes.func.isRequired,
 };
 
-HomeScreen.navigationOptions = ({ screenProps }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
-  title: 'The Liturgists',
-});
-
 function mapStateToProps(state) {
   return {
     items: recentMediaItemsSelector(state).map(
@@ -169,7 +163,7 @@ function mapDispatchToProps(dispatch, { navigation }) {
       dispatch(fetchData({ resource: 'liturgies' }));
       dispatch(fetchData({ resource: 'liturgyItems' }));
     },
-    openItem: item => navigation.navigate(navActions.openItem(item)),
+    openItem: item => navigation.dispatch(navActions.openItem(item)),
     openPatreon: () => navigation.navigate('Patreon'),
   };
 }

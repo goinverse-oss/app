@@ -1,3 +1,5 @@
+import { CommonActions } from '@react-navigation/native';
+
 /**
  * Return an action that navigates to the specified item's screen.
  *
@@ -10,8 +12,13 @@
  *   id: Contentful ID (sys.id) of the entry
  * @returns {object} navigation action
  */
-export function openItem(item) {
-  const routes = {
+export function openItem(item, { fromList } = {}) {
+  const collectionScreens = {
+    podcastEpisode: 'Podcasts',
+    meditation: 'Meditations',
+    liturgyItem: 'Liturgies',
+  };
+  const instanceScreens = {
     podcastEpisode: 'SinglePodcastEpisode',
     meditation: 'SingleMeditation',
     liturgyItem: 'SingleLiturgyItem',
@@ -21,10 +28,22 @@ export function openItem(item) {
     meditation: 'meditation',
     liturgyItem: 'liturgyItem',
   };
-  return {
-    routeName: routes[item.type],
+  if (fromList) {
+    return CommonActions.navigate({
+      name: instanceScreens[item.type],
+      params: {
+        [routeParamNames[item.type]]: item,
+      },
+    });
+  }
+
+  return CommonActions.navigate({
+    name: collectionScreens[item.type],
     params: {
-      [routeParamNames[item.type]]: item,
+      screen: instanceScreens[item.type],
+      params: {
+        [routeParamNames[item.type]]: item,
+      },
     },
-  };
+  });
 }

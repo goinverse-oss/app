@@ -160,8 +160,8 @@ ContributorScreen.propTypes = {
   navigation: appPropTypes.navigation.isRequired,
 };
 
-function makeMapStateToProps(state, { navigation }) {
-  const { state: { params: { contributor } } } = navigation;
+function makeMapStateToProps(state, { route }) {
+  const { params: { contributor } } = route;
   return function mapStateToProps() {
     return {
       contributor: contributorSelector(state, contributor.id),
@@ -169,17 +169,17 @@ function makeMapStateToProps(state, { navigation }) {
   };
 }
 
-ContributorScreen.navigationOptions = ({ navigation }) => {
-  const animatedValue = navigation.getParam('scrollY');
+export const getContributorScreenOptions = ({ route }) => {
+  const animatedValue = route.params.scrollY;
 
   return {
     headerLeft: () => <BackButton />,
-    title: navigation.state.params.contributor.name,
+    title: route.params.contributor.name,
     headerTitleStyle: {
       opacity: getHeaderOpacity(animatedValue),
     },
     headerTransparent: true,
-    headerBackground: <HeaderBackground animatedValue={animatedValue} />,
+    headerBackground: () => <HeaderBackground animatedValue={animatedValue} />,
   };
 };
 

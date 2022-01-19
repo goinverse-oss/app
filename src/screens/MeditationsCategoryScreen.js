@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FlatList, StyleSheet } from 'react-native';
 
-import { getCommonNavigationOptions } from '../navigation/common';
-import BackButton from '../navigation/BackButton';
-import FeedButton from '../components/FeedButton';
 import MeditationListCard from '../components/MeditationListCard';
 import Meditation from '../state/models/Meditation';
 import {
@@ -57,13 +54,8 @@ MeditationsCategoryScreen.defaultProps = {
   meditations: [],
 };
 
-function getCategory(navigation) {
-  const { state: { params: { category } } } = navigation;
-  return category;
-}
-
-function mapStateToProps(state, { navigation }) {
-  const category = getCategory(navigation);
+function mapStateToProps(state, { route }) {
+  const { category } = route.params;
   const meditations = (
     category.title === 'All Meditations'
       ? meditationsSelector(state)
@@ -89,12 +81,5 @@ function mapDispatchToProps(dispatch) {
     },
   };
 }
-
-MeditationsCategoryScreen.navigationOptions = ({ screenProps, navigation }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: () => <BackButton />,
-  headerRight: () => <FeedButton collection={getCategory(navigation)} />,
-  title: navigation.state.params.category.title,
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeditationsCategoryScreen);

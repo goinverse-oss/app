@@ -356,7 +356,7 @@ PODS:
     - Firebase/Messaging (~> 6.13.0)
     - React
     - RNFBApp
-  - RNGestureHandler (2.1.1):
+  - RNGestureHandler (1.10.3):
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
@@ -661,7 +661,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
   RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
   RNFBMessaging: 805710731a2b616030514f6f416e8787de521f41
-  RNGestureHandler: e1ad51d31a580755079d5124d3ab66f0fcaa8311
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   UMAppLoader: ae5eaee9f3c8cc847c631a579fed20d217de5913

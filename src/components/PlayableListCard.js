@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from '@react-navigation/compat';
 import { Foundation, FontAwesome } from '@expo/vector-icons';
 import pluralize from 'pluralize';
 
@@ -255,7 +255,7 @@ function mapDispatchToProps(dispatch, { navigation, item }) {
       );
       navigation.navigate('Player');
     },
-    openItem: () => navigation.navigate(navActions.openItem(item)),
+    openItem: () => navigation.dispatch(navActions.openItem(item, { fromList: true })),
     openPatreon: () => navigation.navigate('Patreon'),
   };
 }

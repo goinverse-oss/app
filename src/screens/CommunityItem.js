@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from '@react-navigation/compat';
 import * as WebBrowser from 'expo-web-browser';
 import HTML from 'react-native-render-html';
 

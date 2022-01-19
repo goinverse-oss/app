@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
+import { useDispatch } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
@@ -34,50 +33,31 @@ const styles = StyleSheet.create({
   },
 });
 
-const DrawerContent = ({
-  drawer,
-  navigateToPatreon,
-  navigateToCommunity,
-}) => (
-  <LinearGradient style={styles.drawer} colors={['#FFFFFF00', '#F95A570C']}>
-    <PatreonStatus />
-    <DrawerItem
-      drawer={drawer}
-      image={<Image source={patreonIcon} style={styles.patreonImage} />}
-      title="Manage Patreon"
-      onPress={navigateToPatreon}
-    />
-    <DrawerItem
-      drawer={drawer}
-      title="Community"
-      image={<Icon name="people" style={styles.communityIcon} />}
-      onPress={navigateToCommunity}
-    />
-  </LinearGradient>
-);
+const DrawerContent = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <LinearGradient style={styles.drawer} colors={['#FFFFFF00', '#F95A570C']}>
+      <PatreonStatus />
+      <DrawerItem
+        image={<Image source={patreonIcon} style={styles.patreonImage} />}
+        title="Manage Patreon"
+        onPress={() => {
+          dispatch(patreon.getDetails());
+          navigation.navigate('Patreon');
+        }}
+      />
+      <DrawerItem
+        title="Community"
+        image={<Icon name="people" style={styles.communityIcon} />}
+        onPress={() => navigation.navigate('Community')}
+      />
+    </LinearGradient>
+  );
+};
 
 DrawerContent.propTypes = {
-  drawer: PropTypes.shape({}),
-  navigateToPatreon: PropTypes.func.isRequired,
-  navigateToCommunity: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({}).isRequired,
 };
 
-DrawerContent.defaultProps = {
-  drawer: {},
-};
-
-function mapDispatchToProps(dispatch, { navigation }) {
-  return {
-    navigateToPatreon: () => {
-      dispatch(patreon.getDetails());
-      navigation.navigate('Patreon');
-    },
-    navigateToCommunity: () => {
-      navigation.navigate('Community');
-    },
-  };
-}
-
-export default withNavigation(
-  connect(null, mapDispatchToProps)(DrawerContent),
-);
+export default DrawerContent;

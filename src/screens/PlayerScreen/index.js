@@ -3,8 +3,6 @@ import { Easing, Platform, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import TextTicker from 'react-native-text-ticker';
 
-import { FontAwesome } from '@expo/vector-icons';
-
 import SquareImage from '../../components/SquareImage';
 import { screenRelativeWidth, screenRelativeHeight } from '../../components/utils';
 import appPropTypes from '../../propTypes';
@@ -19,10 +17,6 @@ import Controls from './Controls';
 const shadowRadius = 6;
 
 const styles = StyleSheet.create({
-  closeIcon: {
-    fontSize: 24,
-    paddingHorizontal: 10,
-  },
   imageContainer: {
     ...Platform.select({
       ios: {
@@ -74,7 +68,7 @@ class PlayerScreen extends React.Component {
     const { item: prevItem } = prevProps;
     const { navigation, item } = this.props;
     if (prevItem && !item) {
-      navigation.goBack(null);
+      navigation.goBack();
     }
   }
 
@@ -120,17 +114,6 @@ PlayerScreen.propTypes = {
 PlayerScreen.defaultProps = {
   item: null,
 };
-
-PlayerScreen.navigationOptions = ({ navigation }) => ({
-  headerLeft: () => (
-    <FontAwesome
-      name="angle-down"
-      style={styles.closeIcon}
-      onPress={() => navigation.goBack(null)}
-    />
-  ),
-  title: '',
-});
 
 function mapStateToProps(state) {
   return {

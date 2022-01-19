@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from '@react-navigation/compat';
 import momentPropTypes from 'react-moment-proptypes';
 
 import appPropTypes from '../propTypes';
@@ -79,7 +79,7 @@ const SingleMediaItemScreen = ({
           people={item.contributors}
           onPressPerson={(person) => {
             const params = { contributor: person };
-            navigation.navigate({ routeName: 'Contributor', params });
+            navigation.navigate('Contributor', params);
           }}
         />
       </View>
@@ -87,10 +87,10 @@ const SingleMediaItemScreen = ({
         <TagList
           tags={item.tags}
           onTagPress={(tag) => {
-            navigation.navigate({
-              routeName: 'SearchResults',
-              params: { filterField: 'tag', filterValue: tag },
-            });
+            navigation.navigate(
+              'SearchResults',
+              { filterField: 'tag', filterValue: tag },
+            );
           }}
         />
       </View>

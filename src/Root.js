@@ -1,12 +1,13 @@
+import 'react-native-gesture-handler';
+
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Sentry from 'sentry-expo';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { createAppContainer } from 'react-navigation';
+import { NavigationContainer } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-// import { useScreens } from 'react-native-screens';
 
 import MainNavigator from './navigation/MainNavigator';
 import { navigate, setTopLevelNavigator } from './navigation/NavigationService';
@@ -41,11 +42,6 @@ Sentry.init({
   dsn: sentryPublicDSN,
 });
 
-// disable react-native-screens until this critical issue is resolved:
-// https://github.com/kmagiera/react-native-screens/issues/61
-// useScreens();
-
-const AppContainer = createAppContainer(MainNavigator);
 const navigationDeferred = new Deferred();
 
 function getItem(notification) {
@@ -95,12 +91,14 @@ class App extends React.Component {
     }
 
     return (
-      <AppContainer
+      <NavigationContainer
         ref={(navigator) => {
           setTopLevelNavigator(navigator);
           navigationDeferred.resolve(navigator);
         }}
-      />
+      >
+        <MainNavigator />
+      </NavigationContainer>
     );
   }
 }

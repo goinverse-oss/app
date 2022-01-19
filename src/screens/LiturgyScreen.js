@@ -5,7 +5,6 @@ import { Animated, FlatList, ImageBackground, ScrollView, Text, View, StyleSheet
 import Constants from 'expo-constants';
 
 import BackButton from '../navigation/BackButton';
-import { getCommonNavigationOptions } from '../navigation/common';
 import LiturgyItemListCard from '../components/LiturgyItemListCard';
 import LiturgyItem from '../state/models/LiturgyItem';
 import Liturgy from '../state/models/Liturgy';
@@ -206,8 +205,8 @@ LiturgyScreen.defaultProps = {
   items: [],
 };
 
-function mapStateToProps(state, { navigation }) {
-  const { state: { params: { liturgy } } } = navigation;
+function mapStateToProps(state, { route }) {
+  const { params: { liturgy } } = route;
   const { items } = liturgySelector(state, liturgy.id);
   return {
     liturgy,
@@ -230,13 +229,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-LiturgyScreen.navigationOptions = ({ screenProps, navigation }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
+export const getLiturgyScreenOptions = ({ route }) => ({
   headerLeft: () => <BackButton />,
   headerTitle: () => (
     <Title
-      liturgy={navigation.state.params.liturgy}
-      animatedValue={navigation.getParam('scrollY')}
+      liturgy={route.params.liturgy}
+      animatedValue={route.params.scrollY}
     />
   ),
 });
