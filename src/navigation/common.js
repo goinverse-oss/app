@@ -8,14 +8,13 @@ import { defaultShadowStyle } from '../styles';
  *
  * Currently, this consists of:
  * - A button on the left of the header that opens the nav drawer
- * - A button on the right that logs the user out
  *
  * @param {object} drawer - the DrawerLayout object
  * @return {object} the common options
  */
 export function getCommonNavigationOptions(drawer) {
   return {
-    headerLeft: <MenuButton drawer={drawer} />,
+    headerLeft: () => <MenuButton drawer={drawer} />,
     headerStyle: {
       ...defaultShadowStyle,
       borderBottomWidth: 0,

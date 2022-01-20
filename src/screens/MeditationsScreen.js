@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
 import appPropTypes from '../propTypes';
-import { getCommonNavigationOptions } from '../navigation/common';
 import MeditationSeriesList from '../components/MeditationSeriesList';
 import { fetchData, fetchAsset } from '../state/ducks/orm';
 import { ALL_MEDITATIONS_COVER_ART } from '../state/ducks/orm/actions';
@@ -49,10 +48,10 @@ class MeditationsScreen extends Component {
       >
         <MeditationSeriesList
           meditationCategories={meditationCategories}
-          onPressMeditationCategory={category => navigation.navigate({
-            routeName: 'MeditationsCategory',
-            params: { category },
-          })}
+          onPressMeditationCategory={category => navigation.navigate(
+            'MeditationsCategory',
+            { category },
+          )}
         />
       </ScrollView>
     );
@@ -98,10 +97,5 @@ function mapDispatchToProps(dispatch) {
     ),
   };
 }
-
-MeditationsScreen.navigationOptions = ({ screenProps }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
-  title: 'Meditations',
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeditationsScreen);

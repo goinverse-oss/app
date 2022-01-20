@@ -8,7 +8,6 @@ import {
 import { connect } from 'react-redux';
 
 import appStyles from '../styles';
-import BackButton from '../navigation/BackButton';
 import { screenRelativeWidth } from '../components/utils';
 import CollapsibleStack from './CollapsibleStack';
 import * as selectors from '../state/ducks/patreon/selectors';
@@ -87,11 +86,6 @@ HangoutScreen.propTypes = {
 HangoutScreen.defaultProps = {
   passcode: null,
 };
-
-HangoutScreen.navigationOptions = () => ({
-  headerLeft: <BackButton />,
-  headerTitle: 'Hangout Rooms',
-});
 
 function mapStateToProps(state) {
   return {

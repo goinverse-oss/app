@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from '@react-navigation/compat';
 
 import Icon from '@expo/vector-icons/MaterialIcons';
 import appPropTypes from '../propTypes';

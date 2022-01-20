@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { FlatList, StyleSheet } from 'react-native';
 import pluralize from 'pluralize';
 
-import { getCommonNavigationOptions } from '../navigation/common';
 import BackButton from '../navigation/BackButton';
 import {
   filteredAllMediaSelector,
@@ -34,11 +33,6 @@ const listCardTypes = {
   liturgyItem: LiturgyItemListCard,
 };
 
-function getParams(navigation) {
-  const { state: { params } } = navigation;
-  return params;
-}
-
 /**
  * List of items matching a search - e.g. matches contributor.
  */
@@ -46,17 +40,15 @@ const SearchResultsScreen = ({
   items,
   refreshing,
   refresh,
-  navigation,
-}) => {
-  const { type } = getParams(navigation);
-  return (
-    <FlatList
-      style={styles.container}
-      refreshing={refreshing}
-      onRefresh={() => refresh()}
-      data={items}
-      keyExtractor={item => item.id}
-      renderItem={
+  route,
+}) => (
+  <FlatList
+    style={styles.container}
+    refreshing={refreshing}
+    onRefresh={() => refresh()}
+    data={items}
+    keyExtractor={item => item.id}
+    renderItem={
         ({ item }) => {
           const ItemListCard = listCardTypes[item.type];
           return (
@@ -64,14 +56,13 @@ const SearchResultsScreen = ({
               key={item.id}
               style={styles.card}
               item={item}
-              isSearchResult={!type}
+              isSearchResult={!route.params.type}
             />
           );
         }
       }
-    />
-  );
-};
+  />
+);
 
 SearchResultsScreen.propTypes = {
   items: PropTypes.arrayOf(
@@ -79,11 +70,11 @@ SearchResultsScreen.propTypes = {
   ).isRequired,
   refreshing: PropTypes.bool.isRequired,
   refresh: PropTypes.func.isRequired,
-  navigation: appPropTypes.navigation.isRequired,
+  route: PropTypes.shape({}).isRequired,
 };
 
-function makeMapStateToProps(factoryState, { navigation }) {
-  const { type, filterField, filterValue } = getParams(navigation);
+function makeMapStateToProps(factoryState, { route }) {
+  const { type, filterField, filterValue } = route.params;
   const filterFunc = item => item[`${filterField}s`].filter(filterValue).count() > 0;
   const selector = (
     type
@@ -102,8 +93,8 @@ function makeMapStateToProps(factoryState, { navigation }) {
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  const { type } = getParams(navigation);
+function mapDispatchToProps(dispatch, { route }) {
+  const { type } = route.params;
   const resources = type ? [type] : ['podcastEpisode', 'meditation', 'liturgyItem'];
   return {
     refresh: () => {
@@ -143,16 +134,15 @@ export function getTitle({ type, filterField, filterValue }) {
 }
 
 /*
- * Navigation props:
+ * Route params:
  *   type: 'podcastEpisode', 'meditation', 'liturgyItem', or null
  *     limits results to that type, if not null
  *   filterField: 'contributor' or 'tag'
  *   filterValue: value of the field to filter by
  */
-SearchResultsScreen.navigationOptions = ({ screenProps, navigation }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
-  title: getTitle(getParams(navigation)),
+export const getSearchResultsScreenOptions = ({ route }) => ({
+  headerLeft: () => <BackButton />,
+  title: getTitle(route.params),
 });
 
 export default connect(makeMapStateToProps, mapDispatchToProps)(SearchResultsScreen);

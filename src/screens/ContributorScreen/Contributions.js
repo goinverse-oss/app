@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from '@react-navigation/compat';
 
 import Button from '../../components/Button';
 import Contributor from '../../state/models/Contributor';
@@ -138,10 +138,10 @@ function makeMapStateToProps(factoryState, { contributor, type }) {
 
 function mapDispatchToProps(dispatch, { contributor, type, navigation }) {
   return {
-    viewAll: () => navigation.navigate({
-      routeName: 'SearchResults',
-      params: { filterField: 'contributor', filterValue: contributor, type },
-    }),
+    viewAll: () => navigation.navigate(
+      'SearchResults',
+      { filterField: 'contributor', filterValue: contributor, type },
+    ),
   };
 }
 

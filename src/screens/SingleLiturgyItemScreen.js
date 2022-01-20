@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import SingleMediaItemScreen from './SingleMediaItemScreen';
-import { getCommonNavigationOptions } from '../navigation/common';
-import BackButton from '../navigation/BackButton';
 import LiturgyItem from '../state/models/LiturgyItem';
 import { liturgyItemSelector } from '../state/ducks/orm/selectors';
 
@@ -20,17 +18,11 @@ SingleLiturgyItemScreen.defaultProps = {
   item: null,
 };
 
-function mapStateToProps(state, { navigation }) {
-  const { state: { params: { liturgyItem } } } = navigation;
+function mapStateToProps(state, { route }) {
+  const { params: { liturgyItem } } = route;
   return {
     item: liturgyItemSelector(state, liturgyItem.id),
   };
 }
-
-SingleLiturgyItemScreen.navigationOptions = ({ screenProps }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
-  headerLeft: <BackButton />,
-  title: 'Liturgies',
-});
 
 export default connect(mapStateToProps)(SingleLiturgyItemScreen);

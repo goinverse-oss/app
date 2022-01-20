@@ -14,17 +14,16 @@ import { connect } from 'react-redux';
 
 import patreonButton from '../../assets/patreon_button_blank.png';
 
-import CloseButton from '../navigation/CloseButton';
-
 import * as actions from '../state/ducks/patreon/actions';
 import * as selectors from '../state/ducks/patreon/selectors';
 import * as ormActions from '../state/ducks/orm/actions';
+import colors from '../styles/colors';
 import appStyles from '../styles';
 import appPropTypes from '../propTypes';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#000',
+    backgroundColor: colors.background,
   },
   status: {
     justifyContent: 'center',
@@ -328,11 +327,6 @@ PatreonScreen.propTypes = {
   waitingForDeviceVerification: PropTypes.bool.isRequired,
   navigation: appPropTypes.navigation.isRequired,
 };
-
-PatreonScreen.navigationOptions = () => ({
-  headerLeft: <CloseButton />,
-  headerTransparent: true,
-});
 
 function mapStateToProps(state) {
   return {

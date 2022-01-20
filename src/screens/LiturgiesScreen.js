@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { ScrollView, RefreshControl } from 'react-native';
 
 import appPropTypes from '../propTypes';
-import { getCommonNavigationOptions } from '../navigation/common';
 import LiturgySeriesList from '../components/LiturgySeriesList';
 import Liturgy from '../state/models/Liturgy';
 import { fetchData } from '../state/ducks/orm';
@@ -35,10 +34,10 @@ class LiturgiesScreen extends Component {
       >
         <LiturgySeriesList
           liturgies={liturgies}
-          onPressLiturgy={liturgy => navigation.navigate({
-            routeName: 'Liturgy',
-            params: { liturgy },
-          })}
+          onPressLiturgy={liturgy => navigation.navigate(
+            'Liturgy',
+            { liturgy },
+          )}
         />
       </ScrollView>
     );
@@ -74,10 +73,5 @@ function mapDispatchToProps(dispatch) {
     ),
   };
 }
-
-LiturgiesScreen.navigationOptions = ({ screenProps }) => ({
-  ...getCommonNavigationOptions(screenProps.drawer),
-  title: 'Liturgies',
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LiturgiesScreen);
