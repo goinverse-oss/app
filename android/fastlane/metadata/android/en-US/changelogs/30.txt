@@ -1,0 +1,5 @@
+<h3>Bug Fixes</h3>
+<ul>
+<li>app outside safe area on iphone 12 (<a href="https://github.com/theliturgists/app/commit/eb3eca1b05a0c30920846bd1465c8fef3b8073b3">eb3eca1</a>)</li>
+<li>react-navigation error on goBack from player (<a href="https://github.com/theliturgists/app/commit/58edc83a8583f2b663c1e1ab9251e01a703db1d7">58edc83</a>)</li>
+</ul>

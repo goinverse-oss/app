@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1-beta.17](https://github.com/theliturgists/app/compare/v1.0.1-beta.16...v1.0.1-beta.17) (2022-01-20)
+
+
+### Bug Fixes
+
+* app outside safe area on iphone 12 ([eb3eca1](https://github.com/theliturgists/app/commit/eb3eca1b05a0c30920846bd1465c8fef3b8073b3))
+* react-navigation error on goBack from player ([58edc83](https://github.com/theliturgists/app/commit/58edc83a8583f2b663c1e1ab9251e01a703db1d7))
+
 ### [1.0.1-beta.16](https://github.com/theliturgists/app/compare/v1.0.1-beta.15...v1.0.1-beta.16) (2022-01-04)
 
 
