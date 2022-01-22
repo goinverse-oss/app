@@ -39,7 +39,7 @@ console.tron = Reactotron;
 
 const sentryPublicDSN = 'https://798a3f14b3df4af39a83fbb770197e10@o233194.ingest.sentry.io/1395784';
 Sentry.init({
-  dsn: sentryPublicDSN,
+  dsn: __DEV__ ? null : sentryPublicDSN, // eslint-disable-line no-undef
 });
 
 const navigationDeferred = new Deferred();
