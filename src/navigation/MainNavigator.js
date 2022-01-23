@@ -141,7 +141,13 @@ const MeditationsNavigator = () => (
 const LiturgiesStack = createStackNavigator();
 const LiturgiesNavigator = () => (
   <LiturgiesStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-    <LiturgiesStack.Screen name="Liturgies" component={LiturgiesScreen} />
+    <LiturgiesStack.Screen
+      name="Liturgies"
+      component={LiturgiesScreen}
+      options={{
+        ...getCommonNavigationOptions(),
+      }}
+    />
     <LiturgiesStack.Screen
       name="Liturgy"
       component={LiturgyScreen}
