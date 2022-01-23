@@ -184,9 +184,7 @@ const TabBar = props => (
 const Tabs = createBottomTabNavigator();
 const TabsNavigator = () => (
   <Tabs.Navigator
-    screenOptions={{
-      tabBarComponent: TabBar,
-    }}
+    tabBar={props => <TabBar {...props} />}
     tabBarOptions={{
       activeTintColor: colors.background,
       inactiveTintColor: '#D2D2D2',
