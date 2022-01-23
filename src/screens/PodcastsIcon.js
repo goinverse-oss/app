@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import Icon from '@expo/vector-icons/Entypo';
 
-const PodcastsIcon = ({ tintColor }) => (
+const PodcastsIcon = ({ color }) => (
   <Icon
     name="rss"
     style={{
-      color: tintColor,
+      color,
       fontSize: 24,
       height: 30,
     }}
@@ -15,7 +15,7 @@ const PodcastsIcon = ({ tintColor }) => (
 );
 
 PodcastsIcon.propTypes = {
-  tintColor: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default PodcastsIcon;

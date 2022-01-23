@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from '@expo/vector-icons/Ionicons';
 
-const HomeIcon = ({ tintColor }) => (
+const HomeIcon = ({ color }) => (
   <Icon
     name="md-home"
     style={{
-      color: tintColor,
+      color,
       fontSize: 28,
       height: 32,
     }}
@@ -14,7 +14,7 @@ const HomeIcon = ({ tintColor }) => (
 );
 
 HomeIcon.propTypes = {
-  tintColor: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default HomeIcon;

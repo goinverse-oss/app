@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import Icon from '@expo/vector-icons/Ionicons';
 
-const MeditationsIcon = ({ tintColor }) => (
+const MeditationsIcon = ({ color }) => (
   <Icon
     name="md-sunny"
     style={{
-      color: tintColor,
+      color,
       fontSize: 24,
       height: 32,
     }}
@@ -15,7 +15,7 @@ const MeditationsIcon = ({ tintColor }) => (
 );
 
 MeditationsIcon.propTypes = {
-  tintColor: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default MeditationsIcon;

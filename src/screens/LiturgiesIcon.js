@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import Icon from '@expo/vector-icons/Ionicons';
 
-const LiturgiesIcon = ({ tintColor }) => (
+const LiturgiesIcon = ({ color }) => (
   <Icon
     name="ios-musical-notes"
     style={{
-      color: tintColor,
+      color,
       fontSize: 24,
       height: 32,
     }}
@@ -15,7 +15,7 @@ const LiturgiesIcon = ({ tintColor }) => (
 );
 
 LiturgiesIcon.propTypes = {
-  tintColor: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default LiturgiesIcon;
