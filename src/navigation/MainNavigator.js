@@ -24,6 +24,7 @@ import SingleLiturgyItemScreen from '../screens/SingleLiturgyItemScreen';
 import ContributorScreen, { getContributorScreenOptions } from '../screens/ContributorScreen';
 import SearchResultsScreen, { getSearchResultsScreenOptions } from '../screens/SearchResultsScreen';
 import CommunityScreen from '../screens/CommunityScreen';
+import AboutScreen from '../screens/AboutScreen';
 import HangoutScreen from '../screens/HangoutScreen';
 import BackButton from '../navigation/BackButton';
 import CloseButton from '../navigation/CloseButton';
@@ -315,6 +316,21 @@ const CommunityNavigator = () => (
   </CommunityStack.Navigator>
 );
 
+// hack to get the header to appear (it doesn't with a TabNavigator)
+const AboutStack = createStackNavigator();
+const AboutWithHeader = () => (
+  <AboutStack.Navigator>
+    <AboutStack.Screen
+      name="About"
+      component={AboutScreen}
+      options={{
+        headerLeft: () => <CloseButton />,
+      }}
+    />
+  </AboutStack.Navigator>
+);
+
+
 const ModalsStack = createStackNavigator();
 const ModalsNavigator = () => (
   <ModalsStack.Navigator mode="modal" headerMode="none">
@@ -322,6 +338,7 @@ const ModalsNavigator = () => (
     <ModalsStack.Screen name="Patreon" component={PatreonNavigator} />
     <ModalsStack.Screen name="Player" component={PlayerWithHeader} />
     <ModalsStack.Screen name="Community" component={CommunityNavigator} />
+    <ModalsStack.Screen name="About" component={AboutWithHeader} />
   </ModalsStack.Navigator>
 );
 

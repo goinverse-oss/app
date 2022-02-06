@@ -2,4 +2,13 @@
 
 # Workaround for https://github.com/expo/expo/issues/7899#issuecomment-618766326
 plist_file="ios/TheLiturgists/Supporting/Expo.plist"
-[[ -f ${plist_file} ]] || cp "${plist_file}.dummy" "${plist_file}"
+cp -f "${plist_file}.dummy" "${plist_file}"
+if [[ -z $EXPO_RELEASE_CHANNEL ]]; then
+    if [[ -n $GITHUB_REF ]]; then
+        source ./ci/common.inc
+        EXPO_RELEASE_CHANNEL=$(get_release_channel $GITHUB_REF)
+    else
+        EXPO_RELEASE_CHANNEL=default
+    fi
+fi
+sed -i.bak "s/YOUR-RELEASE-CHANNEL-HERE/${EXPO_RELEASE_CHANNEL}/" ${plist_file}

@@ -1,7 +1,16 @@
 #!/bin/bash -e
 
-# Workaround for https://github.com/expo/expo/issues/2333
-constants_file="android/app/src/main/java/host/exp/exponent/generated/DetachBuildConstants.java"
-[[ -f ${constants_file} ]] || cp "${constants_file}.dummy" "${constants_file}"
+if [[ -z $EXPO_RELEASE_CHANNEL ]]; then
+    if [[ -n $GITHUB_REF ]]; then
+        source ./ci/common.inc
+        EXPO_RELEASE_CHANNEL=$(get_release_channel $GITHUB_REF)
+    else
+        EXPO_RELEASE_CHANNEL=default
+    fi
+fi
+manifest="android/app/src/main/AndroidManifest.xml"
+manifest_template="${manifest}.template"
+cp -f $manifest_template $manifest
+sed -i.bak "s/android:name=\"expo.modules.updates.EXPO_RELEASE_CHANNEL\" android:value=\".*\"/android:name=\"expo.modules.updates.EXPO_RELEASE_CHANNEL\" android:value=\"${EXPO_RELEASE_CHANNEL}\"/" ${manifest}
 
 npx jetify

@@ -27,9 +27,8 @@ const styles = StyleSheet.create({
   communityIcon: {
     fontSize: 25,
   },
-  logoutIcon: {
-    fontSize: 20,
-    color: '#ccc',
+  infoIcon: {
+    fontSize: 25,
   },
 });
 
@@ -51,6 +50,11 @@ const DrawerContent = ({ navigation }) => {
         title="Community"
         image={<Icon name="people" style={styles.communityIcon} />}
         onPress={() => navigation.navigate('Community')}
+      />
+      <DrawerItem
+        image={<Icon name="info-outline" style={styles.infoIcon} />}
+        title="About"
+        onPress={() => navigation.navigate('About')}
       />
     </LinearGradient>
   );

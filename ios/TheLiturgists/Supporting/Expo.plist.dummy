@@ -3,8 +3,10 @@
 <plist version="1.0">
 <dict>
         <key>EXUpdatesSDKVersion</key>
-        <string>YOUR-APP-SDK-VERSION-HERE</string>
+        <string>37.0.0</string>
         <key>EXUpdatesURL</key>
-        <string>YOUR-APP-URL-HERE</string>
+        <string>https://exp.host/@theliturgists/app</string>
+        <key>EXUpdatesReleaseChannel</key>
+        <string>YOUR-RELEASE-CHANNEL-HERE</string>
 </dict>
 </plist>

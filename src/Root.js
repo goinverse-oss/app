@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Sentry from 'sentry-expo';
 import * as SplashScreen from 'expo-splash-screen';
+import * as Updates from 'expo-updates';
+import { Alert } from 'react-native';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -132,12 +134,29 @@ const AppLoading = () => {
  * child components have access to the navigation
  * functions and the redux store.
  */
-const Root = () => (
-  <Provider store={store}>
-    <PersistGate loading={<AppLoading />} persistor={persistor}>
-      <ReduxApp />
-    </PersistGate>
-  </Provider>
-);
+const Root = () => {
+  useEffect(() => {
+    Updates.fetchUpdateAsync()
+      .then((result) => {
+        if (result.isNew) {
+          Updates.reloadAsync();
+        }
+      })
+      .catch((e) => {
+        Alert.alert(
+          'Error loading update',
+          e.message,
+        );
+      });
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <PersistGate loading={<AppLoading />} persistor={persistor}>
+        <ReduxApp />
+      </PersistGate>
+    </Provider>
+  );
+};
 
 export default Root;
